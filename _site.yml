@@ -1,0 +1,77 @@
+name: "STAT-462 R Tutorials"
+output_dir: "docs"
+navbar:
+  left:
+    - text: "Full Tutorial List"
+      href: index.html
+    - text: "R-BASICS"
+      menu:
+        - text: "1 Installing/Accessing R"
+          href: CH1_BASICS.html#ch1
+        - text: "2 Changing Settings"
+          href: CH1_BASICS.html#ch2
+        - text: "3 Console/coding basics"
+          href: CH1_BASICS.html#ch3
+    - text: "STARTING EACH LAB"
+      menu:  
+        - text: "4. Projects"
+          href: CH2_EACHLAB.html#ch4
+        - text: "5. Packages"
+          href: CH2_EACHLAB.html#ch5  
+        - text: "6. R-Markdown"
+          href: CH2_EACHLAB.html#ch6  
+    - text: "EXPLORING DATA"
+      menu:  
+        - text: "7. Reading in data"
+          href: in_T07_ReadingInData.html
+        - text: "8. Summary Statistics"
+          href: CH3_EDA.html#ch8
+        - text: "9. Filtering/selecting"
+          href: CH3_EDA.html#ch9
+        - text: "10. Missing Data"
+          href: CH3_EDA.html#ch10
+        - text: "11. Plots"
+          href: in_T11_Plots.html
+    - text: "STATISTICAL-ANALYSIS"
+      menu:  
+        - text: "12. Normal/T-Dist/Tests"
+          href: in_T12_NormalDistributionsTTests.html
+        - text: "13 Correlation"
+          href: in_T13_Correlation.html          
+        - text: "14. Simple Linear Regression"
+          href: in_T14_Regression.html          
+        - text: "15. Model Diagnostics"
+          href: in_T15_Diagnostics.html          
+        - text: "16. Outliers"
+          href: in_T16_Outliers.html    
+        - text: "17. Confidence & Prediction"
+          href: in_T17_ConfPred.html  
+        - text: "18. Transformations"
+          href: in_T18_Transformations.html     
+        - text: "19. Multiple Linear Regression"
+          href: in_T19_MLR.html         
+        - text: "20. Logistic regression"
+          href: in_T20_Logistic.html         
+    - text: "PROJECT 1"
+      menu:  
+        - text: "Project 1"
+          href: in_project1_instructions.html
+    - text: "PROJECT 2"
+      menu:  
+        - text: "Project 2"
+          href: in_project2_instructions.html          
+output:
+  html_document:
+    theme: flatly
+    highlight: textmate
+    mathjax: "default"
+    toc: yes
+    toc_depth: 4
+    number_sections: yes  
+    toc_float:
+      collapsed: yes
+      smooth_scroll: yes
+    section_divs: true  
+    css: styles.css
+    keep_md: false
+    lib_dir: site_libs
