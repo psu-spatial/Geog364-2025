@@ -4,9 +4,10 @@ output:
   html_document:
     css: projectlab.css
     highlight: pygments
-    theme: flatly
+    theme: yeti
     toc: true
     toc_float: true
+    toc_depth: 4
 editor_options: 
   markdown: 
     wrap: sentence
@@ -27,14 +28,47 @@ library(kableExtra)
 LabRubric <- read_excel("Table_LabRubric.xlsx")
 ```
 
+<br>
+
 # Overview
 
-Welcome to your labs. They are designed to help you move from the basics in R, to do some complex spatial analysis. 
+**Welcome to your GEOG-364 labs!**  
 
-**Style**
+Overall, the goals of these labs are to get you used to programming in R and to try some of the techniques that we talk about in the lectures and homeworks.
 
-Your style should be clear, understandable, explaining any jargon as simply as you can. You are also welcome to include in hand-drawn sketches, or CITED diagrams from the internet.
-<br><br>
+\
+
+::: {#boxedtext}
+**Questions**
+
+Can you use Chat-GPT/AI?  What's the late policy?  Where can I get help?
+Click here to find out the answers.
+
+:::
+
+
+<br>
+
+------------------------------------------------------------------------
+
+<br>
+
+# Lab 1
+
+**Aim of the lab**
+
+This lab builds on your Homework 1 from Data Camp. Your aim is to start getting comfortable in R and R-Markdown, and to learn about some of its core features including:
+
+ - Packages/libraries
+ - R-Markdown & making websites
+ - Basic code commands
+ - Loading data
+ - Summary statistics for different types of data
+ - Understanding lab structures and what to submit
+ 
+In lab 2, we will then move onto similar things but for spatial data. 
+ 
+<br>
 
 **What to submit**
 
@@ -64,7 +98,20 @@ alalala
 
 # Basic data analysis
 
+asdjlasdld
+asdjlasdld
 
+asdjlasdld
+asdjlasdld
+
+\
+
+asdjlasdld
+asdjlasdld
+
+<br>
+
+asdjlasdld
 asdjlasdld
 
 <br>

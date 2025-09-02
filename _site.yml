@@ -2,7 +2,7 @@ name: "STAT-462 R Tutorials"
 output_dir: "docs"
 navbar:
   left:
-    - text: "Full Tutorial List"
+    - text: "Welcome"
       href: index.html
     - text: "LAB Instructions"
       menu:  
