@@ -54,7 +54,7 @@ details.help summary {
   color: #36264B;                           /* darker violet text */
   background: rgba(138,109,181,0.35);       /* violet background */
   border-bottom: 2px solid #6A4C93;
-  font-size: 1.05em;
+  font-size: .95em;
 }
 
 details.help summary:hover {

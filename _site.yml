@@ -2,24 +2,14 @@ name: "STAT-462 R Tutorials"
 output_dir: "docs"
 navbar:
   left:
-    - text: "Welcome"
+    - text: "**Home**"
       href: index.html
-    - text: "LAB Instructions"
+    - text: "**FAQs**"
+      href: index.html
+    - text: "**YOUR LABS**"
       menu:  
         - text: "Lab 1: Basics"
           href: in_GEOG364_Lab1.html
-        - text: "Lab 2"
-          href: in_GEOG364_Lab2.html
-        - text: "Lab 3"
-          href: in_GEOG364_Lab3.html
-        - text: "Lab 4"
-          href: in_GEOG364_Lab4.html          
-        - text: "Lab 5"
-          href: in_GEOG364_Lab5.html
-        - text: "Lab 6"
-          href: in_GEOG364_Lab6.html              
-        - text: "Lab 7"
-          href: in_GEOG364_Lab7.html    
 output:
   html_document:
     theme: flatly

@@ -36,13 +36,12 @@ rubric <- read_excel("./index_data/Table_LabRubric.xlsx")
 
 \
 
-# Welcome to Lab 1!
+# Welcome to Lab 1! {#Lab1 .unnumbered}
 
-**You are allowed to use your own laptops, Posit-Cloud or the lab computers (very slow) to complete this lab.**
 
 ### Introduction
 
-This lab builds directly on what you covered in Homework 1 on DataCamp. The goal is to get comfortable using R and R Markdown, and to learn how some of the key pieces fit together. 
+This lab builds directly on what you covered in Homework 1 on DataCamp. The goal is to get comfortable using R and R-Markdown, and to learn how some of the key pieces fit together. In Lab 2, we will explore similar ideas but with spatial data
 
 In this lab, you will learn how to 
 
@@ -53,7 +52,7 @@ In this lab, you will learn how to
  - Create summary statistics for different types of data
  - Explore how GEOG-464 labs are structured and what you need to submit
 
-*In Lab 2, we will explore similar ideas but with spatial data.* 
+**You are allowed to use your own laptops, Posit-Cloud or the lab computers (very slow) to complete this lab.**
 
 <details>
 <summary> **How much time should this lab take?** <br>Click here </summary>
@@ -131,38 +130,62 @@ In this lab, you will learn how to
 
 # Getting Started
 
-#### Step 1: Opening R. 
+### **Step 1: Open R-Studio (or Posit Cloud online)**
 
- - If you are using your own computer or the lab desktop, open the R-STUDIO icon (not the one that says R).
+ - If you are using your own computer or the lab desktop, open the R-STUDIO icon [not the one that says R](https://psu-spatial.github.io/Stat462-2025/index_images/pg_Tut2_startup_fig1.png).
  - If you are planning to use posit cloud online, go here and log in - https://posit.cloud/content/yours
 
 \
 
-#### Step 2: Setting up a project 
+### **Step 2: Set up a project for Lab 1**
 
-An R-project stores everything to do with each lab in one place on your computer. This is incredibly useful - it means that if you switch from R-Cloud, to the lab computers, to your laptop, all you have to do is to move the folder and everything will just work. It also means you have to worry less about directory names.  
+An R Project is like a home base for all the files, scripts, and data connected to one piece of work. Instead of saving files in lots of different places and then struggling to tell R where to look, the Project keeps everything together. Here's why projects are so useful:
 
-Watch this video to find out more:
+ - **Consistency across computers:** If you move from Posit Cloud to a lab computer or your own laptop, you only need to copy the Project folder. Open it, and everything inside will still “know where it lives.”
 
-[![](index_images/im_T1_ProjectVideo.png)](https://www.linkedin.com/learning/learning-the-r-tidyverse/why-should-you-use-projects-in-rstudio?u=76811570)
+ - **No messy file paths:** You won’t have to keep typing or updating long folder names. R will automatically treat your Project folder as the starting point.
 
-\
+ - **Everything is organised:** Each lab, assignment, or project has its own container, so your work never gets tangled.
 
-1.  Create a new project for Lab 1, in order to store your data, analysis & reports. <br><br> If you are using your own computer or a lab computer, [Tutorial: R-Studio Desktop](https://psu-spatial.github.io/Stat462-2025/CH2_EACHLAB.html#11_Projects_using_R-Studio_Desktop) <br> If you are using posit cloud online (the website version), [Tutorial: Posit Cloud online](https://psu-spatial.github.io/Stat462-2025/CH2_EACHLAB.html#12_Projects_using_Posit_Cloud) <br><br>
+ - **Easy to share or back up:** You can zip up the folder, send it, or store it in GitHub/OneDrive, and it will still work when reopened.
+ 
+ Watch this video to find out more:
 
-\
-
-
-### Changing the global settings
-
-I know many of you did this last 
-
-1.  Create a new project for Project 2, in order to store your data, analysis & reports. <br> Instructions here <https://psu-spatial.github.io/Stat462-2025/CH2_EACHLAB.html#1_R-Projects>
-
+<p align="center">
+  <a href="https://www.linkedin.com/learning/learning-the-r-tidyverse/why-should-you-use-projects-in-rstudio?u=76811570">
+    <img src="index_images/im_T1_ProjectVideo.png" alt="Project Video" width="60%">
+  </a>
+</p>
 
 \
 
-https://psu-spatial.github.io/Stat462-2023/in_S462_Tutorial01WhatisR.html#changing-global-settings
+1.  You need to create a new project for every single lab! <br> **Today, use these instructions to create a project for Lab 1:** <br><br> If you are using your own computer or a lab computer, click here [Tutorial: R-Studio Desktop](https://psu-spatial.github.io/Stat462-2025/CH2_EACHLAB.html#11_Projects_using_R-Studio_Desktop) <br> If you are using posit cloud online (the website), click here [Tutorial: Posit Cloud online](https://psu-spatial.github.io/Stat462-2025/CH2_EACHLAB.html#12_Projects_using_Posit_Cloud) <br><br>
+
+\
+
+### **Step 3: Changing your global settings**
+
+Before you start using RStudio, it helps to adjust a few settings to make your lives easier. 
+
+2.  Click here [Tutorial: Global settings](https://psu-spatial.github.io/Stat462-2023/in_S462_Tutorial01WhatisR.html#changing-global-settings) and follow the instructions to change your global settings & appearance.
+
+
+\
+
+### **Step 4: Understanding R-Markdown Files**
+
+You are going to write up your labs as R-Markdown files. These can include both code and text - and they are easy to turn into websites, pdf documents, presentations and many other things.
+
+
+
+
+# Code Showcase
+
+Now, we are going to tr
+
+
+
+
 
 ------------------------------------------------------------------------
 
@@ -171,9 +194,9 @@ https://psu-spatial.github.io/Stat462-2023/in_S462_Tutorial01WhatisR.html#changi
 adasdsad
 
 
-For example, 
+For example you could,
 
- - You could follow these instructions, install a custom theme and include a screenshot in your lab report (https://www.garrickadenbuie.com/project/rsthemes/)
+ - Follow these instructions, install a custom theme and include a screenshot in your lab report (https://www.garrickadenbuie.com/project/rsthemes/)
 
 <br>
 
