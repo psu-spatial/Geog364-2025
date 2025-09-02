@@ -172,10 +172,26 @@ Before you start using RStudio, it helps to adjust a few settings to make your l
 
 \
 
-### D. Libraries 
+### D. Packages (the R App store) 
 
+Just like the factory settings on your phone are pretty boring, in R we often want to download/install apps to do specific commands. In R, we call apps packages or libraries.
 
-3.  Read this about R libraries (we will go through it in Lab) [Tutorial: Packages](https://hgreatrex.github.io/Geog364_2024/pg_Tut2_startup.html#How_to_downloadinstall_packages)) and follow the instructions to install the tidyverse package.
+To download new packages
+
+-   Go to the Packages Tab. The list you see are the ones [currently]{.underline} installed on your computer (like the calculator is pre-installed on your phone).
+
+-   Now, Click the INSTALL button. This takes you to the app store where you can type the name of a package you want to download.
+
+3.  Search for and install the following packages/apps.**
+        -   `tidyverse`
+        -   `plotly`
+        -   `palmerpenguins`
+        -   `ggstatsplot`
+        -   `readxl`
+
+Just like you don't need to go to the App store every time you want to open instagram, you only need to do this ONCE for each package. (on posit cloud it might happen more often). The install commands should *never* be in your lab report.
+
+If you need more help, see here  [Tutorial: Packages](https://hgreatrex.github.io/Geog364_2024/pg_Tut2_startup.html#How_to_downloadinstall_packages)) 
 
 
 ### E. R-Markdown & your lab script
