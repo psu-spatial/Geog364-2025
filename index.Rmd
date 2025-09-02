@@ -1,6 +1,5 @@
 ---
 title: "GEOG-364 Lab book"
-subtitle: <h4 style="font-style:normal">GEOG-364 - Spatial Analysis</h4>
 author: Penn State, Dept Geography
 output: 
   html_document:
@@ -30,22 +29,22 @@ rubric <- readxl::read_excel("./index_data/Table_LabRubric.xlsx")
 <br>
 
 
-### Welcome!
+## Welcome! {#Home_welcome .unnumbered}
 
 Dr Greatrex has written this lab book to provide all the code and instructions you need for spatial analysis. You will be conducting analysis using R and writing up your reports using R-Markdown.
 
-Don't panic if you are new to this! We will start from scratch and you are expected to have zero programming experience. [Unless I tell you otherwise, you can find all the code you need in this lab book and my tutorials]{.underline}
+Don't panic if you are new to this! We will start from scratch and you are expected to have zero programming experience. **Unless I tell you otherwise, you can find all the code you need in this lab book and my tutorials**.
 
--   [Lab 1:](#Lab1 "Lab 1")
+### Labs {#Home_labs .unnumbered}
+
+ - [**Lab 1: R Basics**](#Lab1 "Lab 1")
 
 
-## Useful Links {#Home_UsefulLinks .unnumbered}
+### Useful Links {#Home_UsefulLinks .unnumbered}
 
--   [**The course canvas page:**](https://psu.instructure.com/courses/2396422)
-
--   [**Frequently asked questions** (I'm late! Can I work with friends? What about ChatGPT?)](#FAQ "Lab FAQs")
-
--   [**All the tutorials**](https://psu-spatial.github.io/Stat462-2025/CH1_BASICS.html#ch1)
+ - [**The course canvas page:**](https://psu.instructure.com/courses/2396422)
+ - [**Frequently asked questions** (I'm late! Can I work with friends? What about ChatGPT?)](#FAQ "Lab FAQs")
+ - [**All the tutorials**](https://psu-spatial.github.io/Stat462-2025/CH1_BASICS.html#ch1)
 
 <br>
 

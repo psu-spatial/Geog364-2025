@@ -2,11 +2,11 @@ name: "STAT-462 R Tutorials"
 output_dir: "docs"
 navbar:
   left:
-    - text: "**Home**"
+    - text: "Home"
       href: index.html
-    - text: "**FAQs**"
+    - text: "FAQs"
       href: index.html
-    - text: "**YOUR LABS**"
+    - text: "YOUR LABS"
       menu:  
         - text: "Lab 1: Basics"
           href: in_GEOG364_Lab1.html
