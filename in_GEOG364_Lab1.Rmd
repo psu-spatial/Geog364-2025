@@ -172,52 +172,31 @@ Before you start using RStudio, it helps to adjust a few settings to make your l
 
 \
 
-### 4. R-Markdown
+### 4. R-Markdown & your lab script
 
-You are going to write up your labs as R-Markdown files. These can include both code and text - and they are easy to turn into websites, pdf documents, presentations and many other things.
+You are going to write up your labs as R-Markdown files (ones ending in .Rmd). These can include both code and text - and they are easy to turn into websites, pdf documents, presentations and many other things.
 
 3.  First, learn more about R-Markdown.<br><br> a) Go to https://rmarkdown.rstudio.com/index.html and take a look around at what R-Markdown is and what it can do <br> b) Go to the [R-Markdown Tutorial](https://psu-spatial.github.io/Stat462-2025/CH2_EACHLAB.html#31_Introduction) and read the introduction & R-Markdown structure. <br><br>
 
+YOU SHOULD BE RUNNING YOUR PROJECT AT THIS POINT. MAKE SURE IT SAYS LAB-1 AT THE TOP OF YOUR SCREEN.
 
+4. For this lab, you are going to use a pre-existing R-Markdown file, where I have put in some simple questions for you to answer.<br><br> [Click here to download the file into your project folder](https://psu.instructure.com/courses/2396422/files/181048476/download?download_frd=1).  If this link doesn't work, then go to Canvas Lab 1 and you can download the .Rmd file from there. 
 
-First, learn more about R-Markdown.
+::: {#boxteal}
 
- a) Go to https://rmarkdown.rstudio.com/index.html and take a look around at what R-Markdown is
+**IF YOU ARE ON POSIT-CLOUD**, first download it to your computer/desktop. THEN follow these instructions to upload it into your Lab 1 workspace:  https://docs.posit.co/cloud/guide/data/
+
+::: 
+
+------------------------------------------------------------------------
+
+# Complete the lab script!
+
+5. **Rename the file** <br><br>   "GEOG364_Lab1_AddYourEmailID.Rmd" should now be in your Lab 1 project folder (either on your computer or on posit-cloud).  <br><br>
+Go to the Files tab (one of the quadrants) in R-studio. If you are running your Lab 1 you should be able to see it. Click the tick-box next to it and click the Rename button. Change AddYourEmailID to your PSU email ID e.g. mine is hlg5155. 
  
- b) Go to the [R-Markdown Tutorial](https://psu-spatial.github.io/Stat462-2025/CH2_EACHLAB.html#31_Introduction) and read the introduction & R-Markdown structure.
  
-For this lab, you are going to use a pre-existing R-Markdown file.
-
-
-2.  Click here [Tutorial: R-Markdown](https://psu-spatial.github.io/Stat462-2023/in_S462_Tutorial01WhatisR.html#changing-global-settings) and follow the instructions to change your global settings & appearance.
-
-
-------------------------------------------------------------------------
-
-# Installing Libraries
-
-Now, we are going to tr
-
-
-
-
-
-
-------------------------------------------------------------------------
-
-# Code Showcase
-
-Now, we are going to tr
-
-
-
-
-------------------------------------------------------------------------
-
-# Basic data analysis
-
-Some initial plots
-
+6. **Open the file & follow the instructions!".  Come back here at the end.
 
 ------------------------------------------------------------------------
 
