@@ -11,12 +11,12 @@
 
 
 
-<title>Lab 1: R-Basics</title>
+<title>Lab 1: Introduction to R</title>
 
 <script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
@@ -354,131 +354,244 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Lab 1: R-Basics</h1>
+<h1 class="title toc-ignore">Lab 1: Introduction to R</h1>
+<h3 class="subtitle"><h4 style="font-style:normal"><br />
+GEOG-364 - Spatial Analysis<br />
+</h4></h3>
 
 </div>
 
 
 <p><br />
 </p>
-<div id="overview" class="section level1" number="1">
-<h1><span class="header-section-number">1</span> Overview</h1>
-<p><br />
-<strong>Welcome to your GEOG-364 labs!</strong></p>
-<p>The aim of these labs is to help you get comfortable programming in R
-and to practice techniques introduced in lectures and homework.</p>
-<p><br />
-</p>
-<div id="boxedtext">
-<p><strong>Questions</strong></p>
-<p>Can you use Chat-GPT/AI? What’s the late policy? Where can you get
-help?<br />
-Click here for the answers.</p>
-</div>
-<p><br />
-</p>
-<hr />
-<p><br />
-</p>
-</div>
-<div id="lab-1" class="section level1" number="2">
-<h1><span class="header-section-number">2</span> Lab 1</h1>
-<p><strong>Aim of the lab</strong></p>
-<p>This lab builds on Homework 1 from DataCamp. Your goal is to become
-familiar with R and R Markdown, and to learn about some of their core
-features, including:</p>
+<div id="welcome-to-lab-1" class="section level1">
+<h1>Welcome to Lab 1!</h1>
+<p><strong>You are allowed to use your own laptops, Posit-Cloud or the
+lab computers (very slow) to complete this lab.</strong></p>
+<div id="introduction" class="section level3">
+<h3>Introduction</h3>
+<p>This lab builds directly on what you covered in Homework 1 on
+DataCamp. The goal is to get comfortable using R and R Markdown, and to
+learn how some of the key pieces fit together.</p>
+<p>In this lab, you will learn how to</p>
 <ul>
-<li>Packages and libraries</li>
-<li>R Markdown documents</li>
-<li>Basic code commands</li>
-<li>Loading data</li>
-<li>Summary statistics for different types of data</li>
-<li>How labs are structured and what you need to submit</li>
+<li>Set up an R-Studio Project</li>
+<li>Create &amp; edit a R-Markdown document</li>
+<li>Install and use Libraries</li>
+<li>Load data</li>
+<li>Create summary statistics for different types of data</li>
+<li>Explore how GEOG-464 labs are structured and what you need to
+submit</li>
 </ul>
-<p>In Lab 2, we will explore similar ideas but with spatial data.</p>
-<p><br />
+<p><em>In Lab 2, we will explore similar ideas but with spatial
+data.</em></p>
+<details>
+<summary>
+<strong>How much time should this lab take?</strong> <br>Click here
+</summary>
+<div class="details-body">
+<p>
+This is a <strong>one-week lab</strong>. You’ll likely finish most of it
+during your lab session, with about 4 additional hours of work at home.
+So you can expect it to take around <strong>6 hours total</strong>.
+<br><br> <strong>If it’s taking much longer than that, please reach
+out!</strong> Don’t struggle in silence.
 </p>
-<p><strong>Deadline &amp; Late Penalty</strong></p>
+</div>
+</details>
+<details>
+<summary>
+<strong>What do I need to submit? When is it due?</strong><br> Click
+here
+</summary>
+<div class="details-body">
+<p>
+Submission instructions and a checklist-style grading rubric are
+included at the end of this lab.
+</p>
+<p>
+Your deadline depends on which lab section you’re in::
+</p>
 <ul>
-<li>Tuesday lab: to add</li>
-<li>Thursday lab: to add</li>
-<li>Friday lab: to add</li>
-</ul>
-<p><br />
-</p>
-<p><strong>What to submit</strong></p>
-<p>You will submit BOTH your Rmd and HTML files. This will make sense by
-the end!</p>
-<p><br />
-</p>
-<p><strong>How long should the lab take?</strong></p>
-<p>To add.</p>
-<p><br />
-</p>
-<p><strong>Getting help</strong></p>
-<ul>
-<li>Kiely (and often Dr G) will be present during your lab sessions.
-This is the easiest way to get help.</li>
-<li>There is a Piazza discussion board. Kiely will explain more in this
-week’s lab and will check it at least once a day.</li>
-<li>Dr G has weekly office hours and genuinely enjoys helping with R,
-even if you feel stuck or overwhelmed.</li>
-<li>If you have posted on Piazza and received no response after 24
-hours, you may send a Canvas message to Kiely or Dr G (or if you are
-completely lost).<br />
+<li>
+<strong>Tuesday Lab:</strong> due Wednesday, Sept 10 @ 11:59PM
+</li>
+<li>
+<strong>Thursday Lab:</strong> due Friday, Sept 12 @ 11:59PM
+</li>
+<li>
+<strong>Friday Lab:</strong> due Saturday, Sept 13 @ 11:59PM
 </li>
 </ul>
-<hr />
+<p>
+IIf something comes up and you’re running late, don’t panic —
+<a href="https://psu-spatial.github.io/Geog364-2025/FAQ.html"><strong>click
+this link for the late policy</strong></a>.
+</p>
 </div>
-<div id="getting-started" class="section level1" number="3">
-<h1><span class="header-section-number">3</span> Getting Started</h1>
-<p>ksadnasdj</p>
-<p>adhjladsnjkad</p>
-<div>
-<p><strong>“Some boxed text”</strong></p>
-<p>Lalalalal lalala alalala</p>
+</details>
+<details>
+<summary>
+<strong>Can I use ChatGPT? Other questions?</strong> <br> Click here
+</summary>
+<div class="details-body">
+<p>
+Please read the <a
+href="https://psu-spatial.github.io/Geog364-2025/FAQ.html"><strong>the
+lab FAQ</strong></a> for guidance on using tools like ChatGPT and
+answers to common questions. We will also be talking about ChatGPT in
+the next week or so.
+</p>
 </div>
-<hr />
-<p><br></p>
+</details>
+<details class="help">
+<summary>
+<strong>I’m stuck!</strong><br>Click here to find out how to get help
+</summary>
+<div class="details-body">
+<p>
+If you get stuck, here’s how to find help:
+</p>
+<p>
+<strong>DURING LABS</strong>
+</p>
+<ul>
+<li>
+Kiely (and often Dr G) will be available during your lab session. This
+is the fastest way to get help.
+</li>
+</ul>
+<p>
+<strong>DURING OFFICE HOURS</strong>
+</p>
+<ul>
+<li>
+Dr G holds weekly office hours and genuinely enjoys helping with R —
+especially if you’re feeling stuck, frustrated, or overwhelmed.
+</li>
+</ul>
+<p>
+<strong>PIAZZA DISCUSSION BOARD</strong>
+</p>
+<ul>
+<li>
+The
+<a href="https://psu.instructure.com/courses/2396422/external_tools/252951"><strong>Class
+Piazza discussion board</strong></a> is open 24/7. Kiely will explain
+how it works and will check it at least once a day.
+</li>
+</ul>
+<p>
+<strong>LAST RESORT (IF NO REPLY ON PIAZZA)</strong>
+</p>
+<ul>
+<li>
+If you’ve posted on Piazza and don’t get a reply within 24 hours, you
+can send a <strong>Canvas message</strong> to Kiely or Dr G. Or reach
+out anytime if you feel completely lost. Replies usually take about 24
+hours (see the
+<a href="https://psu-spatial.github.io/Geog364-2025/FAQ.html"><strong>late
+policy</strong></a> if you’re near a deadline).
+</li>
+</ul>
 </div>
-<div id="basic-data-analysis" class="section level1" number="4">
-<h1><span class="header-section-number">4</span> Basic data
-analysis</h1>
-<p>asdjlasdld asdjlasdld</p>
-<p>asdjlasdld asdjlasdld</p>
+</details>
 <p><br />
 </p>
-<p>asdjlasdld asdjlasdld</p>
-<p><br></p>
-<p>asdjlasdld asdjlasdld</p>
-<p><br></p>
 <hr />
-<p><br></p>
+<p><br />
+</p>
 </div>
-<div id="logistic-regression-vs-mothers-weight" class="section level1"
-number="5">
-<h1><span class="header-section-number">5</span> Logistic regression vs
-mother’s weight</h1>
-<p>adadmklasdm</p>
-<p><br></p>
+</div>
+<div id="getting-started" class="section level1">
+<h1>Getting Started</h1>
+<p><br />
+</p>
+<div id="before-you-begin" class="section level3">
+<h3>Before You Begin</h3>
+<div id="boxgreen">
+<p><strong>IF YOU HAVEN’T COMPLETED HOMEWORK 1, GO AND DO IT
+NOW!</strong> <br><br></p>
+<p>This lab builds on Homework 1, so it’s important you complete it
+first. <a
+href="https://psu.instructure.com/courses/2396422/assignments/17466225">Click
+here to go to the homework</a>. <br><br> <em>I have extended the
+deadline just this once because it’s an important starting point for
+your labs</em>.</p>
+</div>
+<p><br />
+</p>
+</div>
+<div id="opening-r." class="section level3">
+<h3>Opening R.</h3>
+<ul>
+<li>If you are using your own computer or the lab desktop, open the
+R-STUDIO icon (not the one that says R).</li>
+<li>If you are planning to use posit cloud online, go here and log in -
+<a href="https://posit.cloud/content/yours"
+class="uri">https://posit.cloud/content/yours</a></li>
+</ul>
+<p><br />
+</p>
+</div>
+<div id="setting-up-your-lab-1-project." class="section level3">
+<h3>Setting up your Lab 1 project.</h3>
+<p>An R-project stores everything to do with each lab in one place on
+your computer. This is incredibly useful - it means that if you switch
+from R-Cloud, to the lab computers, to your laptop, all you have to do
+is to move the folder and everything will just work. It also means you
+have to worry less about directory names.</p>
+<p>Watch this video to find out more:</p>
+<p><a
+href="https://www.linkedin.com/learning/learning-the-r-tidyverse/why-should-you-use-projects-in-rstudio?u=76811570"><img
+src="index_images/im_T1_ProjectVideo.png" /></a></p>
+<p><br />
+</p>
+<ol style="list-style-type: decimal">
+<li>Create a new project for Lab 1, in order to store your data,
+analysis &amp; reports. <br><br> If you are using your own computer or a
+lab computer, <a
+href="https://psu-spatial.github.io/Stat462-2025/CH2_EACHLAB.html#11_Projects_using_R-Studio_Desktop">Tutorial:
+R-Studio Desktop</a> <br> If you are using posit cloud online (the
+website version), <a
+href="https://psu-spatial.github.io/Stat462-2025/CH2_EACHLAB.html#12_Projects_using_Posit_Cloud">Tutorial:
+Posit Cloud online</a> <br><br></li>
+</ol>
+<p><br />
+</p>
+</div>
+<div id="changing-the-global-settings" class="section level3">
+<h3>Changing the global settings</h3>
+<p>I know many of you did this last</p>
+<ol style="list-style-type: decimal">
+<li>Create a new project for Project 2, in order to store your data,
+analysis &amp; reports. <br> Instructions here <a
+href="https://psu-spatial.github.io/Stat462-2025/CH2_EACHLAB.html#1_R-Projects"
+class="uri">https://psu-spatial.github.io/Stat462-2025/CH2_EACHLAB.html#1_R-Projects</a></li>
+</ol>
+<p><br />
+</p>
+<p><a
+href="https://psu-spatial.github.io/Stat462-2023/in_S462_Tutorial01WhatisR.html#changing-global-settings"
+class="uri">https://psu-spatial.github.io/Stat462-2023/in_S462_Tutorial01WhatisR.html#changing-global-settings</a></p>
 <hr />
 </div>
-<div id="show-me-something-new" class="section level1" number="6">
-<h1><span class="header-section-number">6</span> Show me something
-new!</h1>
+</div>
+<div id="show-me-something-new" class="section level1">
+<h1>Show me something new!</h1>
 <p>adasdsad</p>
 <p><br></p>
 <hr />
 </div>
-<div id="what-to-submit" class="section level1" number="7">
-<h1><span class="header-section-number">7</span> What to submit?</h1>
+<div id="what-to-submit" class="section level1">
+<h1>What to submit?</h1>
 <p>asdjnasda</p>
 <p><br></p>
 </div>
-<div id="grading-rubric" class="section level1" number="8">
-<h1><span class="header-section-number">8</span> Grading rubric</h1>
-<div id="overall" class="section level2" number="8.1">
-<h2><span class="header-section-number">8.1</span> Overall</h2>
+<div id="grading-rubric" class="section level1">
+<h1>Grading rubric</h1>
+<div id="overall" class="section level2">
+<h2>Overall</h2>
 <p>Overall, here is what your lab should correspond to:</p>
 <table class=" lightable-classic-2 table table-striped table-hover table-responsive" style="color: black; font-family: &quot;Arial Narrow&quot;, &quot;Source Sans Pro&quot;, sans-serif; margin-left: auto; margin-right: auto; color: black; margin-left: auto; margin-right: auto;">
 <thead>

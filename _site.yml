@@ -27,7 +27,7 @@ output:
     mathjax: "default"
     toc: yes
     toc_depth: 4
-    number_sections: yes  
+    number_sections: no  
     toc_float:
       collapsed: yes
       smooth_scroll: yes

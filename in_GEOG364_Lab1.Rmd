@@ -1,52 +1,116 @@
 ---
-title: "Lab 1: R-Basics"
-output:
+title: "Lab 1: Introduction to R"
+subtitle: <h4 style="font-style:normal">GEOG-364 - Spatial Analysis</h4>
+output: 
   html_document:
     css: projectlab.css
     highlight: pygments
-    theme: yeti
     toc: true
-    toc_float: true
     toc_depth: 4
+    toc_float: true
+    theme: flatly
 editor_options: 
   markdown: 
     wrap: sentence
 ---
 
-```{r, include=FALSE}
+
+```{r, include=FALSE,echo=FALSE, warning=FALSE, message=FALSE}
 knitr::opts_chunk$set(eval = TRUE, 
                       fig.show = "hide", 
                       message = FALSE, 
                       warning = FALSE)
 
+# Libraries
 library(openintro)
 library(tidyverse)
 library(broom)
 library(AER)
 library(readxl)
 library(kableExtra)
-LabRubric <- read_excel("Table_LabRubric.xlsx")
+
+# Data
+rubric <- read_excel("./index_data/Table_LabRubric.xlsx")
 ```
 
-\
-
-# Overview
-
-\
-**Welcome to your GEOG-364 labs!**
-
-The aim of these labs is to help you get comfortable programming in R and to practice techniques introduced in lectures and homework.
 
 \
 
-::: {#boxedtext}
-**Questions**
+# Welcome to Lab 1!
 
-Can you use Chat-GPT/AI?
-What’s the late policy?
-Where can you get help?\
-Click here for the answers.
-:::
+**You are allowed to use your own laptops, Posit-Cloud or the lab computers (very slow) to complete this lab.**
+
+### Introduction
+
+This lab builds directly on what you covered in Homework 1 on DataCamp. The goal is to get comfortable using R and R Markdown, and to learn how some of the key pieces fit together. 
+
+In this lab, you will learn how to 
+
+ - Set up an R-Studio Project
+ - Create & edit a R-Markdown document
+ - Install and use Libraries
+ - Load data
+ - Create summary statistics for different types of data
+ - Explore how GEOG-464 labs are structured and what you need to submit
+
+*In Lab 2, we will explore similar ideas but with spatial data.* 
+
+<details>
+<summary> **How much time should this lab take?** <br>Click here </summary>
+<div class="details-body">
+<p>This is a **one-week lab**. You’ll likely finish most of it during your lab session, with about 4 additional hours of work at home. So you can expect it to take around **6 hours total**. <br><br> **If it’s taking much longer than that, please reach out!** Don’t struggle in silence. </p>
+</div>
+</details>
+
+<details>
+<summary>**What do I need to submit? When is it due?**<br> Click here</summary>
+<div class="details-body">
+<p>Submission instructions and a checklist-style grading rubric are included at the end of this lab. </p>
+<p>Your deadline depends on which lab section you're in::</p>
+<ul>
+<li>**Tuesday Lab:** due Wednesday, Sept 10 @ 11:59PM </li>
+<li>**Thursday Lab:** due Friday, Sept 12 @ 11:59PM</li>
+<li>**Friday Lab:** due Saturday, Sept 13 @ 11:59PM</li>
+</ul>
+<p>IIf something comes up and you’re running late, don’t panic — <a href="https://psu-spatial.github.io/Geog364-2025/FAQ.html"><strong>click this link for the late policy</strong></a>.</p>
+</div>
+</details>
+
+<details>
+<summary> **Can I use ChatGPT? Other questions?** <br> Click here </summary>
+<div class="details-body">
+<p>Please read the [**the lab FAQ**](https://psu-spatial.github.io/Geog364-2025/FAQ.html) for guidance on using tools like ChatGPT and answers to common questions. We will also be talking about ChatGPT in the next week or so.
+</p>
+</div>
+</details>
+
+
+<details class="help">
+<summary><strong>I'm stuck!</strong><br>Click here to find out how to get help</summary>
+<div class="details-body">
+<p>If you get stuck, here’s how to find help:</p>
+
+<p><strong>DURING LABS</strong></p>
+<ul>
+<li>Kiely (and often Dr G) will be available during your lab session. This is the fastest way to get help.</li>
+</ul>
+
+<p><strong>DURING OFFICE HOURS</strong></p>
+<ul>
+<li>Dr G holds weekly office hours and genuinely enjoys helping with R — especially if you’re feeling stuck, frustrated, or overwhelmed.</li>
+</ul>
+
+<p><strong>PIAZZA DISCUSSION BOARD</strong></p>
+<ul>
+<li>The <a href="https://psu.instructure.com/courses/2396422/external_tools/252951"><strong>Class Piazza discussion board</strong></a> is open 24/7. Kiely will explain how it works and will check it at least once a day.</li>
+</ul>
+
+<p><strong>LAST RESORT (IF NO REPLY ON PIAZZA)</strong></p>
+<ul>
+<li>If you’ve posted on Piazza and don’t get a reply within 24 hours, you can send a <strong>Canvas message</strong> to Kiely or Dr G. Or reach out anytime if you feel completely lost. Replies usually take about 24 hours (see the <a href="https://psu-spatial.github.io/Geog364-2025/FAQ.html"><strong>late policy</strong></a> if you’re near a deadline).</li>
+</ul>
+</div>
+</details>
 
 \
 
@@ -54,103 +118,62 @@ Click here for the answers.
 
 \
 
-# Lab 1
 
-**Aim of the lab**
+# Before You Begin
 
-This lab builds on Homework 1 from DataCamp.
-Your goal is to become familiar with R and R Markdown, and to learn about some of their core features, including:
+::: {#boxgreen}
 
--   Packages and libraries
--   R Markdown documents
--   Basic code commands
--   Loading data
--   Summary statistics for different types of data
--   How labs are structured and what you need to submit
+**IF YOU HAVEN'T COMPLETED HOMEWORK 1, GO AND DO IT NOW!** <br><br> This lab builds on Homework 1, so it's important you complete it first. [Click here to go to the homework](https://psu.instructure.com/courses/2396422/assignments/17466225). <br><br>  *I have extended the deadline just this once because it's an important starting point for your labs*.  
 
-In Lab 2, we will explore similar ideas but with spatial data.
+::: 
 
 \
-
-**Deadline & Late Penalty**
-
--   Tuesday lab: to add
--   Thursday lab: to add
--   Friday lab: to add
-
-\
-
-**What to submit**
-
-You will submit BOTH your Rmd and HTML files.
-This will make sense by the end!
-
-\
-
-**How long should the lab take?**
-
-To add.
-
-\
-
-**Getting help**
-
--   Kiely (and often Dr G) will be present during your lab sessions. This is the easiest way to get help.
--   There is a Piazza discussion board. Kiely will explain more in this week’s lab and will check it at least once a day.
--   Dr G has weekly office hours and genuinely enjoys helping with R, even if you feel stuck or overwhelmed.
--   If you have posted on Piazza and received no response after 24 hours, you may send a Canvas message to Kiely or Dr G (or if you are completely lost).\
-
-------------------------------------------------------------------------
 
 # Getting Started
 
-ksadnasdj
+#### Step 1: Opening R. 
 
-adhjladsnjkad
-
-<div>
-
-**"Some boxed text"**
-
-Lalalalal lalala alalala
-
-</div>
-
-------------------------------------------------------------------------
-
-<br>
-
-# Basic data analysis
-
-asdjlasdld asdjlasdld
-
-asdjlasdld asdjlasdld
+ - If you are using your own computer or the lab desktop, open the R-STUDIO icon (not the one that says R).
+ - If you are planning to use posit cloud online, go here and log in - https://posit.cloud/content/yours
 
 \
 
-asdjlasdld asdjlasdld
+#### Step 2: Setting up a project 
 
-<br>
+An R-project stores everything to do with each lab in one place on your computer. This is incredibly useful - it means that if you switch from R-Cloud, to the lab computers, to your laptop, all you have to do is to move the folder and everything will just work. It also means you have to worry less about directory names.  
 
-asdjlasdld asdjlasdld
+Watch this video to find out more:
 
-<br>
+[![](index_images/im_T1_ProjectVideo.png)](https://www.linkedin.com/learning/learning-the-r-tidyverse/why-should-you-use-projects-in-rstudio?u=76811570)
 
-------------------------------------------------------------------------
+\
 
-<br>
+1.  Create a new project for Lab 1, in order to store your data, analysis & reports. <br><br> If you are using your own computer or a lab computer, [Tutorial: R-Studio Desktop](https://psu-spatial.github.io/Stat462-2025/CH2_EACHLAB.html#11_Projects_using_R-Studio_Desktop) <br> If you are using posit cloud online (the website version), [Tutorial: Posit Cloud online](https://psu-spatial.github.io/Stat462-2025/CH2_EACHLAB.html#12_Projects_using_Posit_Cloud) <br><br>
 
-# Logistic regression vs mother's weight
+\
 
-adadmklasdm
 
-<br>
+### Changing the global settings
+
+I know many of you did this last 
+
+1.  Create a new project for Project 2, in order to store your data, analysis & reports. <br> Instructions here <https://psu-spatial.github.io/Stat462-2025/CH2_EACHLAB.html#1_R-Projects>
+
+
+\
+
+https://psu-spatial.github.io/Stat462-2023/in_S462_Tutorial01WhatisR.html#changing-global-settings
 
 ------------------------------------------------------------------------
 
 # Show me something new!
 
 adasdsad
+
+
+For example, 
+
+ - You could follow these instructions, install a custom theme and include a screenshot in your lab report (https://www.garrickadenbuie.com/project/rsthemes/)
 
 <br>
 
@@ -169,7 +192,6 @@ asdjnasda
 Overall, here is what your lab should correspond to:
 
 ```{r, echo=FALSE}
-rubric <- readxl::read_excel("Table_LabRubric.xlsx")
 knitr::kable(rubric) %>%   
   kable_classic_2() %>%
   kable_styling(bootstrap_options = c("striped", "hover", "responsive"))

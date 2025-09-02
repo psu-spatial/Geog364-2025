@@ -1,6 +1,6 @@
 ---
-title: 'GEOG-364 - Spatial Analysis'
-subtitle: Dr Helen Greatrex
+title: "Welcome to GEOG-364"
+subtitle: <h4 style="font-style:normal">GEOG-364 - Spatial Analysis</h4>
 author: Penn State, Dept Geography
 output: 
   html_document:
@@ -12,9 +12,20 @@ output:
 ---
 
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r setup, include=FALSE, echo=FALSE, warning=FALSE, message=FALSE}
+# Chunk options
+knitr::opts_chunk$set(echo = TRUE, warning=FALSE, message = FALSE)
+
+## Load Libraries
+library(tidyverse)
+library(dplyr)
+library(plotly)
+library(kableExtra)
+
+## Load Data
+rubric <- readxl::read_excel("./index_data/Table_LabRubric.xlsx")
 ```
+
 
 <br>
 
