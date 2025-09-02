@@ -28,53 +28,77 @@ library(kableExtra)
 LabRubric <- read_excel("Table_LabRubric.xlsx")
 ```
 
-<br>
+\
 
 # Overview
 
-**Welcome to your GEOG-364 labs!**  
+\
+**Welcome to your GEOG-364 labs!**
 
-Overall, the goals of these labs are to get you used to programming in R and to try some of the techniques that we talk about in the lectures and homeworks.
+The aim of these labs is to help you get comfortable programming in R and to practice techniques introduced in lectures and homework.
 
 \
 
 ::: {#boxedtext}
 **Questions**
 
-Can you use Chat-GPT/AI?  What's the late policy?  Where can I get help?
-Click here to find out the answers.
-
+Can you use Chat-GPT/AI?
+What’s the late policy?
+Where can you get help?\
+Click here for the answers.
 :::
 
-
-<br>
+\
 
 ------------------------------------------------------------------------
 
-<br>
+\
 
 # Lab 1
 
 **Aim of the lab**
 
-This lab builds on your Homework 1 from Data Camp. Your aim is to start getting comfortable in R and R-Markdown, and to learn about some of its core features including:
+This lab builds on Homework 1 from DataCamp.
+Your goal is to become familiar with R and R Markdown, and to learn about some of their core features, including:
 
- - Packages/libraries
- - R-Markdown & making websites
- - Basic code commands
- - Loading data
- - Summary statistics for different types of data
- - Understanding lab structures and what to submit
- 
-In lab 2, we will then move onto similar things but for spatial data. 
- 
-<br>
+-   Packages and libraries
+-   R Markdown documents
+-   Basic code commands
+-   Loading data
+-   Summary statistics for different types of data
+-   How labs are structured and what you need to submit
+
+In Lab 2, we will explore similar ideas but with spatial data.
+
+\
+
+**Deadline & Late Penalty**
+
+-   Tuesday lab: to add
+-   Thursday lab: to add
+-   Friday lab: to add
+
+\
 
 **What to submit**
 
-You will submit BOTH your RmD and html files. This will make sense by the end!
+You will submit BOTH your Rmd and HTML files.
+This will make sense by the end!
 
-<br>
+\
+
+**How long should the lab take?**
+
+To add.
+
+\
+
+**Getting help**
+
+-   Kiely (and often Dr G) will be present during your lab sessions. This is the easiest way to get help.
+-   There is a Piazza discussion board. Kiely will explain more in this week’s lab and will check it at least once a day.
+-   Dr G has weekly office hours and genuinely enjoys helping with R, even if you feel stuck or overwhelmed.
+-   If you have posted on Piazza and received no response after 24 hours, you may send a Canvas message to Kiely or Dr G (or if you are completely lost).\
 
 ------------------------------------------------------------------------
 
@@ -84,13 +108,13 @@ ksadnasdj
 
 adhjladsnjkad
 
-::: {#boxedtext}
+<div>
+
 **"Some boxed text"**
 
-Lalalalal 
-lalala
-alalala
-:::
+Lalalalal lalala alalala
+
+</div>
 
 ------------------------------------------------------------------------
 
@@ -98,21 +122,17 @@ alalala
 
 # Basic data analysis
 
-asdjlasdld
-asdjlasdld
+asdjlasdld asdjlasdld
 
-asdjlasdld
-asdjlasdld
+asdjlasdld asdjlasdld
 
 \
 
-asdjlasdld
-asdjlasdld
+asdjlasdld asdjlasdld
 
 <br>
 
-asdjlasdld
-asdjlasdld
+asdjlasdld asdjlasdld
 
 <br>
 
@@ -120,15 +140,11 @@ asdjlasdld
 
 <br>
 
-
 # Logistic regression vs mother's weight
 
 adadmklasdm
 
 <br>
-
-
-
 
 ------------------------------------------------------------------------
 
@@ -138,7 +154,6 @@ adasdsad
 
 <br>
 
-
 ------------------------------------------------------------------------
 
 # What to submit?
@@ -147,11 +162,7 @@ asdjnasda
 
 <br>
 
-
-
 # Grading rubric
-
-
 
 ## Overall
 
@@ -165,12 +176,5 @@ knitr::kable(rubric) %>%
 
 ```
 
-
-And.. finished!
-
-
-
-
-
-
-
+And..
+finished!
