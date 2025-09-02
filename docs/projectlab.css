@@ -1,0 +1,231 @@
+body {
+  counter-reset: li; /* initialize counter named li */
+}
+
+h1 {
+  font-family:Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+h2 {
+  font-family:Arial, Helvetica, sans-serif;
+  margin-top: 20px;
+}
+
+h3 {
+  font-family:Arial, Helvetica, sans-serif;
+  font-weight: bold;
+}
+
+
+/* ── Default accordion (blue) ─────────────────────────────── */
+details {
+  border: 1px solid #1d91c0;
+  border-radius: 6px;
+  margin: 1.5em 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #FAFAFA;
+  padding: 0;
+  box-shadow: 1px 1px 3px rgba(0,0,0,0.05);
+}
+
+summary {
+  display: block;
+  padding: 7px 10px;
+  font-size: .95em;
+  color: #0f2c4d;
+  background: rgba(34,94,168,0.1);
+  border-bottom: 2px solid #225ea8;
+  border-radius: 6px 6px 0 0;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+summary:hover {
+  background-color: rgba(34,94,168,0.2);
+}
+
+summary:focus-visible {
+  outline: 2px solid #1d91c0;
+  outline-offset: 2px;
+}
+
+/* ── Help accordion (amber variant) ─────────────────────────────── */
+/* ── Help accordion (purple variant) ─────────────────────────────── */
+details.help {
+  border: 1px solid #6A4C93; /* violet border */
+}
+
+details.help summary {
+  color: #36264B;                           /* darker violet text */
+  background: rgba(138,109,181,0.35);       /* violet background */
+  border-bottom: 2px solid #6A4C93;
+  font-size: .95em;
+}
+
+details.help summary:hover {
+  background-color: rgba(138,109,181,0.5);  /* stronger violet on hover */
+}
+
+details.help summary:focus-visible {
+  outline: 2px solid #6A4C93;
+  outline-offset: 2px;
+}
+
+/* Body wrapper (shared by all accordions) */
+.details-body {
+  padding: 12px 16px;
+  background-color: #FFFFFF;
+  color: #1A1A1A;
+}
+
+.details-body > :first-child { margin-top: 0; }
+.details-body > :last-child  { margin-bottom: 0; }
+
+.details-body p { margin: 0.5em 0 0.25em; }
+.details-body p + ul { margin-top: 0; }
+
+.details-body ul {
+  padding-left: 1.5em;
+  margin: 0 0 0.5em;
+  list-style-position: outside;
+}
+
+.details-body ul li { margin-bottom: 0.3em; }
+
+
+/* ── Section heading ─────────────────────────────────────────────── */
+
+.help-heading {
+  border-bottom:2px solid #black;
+  background:rgba(138, 109, 181, 0.35);
+  color: #000  ;
+  padding: 6px 12px;
+  border-radius: 4px;
+  margin-top: 1.5em;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1em;
+}
+
+.lab-section-heading {
+  border-bottom:2px solid #317EAC;
+  background:rgba(49, 126, 172, 0.1);
+  color: #000  ;
+  padding: 6px 12px;
+  border-radius: 4px;
+  margin-top: 1.5em;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* ── Exercise format ─────────────────────────────────────────────── */
+
+ol {
+  margin-left:0; /* Remove the default left margin */
+    padding-left:0; /* Remove the default left padding */
+}
+ol > li {
+  position:relative; /* Create a positioning context */
+    margin:0 0 10px 2em; /* Give each list item a left margin to make room for the numbers */
+    padding:10px 80px; /* Add some spacing around the content */
+    list-style:none; /* Disable the normal item numbering */
+    border-top:2px solid #317EAC;
+  background:rgba(49, 126, 172, 0.1);
+}
+ol > li:before {
+  content:"Exercise " counter(li); /* Use the counter as content */
+    counter-increment:li; /* Increment the counter by 1 */
+    /* Position and style the number */
+    position:absolute;
+  top:-2px;
+  left:-2em;
+  -moz-box-sizing:border-box;
+  -webkit-box-sizing:border-box;
+  box-sizing:border-box;
+  width:7em;
+  /* Some space between the number and the content in browsers that support
+  generated content but not positioning it (Camino 2 is one example) */
+    margin-right:8px;
+  padding:4px;
+  border-top:2px solid #317EAC;
+  color:#fff;
+    background:#317EAC;
+    font-weight:bold;
+  font-family:"Helvetica Neue", Arial, sans-serif;
+  text-align:center;
+}
+li ol,
+li ul {margin-top:6px;}
+ol ol li:last-child {margin-bottom:0;}
+
+.oyo ul {
+  list-style-type:decimal;
+}
+
+hr {
+  border: 1px solid #357FAA;
+}
+
+
+/* ── Boxes and colors ─────────────────────────────────────────────── */
+
+
+div#boxedtext {
+background-color: rgba(86, 155, 189, 0.2);
+padding: 20px;
+margin-bottom: 20px;
+}
+
+
+div#boxgreen { 
+  margin-top: 20px;
+  margin-bottom: 20px;
+  color: #black; /* darker, but still in the a1dab4 hue family */
+  border: 2px solid #3B7F5B;
+  padding: 10px 10px;
+  background-color: rgba(161, 218, 180, 0.35);
+  border-radius: 5px;
+}
+
+div#boxteal { 
+  margin-top: 30px;
+  margin-bottom: 30px;
+  color: #1B6E77; /* deeper tone of #41b6c4 */
+  border: 1px solid #1B6E77;
+  padding: 10px 10px;
+  background-color: rgba(65, 182, 196, 0.35);
+  border-radius: 5px;
+}
+
+div#boxblue { 
+  margin-top: 30px;
+  margin-bottom: 30px;
+  color: #225ea8;
+  border: 1px solid #225ea8;
+  padding: 10px 10px;
+  background-color: rgba(34, 94, 168, 0.2);
+  border-radius: 5px;
+} 
+
+div#boxviolet { 
+  margin-bottom: 30px;
+  color: #6A4C93; /* terracotta */
+  border: 1px solid #6A4C93;
+  padding: 10px 10px;
+  background-color: rgba(138, 109, 181, 0.1); /* softer fill */
+  border-radius: 5px;
+  font-size: .95em;
+} 
+
+div#boxamber { 
+  margin-top: 30px;
+  margin-bottom: 30px;
+  color: #A66A1F; /* darker amber for text + border */
+  border: 1px solid #A66A1F;
+  padding: 10px 10px;
+  background-color: rgba(217, 145, 39, 0.25); /* deeper but balanced fill */
+  border-radius: 5px;
+  font-size: .95em;
+}
+
+

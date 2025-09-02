@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>in_GEOG364_FAQ.knit</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="in_GEOG364_FAQ.html">FAQs</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    YOUR LABS
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="in_GEOG364_Lab1.html">Lab 1: Basics</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+
+</div>
+
+
+<style>
+details > *:not(summary){
+  margin-left: 10em;
+}
+</style>
+<div id="FAQ" class="section level1 unnumbered">
+<h1 class="unnumbered">Course FAQ</h1>
+<p><br></p>
+<div id="FAQ-1" class="section level2 unnumbered">
+<h2 class="unnumbered">What files should I submit?</h2>
+<details>
+<summary>
+<span style="color: #1388aa;">Click here for the answer</span>
+</summary>
+<p>You normally need to submit two files; a <code>.Rmd</code> file
+containing your code and a <code>.html</code> file for viewing your
+finished document. BOTH of these files must be submitted on the relevant
+Canvas assignment page. Occasionally, you might also need to submit your
+dataset.</p>
+<p>This is explained in detail at the end of each lab.</p>
+<p>You can also add comments to your submission as needed on the canvas
+page, or you can message Dr G.</p>
+<p>If you can’t knit your final html (say the code isn’t working), see
+<a href="#FAQ-2">Question 2</a></p>
+<p><br></p>
+</details>
+<hr />
+</div>
+<div id="FAQ-2" class="section level2 unnumbered">
+<h2 class="unnumbered">My report won’t knit!</h2>
+<details>
+<summary>
+<span style="color: #1388aa;">Click here for the answer</span>
+</summary>
+<p>Don’t panic! This is common. It normally means that you either have
+an issue with your code or your computer has run out of memory
+(especially using R-Studio Cloud).</p>
+<p>Try these steps to diagnose the issue. Dr G can also help.</p>
+<ol style="list-style-type: decimal">
+<li>Go to the Session menu at the VERY TOP of the screen. Click
+<code>Restart-R and clear all output</code>.</li>
+<li>Now go to the environment quadrant and click the little arrow by the
+pie-chart. Free unused R memory.</li>
+<li>Now go back to the Session menu. Click
+<code>Restart-R and run all code chunks</code></li>
+<li>Carefully watch as your code runs. Does it reach the end without any
+errors or stopping?</li>
+</ol>
+<p><br></p>
+<details id="error">
+<summary>
+<span style="color: #1388aa;">IF YOUR CODE STOPS (There was an error),
+click here</span>
+</summary>
+<ol start="5" style="list-style-type: decimal">
+<li>Read the error message really closely (try reading it out loud) and
+scroll to the code chunk it’s referring to. See if you can fix the
+issue, starting with the first line that had an error.<br><br>I’ll try
+to have a list of common issues on the help page, but in general, check
+for
+<ul>
+<li>Spelling mistakes (R is case sensitive)</li>
+<li>Whether you have tried to use a variable above the place in the code
+that you calculated it (double check, you might have accidentally
+deleted a line).</li>
+<li>If you are running your project, or it won’t be able to find your
+data/image files.</li>
+</ul></li>
+</ol>
+<p><br></p>
+<details id="error_change">
+<summary>
+. <span style="color: #1388aa;">If you made a change/fix in your code,
+click here</span>
+</summary>
+<ol start="6" style="list-style-type: decimal">
+<li><p>Go to the Session menu at the VERY TOP of the screen. Click
+<code>Restart-R and run all code chunks</code>. See if you get to the
+end.</p></li>
+<li><p>Keep going, fixing errors as you go, until it all knits. If you
+still have issues, look at the next section.</p></li>
+</ol>
+<p><br></p>
+</details>
+<p><br></p>
+<details id="error_nofix">
+<summary>
+. <span style="color: #1388aa;">If you can’t find the issue or it still
+won’t knit, click here</span>
+</summary>
+<ol start="6" style="list-style-type: decimal">
+<li>Read the error message carefully. See if you can find the problem
+code chunk(s).</li>
+<li>In the top part of any problem code chunks, type eval=FALSE (see
+screenshot below), then try pressing knit. You might find that you have
+to stop quite a few code chunks running. This will allow me to see your
+code and grade what you have.</li>
+</ol>
+<p><img src="index_images/im_01FAQ_evalFALSE.png" width="650" style="display: block; margin: auto;" /></p>
+<p><br></p>
+</details>
+<p><br><br></p>
+</details>
+<p><br></p>
+<details id="no_error">
+<summary>
+<span style="color: #1388aa;">IF THERE WAS NO ERROR (All the code chunks
+run with no problems), click here</span>
+</summary>
+<ol start="5" style="list-style-type: decimal">
+<li>Make sure you are running your project. Go to the FILES tab. Delete
+all files EXCEPT your .RProj, your .Rmd, your data and any image files.
+Basically delete all the auto-created files.</li>
+<li>Try pressing knit again.</li>
+<li>If it still doesn’t work, read the error message carefully and see
+if it make sense.</li>
+<li>If you still have no luck, take a screenshot of the entire screen
+(including the error message), then ask Dr G for help.</li>
+</ol>
+<p><br><br></p>
+</details>
+<p><br />
+<br><br></p>
+</details>
+<hr />
+</div>
+<div id="FAQ-3" class="section level2 unnumbered">
+<h2 class="unnumbered">How am I graded?</h2>
+<details>
+<summary>
+<span style="color: #1388aa;">Click here for the answer</span>
+</summary>
+<p>You can see the specific rubric I use for each lab on the canvas
+page.</p>
+<p>My grader and I will also provide as much feedback as possible, so
+please remember to click the “view rubric” button (top right) to take a
+look.</p>
+<p>Overall, here is what your lab should correspond to:</p>
+<table class=" lightable-classic-2 table table-striped table-hover table-responsive" style="color: black; font-family: &quot;Arial Narrow&quot;, &quot;Source Sans Pro&quot;, sans-serif; margin-left: auto; margin-right: auto; color: black; margin-left: auto; margin-right: auto;">
+<caption>
+Your overall grade
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Grade
+</th>
+<th style="text-align:left;">
+% Mark
+</th>
+<th style="text-align:left;">
+Rubric
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+A*
+</td>
+<td style="text-align:left;">
+98-100
+</td>
+<td style="text-align:left;">
+Exceptional.  Not only was it near perfect, but the graders learned
+something.  THIS IS HARD TO GET.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+96+
+</td>
+<td style="text-align:left;">
+You went above and beyond
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+A
+</td>
+<td style="text-align:left;">
+93+:
+</td>
+<td style="text-align:left;">
+Everything asked for with high quality.   Class example
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+A-
+</td>
+<td style="text-align:left;">
+90+
+</td>
+<td style="text-align:left;">
+The odd minor mistake, All code done but not written up in full
+sentences etc. A little less care
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+B+
+</td>
+<td style="text-align:left;">
+87+
+</td>
+<td style="text-align:left;">
+More minor mistakes.  Things like missing units, getting the odd
+question wrong, no workings shown
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+B
+</td>
+<td style="text-align:left;">
+83+
+</td>
+<td style="text-align:left;">
+Solid work but the odd larger mistake or missing answer.  Completely
+misinterpreted something, that type of thing
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+B-
+</td>
+<td style="text-align:left;">
+80+
+</td>
+<td style="text-align:left;">
+Starting to miss entire/questions sections, or multiple larger mistakes.
+Still a solid attempt. 
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+C+
+</td>
+<td style="text-align:left;">
+77+
+</td>
+<td style="text-align:left;">
+You made a good effort and did some things well, but there were a lot of
+problems. (e.g. you wrote up the text well, but messed up the code)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+C
+</td>
+<td style="text-align:left;">
+70+
+</td>
+<td style="text-align:left;">
+It’s clear you tried and learned something.  Just attending labs will
+get you this much as we can help you get to this stage
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+D
+</td>
+<td style="text-align:left;">
+60+
+</td>
+<td style="text-align:left;">
+You attempt the lab and submit something. Not clear you put in much
+effort or you had real issues
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+F
+</td>
+<td style="text-align:left;">
+0+
+</td>
+<td style="text-align:left;">
+Didn’t submit, or incredibly limited attempt. 
+</td>
+</tr>
+</tbody>
+</table>
+<p><br><br></p>
+</details>
+<hr />
+</div>
+<div id="FAQ-4" class="section level2 unnumbered">
+<h2 class="unnumbered">I’m late! What’s the late policy?</h2>
+<details>
+<summary>
+<span style="color: #1388aa;">Click here for the answer</span>
+</summary>
+<div id="i-rarely-incur-have-late-penalties-for-technical-issues."
+class="section level4 unnumbered">
+<h4 class="unnumbered"><strong>I rarely incur have late penalties for
+technical issues.</strong></h4>
+<p>For example, imagine your code suddenly won’t knit. If you send me
+canvas message with our code and a screenshot of the issue before the
+deadline, then all late penalties go away until we have fixed it (even
+if I’m not able to reply immediately).</p>
+</div>
+<div id="in-general-i-prefer-you-submit-late-than-not-at-all."
+class="section level4 unnumbered">
+<h4 class="unnumbered"><strong>In general, I prefer you submit late than
+not at all.</strong></h4>
+<p>All assignments will be left open for you to submit all semester
+(unless worked answers have been provided). If you’re a few hrs late,
+you will be absolutely fine, so if you’re reading this at 4am, go to
+bed!</p>
+<p>Beyond that, if you’re going to be late for any reason then send Dr G
+a canvas message (you don’t need to explain why).</p>
+</div>
+<div id="but-submitting-late-is-a-risk."
+class="section level4 unnumbered">
+<h4 class="unnumbered"><u><strong>BUT! Submitting late is a
+risk.</strong></u></h4>
+<p>At any time past the deadline, I reserve the right to:</p>
+<ol style="list-style-type: decimal">
+<li><p>Release worked answers and close canvas without warning. You
+cannot submit in that situation as you will already have the
+answers.</p></li>
+<li><p>Grade the labs at any time past the deadline without warning. If
+you miss the grading window, it will probably be several weeks until I
+am able to give you feedback.</p></li>
+</ol>
+<p>But, I will only start penalizing if you’re consistently late and I
+have sent a written warning, or if I have stated otherwise for an
+individual assignment. See the course syllabus for more info.</p>
+<p><br><br></p>
+</details>
+<hr />
+</div>
+</div>
+<div id="FAQ-5" class="section level2 unnumbered">
+<h2 class="unnumbered">Can I work with friends? What counts as
+cheating?</h2>
+<details>
+<summary>
+<span style="color: #1388aa;">Click here for the answer</span>
+</summary>
+<p>You are encouraged to talk with each other during these labs e.g. you
+can see each others screens and work out answers together.</p>
+<p><strong>BUT NEVER SHARE CODE OR SEND SCRIPT TO SOMEONE ELSE. ALL TEXT
+SHOULD BE IN YOUR OWN WORDS.</strong></p>
+<p>For example:</p>
+<ul>
+<li><p>Working out together the right way to apply the
+<code>seq()</code> function, then each independently adding it to your
+own scripts is fine.</p></li>
+<li><p><strong>Copy/pasting your friend’s code/text is never
+OK</strong>.</p></li>
+</ul>
+<p>So DISCUSS with friends, but then turn away to your own screen and
+write your own code and text. I will be randomly running lab reports
+through plagiarism software.</p>
+<p>You are also not allowed to get someone else to complete the lab for
+you, whether online or in person. See the syllabus for the full
+description.</p>
+<p><br><br></p>
+</details>
+<hr />
+</div>
+<div id="FAQ-6" class="section level2 unnumbered">
+<h2 class="unnumbered">How can I use chatGPT safely?</h2>
+<details>
+<summary>
+<span style="color: #1388aa;">Click here for the answer</span>
+</summary>
+<p><br></p>
+<p><span style="color: red;"><strong>This advice is specific to this
+class.</strong></span></p>
+<p><br></p>
+<p>Your generation is in a weird spot. It’s like when google translate
+or Wikipedia started. ChatGPT is there, but it’s not yet perfect and
+society is still working out how it can help and how it can mislead.</p>
+<p><span style="color: red;"><strong>What this means is that at least in
+2024 – professors can recognize when you are using ChatGPT EVEN (OR
+ESPECIALLY) WHEN YOU ARE CODING OR DOING MATHS. If you imagine coding is
+like a language, it’s like your handwriting changes.</strong></span></p>
+<p><strong>I’m OK with you using ChatGPT, I use it! Here’s how to use it
+without breaking any rules.</strong></p>
+<p><br></p>
+<p>Imagine an older brother/sister/sibling who is always <em>super</em>
+confident about their answers but isn’t always right. Or if that doesn’t
+work for you, imagine an older friend /undergrad-LA/
+friend-who-took-the-course-last-year, or someone on TV.</p>
+<p><u>Picture them in your mind. I’m going to use my imaginary sister,
+Sam.</u></p>
+<p>What do I mean?</p>
+<ul>
+<li><p>I want you to treat ChatGPT like a person you know, who maybe
+knows a little more than you, and is always willing to help. They are
+SUPER CONFIDENT about the answers they give and definitely willing to
+talk like a pirate and explain anything to you ‘as though you were
+7’.</p></li>
+<li><p>But! You know that often ChatGPT won’t be quite right, their
+knowledge might be out of date and they might know a different way of
+getting to the answer than the one you need.</p></li>
+</ul>
+<p>When you’re thinking through any scenario or question you have,
+replace “ChatGPT” with your friend’s name and see what you would do in
+that situation. Here are some scenarios. Scroll to the end to see some
+example conversations you could try.</p>
+<p><br></p>
+<div id="what-would-sam-do" class="section level3 unnumbered">
+<h3 class="unnumbered"><u><strong>What would Sam do?</strong></u></h3>
+<p><br></p>
+<p><strong>Plagiarism/cheating..</strong></p>
+<ul>
+<li><p>Asking Sam/ChatGPT to answer entire questions and copy/pasting
+her words? <br> <u>Definitely cheating.</u></p></li>
+<li><p>Getting Sam/ChatGPT to check my grammar and tweak the odd
+sentence? <br> <u>Fine!</u></p></li>
+<li><p>Going backwards and forwards with Sam/ChatGPT to work out how to
+phrase a paragraph, but I write the final thing? <br>
+<u>Fine!</u></p></li>
+<li><p>Using a conversation with Sam/ChatGPT as a starting point, then
+googling the actual sources/answers <br> <u>Fine! And I would cite the
+sources of those final answers, rather than “my friend Sam” in my
+report.</u></p></li>
+<li><p><strong>Citations:</strong> My professor wouldn’t be pleased if I
+stated a new fact and then told them “my sister Sam told me” when asked
+for the source, but Sam <em>might</em> help me know where to start
+googling so I can find the fact and its source myself.</p></li>
+</ul>
+<p><br></p>
+<p><strong>Authorship</strong>…</p>
+<ul>
+<li><p>If Sam/ChatGPT writes most of my report for me, they should be
+recognized as an author.</p></li>
+<li><p>If Sam/ChatGPT helps you tweak a few sentences or brainstorm an
+email reply, you’re probably OK and maybe add a thank you to them at the
+end.</p></li>
+</ul>
+<p><br></p>
+<p><strong>Coding</strong>…</p>
+<ul>
+<li><p>Sam/ChatGPT is quite a good coder. I often show them/copy across
+my errors and see what they think.</p></li>
+<li><p>But! Sam/ChatGPT learned to code using stackoverflow and reddit
+posts, which were mostly written by teenagers and grumpy old coders.
+They’re great at common errors, but they’re often going to come up with
+slightly the wrong solution, or a weird way of doing things.</p></li>
+<li><p>So although Sam/ChatGPT will always give you an answer, it
+probably won’t be the most elegant one, it probably won’t be similar to
+how you have been taught - and like early google translate, it’s pretty
+easy for an expert to see that it’s not your efforts.</p></li>
+<li><p>So always test and try to use use them to fix your code rather
+than just write it for you. It is very easy (currently) for professors
+to see ChatGPT generated code. It’s like your handwriting changes. But
+it’s great at debugging your errors.</p></li>
+</ul>
+<p><br></p>
+<p><strong>What else is Sam/ChatGPT good &amp; bad at?</strong></p>
+<ul>
+<li><p>Sam/ChatGPT is good at re-explaining things in textbooks, up to
+about undergrad level. Or ideas which have been around for a long
+time.</p></li>
+<li><p>Sam/ChatGPT is pretty bad at newer ideas, cutting edge stuff, or
+interpreting textbook ideas for your own case study</p></li>
+<li><p>It also does better if you are more specific e.g. can you explain
+this topic to me using this theorem or R package helps it know where you
+want it to start (maybe Sam doesn’t actually know the answer but is
+secretly googling so they don’t have to appear stupid in front of
+you)</p></li>
+<li><p>But the main reason I love chatGPT is that, like with an older
+friend, you can ask it stupid questions and it will always help. You
+don’t have to worry about spelling errors writing formally. You can have
+an actual conversation. For example, I tend to treat it like a less
+clever <a href="https://www.youtube.com/watch?v=D156TfHpE1Q"
+title="&#39;Jarvis&#39; from Iron Man">‘Jarvis’ from Iron Man</a>
+:)</p></li>
+</ul>
+<p><br></p>
+<p><strong>Making things up</strong></p>
+<ul>
+<li><p><strong>ChatGPT is programmed to find the series of words that
+sounds most like your request, it has no idea if the words are
+‘true’!</strong> Just like an older friend is often too embarrased to
+admit they don’t know and will make something up that ‘sounds
+right’</p></li>
+<li><p>So Sam/ChatGPT will NEVER say they don’t know the answer. Think
+of the amount of times an overconfident friend/sibling says they
+definitely know the answer and it turns out to be wrong and they won’t
+even admit it!</p></li>
+<li><p><u>Never fully trust what ChatGPT/Sam says! Always google
+it.</u></p>
+<ul>
+<li><em>For example, ChatGPT told me that Dr Helen Greatrex was someone
+who studied the climate impacts of disease in Oxford University and gave
+me a load of awards. It was so convincing I had to check I didn’t have a
+name-twin!</em></li>
+</ul></li>
+</ul>
+<p><br></p>
+</div>
+<div id="example-conversation" class="section level3 unnumbered">
+<h3 class="unnumbered"><u><strong>Example conversation</strong></u></h3>
+<p>Imagine you wanted to know if learning ANOVA or Regression is best
+for your career, but you don’t even really know what they are.</p>
+<p>Try asking ChatGPT this series of questions :)</p>
+<ul>
+<li><p><code>Hello! If you have achieved sentience, I hope you are well</code></p></li>
+<li><p><code>What's the difference between ANOVA and regression?</code></p></li>
+<li><p><code>I don't get it, can you explain it more simply?</code></p></li>
+<li><p><code>I still don't get it. Especially this sentence [</code><em>copy
+paste sentence of your
+choice</em><code>]. Could you explain that?</code></p></li>
+<li><p><code>Nope, could you explain it like I'm ten years old and love pirates.</code></p></li>
+<li><p><code>.........</code></p></li>
+<li><p><em>….. Keep the conversation until you are pretty sure YOU know
+the difference between ANOVA and regression, then</em></p></li>
+<li><p><code>OK, so I think that ANOVA is this</code> [<em>add your
+explanation</em>] <code>and regression is this</code> [<em>add your
+explanation</em>].
+<code>Am I right? Am I missing anything?</code></p></li>
+<li><p><code>Are there any good textbooks or websites on the topic? (note, it will only know up to 2021)</code></p>
+<p><code>My career is XXXX. How are ANOVA and regression mostly used in them? Do they use special jargon around this?</code></p></li>
+<li><p><code>Can you give me concrete examples I can google?</code></p></li>
+</ul>
+</details>
+<hr />
+</div>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3,h4",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

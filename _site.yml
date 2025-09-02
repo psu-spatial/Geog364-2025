@@ -1,11 +1,11 @@
-name: "STAT-462 R Tutorials"
+name: "GEOG-364 Lab Instructions"
 output_dir: "docs"
 navbar:
   left:
     - text: "Home"
       href: index.html
     - text: "FAQs"
-      href: index.html
+      href: in_GEOG364_FAQ.html
     - text: "YOUR LABS"
       menu:  
         - text: "Lab 1: Basics"
