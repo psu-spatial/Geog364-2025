@@ -4,7 +4,7 @@ output:
   html_document:
     css: projectlab.css
     highlight: pygments
-    theme: spacelab
+    theme: journal
     toc: true
     toc_float: true
 editor_options: 
