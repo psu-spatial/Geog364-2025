@@ -130,14 +130,14 @@ In this lab, you will learn how to
 
 # Getting Started
 
-### 1. Open R-Studio/Posit-Cloud
+### A. Open R-Studio/Posit-Cloud
 
  - If you are using your own computer or the lab desktop, open the R-STUDIO icon [not the one that says R](https://psu-spatial.github.io/Stat462-2025/index_images/pg_Tut2_startup_fig1.png).
  - If you are planning to use posit cloud online, go here and log in - https://posit.cloud/content/yours
 
 \
 
-### 2. Set up a project for Lab 1
+### B. Set up a project for Lab 1
 
 An R Project is like a home base for all the files, scripts, and data connected to one piece of work. Instead of saving files in lots of different places and then struggling to tell R where to look, the Project keeps everything together. Here's why projects are so useful:
 
@@ -163,7 +163,7 @@ An R Project is like a home base for all the files, scripts, and data connected 
 
 \
 
-### 3. Global settings
+### C. Global settings
 
 Before you start using RStudio, it helps to adjust a few settings to make your lives easier. 
 
@@ -172,15 +172,21 @@ Before you start using RStudio, it helps to adjust a few settings to make your l
 
 \
 
-### 4. R-Markdown & your lab script
+### D. Libraries 
+
+
+3.  Read this about R libraries (we will go through it in Lab) [Tutorial: Packages](https://hgreatrex.github.io/Geog364_2024/pg_Tut2_startup.html#How_to_downloadinstall_packages)) and follow the instructions to install the tidyverse package.
+
+
+### E. R-Markdown & your lab script
 
 You are going to write up your labs as R-Markdown files (ones ending in .Rmd). These can include both code and text - and they are easy to turn into websites, pdf documents, presentations and many other things.
 
-3.  First, learn more about R-Markdown.<br><br> a) Go to https://rmarkdown.rstudio.com/index.html and take a look around at what R-Markdown is and what it can do <br> b) Go to the [R-Markdown Tutorial](https://psu-spatial.github.io/Stat462-2025/CH2_EACHLAB.html#31_Introduction) and read the introduction & R-Markdown structure. <br><br>
+4.  First, learn more about R-Markdown.<br><br> a) Go to https://rmarkdown.rstudio.com/index.html and take a look around at what R-Markdown is and what it can do <br> b) Go to the [R-Markdown Tutorial](https://psu-spatial.github.io/Stat462-2025/CH2_EACHLAB.html#31_Introduction) and read the introduction & R-Markdown structure. <br><br>
 
 YOU SHOULD BE RUNNING YOUR PROJECT AT THIS POINT. MAKE SURE IT SAYS LAB-1 AT THE TOP OF YOUR SCREEN.
 
-4. For this lab, you are going to use a pre-existing R-Markdown file, where I have put in some simple questions for you to answer.<br><br> [Click here to download the file into your project folder](https://psu.instructure.com/courses/2396422/files/181048476/download?download_frd=1).  If this link doesn't work, then go to Canvas Lab 1 and you can download the .Rmd file from there. 
+5. For this lab, you are going to use a pre-existing R-Markdown file, where I have put in some simple questions for you to answer.<br><br> [Click here to download the file into your project folder](https://psu.instructure.com/courses/2396422/files/181048476/download?download_frd=1).  If this link doesn't work, then go to Canvas Lab 1 and you can download the .Rmd file from there. 
 
 ::: {#boxteal}
 
@@ -192,15 +198,18 @@ YOU SHOULD BE RUNNING YOUR PROJECT AT THIS POINT. MAKE SURE IT SAYS LAB-1 AT THE
 
 # Complete the lab script
 
-5. **Rename the file** <br><br>   "GEOG364_Lab1_AddYourEmailID.Rmd" should now be in your Lab 1 project folder (either on your computer or on posit-cloud).  <br><br>
+6. **Rename the file** <br><br>   "GEOG364_Lab1_AddYourEmailID.Rmd" should now be in your Lab 1 project folder (either on your computer or on posit-cloud).  <br><br>
 In R-Studio, look at the Files Tab to the next to Projects/Help in one quadrant. If you are running your Lab 1 you should be able to see it. Click the tick-box next to it and click the Rename button. Change AddYourEmailID to your PSU email ID e.g. mine is hlg5155. 
  
  
-6. **Open the file & follow the instructions!**.  Come back here at the end.
+7. **Open the file & follow the instructions!**.  Come back here at the end.
 
 ------------------------------------------------------------------------
 
 # Above and Beyond
+
+8. **Attempt above and beyond!** See below for more details
+
 
 **Reminder: An A is 94%. You can skip this section and still earn an A.**
 
