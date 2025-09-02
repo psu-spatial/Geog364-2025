@@ -1,0 +1,129 @@
+---
+title: "Lab 1: R-Basics"
+output:
+  html_document:
+    css: projectlab.css
+    highlight: pygments
+    theme: flatly
+    toc: true
+    toc_float: true
+editor_options: 
+  markdown: 
+    wrap: sentence
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(eval = TRUE, 
+                      fig.show = "hide", 
+                      message = FALSE, 
+                      warning = FALSE)
+
+library(openintro)
+library(tidyverse)
+library(broom)
+library(AER)
+library(readxl)
+library(kableExtra)
+LabRubric <- read_excel("Table_LabRubric.xlsx")
+```
+
+# Overview
+
+Welcome to your labs. They are designed to help you move from the basics in R, to do some complex spatial analysis. 
+
+**Style**
+
+Your style should be clear, understandable, explaining any jargon as simply as you can. You are also welcome to include in hand-drawn sketches, or CITED diagrams from the internet.
+<br><br>
+
+**What to submit**
+
+You will submit BOTH your RmD and html files. This will make sense by the end!
+
+<br>
+
+------------------------------------------------------------------------
+
+# Getting Started
+
+ksadnasdj
+
+adhjladsnjkad
+
+::: {#boxedtext}
+**"Some boxed text"**
+
+Lalalalal 
+lalala
+alalala
+:::
+
+------------------------------------------------------------------------
+
+<br>
+
+# Basic data analysis
+
+
+asdjlasdld
+
+<br>
+
+------------------------------------------------------------------------
+
+<br>
+
+
+# Logistic regression vs mother's weight
+
+adadmklasdm
+
+<br>
+
+
+
+
+------------------------------------------------------------------------
+
+# Show me something new!
+
+adasdsad
+
+<br>
+
+
+------------------------------------------------------------------------
+
+# What to submit?
+
+asdjnasda
+
+<br>
+
+
+
+# Grading rubric
+
+
+
+## Overall
+
+Overall, here is what your lab should correspond to:
+
+```{r, echo=FALSE}
+rubric <- readxl::read_excel("Table_LabRubric.xlsx")
+knitr::kable(rubric) %>%   
+  kable_classic_2() %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "responsive"))
+
+```
+
+
+And.. finished!
+
+
+
+
+
+
+
