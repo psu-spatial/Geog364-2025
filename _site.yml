@@ -10,6 +10,8 @@ navbar:
       menu:  
         - text: "Lab 1: Basics"
           href: in_GEOG364_Lab1.html
+        - text: "Lab 2: Data summary"
+          href: in_GEOG364_Lab2.html
 output:
   html_document:
     theme: flatly
