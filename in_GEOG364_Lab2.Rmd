@@ -629,11 +629,11 @@ In your report, make a new level-1 heading called `Last Spring Frost`. Below, br
 
 Make a new heading called `Summary Statistics` 
 
-  1. Create a new code chunk. Apply the `skim()` command to the frost variable. Use that or any other method to work out the number of rows. 
-  2. Calculate the mean of the Longitude column in the frost dataframe
-  3. The minimum distance to the coast using the `min` command.<br> *E.g. apply the `min` command to the `Dist_to_Coast` column of the frost dataframe*.
-  4. The median climatological frost date.<br> *E.g. apply the `median` command to the `Avg_DOY_SpringFrost` column of the frost dataframe* (bonus - explain what the median is)
-  5. The interquartile range of the Latitude of the frost data (hint, google/chatGPT the command)
+  - 1 - Create a new code chunk. Apply the `skim()` command to the frost variable. Use that or any other method to work out the number of rows. 
+  - 2 - Calculate the mean of the Longitude column in the frost dataframe
+  - 3 - The minimum distance to the coast using the `min` command.<br> *E.g. apply the `min` command to the `Dist_to_Coast` column of the frost dataframe*.
+  - 4 - The median climatological frost date.<br> *E.g. apply the `median` command to the `Avg_DOY_SpringFrost` column of the frost dataframe* (bonus - explain what the median is)
+  - 5 - The interquartile range of the Latitude of the frost data (hint, google/chatGPT the command)
 
 <br><br>
 
