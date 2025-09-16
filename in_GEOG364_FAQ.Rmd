@@ -9,6 +9,7 @@ knitr::opts_chunk$set(echo = TRUE,
 library(tidyverse)
 library(knitr)
 library(kableExtra)
+library(readxl)
 rubric <- read_excel("./index_data/Table_LabRubric.xlsx")
 
 ```
