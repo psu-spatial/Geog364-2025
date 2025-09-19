@@ -538,7 +538,7 @@ mean(mpg[ , 4], na.rm=TRUE)
 
 **Task** : Using the information above, try these tasks 
 
--   Calculate the mean of the column flipper_lenth_mm in the penguins dataset <br>
+-   Calculate the mean of the column flipper_length_mm in the penguins dataset <br>
 -   Calculate the MEDIAN body mass in the penguins dataset <br>
 -   Hint 1, you need to spell the column name EXACTLY for it to work, case sensitive, <br>
 -   Hint 2, look back at your names command! <br>
