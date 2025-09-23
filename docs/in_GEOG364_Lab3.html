@@ -1165,10 +1165,10 @@ how these look:</p>
 <li><code>fill = "Distance.Station"</code> – the variable used to colour
 the points. This must be numeric or categorical.</li>
 <li><code>size = 6</code> – sets the size of the point symbols. Try
-values between 2 and 8 depending on how crowded the map looks.</li>
+values between 0.1 and 8 depending on how crowded the map looks.</li>
 <li><code>fill.scale = distance_color_scale</code> – tells R which
 palette and classification system to use. This object should be created
-with <code>tm_scale_intervals()</code>.</li>
+with <code>tm_scale_intervals()</code>- see previous tutorial!</li>
 <li><code>fill.legend = tm_legend("Distance to station (km)")</code> –
 adds a clear legend title. Use something meaningful with units.</li>
 </ul>

@@ -750,8 +750,8 @@ You must always use `tm_shape(DATASET)` before adding any new data.
 **`tm_dots(...)`** – This adds point symbols to the map for each feature in `house_sf`. You can customise how these look:
 
 - `fill = "Distance.Station"` – the variable used to colour the points. This must be numeric or categorical.
-- `size = 6` – sets the size of the point symbols. Try values between 2 and 8 depending on how crowded the map looks.
-- `fill.scale = distance_color_scale` – tells R which palette and classification system to use. This object should be created with `tm_scale_intervals()`.
+- `size = 6` – sets the size of the point symbols. Try values between 0.1 and 8 depending on how crowded the map looks.
+- `fill.scale = distance_color_scale` – tells R which palette and classification system to use. This object should be created with `tm_scale_intervals()`- see previous tutorial!
 - `fill.legend = tm_legend("Distance to station (km)")` – adds a clear legend title. Use something meaningful with units.
 
 There are MANY more options for dots.  Like transparancy, borders, shapes.. ChatGPT, google or the tm_dots help file are all useful here. e.g. in the console type ?tm_dots 
