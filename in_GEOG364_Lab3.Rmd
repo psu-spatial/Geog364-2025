@@ -141,6 +141,7 @@ Unfortunately on the website you need to install your packages each time.<br>Go 
 -   `elevatr`
 -   `osmdata`
 
+
 We will also need a package called sf, which runs a lot of the spatial commands in R. Unfortunately, posit cloud sometimes has a few technical issues with sf, so you will need to run a special command.
 
 IN THE CONSOLE, run these two commands.
@@ -306,6 +307,13 @@ library(sf)
 library(tmap)
 library(elevatr)
 library(osmdata)
+library(ggstatsplot)
+library(ggplot2)
+library(hrbrthemes)
+library(ggthemes)
+library(viridis)
+library(RColorBrewer)
+library(plotly)
 ```
 
 <br>
@@ -360,15 +368,124 @@ Your lab script should now look similar this, but with your theme and YAML optio
 
 \
 
-# MAIN ANALYSIS
+# Moving to Taiwan
 
-Goal: understand which factors influence house prices in Sindian District, New Taipei City, Taiwan, and communicate results to a non-technical reader.
+The aim of EVERY LAB is to get comfortable writing up analyses of a complex dataset for a specific person or user.  The modelling might be the same and we follow the same steps, but the context and topic will mean you will need to think hard about what is important in each case.
 
-## The problem
-/index_images/im_T2_Upload.png
+\
+
+## Your Challenge
+
+Your friend is about to move to Sindian District in New Taipei City, Taiwan. They’re thinking about buying a house—and they’ve asked for your help figuring out what affects house prices in the area. This matters a lot because housing costs have soared in recent years ([Who can afford to live in Taipei?](https://english.cw.com.tw/article/article.action?id=3416)).
+
+Luckily, you’ve found a dataset, `Lab03_house.xlsx`, to help:  This is real-life data, which is described in detail here https://archive.ics.uci.edu/dataset/477/real+estate+valuation+data+set  
+ 
+\
+
+## *Your Goal* 
+ 
+**You are writing the rest of this report for your friend!** 
+
+You’re going to use the rest of this report to help your friend understand what influences house prices in New Taipei. Make sure to explain your findings clearly. Your friend doesn't study data science or geography, so make sure to use language your friend can understand.
 
 
-## Read and prepare the data
+\
+
+1. In your report, create a new Level 1 heading called `House Prices`. 
+
+Remember that you can click Visual mode and use the menu to do this, or put a single # at the front.
+
+\
+
+2. Check you are running your project
+
+Before doing anything else, make sure:
+
+ - You are running this lab inside your Lab 3 RStudio project
+ - `Lab03_house.xlsx` is saved/uploaded in your *Lab 3 project folder* next to your lab report.
+
+If not, go back to the **setup section** of this lab before continuing. The code below will not work until your project and files are properly set up. Also remmeber that you need to open your lab 3 project every time you reopen R-studio. 
+
+
+\
+
+2. Read in the data using read_excel() 
+
+Once you’re ready, make a code chunk and write a line of code that uses `read_excel(FILENAME)` to read the Excel file into R, and **assign/save it a variable called house**.
+
+<details>
+
+<summary>Expand here for a tutorial on how to do this</summary>
+
+::: collapsible-content
+<iframe src="https://psu-spatial.github.io/Stat462-2025/in_T07_ReadingInData.html#14_Reading_in_excel_files" style="width: 95%; height: 600px; border: none;">
+
+</iframe>
+:::
+
+</details>
+
+::: small-gap
+:::
+
+::: {#boxgreen}
+**🔍 Reminder**
+This command will only work if you have already run the library code chunk that loads the readxl package - and you need to re-run the library code chunk every time you open R.
+:::
+
+\
+
+
+4. Summarise the data for your friend
+
+Your goal here is to use R summary commands and plots, along with the background reading, to **explore and describe your dataset for your friend**. The goal is to help them understand what this data does (and doesn't) include, and to explain what it can tell them about house prices in New Taipei City.
+
+ - If you haven't already, start by reading the dataset description here:
+[Real estate valuation data set – UCI](https://archive.ics.uci.edu/ml/datasets/Real+estate+valuation+data+set)
+
+ - In your report, use command like `summary()` OR `skim()` (or others!) to explore the house data. See the tutorials below.
+
+ - Then, in your report, **write a short section that describes the dataset in clear language for your friend**. This should must include: <br>
+  + **The object of analysis**:  What does each row in the dataset represent? <br>
+  + **A list of the variables AND THEIR UNITS**: Briefly describe each column in the data, including what it measures and the unit (e.g., meters, square meters, years). Remember the dataset description.. <br>
+  + **The 'strict population' (sampling frame)**: <br>
+  + **A reasonable, justifiable target population**: Based on this sample, what group do you think the data can reasonably be used to represent? <br>
+  + **A clear, professional-looking histogram of house prices in a new code chunk**: See the tutorials below <br>
+  + **Summary statistics of the variables, explained in context**: Then choose a few key variables and explain what the numbers mean for your friend. For example, can they walk to the station from most places?  Are most of the homes near shops? <br>
+  + **Note any limitations from this data**:  E.g. are there any aspects of the data that arent going to help your friend (hint, think about the units of price..) <br>
+
+
+<details>
+
+<summary>Expand here for a tutorial on how to summarise data</summary>
+
+::: collapsible-content
+<iframe src="https://psu-spatial.github.io/Stat462-2025/CH3_EDA.html#23_Summary_Statistics" style="width: 95%; height: 600px; border: none;">
+</iframe>
+:::
+
+</details>
+
+::: small-gap
+:::
+
+
+<details>
+
+<summary>Expand here for a tutorial on how to make histograms</summary>
+
+::: collapsible-content
+<iframe src="https://psu-spatial.github.io/Stat462-2025/in_T11_Plots.html#21_Set-up" style="width: 95%; height: 600px; border: none;">
+
+</iframe>
+:::
+
+</details>
+
+::: small-gap
+:::
+
+
 
 2. Read into R (read_excel) and check structure
 
