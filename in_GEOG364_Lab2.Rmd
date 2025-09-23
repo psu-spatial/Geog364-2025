@@ -37,6 +37,13 @@ library(readxl)
 frost <- readxl::read_excel("./index_data/pg_364Data_1frostday.xlsx")
 rubric <- read_excel("./index_data/Table_LabRubric.xlsx")
 
+
+#---------------------------------
+# FOR NEXT TIME
+#---------------------------------
+# Pull B2 information into separate expandable tutorials, to make what to do clearer
+# McDonalds spatial patterns? 
+
 ```
 
 <br>
