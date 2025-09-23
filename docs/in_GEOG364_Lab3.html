@@ -459,9 +459,22 @@ div.tocify {
 <div id="welcome-to-lab-3" class="section level1">
 <h1>Welcome to Lab 3!</h1>
 <p><strong>Aim of the lab</strong></p>
-<div id="this-lab-is-under-construction.-do-not-attempt-yet"
-class="section level3">
-<h3>THIS LAB IS UNDER CONSTRUCTION. DO NOT ATTEMPT YET!</h3>
+<ul>
+<li><p>Practice setting up and managing a structured RStudio project
+using spatial and non-spatial data</p></li>
+<li><p>Use exploratory data analysis (EDA) to summarise and interpret
+real-world housing data for a non-technical audience</p></li>
+<li><p>Define and explain core data concepts: object of analysis,
+variables (with units), population, sampling frame, and
+representativeness</p></li>
+<li><p>Convert tabular data into a spatial format using coordinates, and
+describe spatial attributes such as data type and spatial fallacy
+risks</p></li>
+<li><p>Create both quick and professional-quality spatial visualisations
+using tmap</p></li>
+<li><p>Develop confidence in communicating data insights through clear
+language, maps, and plots tailored to an end user (your friend)</p></li>
+</ul>
 <p><br />
 </p>
 <div id="boxedtext">
@@ -484,7 +497,6 @@ lost).<br />
 <hr />
 <p><br />
 </p>
-</div>
 </div>
 <div id="set-up.-dont-skip" class="section level1">
 <h1>Set-up. DON’T SKIP!</h1>
@@ -749,8 +761,8 @@ go back and do the previous sections!</p>
 </p>
 </div>
 </div>
-<div id="scenario-1" class="section level1">
-<h1>SCENARIO 1</h1>
+<div id="week-1" class="section level1">
+<h1>WEEK 1</h1>
 <p>The aim of EVERY LAB is to get comfortable writing up analyses of a
 complex dataset for a specific person or user. The modelling steps may
 be similar across labs, but the topic and context will vary—so you’ll
@@ -777,6 +789,10 @@ friend!</strong><br />
 Make sure to explain your findings clearly. Your friend doesn’t study
 data science or geography, so use language that they can understand and
 explain any jargon.</p>
+<div id="instructions" class="section level3">
+<h3>Instructions</h3>
+<div id="basics" class="section level4">
+<h4>Basics</h4>
 <p><br />
 </p>
 <ol style="list-style-type: decimal">
@@ -867,15 +883,17 @@ See the tutorials below <br><br></li>
 friend:<br />
 Choose a few key variables and explain what the numbers in the summary
 mean for your friend. For example, can they walk to the station from
-most places? Are most of the homes near shops? <br><br></li>
-<li>Any limitations from this data:<br />
-E.g. are there any aspects of the data that aren’t going to help your
-friend (hint, think about the units of price..) <br><br></li>
+most places? Are most of the homes near shops? What range of prices are
+there? <br><br></li>
+<li>Note any data limitations: For example - spatio-temporal coverage?
+sample bias? missing variables? other things?</li>
+<li>Overall, summarise if you think the sample is representative of your
+friend’s needs.</li>
 </ul></li>
 </ul>
 <details>
 <summary>
-Expand here for a tutorial on how to summarise data
+Expand here for a tutorial on how to summarise data. Click section 2.3
 </summary>
 <div class="collapsible-content">
 <iframe src="https://psu-spatial.github.io/Stat462-2025/CH3_EDA.html#23_Summary_Statistics" style="width: 95%; height: 600px; border: none;">
@@ -887,7 +905,7 @@ Expand here for a tutorial on how to summarise data
 </div>
 <details>
 <summary>
-Expand here for a tutorial on how to make histograms
+Expand here for a tutorial on how to make histograms. Click section 2
 </summary>
 <div class="collapsible-content">
 <iframe src="https://psu-spatial.github.io/Stat462-2025/in_T11_Plots.html#21_Set-up" style="width: 95%; height: 600px; border: none;">
@@ -897,69 +915,122 @@ Expand here for a tutorial on how to make histograms
 <div class="small-gap">
 
 </div>
-<ol start="2" style="list-style-type: decimal">
-<li><p>Read into R (read_excel) and check structure</p></li>
-<li><p>Clean and rename columns if needed</p></li>
-<li><p>Convert to spatial object (st_as_sf, crs = 4326)</p></li>
-</ol>
 </div>
-<div id="define-the-study-and-data-context" class="section level2">
-<h2>Define the study and data context</h2>
+<div id="making-spatial-data" class="section level4">
+<h4>Making spatial data</h4>
+<p><br />
+</p>
 <ol start="5" style="list-style-type: decimal">
-<li><p>State the decision problem (friend/boss house-buying
-question)</p></li>
-<li><p>Define the population of interest and discuss
-representativeness</p></li>
-<li><p>Describe key variables and their units (response = House.Price).
-Inc Summary statistics and distribution of House.Price (mean, median,
-range, IQR – and histogram)</p></li>
-<li><p>Note any data limitations (temporal coverage, sample bias,
-missing variables)</p></li>
-<li><p>Discuss spatial fallacies/properties e.g. locational fallacy?
-(nope) etc etc</p></li>
+<li>Make the data “spatial”.</li>
 </ol>
-</div>
-<div id="add-more-data" class="section level2">
-<h2>Add more data</h2>
-<div id="elevation-raster-get_elev_raster" class="section level3">
-<h3>Elevation raster (get_elev_raster)</h3>
-<ol start="10" style="list-style-type: decimal">
-<li>Get elevation</li>
+<p>Unlike standard statistics, our data also has spatial
+characteristics. At the moment, R doesn’t ‘understand’ that the data is
+spatial. In this section we force R to view the data as spatial.</p>
+<ul>
+<li><p>Make a new heading called spatial analysis in your report
+<br><br></p></li>
+<li><p>First, we need to know the COLUMN NAMES of the x and y
+coordinates (case sensitive). The easiest way to get these is to make a
+new code chunk and run this command.</p></li>
+</ul>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">names</span>(house)</span></code></pre></div>
+<p><br></p>
+<ul>
+<li>We can now use the st_as_sf() command to make a spatial version of
+the data. Because we’re using the sf package to do this, I have named
+the resulting dataset house_sf(). Make a new code chunk, copy in the
+code below and change “X_COLUMN_NAME” and “Y_COLUMN_NAME” to the
+appropriate column name from your data.</li>
+</ul>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co"># Hint, the y direction is Latitude..</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>house_sf <span class="ot">&lt;-</span> <span class="fu">st_as_sf</span>(house,<span class="at">coords=</span><span class="fu">c</span>(<span class="st">&quot;X_COLUMN_NAME&quot;</span>,<span class="st">&quot;Y_COLUMN_NAME&quot;</span>),<span class="at">crs=</span><span class="dv">4326</span>)</span></code></pre></div>
+<ol start="6" style="list-style-type: decimal">
+<li>Explain the spatial attributes</li>
 </ol>
-</div>
-<div id="openstreetmap" class="section level3">
-<h3>OpenStreetMap</h3>
-<ol start="11" style="list-style-type: decimal">
-<li>OpenStreetMap features: railway lines, stations, parks, roads</li>
+<p>Below this code, answer these questions</p>
+<ul>
+<li><p>Explain if your data is being represented as a vector (and what
+type) or raster. Discuss if this is true in real life and if this
+representation is appropriate for the reason you need the data.</p></li>
+<li><p>Do you need to worry about the locational fallacy in this case?
+Explain your answer to your friend.</p></li>
+</ul>
+<p><br />
+</p>
+<ol start="7" style="list-style-type: decimal">
+<li>Make some quick maps.</li>
 </ol>
-</div>
-</div>
-<div id="spatial-analysis-and-mapping" class="section level2">
-<h2>Spatial analysis and mapping</h2>
-<ol start="12" style="list-style-type: decimal">
-<li><p>Quick interactive map of points coloured by price (tmap,
-qtm)</p></li>
-<li><p>Main map from my example</p></li>
-<li><p>Describe spatial patterns</p></li>
-<li><p>Simple linear regression (price ~ latitude)<br />
-Use maps to explain the scatterplots e.g. should I just walk
-north</p></li>
-</ol>
-</div>
-<div id="conclusions" class="section level2">
-<h2>Conclusions</h2>
-<ol start="16" style="list-style-type: decimal">
-<li>What processes are happening? Summarise main drivers of price from
-combined evidence Discuss practical implications for a house-buyer</li>
-</ol>
-<hr />
+<p>There is a quick way to check your data was read in correctly. Make a
+map! The quickest way to do this is using the qtm command.</p>
+<ul>
+<li><p>Make a new section called maps</p></li>
+<li><p>Try each of these commands in a new code chunk for each. They
+should show you some nice maps over Taiwan.</p></li>
+<li><p>If your data looks weird, you probably mixed up long and lat. Go
+back to the previous step, change it and rerun - or ask Kiely!</p></li>
+</ul>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="co">#Set the mode to &quot;view&quot; for an interactive map</span></span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="fu">tmap_mode</span>(<span class="st">&quot;view&quot;</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a><span class="co"># Make a &quot;quick thematic map&quot; of the house data</span></span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a><span class="fu">qtm</span>(house_sf)</span></code></pre></div>
+<p>You can also have a look at variables. For example:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="co"># A map where the colors are linked to house price.</span></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="fu">qtm</span>(house_sf,<span class="at">fill=</span><span class="st">&quot;House.Price&quot;</span>)</span></code></pre></div>
+<p>If you hate the interactive-ness, change tm_mode to “plot” (but you
+lose the background map).</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="co"># Change the mode to &quot;plot&quot; for a static map</span></span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="fu">tmap_mode</span>(<span class="st">&quot;plot&quot;</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a><span class="co"># Re-run the same qtm() command to produce a static version</span></span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a><span class="fu">qtm</span>(house_sf,<span class="at">fill=</span><span class="st">&quot;House.Price&quot;</span>)</span></code></pre></div>
+<p>We will make a better static map below!</p>
 <p><br />
 </p>
 </div>
+<div id="making-better-maps" class="section level4">
+<h4>Making better maps</h4>
+<p>QTM is great for quick looks, but in terms of making professional
+output, it can be hard to get it to look really good. So here’s how to
+make professional looking maps of your output that you can use in a pdf
+or printout.</p>
+<p>The first thing to know is that tmap is currently going through a
+HUGE revamp. Code that used to work for “version 3” is being switched to
+“version 4”. I think I have all of it, but if you see warning messages,
+you can either ignore them or ask chatgpt what the updated code is.</p>
+<p>This is a very detailed guide. <a
+href="https://tmap.geocompx.org/nutshell"
+class="uri">https://tmap.geocompx.org/nutshell</a></p>
+<ol start="7" style="list-style-type: decimal">
+<li>Make a better map in tmap</li>
+</ol>
+<p>We build maps in LAYERS. First, we choose the dataset we want, then
+we choose how to represent it (e.g. dots for points, raster for grids,
+polygons for areas), then add overall map layers like legends or
+basemaps. We connect each layer with with a +.</p>
+<ul>
+<li>Make a new code chunk and copy in/run this code.</li>
+</ul>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="co"># A better static map</span></span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a><span class="fu">tmap_mode</span>(<span class="st">&quot;plot&quot;</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a>price_scale <span class="ot">&lt;-</span> <span class="fu">tm_scale_intervals</span>(<span class="at">values =</span> <span class="st">&quot;Blues&quot;</span>, <span class="at">style =</span> <span class="st">&quot;jenks&quot;</span>)</span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a><span class="fu">tm_shape</span>(house_sf) <span class="sc">+</span></span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a>  <span class="fu">tm_dots</span>(</span>
+<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a>    <span class="at">fill        =</span> <span class="st">&quot;House.Price&quot;</span>,</span>
+<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a>    <span class="at">size        =</span> <span class="fl">0.4</span>,</span>
+<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a>    <span class="at">fill.scale  =</span> price_scale,</span>
+<span id="cb9-10"><a href="#cb9-10" tabindex="-1"></a>    <span class="at">fill.legend  =</span> <span class="fu">tm_legend</span>(<span class="st">&quot;House Price&quot;</span>)) <span class="sc">+</span></span>
+<span id="cb9-11"><a href="#cb9-11" tabindex="-1"></a><span class="fu">tm_basemap</span>(<span class="at">server =</span> <span class="st">&quot;CartoDB.Positron&quot;</span>)</span></code></pre></div>
 </div>
-<div id="show-me-something-new" class="section level1">
-<h1>Show me something new!</h1>
-<p>adasdsad</p>
+</div>
+</div>
+</div>
+<div id="week-2-to-come" class="section level1">
+<h1>WEEK 2 TO COME……</h1>
+<p>In week 2, you will focus on downloading other new map layers, like
+elevation and Open Street Map data, along with some basic statistical
+analysis.</p>
 <p><br />
 </p>
 <hr />
@@ -968,7 +1039,7 @@ combined evidence Discuss practical implications for a house-buyer</li>
 </div>
 <div id="what-to-submit" class="section level1">
 <h1>What to submit?</h1>
-<p>asdjnasda</p>
+<p>Nothing yet!</p>
 <p><br></p>
 <p><br />
 </p>

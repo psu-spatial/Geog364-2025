@@ -50,7 +50,18 @@ rubric <- read_excel("./index_data/Table_LabRubric.xlsx")
 
 **Aim of the lab**
 
-### THIS LAB IS UNDER CONSTRUCTION. DO NOT ATTEMPT YET!
+ - Practice setting up and managing a structured RStudio project using spatial and non-spatial data
+
+ - Use exploratory data analysis (EDA) to summarise and interpret real-world housing data for a non-technical audience
+
+ - Define and explain core data concepts: object of analysis, variables (with units), population, sampling frame, and representativeness
+
+ - Convert tabular data into a spatial format using coordinates, and describe spatial attributes such as data type and spatial fallacy risks
+
+ - Create both quick and professional-quality spatial visualisations using tmap
+
+ - Develop confidence in communicating data insights through clear language, maps, and plots tailored to an end user (your friend)
+
 
 \
 
@@ -368,7 +379,7 @@ Your lab script should now look similar this, but with your theme and YAML optio
 
 \
 
-# SCENARIO 1
+# WEEK 1
 
 The aim of EVERY LAB is to get comfortable writing up analyses of a complex dataset for a specific person or user. The modelling steps may be similar across labs, but the topic and context will vary—so you'll need to think carefully about what matters in each case.
 
@@ -387,6 +398,9 @@ To understand which factors influence house prices in Sindian District, New Taip
 **You are writing the rest of this report for your friend!**  
 Make sure to explain your findings clearly. Your friend doesn’t study data science or geography, so use language that they can understand and explain any jargon.
 
+### Instructions
+
+#### Basics
 
 \
 
@@ -492,62 +506,122 @@ Your goal here is to use R summary commands and plots, along with the background
 :::
 
 
+#### Making spatial data
 
 \
-
 
 5. Make the data "spatial".
 
 Unlike standard statistics, our data also has spatial characteristics.  At the moment, R doesn't 'understand' that the data is spatial. In this section we force R to view the data as spatial.
 
+ - Make a new heading called spatial analysis in your report <br><br>
+ 
+ - First, we need to know the COLUMN NAMES of the x and y coordinates (case sensitive). The easiest way to get these is to make a new code chunk and run this command. 
+ 
+ 
+```{r, eval=FALSE}
+names(house)
+```
+
+<br>
+
+- We can now use the st_as_sf() command to make a spatial version of the data. Because we're using the sf package to do this, I have named the resulting dataset house_sf(). Make a new code chunk, copy in the code below and change "X_COLUMN_NAME" and "Y_COLUMN_NAME" to the appropriate column name from your data.
 
 
+```{r, eval=FALSE}
+# Hint, the y direction is Latitude..
+house_sf <- st_as_sf(house,coords=c("X_COLUMN_NAME","Y_COLUMN_NAME"),crs=4326)
+```
 
 
+6. Explain the spatial attributes
 
+Below this code, answer these questions 
 
+ - Explain if your data is being represented as a vector (and what type) or raster. Discuss if this is true in real life and if this representation is appropriate for the reason you need the data. 
 
+ - Do you need to worry about the locational fallacy in this case? Explain your answer to your friend.
 
-
-
-
-
-
-
-## Add more data
-
-### Elevation raster (get_elev_raster)
-
-10. Get elevation
-
-### OpenStreetMap
-
-11. OpenStreetMap features: railway lines, stations, parks, roads
-
-## Spatial analysis and mapping
-
-12. Quick interactive map of points coloured by price (tmap, qtm)
-
-13. Main map from my example
-
-14. Describe spatial patterns
-
-15. Simple linear regression (price ~ latitude)  
-Use maps to explain the scatterplots e.g. should I just walk north
-
-## Conclusions
-
-16. What processes are happening? Summarise main drivers of price from combined evidence
-Discuss practical implications for a house-buyer
-
-
-------------------------------------------------------------------------
 
 \
 
-# Show me something new!
+7. Make some quick maps.
 
-adasdsad
+There is a quick way to check your data was read in correctly.  Make a map!  The quickest way to do this is using the qtm command. 
+
+- Make a new section called maps
+
+- Try each of these commands in a new code chunk for each. They should show you some nice maps over Taiwan.  
+
+- If your data looks weird, you probably mixed up long and lat. Go back to the previous step, change it and rerun - or ask Kiely!
+
+
+```{r, eval=FALSE}
+#Set the mode to "view" for an interactive map
+tmap_mode("view")
+
+# Make a "quick thematic map" of the house data
+qtm(house_sf)
+```
+
+You can also have a look at variables. For example:
+
+```{r,eval=FALSE}
+# A map where the colors are linked to house price.
+qtm(house_sf,fill="House.Price")
+```
+
+If you hate the interactive-ness, change tm_mode to "plot" (but you lose the background map).  
+
+```{r,eval=FALSE}
+# Change the mode to "plot" for a static map
+tmap_mode("plot")
+
+# Re-run the same qtm() command to produce a static version
+qtm(house_sf,fill="House.Price")
+```
+
+We will make a better static map below!
+
+\
+
+#### Making better maps
+
+QTM is great for quick looks, but in terms of making professional output, it can be hard to get it to look really good.  So here's how to make professional looking maps of your output that you can use in a pdf or printout. 
+
+The first thing to know is that tmap is currently going through a HUGE revamp.  Code that used to work for "version 3" is being switched to "version 4".  I think I have all of it, but if you see warning messages, you can either ignore them or ask chatgpt what the updated code is.
+
+This is a very detailed guide. https://tmap.geocompx.org/nutshell
+
+
+7. Make a better map in tmap
+
+We build maps in LAYERS. First, we choose the dataset we want, then we choose how to represent it (e.g. dots for points, raster for grids, polygons for areas), then add overall map layers like legends or basemaps. We connect each layer with with a +.
+
+ - Make a new code chunk and copy in/run this code.
+
+```{r, eval=FALSE}
+
+# A better static map
+
+tmap_mode("plot")
+price_scale <- tm_scale_intervals(values = "Blues", style = "jenks")
+tm_shape(house_sf) +
+  tm_dots(
+    fill        = "House.Price",
+    size        = 0.4,
+    fill.scale  = price_scale,
+    fill.legend  = tm_legend("House Price")) +
+tm_basemap(server = "CartoDB.Positron")
+
+```
+
+
+
+
+# WEEK 2 TO COME......
+
+In week 2, you will focus on downloading other new map layers, like elevation and Open Street Map data, along with some basic statistical analysis.
 
 
 \
@@ -558,7 +632,7 @@ adasdsad
 
 # What to submit?
 
-asdjnasda
+Nothing yet!  
 
 <br>
 
