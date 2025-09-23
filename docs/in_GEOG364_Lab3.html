@@ -1136,26 +1136,31 @@ class="uri">https://www.datawrapper.de/blog/diverging-vs-sequential-color-scales
 <summary>
 Expand here for a tutorial on tm_scale_intervals
 </summary>
+<p><br></p>
 <p><strong><code>tm_shape(house_sf)</code></strong> – tells R which
 spatial dataset you want to plot. It sets up the base layer (in this
-case, your points). You must always use <code>tm_shape()</code> before
-adding any drawing layer.</p>
-<p><strong>Structure tip:</strong> You can stack multiple layers using
-more than one <code>tm_shape()</code> block. For example:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="co"># Multiple shapes example with fake data. the first is line data, the second points where we want to color them in by a variable</span></span>
-<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a>  <span class="fu">tm_shape</span>(DATASET1) <span class="sc">+</span> </span>
-<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a>     <span class="fu">tm_borders</span>() <span class="sc">+</span>  </span>
-<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a>  <span class="fu">tm_shape</span>(DATASET2) <span class="sc">+</span> </span>
-<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a>      <span class="fu">tm_dots</span>(<span class="at">fill =</span> <span class="st">&quot;Distance.Station&quot;</span>) <span class="sc">+</span></span>
-<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a>  <span class="fu">tm_basemap</span>(<span class="at">server =</span> <span class="st">&quot;CartoDB.Positron&quot;</span>)</span></code></pre></div>
+case, your points).</p>
 <p>Each <code>tm_shape()</code> refers to a different spatial object
 (points, polygons, etc.), and the command that follows it (like
 <code>tm_dots()</code> or <code>tm_borders()</code>) tells R how to
 visualise that layer. This gives you flexibility to build up your map
 one piece at a time.</p>
-<p><strong><code>tm_dots(...)</code></strong> – adds point symbols to
-the map for each feature in <code>house_sf</code>. You can customise how
-these look:</p>
+<p>You must always use <code>tm_shape(DATASET)</code> before adding any
+new data.</p>
+<p><strong>Structure tip:</strong> You can stack multiple layers using
+more than one <code>tm_shape()</code> block. For example:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="co"># Multiple shapes example with fake data. the first is line data, </span></span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a><span class="co"># the second points where we want to color them in by a variable</span></span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a><span class="co"># we will do more of this next week</span></span>
+<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a>  <span class="fu">tm_shape</span>(DATASET1) <span class="sc">+</span> </span>
+<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a>     <span class="fu">tm_borders</span>() <span class="sc">+</span>  </span>
+<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a>  <span class="fu">tm_shape</span>(DATASET2) <span class="sc">+</span> </span>
+<span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a>      <span class="fu">tm_dots</span>(<span class="at">fill =</span> <span class="st">&quot;Distance.Station&quot;</span>) <span class="sc">+</span></span>
+<span id="cb11-8"><a href="#cb11-8" tabindex="-1"></a>  <span class="fu">tm_basemap</span>(<span class="at">server =</span> <span class="st">&quot;CartoDB.Positron&quot;</span>)</span></code></pre></div>
+<p><br></p>
+<p><strong><code>tm_dots(...)</code></strong> – This adds point symbols
+to the map for each feature in <code>house_sf</code>. You can customise
+how these look:</p>
 <ul>
 <li><code>fill = "Distance.Station"</code> – the variable used to colour
 the points. This must be numeric or categorical.</li>
@@ -1167,11 +1172,15 @@ with <code>tm_scale_intervals()</code>.</li>
 <li><code>fill.legend = tm_legend("Distance to station (km)")</code> –
 adds a clear legend title. Use something meaningful with units.</li>
 </ul>
+<p>There are MANY more options for dots. Like transparancy, borders,
+shapes.. ChatGPT, google or the tm_dots help file are all useful here.
+e.g. in the console type ?tm_dots</p>
+<p><br></p>
 <p><strong><code>tm_basemap(server = "CartoDB.VoyagerNoLabels")</code></strong>
-– adds a clean background map for geographic context. This version has
-no labels, which is useful if your points are dense or you plan to add
-your own labels. Basemaps come from online tile providers and help you
-see where your data is located in the world.</p>
+– This adds a clean background map for geographic context. This version
+has no labels, which is useful if your points are dense or you plan to
+add your own labels. Basemaps come from online tile providers and help
+you see where your data is located in the world.</p>
 <p><strong>Common basemaps you can try:</strong></p>
 <ul>
 <li><code>"CartoDB.VoyagerNoLabels"</code> – light grey map, no labels
@@ -1190,6 +1199,7 @@ argument:</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="fu">tm_basemap</span>(<span class="at">server =</span> <span class="st">&quot;Esri.WorldGrayCanvas&quot;</span>)</span></code></pre></div>
 <p>You can leave out the basemap if it distracts from the data or if
 you’re using a local projection.</p>
+<p><br></p>
 <p><strong>Common extras you can add to the map:</strong></p>
 <ul>
 <li><code>tm_compass(position = c("right", "top"))</code> – adds a north
@@ -1212,13 +1222,18 @@ around the map.</li>
 <span id="cb13-8"><a href="#cb13-8" tabindex="-1"></a>    <span class="at">fill.legend  =</span> <span class="fu">tm_legend</span>(<span class="st">&quot;Title?? Units??&quot;</span>)) <span class="sc">+</span></span>
 <span id="cb13-9"><a href="#cb13-9" tabindex="-1"></a><span class="fu">tm_basemap</span>(<span class="at">server =</span> <span class="st">&quot;CartoDB.VoyagerNoLabels&quot;</span>)<span class="sc">+</span></span>
 <span id="cb13-10"><a href="#cb13-10" tabindex="-1"></a><span class="fu">tm_scalebar</span>(<span class="at">position =</span> <span class="fu">c</span>(<span class="st">&quot;left&quot;</span>, <span class="st">&quot;bottom&quot;</span>))</span></code></pre></div>
+<p><br></p>
+<p>Again, I only know about half of tmaps functionality. There are more
+things like better titles, labels, grids.. anything you can do in
+arcmap. So use chatGPT, google, any resource you can find and as a class
+we can build our knowledge of how to easily make beautiful maps.</p>
 </details>
 <div class="small-gap">
 
 </div>
 <p><br></p>
-<p>Here is my example for house price.. (code hidden but all based on
-things in the tutorial)</p>
+<p>Here is my current example for house price.. (code hidden but all
+based on things in the tutorial)</p>
 <p><img src="in_GEOG364_Lab3_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
 <p><br></p>
 </div>

@@ -722,13 +722,21 @@ Remember to consider if your data is naturally SEQUENTIAL, DIVERGING, or CATEGOR
 <details>
 <summary>Expand here for a tutorial on tm_scale_intervals</summary>
 
+<br>
 
-**`tm_shape(house_sf)`** – tells R which spatial dataset you want to plot. It sets up the base layer (in this case, your points). You must always use `tm_shape()` before adding any drawing layer.
+**`tm_shape(house_sf)`** – tells R which spatial dataset you want to plot. It sets up the base layer (in this case, your points). 
+
+
+Each `tm_shape()` refers to a different spatial object (points, polygons, etc.), and the command that follows it (like `tm_dots()` or `tm_borders()`) tells R how to visualise that layer. This gives you flexibility to build up your map one piece at a time.
+
+You must always use `tm_shape(DATASET)` before adding any new data.
 
 **Structure tip:** You can stack multiple layers using more than one `tm_shape()` block. For example:
 
 ```{r, eval=FALSE}
-# Multiple shapes example with fake data. the first is line data, the second points where we want to color them in by a variable
+# Multiple shapes example with fake data. the first is line data, 
+# the second points where we want to color them in by a variable
+# we will do more of this next week
   tm_shape(DATASET1) + 
      tm_borders() +  
   tm_shape(DATASET2) + 
@@ -736,16 +744,22 @@ Remember to consider if your data is naturally SEQUENTIAL, DIVERGING, or CATEGOR
   tm_basemap(server = "CartoDB.Positron")
 ```
 
-Each `tm_shape()` refers to a different spatial object (points, polygons, etc.), and the command that follows it (like `tm_dots()` or `tm_borders()`) tells R how to visualise that layer. This gives you flexibility to build up your map one piece at a time.
 
-**`tm_dots(...)`** – adds point symbols to the map for each feature in `house_sf`. You can customise how these look:
+<br>
+
+**`tm_dots(...)`** – This adds point symbols to the map for each feature in `house_sf`. You can customise how these look:
 
 - `fill = "Distance.Station"` – the variable used to colour the points. This must be numeric or categorical.
 - `size = 6` – sets the size of the point symbols. Try values between 2 and 8 depending on how crowded the map looks.
 - `fill.scale = distance_color_scale` – tells R which palette and classification system to use. This object should be created with `tm_scale_intervals()`.
 - `fill.legend = tm_legend("Distance to station (km)")` – adds a clear legend title. Use something meaningful with units.
 
-**`tm_basemap(server = "CartoDB.VoyagerNoLabels")`** – adds a clean background map for geographic context. This version has no labels, which is useful if your points are dense or you plan to add your own labels. Basemaps come from online tile providers and help you see where your data is located in the world.
+There are MANY more options for dots.  Like transparancy, borders, shapes.. ChatGPT, google or the tm_dots help file are all useful here. e.g. in the console type ?tm_dots 
+
+
+<br>
+
+**`tm_basemap(server = "CartoDB.VoyagerNoLabels")`** – This adds a clean background map for geographic context. This version has no labels, which is useful if your points are dense or you plan to add your own labels. Basemaps come from online tile providers and help you see where your data is located in the world.
 
 **Common basemaps you can try:**
 
@@ -762,6 +776,8 @@ tm_basemap(server = "Esri.WorldGrayCanvas")
 ```
 
 You can leave out the basemap if it distracts from the data or if you're using a local projection.
+
+<br>
 
 **Common extras you can add to the map:**
 
@@ -787,6 +803,11 @@ tm_scalebar(position = c("left", "bottom"))
 ```
 
 
+<br>
+
+Again, I only know about half of tmaps functionality.  There are more things like better titles, labels, grids.. anything you can do in arcmap.  So use chatGPT, google, any resource you can find and as a class we can build our knowledge of how to easily make beautiful maps.
+
+
 </details>
 
 ::: small-gap
@@ -794,7 +815,7 @@ tm_scalebar(position = c("left", "bottom"))
 
 <br>
 
-Here is my example for house price.. (code hidden but all based on things in the tutorial) 
+Here is my current example for house price.. (code hidden but all based on things in the tutorial) 
  
 ```{r, echo=FALSE,fig.show=TRUE}
 
