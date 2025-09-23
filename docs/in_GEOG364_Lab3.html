@@ -1132,9 +1132,94 @@ class="uri">https://www.datawrapper.de/blog/diverging-vs-sequential-color-scales
 <div class="small-gap">
 
 </div>
+<details>
+<summary>
+Expand here for a tutorial on tm_scale_intervals
+</summary>
+<p><strong><code>tm_shape(house_sf)</code></strong> – tells R which
+spatial dataset you want to plot. It sets up the base layer (in this
+case, your points). You must always use <code>tm_shape()</code> before
+adding any drawing layer.</p>
+<p><strong>Structure tip:</strong> You can stack multiple layers using
+more than one <code>tm_shape()</code> block. For example:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="co"># Multiple shapes example with fake data. the first is line data, the second points where we want to color them in by a variable</span></span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a>  <span class="fu">tm_shape</span>(DATASET1) <span class="sc">+</span> </span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a>     <span class="fu">tm_borders</span>() <span class="sc">+</span>  </span>
+<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a>  <span class="fu">tm_shape</span>(DATASET2) <span class="sc">+</span> </span>
+<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a>      <span class="fu">tm_dots</span>(<span class="at">fill =</span> <span class="st">&quot;Distance.Station&quot;</span>) <span class="sc">+</span></span>
+<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a>  <span class="fu">tm_basemap</span>(<span class="at">server =</span> <span class="st">&quot;CartoDB.Positron&quot;</span>)</span></code></pre></div>
+<p>Each <code>tm_shape()</code> refers to a different spatial object
+(points, polygons, etc.), and the command that follows it (like
+<code>tm_dots()</code> or <code>tm_borders()</code>) tells R how to
+visualise that layer. This gives you flexibility to build up your map
+one piece at a time.</p>
+<p><strong><code>tm_dots(...)</code></strong> – adds point symbols to
+the map for each feature in <code>house_sf</code>. You can customise how
+these look:</p>
+<ul>
+<li><code>fill = "Distance.Station"</code> – the variable used to colour
+the points. This must be numeric or categorical.</li>
+<li><code>size = 6</code> – sets the size of the point symbols. Try
+values between 2 and 8 depending on how crowded the map looks.</li>
+<li><code>fill.scale = distance_color_scale</code> – tells R which
+palette and classification system to use. This object should be created
+with <code>tm_scale_intervals()</code>.</li>
+<li><code>fill.legend = tm_legend("Distance to station (km)")</code> –
+adds a clear legend title. Use something meaningful with units.</li>
+</ul>
+<p><strong><code>tm_basemap(server = "CartoDB.VoyagerNoLabels")</code></strong>
+– adds a clean background map for geographic context. This version has
+no labels, which is useful if your points are dense or you plan to add
+your own labels. Basemaps come from online tile providers and help you
+see where your data is located in the world.</p>
+<p><strong>Common basemaps you can try:</strong></p>
+<ul>
+<li><code>"CartoDB.VoyagerNoLabels"</code> – light grey map, no labels
+(good for layering your own info)</li>
+<li><code>"CartoDB.Positron"</code> – very light, minimal map (excellent
+for visual clarity)</li>
+<li><code>"CartoDB.DarkMatter"</code> – dark background for contrast
+with bright points</li>
+<li><code>"Esri.WorldGrayCanvas"</code> – Esri’s clean grayscale map
+(useful for presentations)</li>
+<li><code>"Esri.WorldImagery"</code> – satellite imagery (be careful:
+may be visually overwhelming)</li>
+</ul>
+<p>To use any of these, just change the <code>server</code>
+argument:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="fu">tm_basemap</span>(<span class="at">server =</span> <span class="st">&quot;Esri.WorldGrayCanvas&quot;</span>)</span></code></pre></div>
+<p>You can leave out the basemap if it distracts from the data or if
+you’re using a local projection.</p>
+<p><strong>Common extras you can add to the map:</strong></p>
+<ul>
+<li><code>tm_compass(position = c("right", "top"))</code> – adds a north
+arrow.</li>
+<li><code>tm_scalebar(position = c("left", "bottom"))</code> – adds a
+scale bar.</li>
+<li><code>tm_layout(frame = FALSE)</code> – removes the black frame
+around the map.</li>
+<li><code>tm_credits("Your Name or Source", position = c("LEFT", "BOTTOM"))</code>
+– adds a small credit or caption.</li>
+</ul>
+<p>You just add these as lines to the end, linked with a + e.g.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="co"># and plot</span></span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a><span class="fu">tmap_mode</span>(<span class="st">&quot;plot&quot;</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a><span class="fu">tm_shape</span>(house_sf) <span class="sc">+</span></span>
+<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a>  <span class="fu">tm_dots</span>(</span>
+<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a>    <span class="at">fill        =</span> <span class="st">&quot;Distance.Station&quot;</span>,</span>
+<span id="cb13-6"><a href="#cb13-6" tabindex="-1"></a>    <span class="at">size        =</span> <span class="dv">6</span>,</span>
+<span id="cb13-7"><a href="#cb13-7" tabindex="-1"></a>    <span class="at">fill.scale  =</span> distance_color_scale,</span>
+<span id="cb13-8"><a href="#cb13-8" tabindex="-1"></a>    <span class="at">fill.legend  =</span> <span class="fu">tm_legend</span>(<span class="st">&quot;Title?? Units??&quot;</span>)) <span class="sc">+</span></span>
+<span id="cb13-9"><a href="#cb13-9" tabindex="-1"></a><span class="fu">tm_basemap</span>(<span class="at">server =</span> <span class="st">&quot;CartoDB.VoyagerNoLabels&quot;</span>)<span class="sc">+</span></span>
+<span id="cb13-10"><a href="#cb13-10" tabindex="-1"></a><span class="fu">tm_scalebar</span>(<span class="at">position =</span> <span class="fu">c</span>(<span class="st">&quot;left&quot;</span>, <span class="st">&quot;bottom&quot;</span>))</span></code></pre></div>
+</details>
+<div class="small-gap">
+
+</div>
+<p><br></p>
 <p>Here is my example for house price.. (code hidden but all based on
 things in the tutorial)</p>
-<p><img src="in_GEOG364_Lab3_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p><img src="in_GEOG364_Lab3_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
 <p><br></p>
 </div>
 </div>

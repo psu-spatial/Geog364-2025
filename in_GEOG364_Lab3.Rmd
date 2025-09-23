@@ -719,6 +719,81 @@ Remember to consider if your data is naturally SEQUENTIAL, DIVERGING, or CATEGOR
 
 
 
+<details>
+<summary>Expand here for a tutorial on tm_scale_intervals</summary>
+
+
+**`tm_shape(house_sf)`** – tells R which spatial dataset you want to plot. It sets up the base layer (in this case, your points). You must always use `tm_shape()` before adding any drawing layer.
+
+**Structure tip:** You can stack multiple layers using more than one `tm_shape()` block. For example:
+
+```{r, eval=FALSE}
+# Multiple shapes example with fake data. the first is line data, the second points where we want to color them in by a variable
+  tm_shape(DATASET1) + 
+     tm_borders() +  
+  tm_shape(DATASET2) + 
+      tm_dots(fill = "Distance.Station") +
+  tm_basemap(server = "CartoDB.Positron")
+```
+
+Each `tm_shape()` refers to a different spatial object (points, polygons, etc.), and the command that follows it (like `tm_dots()` or `tm_borders()`) tells R how to visualise that layer. This gives you flexibility to build up your map one piece at a time.
+
+**`tm_dots(...)`** – adds point symbols to the map for each feature in `house_sf`. You can customise how these look:
+
+- `fill = "Distance.Station"` – the variable used to colour the points. This must be numeric or categorical.
+- `size = 6` – sets the size of the point symbols. Try values between 2 and 8 depending on how crowded the map looks.
+- `fill.scale = distance_color_scale` – tells R which palette and classification system to use. This object should be created with `tm_scale_intervals()`.
+- `fill.legend = tm_legend("Distance to station (km)")` – adds a clear legend title. Use something meaningful with units.
+
+**`tm_basemap(server = "CartoDB.VoyagerNoLabels")`** – adds a clean background map for geographic context. This version has no labels, which is useful if your points are dense or you plan to add your own labels. Basemaps come from online tile providers and help you see where your data is located in the world.
+
+**Common basemaps you can try:**
+
+- `"CartoDB.VoyagerNoLabels"` – light grey map, no labels (good for layering your own info)
+- `"CartoDB.Positron"` – very light, minimal map (excellent for visual clarity)
+- `"CartoDB.DarkMatter"` – dark background for contrast with bright points
+- `"Esri.WorldGrayCanvas"` – Esri’s clean grayscale map (useful for presentations)
+- `"Esri.WorldImagery"` – satellite imagery (be careful: may be visually overwhelming)
+
+To use any of these, just change the `server` argument:
+
+```{r, eval=FALSE}
+tm_basemap(server = "Esri.WorldGrayCanvas")
+```
+
+You can leave out the basemap if it distracts from the data or if you're using a local projection.
+
+**Common extras you can add to the map:**
+
+- `tm_compass(position = c("right", "top"))` – adds a north arrow.
+- `tm_scalebar(position = c("left", "bottom"))` – adds a scale bar.
+- `tm_layout(frame = FALSE)` – removes the black frame around the map.
+- `tm_credits("Your Name or Source", position = c("LEFT", "BOTTOM"))` – adds a small credit or caption.
+
+You just add these as lines to the end, linked with a + e.g.
+
+```{r, eval=FALSE}
+# and plot
+tmap_mode("plot")
+tm_shape(house_sf) +
+  tm_dots(
+    fill        = "Distance.Station",
+    size        = 6,
+    fill.scale  = distance_color_scale,
+    fill.legend  = tm_legend("Title?? Units??")) +
+tm_basemap(server = "CartoDB.VoyagerNoLabels")+
+tm_scalebar(position = c("left", "bottom"))
+
+```
+
+
+</details>
+
+::: small-gap
+:::
+
+<br>
+
 Here is my example for house price.. (code hidden but all based on things in the tutorial) 
  
 ```{r, echo=FALSE,fig.show=TRUE}
@@ -733,7 +808,9 @@ tm_shape(house_sf) +
     fill_alpha  = 0.8,
     fill.legend  = tm_legend("House Price per unit area (NT dollar/ping")
   ) +
-tm_basemap(server = "CartoDB.Positron")
+tm_basemap(server = "CartoDB.Positron")+
+  tm_basemap(server = "Esri.WorldGrayCanvas") +
+  tm_scale_bar(position = c("left", "bottom"))
 
 ```
 
