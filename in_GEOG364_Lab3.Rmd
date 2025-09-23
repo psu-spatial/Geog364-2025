@@ -50,35 +50,19 @@ rubric <- read_excel("./index_data/Table_LabRubric.xlsx")
 
 **Aim of the lab**
 
-
-\
-
-**Deadline & Late Penalty**
-
--   Tuesday lab: to add
--   Thursday lab: to add
--   Friday lab: to add
-
-\
-
-**What to submit**
-
-You will submit both your Rmd and HTML files.
-
-\
-
-**How long should the lab take?**
-
-To add.
+### THIS LAB IS UNDER CONSTRUCTION. DO NOT ATTEMPT YET!
 
 \
 
 ::: {#boxedtext}
-**Getting help**
--   Kiely (and often Dr G) will be present during your lab sessions. This is the easiest way to get help.
--   There is a Piazza discussion board. Kiely will explain more in this week’s lab and will check it at least once a day.
--   Dr G has weekly office hours and genuinely enjoys helping with R, even if you feel stuck or overwhelmed.
--   If you have posted on Piazza and received no response after 24 hours, you may send a Canvas message to Kiely or Dr G (or if you are completely lost).\
+\
+**Getting help** 
+\
+ - Kiely (and often Dr G) will be present during your lab sessions. This is the easiest way to get help. \
+ - There is a Piazza discussion board. Kiely will explain more in this week’s lab and will check it at least once a day. \
+ - Dr G has weekly office hours and genuinely enjoys helping with R, even if you feel stuck or overwhelmed. \
+ - If you have posted on Piazza and received no response after 24 hours, you may send a Canvas message to Kiely or Dr G (or if you are completely lost).\
+ \
 :::
 
 \
@@ -379,6 +363,10 @@ Your lab script should now look similar this, but with your theme and YAML optio
 # MAIN ANALYSIS
 
 Goal: understand which factors influence house prices in Sindian District, New Taipei City, Taiwan, and communicate results to a non-technical reader.
+
+## The problem
+/index_images/im_T2_Upload.png
+
 
 ## Read and prepare the data
 
