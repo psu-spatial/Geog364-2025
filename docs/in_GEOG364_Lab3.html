@@ -561,6 +561,12 @@ app-store and download/install these packages:</p>
 <li><code>tmap</code></li>
 <li><code>elevatr</code></li>
 <li><code>osmdata</code></li>
+<li><code>ggplot2</code></li>
+<li><code>ggthemes</code></li>
+<li><code>RColorBrewer</code></li>
+<li><code>plotly</code></li>
+<li><code>cols4all</code></li>
+<li><code>shinyjs</code></li>
 </ul>
 <p>We will also need a package called sf, which runs a lot of the
 spatial commands in R. Unfortunately, posit cloud sometimes has a few
@@ -612,6 +618,8 @@ anything it suggests.</p>
 <ul>
 <li><code>elevatr</code></li>
 <li><code>osmdata</code></li>
+<li><code>cols4all</code></li>
+<li><code>shinyjs</code></li>
 </ul>
 <p>Remember DO NOT put <code>install.packages()</code> into your
 lab-script - copy and paste it into thee console.</p>
@@ -707,11 +715,10 @@ open them. Make a new code chunk containing this code.<br></p></li>
 <span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a><span class="fu">library</span>(osmdata)</span>
 <span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a><span class="fu">library</span>(ggstatsplot)</span>
 <span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a><span class="fu">library</span>(hrbrthemes)</span>
-<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a><span class="fu">library</span>(ggthemes)</span>
-<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a><span class="fu">library</span>(viridis)</span>
-<span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a><span class="fu">library</span>(RColorBrewer)</span>
-<span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a><span class="fu">library</span>(plotly)</span></code></pre></div>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a><span class="fu">library</span>(ggthemes)</span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a><span class="fu">library</span>(viridis)</span>
+<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a><span class="fu">library</span>(RColorBrewer)</span>
+<span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a><span class="fu">library</span>(plotly)</span></code></pre></div>
 <p><br></p>
 <ul>
 <li><p>Press the green arrow on the right of the code chunk to run the
@@ -1113,12 +1120,11 @@ or any RColorBrewer name like <code>"brewer.blues"</code>.</p>
 <p>For more choice and built-in colourblind checking, we can use the new
 cols4all package.</p>
 <ul>
-<li>Go to the Packages tab, click install and install
-<code>cols4all</code></li>
-<li>Go to the Packages tab, click install and install
-<code>shinyjs</code></li>
+<li>IF YOU DIDN’T ALREADY, go to the Packages tab, click install and
+install <code>cols4all</code> and <code>shinyjs</code>.</li>
 <li>Now go to your library code chunk at the top, add
-<code>library(cols4all)</code> and run</li>
+<code>library(cols4all)</code> and run the chunk. You don’t need to add
+shinyjs as it runs in the background.</li>
 <li>IN THE CONSOLE, type <code>c4a_gui()</code> and press enter.</li>
 </ul>
 <p>This will open an interactive palette browser where you can check out

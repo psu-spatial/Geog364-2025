@@ -153,6 +153,12 @@ Unfortunately on the website you need to install your packages each time.<br>Go 
 -   `tmap`
 -   `elevatr`
 -   `osmdata`
+-   `ggplot2`
+-   `ggthemes`
+-   `RColorBrewer`
+-   `plotly`
+-   `cols4all`
+-   `shinyjs`
 
 
 We will also need a package called sf, which runs a lot of the spatial commands in R. Unfortunately, posit cloud sometimes has a few technical issues with sf, so you will need to run a special command.
@@ -213,6 +219,8 @@ We need to install some more packages.<br>Go to to the packages tab, click insta
 
 -   `elevatr`
 -   `osmdata`
+-   `cols4all`
+-   `shinyjs`
 
 Remember DO NOT put `install.packages()` into your lab-script - copy and paste it into thee console.
 
@@ -294,7 +302,7 @@ output:
 In the YAML code, change the theme to any one of your choice that isn't not lumen (see here to view available themes -
 <https://bootswatch.com/>.). <br>
 
-Some might not work, but these are likely to: “default”, “bootstrap”, “cerulean”, “cosmo”, “darkly”, “flatly”, “journal”, “lumen”, “paper”, “readable”, “sandstone”, “simplex”, “spacelab”, “united”, “yeti”.
+**Some might not work**, but these are likely to: “default”, “bootstrap”, “cerulean”, “cosmo”, “darkly”, “flatly”, “journal”, “lumen”, “paper”, “readable”, “sandstone”, “simplex”, “spacelab”, “united”, “yeti”.
 
 </details>
 
@@ -322,7 +330,6 @@ library(elevatr)
 library(osmdata)
 library(ggstatsplot)
 library(ggplot2)
-library(hrbrthemes)
 library(ggthemes)
 library(viridis)
 library(RColorBrewer)
@@ -695,9 +702,8 @@ There are MANY palettes; just type the name in `values = "palette_name"`. Good d
 
 For more choice and built-in colourblind checking, we can use the new cols4all package.
 
- - Go to the Packages tab, click install and install `cols4all`
- - Go to the Packages tab, click install and install `shinyjs`
- - Now go to your library code chunk at the top, add `library(cols4all)` and run
+ - IF YOU DIDN'T ALREADY, go to the Packages tab, click install and install `cols4all` and `shinyjs`.
+ - Now go to your library code chunk at the top, add `library(cols4all)` and run the chunk. You don't need to add shinyjs as it runs in the background.
  - IN THE CONSOLE, type `c4a_gui()` and press enter.
 
 This will open an interactive palette browser where you can check out different palettes and assess their color-blindness properties. Pick a palette name and use it in `values`.
