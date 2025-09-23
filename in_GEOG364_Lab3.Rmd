@@ -38,6 +38,8 @@ library(viridis)
 # Data
 house  <- read_excel("./index_data/Lab03_house.xlsx")
 rubric <- read_excel("./index_data/Table_LabRubric.xlsx")
+house_sf <- st_as_sf(house,coords=c("Longitude","Latitude"),crs=4326)
+
 ```
 
 
@@ -533,6 +535,11 @@ names(house)
 house_sf <- st_as_sf(house,coords=c("X_COLUMN_NAME","Y_COLUMN_NAME"),crs=4326)
 ```
 
+ - Lets see what you did. In the environment tab, click on the NAME house_sf, or in the console type View(house_sf).  You should open a new tab with the spreadsheet. Note that the longitude and latitude columns have disappared! They have been replaced by a geometry column which understands that we are looking at point data.
+ 
+ - Equally, in a new code chunk, type house_sf (by itself) and run. You will see a summary of the data including its spatial attributes (map projection, bounding box..) 
+
+<br>
 
 6. Explain the spatial attributes
 
@@ -593,29 +600,62 @@ The first thing to know is that tmap is currently going through a HUGE revamp.  
 
 This is a very detailed guide. https://tmap.geocompx.org/nutshell
 
+<br>
 
-7. Make a better map in tmap
+##### How does it work?
 
 We build maps in LAYERS. First, we choose the dataset we want, then we choose how to represent it (e.g. dots for points, raster for grids, polygons for areas), then add overall map layers like legends or basemaps. We connect each layer with with a +.
 
- - Make a new code chunk and copy in/run this code.
+ - Make a new code chunk and copy and run this code. Although the structure is there, I PURPOSELY chose settings that made the map look terrible!  your job is to fix them.
 
 ```{r, eval=FALSE}
 
 # A better static map
+# set up a color scale for your variable
+distance_color_scale <- tm_scale_intervals(values = "brewer.blues", style = "equal")
 
+# and plot
 tmap_mode("plot")
-price_scale <- tm_scale_intervals(values = "Blues", style = "jenks")
+tm_shape(house_sf) +
+  tm_dots(
+    fill        = "Distance.Station",
+    size        = 3,
+    fill.scale  = distance_color_scale,
+    fill.legend  = tm_legend("Title?? Units??")) +
+tm_basemap(server = "CartoDB.VoyagerNoLabels")
+
+```
+
+
+Expand this tutorial to see what each part means.  
+
+TUTORIAL
+
+7. Make a better map in tmap
+
+Your job is to make a better static map than the one above that's useful for your friend to see the **distance to the station** for each house.
+
+For example, here is mine for house price..
+
+```{r, echo=FALSE}
+
+price_scale <- tm_scale_intervals(values = "viridis", style = "jenks")
+
 tm_shape(house_sf) +
   tm_dots(
     fill        = "House.Price",
     size        = 0.4,
     fill.scale  = price_scale,
-    fill.legend  = tm_legend("House Price")) +
+    fill_alpha  = 0.8,
+    fill.legend  = tm_legend("House Price per unit area (NT dollar/ping")
+  ) +
 tm_basemap(server = "CartoDB.Positron")
 
 ```
 
+
+
+<br>
 
 
 

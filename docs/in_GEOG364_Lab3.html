@@ -944,6 +944,17 @@ appropriate column name from your data.</li>
 </ul>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co"># Hint, the y direction is Latitude..</span></span>
 <span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>house_sf <span class="ot">&lt;-</span> <span class="fu">st_as_sf</span>(house,<span class="at">coords=</span><span class="fu">c</span>(<span class="st">&quot;X_COLUMN_NAME&quot;</span>,<span class="st">&quot;Y_COLUMN_NAME&quot;</span>),<span class="at">crs=</span><span class="dv">4326</span>)</span></code></pre></div>
+<ul>
+<li><p>Lets see what you did. In the environment tab, click on the NAME
+house_sf, or in the console type View(house_sf). You should open a new
+tab with the spreadsheet. Note that the longitude and latitude columns
+have disappared! They have been replaced by a geometry column which
+understands that we are looking at point data.</p></li>
+<li><p>Equally, in a new code chunk, type house_sf (by itself) and run.
+You will see a summary of the data including its spatial attributes (map
+projection, bounding box..)</p></li>
+</ul>
+<p><br></p>
 <ol start="6" style="list-style-type: decimal">
 <li>Explain the spatial attributes</li>
 </ol>
@@ -1001,27 +1012,42 @@ you can either ignore them or ask chatgpt what the updated code is.</p>
 <p>This is a very detailed guide. <a
 href="https://tmap.geocompx.org/nutshell"
 class="uri">https://tmap.geocompx.org/nutshell</a></p>
-<ol start="7" style="list-style-type: decimal">
-<li>Make a better map in tmap</li>
-</ol>
+<p><br></p>
+<div id="how-does-it-work" class="section level5">
+<h5>How does it work?</h5>
 <p>We build maps in LAYERS. First, we choose the dataset we want, then
 we choose how to represent it (e.g. dots for points, raster for grids,
 polygons for areas), then add overall map layers like legends or
 basemaps. We connect each layer with with a +.</p>
 <ul>
-<li>Make a new code chunk and copy in/run this code.</li>
+<li>Make a new code chunk and copy and run this code. Although the
+structure is there, I PURPOSELY chose settings that made the map look
+terrible! your job is to fix them.</li>
 </ul>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="co"># A better static map</span></span>
-<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a></span>
-<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a><span class="fu">tmap_mode</span>(<span class="st">&quot;plot&quot;</span>)</span>
-<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a>price_scale <span class="ot">&lt;-</span> <span class="fu">tm_scale_intervals</span>(<span class="at">values =</span> <span class="st">&quot;Blues&quot;</span>, <span class="at">style =</span> <span class="st">&quot;jenks&quot;</span>)</span>
-<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a><span class="fu">tm_shape</span>(house_sf) <span class="sc">+</span></span>
-<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a>  <span class="fu">tm_dots</span>(</span>
-<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a>    <span class="at">fill        =</span> <span class="st">&quot;House.Price&quot;</span>,</span>
-<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a>    <span class="at">size        =</span> <span class="fl">0.4</span>,</span>
-<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a>    <span class="at">fill.scale  =</span> price_scale,</span>
-<span id="cb9-10"><a href="#cb9-10" tabindex="-1"></a>    <span class="at">fill.legend  =</span> <span class="fu">tm_legend</span>(<span class="st">&quot;House Price&quot;</span>)) <span class="sc">+</span></span>
-<span id="cb9-11"><a href="#cb9-11" tabindex="-1"></a><span class="fu">tm_basemap</span>(<span class="at">server =</span> <span class="st">&quot;CartoDB.Positron&quot;</span>)</span></code></pre></div>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a><span class="co"># set up a color scale for your variable</span></span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>distance_color_scale <span class="ot">&lt;-</span> <span class="fu">tm_scale_intervals</span>(<span class="at">values =</span> <span class="st">&quot;brewer.blues&quot;</span>, <span class="at">style =</span> <span class="st">&quot;equal&quot;</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a><span class="co"># and plot</span></span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a><span class="fu">tmap_mode</span>(<span class="st">&quot;plot&quot;</span>)</span>
+<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a><span class="fu">tm_shape</span>(house_sf) <span class="sc">+</span></span>
+<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a>  <span class="fu">tm_dots</span>(</span>
+<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a>    <span class="at">fill        =</span> <span class="st">&quot;Distance.Station&quot;</span>,</span>
+<span id="cb9-10"><a href="#cb9-10" tabindex="-1"></a>    <span class="at">size        =</span> <span class="dv">3</span>,</span>
+<span id="cb9-11"><a href="#cb9-11" tabindex="-1"></a>    <span class="at">fill.scale  =</span> distance_color_scale,</span>
+<span id="cb9-12"><a href="#cb9-12" tabindex="-1"></a>    <span class="at">fill.legend  =</span> <span class="fu">tm_legend</span>(<span class="st">&quot;Title?? Units??&quot;</span>)) <span class="sc">+</span></span>
+<span id="cb9-13"><a href="#cb9-13" tabindex="-1"></a><span class="fu">tm_basemap</span>(<span class="at">server =</span> <span class="st">&quot;CartoDB.VoyagerNoLabels&quot;</span>)</span></code></pre></div>
+<p>Expand this tutorial to see what each part means.</p>
+<p>TUTORIAL</p>
+<ol start="7" style="list-style-type: decimal">
+<li>Make a better map in tmap</li>
+</ol>
+<p>Your job is to make a better static map than the one above that’s
+useful for your friend to see the <strong>distance to the
+station</strong> for each house.</p>
+<p>For example, here is mine for house price..</p>
+<p><br></p>
+</div>
 </div>
 </div>
 </div>
