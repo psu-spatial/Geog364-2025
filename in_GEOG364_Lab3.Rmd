@@ -368,25 +368,24 @@ Your lab script should now look similar this, but with your theme and YAML optio
 
 \
 
-# Moving to Taiwan
+# SCENARIO 1
 
-The aim of EVERY LAB is to get comfortable writing up analyses of a complex dataset for a specific person or user.  The modelling might be the same and we follow the same steps, but the context and topic will mean you will need to think hard about what is important in each case.
+The aim of EVERY LAB is to get comfortable writing up analyses of a complex dataset for a specific person or user. The modelling steps may be similar across labs, but the topic and context will vary—so you'll need to think carefully about what matters in each case.
 
-\
+<br>
 
-## Your Challenge
+## Moving to Taiwan
 
-Your friend is about to move to Sindian District in New Taipei City, Taiwan. They’re thinking about buying a house—and they’ve asked for your help figuring out what affects house prices in the area. This matters a lot because housing costs have soared in recent years ([Who can afford to live in Taipei?](https://english.cw.com.tw/article/article.action?id=3416)).
+Your friend is about to move to Sindian District in New Taipei City, Taiwan. They’re thinking about buying a house—and they’ve asked for your help figuring out what affects house prices in the area. This matters a lot because housing costs have soared in recent years: [Who can afford to live in Taipei?](https://english.cw.com.tw/article/article.action?id=3416)
 
-Luckily, you’ve found a dataset, `Lab03_house.xlsx`, to help:  This is real-life data, which is described in detail here https://archive.ics.uci.edu/dataset/477/real+estate+valuation+data+set  
- 
-\
+Luckily, you’ve found a dataset, `Lab03_house.xlsx`, to help. This is real-life data, described in detail here: [UCI Real Estate Valuation Data Set](https://archive.ics.uci.edu/dataset/477/real+estate+valuation+data+set)
 
-## *Your Goal* 
- 
-**You are writing the rest of this report for your friend!** 
+<br> 
+#### *Your Goal*  
+To understand which factors influence house prices in Sindian District, New Taipei City, Taiwan, and communicate your results to a non-technical reader.
 
-You’re going to use the rest of this report to help your friend understand what influences house prices in New Taipei. Make sure to explain your findings clearly. Your friend doesn't study data science or geography, so make sure to use language your friend can understand.
+**You are writing the rest of this report for your friend!**  
+Make sure to explain your findings clearly. Your friend doesn’t study data science or geography, so use language that they can understand and explain any jargon.
 
 
 \
@@ -415,7 +414,7 @@ Once you’re ready, make a code chunk and write a line of code that uses `read_
 
 <details>
 
-<summary>Expand here for a tutorial on how to do this</summary>
+<summary>Expand here for a tutorial on how to do this - scroll down to section 1.4</summary>
 
 ::: collapsible-content
 <iframe src="https://psu-spatial.github.io/Stat462-2025/in_T07_ReadingInData.html#14_Reading_in_excel_files" style="width: 95%; height: 600px; border: none;">
@@ -436,28 +435,35 @@ This command will only work if you have already run the library code chunk that 
 \
 
 
-4. Summarise the data for your friend
+4. Summarise the data for your friend using code, plots and words
 
-Your goal here is to use R summary commands and plots, along with the background reading, to **explore and describe your dataset for your friend**. The goal is to help them understand what this data does (and doesn't) include, and to explain what it can tell them about house prices in New Taipei City.
+Your goal here is to use R summary commands and plots, along with the background reading, to explore and describe your dataset for your friend. You want to help them understand what yor does (and doesn't) include, and to explain what it can tell them about house prices in New Taipei City.
 
- - If you haven't already, start by reading the dataset description here:
-[Real estate valuation data set – UCI](https://archive.ics.uci.edu/ml/datasets/Real+estate+valuation+data+set)
+-   **If you haven't already, start by reading the dataset description here: [Real estate valuation data set – UCI](https://archive.ics.uci.edu/ml/datasets/Real+estate+valuation+data+set)**
 
- - In your report, use command like `summary()` OR `skim()` (or others!) to explore the house data. See the tutorials below.
+-   **In your report, use command like `summary()` OR `skim()` (or others!) to explore the house data. See the tutorials below.**
 
- - Then, in your report, **write a short section that describes the dataset in clear language for your friend**. This should must include: <br>
-  + **The object of analysis**:  What does each row in the dataset represent? <br>
-  + **A list of the variables AND THEIR UNITS**: Briefly describe each column in the data, including what it measures and the unit (e.g., meters, square meters, years). Remember the dataset description.. <br>
-  + **The 'strict population' (sampling frame)**: <br>
-  + **A reasonable, justifiable target population**: Based on this sample, what group do you think the data can reasonably be used to represent? <br>
-  + **A clear, professional-looking histogram of house prices in a new code chunk**: See the tutorials below <br>
-  + **Summary statistics of the variables, explained in context**: Then choose a few key variables and explain what the numbers mean for your friend. For example, can they walk to the station from most places?  Are most of the homes near shops? <br>
-  + **Note any limitations from this data**:  E.g. are there any aspects of the data that arent going to help your friend (hint, think about the units of price..) <br>
+-   **Underneath the code chunk in your reports, write a short section that describes the dataset in clear language for your friend. This should must include:** <br>
+
+    -   The object of analysis: \
+        What does each row in the dataset represent? <br><br>
+    -   A list of the variables AND THEIR UNITS: \
+        Briefly describe each column in the data, including what it measures and the unit (e.g., meters, years). Remember the dataset description website... <br><br>
+    -   The 'strict population' (sampling frame): \
+        If you were being really strict, what does this sample cover.<br><br>
+    -   A reasonable, justifiable target population: \
+        Based on this sample, what group do you think the data can reasonably be used to represent? <br><br>
+    -   A clear, professional-looking histogram of house prices in a new code chunk:\
+        See the tutorials below <br><br>
+    -   Summary statistics of the variables, explained in context for your friend:\
+        Choose a few key variables and explain what the numbers in the summary mean for your friend. For example, can they walk to the station from most places? Are most of the homes near shops? What range of prices are there? <br><br>
+    -   Note any data limitations:\ For example - spatio-temporal coverage? sample bias? missing variables? other things? 
+    -   Overall, summarise if you think the sample is representative of your friend's needs.
 
 
 <details>
 
-<summary>Expand here for a tutorial on how to summarise data</summary>
+<summary>Expand here for a tutorial on how to summarise data. Click section 2.3</summary>
 
 ::: collapsible-content
 <iframe src="https://psu-spatial.github.io/Stat462-2025/CH3_EDA.html#23_Summary_Statistics" style="width: 95%; height: 600px; border: none;">
@@ -472,7 +478,7 @@ Your goal here is to use R summary commands and plots, along with the background
 
 <details>
 
-<summary>Expand here for a tutorial on how to make histograms</summary>
+<summary>Expand here for a tutorial on how to make histograms. Click section 2</summary>
 
 ::: collapsible-content
 <iframe src="https://psu-spatial.github.io/Stat462-2025/in_T11_Plots.html#21_Set-up" style="width: 95%; height: 600px; border: none;">
@@ -487,23 +493,25 @@ Your goal here is to use R summary commands and plots, along with the background
 
 
 
-2. Read into R (read_excel) and check structure
+\
 
-3. Clean and rename columns if needed
 
-4. Convert to spatial object (st_as_sf, crs = 4326)
+5. Make the data "spatial".
 
-## Define the study and data context
+Unlike standard statistics, our data also has spatial characteristics.  At the moment, R doesn't 'understand' that the data is spatial. In this section we force R to view the data as spatial.
 
-5. State the decision problem (friend/boss house-buying question)
 
-6. Define the population of interest and discuss representativeness
 
-7. Describe key variables and their units (response = House.Price). Inc Summary statistics and distribution of House.Price (mean, median, range, IQR – and histogram)
 
-8. Note any data limitations (temporal coverage, sample bias, missing variables)
 
-9. Discuss spatial fallacies/properties e.g. locational fallacy? (nope) etc etc
+
+
+
+
+
+
+
+
 
 
 ## Add more data

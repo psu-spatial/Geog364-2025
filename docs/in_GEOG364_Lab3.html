@@ -749,38 +749,34 @@ go back and do the previous sections!</p>
 </p>
 </div>
 </div>
-<div id="moving-to-taiwan" class="section level1">
-<h1>Moving to Taiwan</h1>
+<div id="scenario-1" class="section level1">
+<h1>SCENARIO 1</h1>
 <p>The aim of EVERY LAB is to get comfortable writing up analyses of a
-complex dataset for a specific person or user. The modelling might be
-the same and we follow the same steps, but the context and topic will
-mean you will need to think hard about what is important in each
-case.</p>
-<p><br />
-</p>
-<div id="your-challenge" class="section level2">
-<h2>Your Challenge</h2>
+complex dataset for a specific person or user. The modelling steps may
+be similar across labs, but the topic and context will vary—so you’ll
+need to think carefully about what matters in each case.</p>
+<p><br></p>
+<div id="moving-to-taiwan" class="section level2">
+<h2>Moving to Taiwan</h2>
 <p>Your friend is about to move to Sindian District in New Taipei City,
 Taiwan. They’re thinking about buying a house—and they’ve asked for your
 help figuring out what affects house prices in the area. This matters a
-lot because housing costs have soared in recent years (<a
+lot because housing costs have soared in recent years: <a
 href="https://english.cw.com.tw/article/article.action?id=3416">Who can
-afford to live in Taipei?</a>).</p>
+afford to live in Taipei?</a></p>
 <p>Luckily, you’ve found a dataset, <code>Lab03_house.xlsx</code>, to
-help: This is real-life data, which is described in detail here <a
-href="https://archive.ics.uci.edu/dataset/477/real+estate+valuation+data+set"
-class="uri">https://archive.ics.uci.edu/dataset/477/real+estate+valuation+data+set</a></p>
-<p><br />
-</p>
-</div>
-<div id="your-goal" class="section level2">
-<h2><em>Your Goal</em></h2>
+help. This is real-life data, described in detail here: <a
+href="https://archive.ics.uci.edu/dataset/477/real+estate+valuation+data+set">UCI
+Real Estate Valuation Data Set</a></p>
+<p><br> #### <em>Your Goal</em><br />
+To understand which factors influence house prices in Sindian District,
+New Taipei City, Taiwan, and communicate your results to a non-technical
+reader.</p>
 <p><strong>You are writing the rest of this report for your
-friend!</strong></p>
-<p>You’re going to use the rest of this report to help your friend
-understand what influences house prices in New Taipei. Make sure to
-explain your findings clearly. Your friend doesn’t study data science or
-geography, so make sure to use language your friend can understand.</p>
+friend!</strong><br />
+Make sure to explain your findings clearly. Your friend doesn’t study
+data science or geography, so use language that they can understand and
+explain any jargon.</p>
 <p><br />
 </p>
 <ol style="list-style-type: decimal">
@@ -814,7 +810,8 @@ uses <code>read_excel(FILENAME)</code> to read the Excel file into R,
 and <strong>assign/save it a variable called house</strong>.</p>
 <details>
 <summary>
-Expand here for a tutorial on how to do this
+Expand here for a tutorial on how to do this - scroll down to section
+1.4
 </summary>
 <div class="collapsible-content">
 <iframe src="https://psu-spatial.github.io/Stat462-2025/in_T07_ReadingInData.html#14_Reading_in_excel_files" style="width: 95%; height: 600px; border: none;">
@@ -832,44 +829,49 @@ you need to re-run the library code chunk every time you open R.</p>
 <p><br />
 </p>
 <ol start="4" style="list-style-type: decimal">
-<li>Summarise the data for your friend</li>
+<li>Summarise the data for your friend using code, plots and words</li>
 </ol>
 <p>Your goal here is to use R summary commands and plots, along with the
-background reading, to <strong>explore and describe your dataset for
-your friend</strong>. The goal is to help them understand what this data
-does (and doesn’t) include, and to explain what it can tell them about
-house prices in New Taipei City.</p>
+background reading, to explore and describe your dataset for your
+friend. You want to help them understand what yor does (and doesn’t)
+include, and to explain what it can tell them about house prices in New
+Taipei City.</p>
 <ul>
-<li><p>If you haven’t already, start by reading the dataset description
-here: <a
+<li><p><strong>If you haven’t already, start by reading the dataset
+description here: <a
 href="https://archive.ics.uci.edu/ml/datasets/Real+estate+valuation+data+set">Real
-estate valuation data set – UCI</a></p></li>
-<li><p>In your report, use command like <code>summary()</code> OR
-<code>skim()</code> (or others!) to explore the house data. See the
-tutorials below.</p></li>
-<li><p>Then, in your report, <strong>write a short section that
-describes the dataset in clear language for your friend</strong>. This
-should must include: <br></p></li>
-<li><p><strong>The object of analysis</strong>: What does each row in
-the dataset represent? <br></p></li>
-<li><p><strong>A list of the variables AND THEIR UNITS</strong>: Briefly
-describe each column in the data, including what it measures and the
-unit (e.g., meters, square meters, years). Remember the dataset
-description.. <br></p></li>
-<li><p><strong>The ‘strict population’ (sampling frame)</strong>:
-<br></p></li>
-<li><p><strong>A reasonable, justifiable target population</strong>:
+estate valuation data set – UCI</a></strong></p></li>
+<li><p><strong>In your report, use command like <code>summary()</code>
+OR <code>skim()</code> (or others!) to explore the house data. See the
+tutorials below.</strong></p></li>
+<li><p><strong>Underneath the code chunk in your reports, write a short
+section that describes the dataset in clear language for your friend.
+This should must include:</strong> <br></p>
+<ul>
+<li>The object of analysis:<br />
+What does each row in the dataset represent? <br><br></li>
+<li>A list of the variables AND THEIR UNITS:<br />
+Briefly describe each column in the data, including what it measures and
+the unit (e.g., meters, years). Remember the dataset description
+website… <br><br></li>
+<li>The ‘strict population’ (sampling frame):<br />
+If you were being really strict, what does this sample
+cover.<br><br></li>
+<li>A reasonable, justifiable target population:<br />
 Based on this sample, what group do you think the data can reasonably be
-used to represent? <br></p></li>
-<li><p><strong>A clear, professional-looking histogram of house prices
-in a new code chunk</strong>: See the tutorials below <br></p></li>
-<li><p><strong>Summary statistics of the variables, explained in
-context</strong>: Then choose a few key variables and explain what the
-numbers mean for your friend. For example, can they walk to the station
-from most places? Are most of the homes near shops? <br></p></li>
-<li><p><strong>Note any limitations from this data</strong>: E.g. are
-there any aspects of the data that arent going to help your friend
-(hint, think about the units of price..) <br></p></li>
+used to represent? <br><br></li>
+<li>A clear, professional-looking histogram of house prices in a new
+code chunk:<br />
+See the tutorials below <br><br></li>
+<li>Summary statistics of the variables, explained in context for your
+friend:<br />
+Choose a few key variables and explain what the numbers in the summary
+mean for your friend. For example, can they walk to the station from
+most places? Are most of the homes near shops? <br><br></li>
+<li>Any limitations from this data:<br />
+E.g. are there any aspects of the data that aren’t going to help your
+friend (hint, think about the units of price..) <br><br></li>
+</ul></li>
 </ul>
 <details>
 <summary>
