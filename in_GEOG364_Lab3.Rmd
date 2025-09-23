@@ -381,28 +381,30 @@ Your lab script should now look similar this, but with your theme and YAML optio
 
 \
 
-# WEEK 1
+# Moving to Taiwan
 
 The aim of EVERY LAB is to get comfortable writing up analyses of a complex dataset for a specific person or user. The modelling steps may be similar across labs, but the topic and context will vary—so you'll need to think carefully about what matters in each case.
 
 <br>
 
-## Moving to Taiwan
+## WEEK 1
 
 Your friend is about to move to Sindian District in New Taipei City, Taiwan. They’re thinking about buying a house—and they’ve asked for your help figuring out what affects house prices in the area. This matters a lot because housing costs have soared in recent years: [Who can afford to live in Taipei?](https://english.cw.com.tw/article/article.action?id=3416)
 
 Luckily, you’ve found a dataset, `Lab03_house.xlsx`, to help. This is real-life data, described in detail here: [UCI Real Estate Valuation Data Set](https://archive.ics.uci.edu/dataset/477/real+estate+valuation+data+set)
 
 <br> 
-#### *Your Goal*  
+
+**Your Goal**
+
 To understand which factors influence house prices in Sindian District, New Taipei City, Taiwan, and communicate your results to a non-technical reader.
 
 **You are writing the rest of this report for your friend!**  
 Make sure to explain your findings clearly. Your friend doesn’t study data science or geography, so use language that they can understand and explain any jargon.
 
-### Instructions
+<br>
 
-#### Basics
+### Summary analysis
 
 \
 
@@ -508,9 +510,11 @@ Your goal here is to use R summary commands and plots, along with the background
 :::
 
 
-#### Making spatial data
+<br>
 
-\
+
+### Making your data "spatial"
+
 
 5. Make the data "spatial".
 
@@ -592,21 +596,28 @@ We will make a better static map below!
 
 \
 
-#### Making better maps
+### Making better maps
 
 QTM is great for quick looks, but in terms of making professional output, it can be hard to get it to look really good.  So here's how to make professional looking maps of your output that you can use in a pdf or printout. 
+
+<br>
+
+#### The tmap package {-}
 
 The first thing to know is that tmap is currently going through a HUGE revamp.  Code that used to work for "version 3" is being switched to "version 4".  I think I have all of it, but if you see warning messages, you can either ignore them or ask chatgpt what the updated code is.
 
 This is a very detailed guide. https://tmap.geocompx.org/nutshell
 
+In tmap, we build maps in LAYERS. We connect each layer with with the + sign
+ - First, we choose the dataset we want using tm_shape(), <br>
+ - Then we choose how to represent it (e.g. dots for points, raster for grids, polygons for areas)<br>
+ - Then we can add overall map layers like legends or basemaps. <br>
+
 <br>
 
-##### How does it work?
+7. Get the basic tmap code running
 
-We build maps in LAYERS. First, we choose the dataset we want, then we choose how to represent it (e.g. dots for points, raster for grids, polygons for areas), then add overall map layers like legends or basemaps. We connect each layer with with a +.
-
- - Make a new code chunk and copy and run this code. Although the structure is there, I PURPOSELY chose settings that made the map look terrible!  your job is to fix them.
+ - Make a new code chunk and copy and run this code. Although the structure is there, I PURPOSELY chose settings that made the map look terrible!  In the next step, you will fix this. In this step, I want to make sure you can get the code to run.
 
 ```{r, eval=FALSE}
 
@@ -619,7 +630,7 @@ tmap_mode("plot")
 tm_shape(house_sf) +
   tm_dots(
     fill        = "Distance.Station",
-    size        = 3,
+    size        = 6,
     fill.scale  = distance_color_scale,
     fill.legend  = tm_legend("Title?? Units??")) +
 tm_basemap(server = "CartoDB.VoyagerNoLabels")
@@ -627,17 +638,90 @@ tm_basemap(server = "CartoDB.VoyagerNoLabels")
 ```
 
 
-Expand this tutorial to see what each part means.  
-
-TUTORIAL
-
 7. Make a better map in tmap
 
-Your job is to make a better static map than the one above that's useful for your friend to see the **distance to the station** for each house.
+ - Expand the tutorials below to understand how to modify the code. <br>
+ - Then make a BETTR static map than the one above for the DISTANCE TO THE STATION for each house.<br>
+ - It should be: <br>
+    + Useful for your friend to see the distance to the station for each house.<br>
+    + Contain some useful background map to help you assess the pattern/process<br>
+    + Colorblind friendly<br>
+    + Have your own personal stamp on it! 
+   
+<br>
 
-For example, here is mine for house price..
+<details>
+<summary>Expand here for a tutorial on tm_scale_intervals</summary>
 
-```{r, echo=FALSE}
+<br>
+
+**What `tm_scale_intervals()` does** <br>
+
+`tm_scale_intervals()` tells R how to cut your data into classes and which color palette to use.
+
+For example:
+
+```{r,eval=FALSE}
+price_scale <- tm_scale_intervals(values = "viridis", style = "jenks")
+```
+
+ - tm_scale_intervals() : the name of the command
+ - `values = "viridis"` : use the viridis color palette
+ - `style = "jenks"` : use the jenks technique to split the data into intervals
+
+<br><br>
+
+**Choosing a `style`** <br>
+
+Styles listed roughly from most to less common. All create intervals in different ways—try a few to see what looks best. **There’s no single “right” style—experiment and pick the clearest map.**
+
+<br>
+
+- **jenks** – natural clusters (great first try for environmental or socio-economic data)
+- **quantile** – same number of features per class (good for highlighting rank)
+- **equal** – equal-width ranges (good if data are fairly uniform)
+- **pretty** – nicely rounded numbers (simple readable map)
+- **fixed** – you set the breakpoints (e.g. policy thresholds)
+- **sd** – classes by standard deviation from mean (emphasises difference from average)
+- **kmeans**, **hclust**, **bclust** – cluster-based (useful for complex distributions)
+- **fisher** – another algorithm for natural breaks
+- **dpih**, **headtails**, **log10_pretty**, **cat** – special cases (e.g. heavy tails, log scale, or already-categorical data)
+
+<br><br>
+
+**Colour palettes** <br>
+
+There are MANY palettes; just type the name in `values = "palette_name"`. Good defaults: `"viridis"`, `"plasma"`, `"cividis"`, or any RColorBrewer name like `"brewer.blues"`.  
+
+For more choice and built-in colourblind checking, we can use the new cols4all package.
+
+ - Go to the Packages tab, click install and install `cols4all`
+ - Go to the Packages tab, click install and install `shinyjs`
+ - Now go to your library code chunk at the top, add `library(cols4all)` and run
+ - IN THE CONSOLE, type `c4a_gui()` and press enter.
+
+This will open an interactive palette browser where you can check out different palettes and assess their color-blindness properties. Pick a palette name and use it in `values`.
+
+Remember to consider if your data is naturally SEQUENTIAL, DIVERGING, or CATEGORICAL and to choose accordingly (https://www.datawrapper.de/blog/diverging-vs-sequential-color-scales)
+
+
+
+
+
+
+
+
+
+</details>
+
+::: small-gap
+:::
+
+
+
+Here is my example for house price.. (code hidden but all based on things in the tutorial) 
+ 
+```{r, echo=FALSE,fig.show=TRUE}
 
 price_scale <- tm_scale_intervals(values = "viridis", style = "jenks")
 
@@ -655,11 +739,13 @@ tm_basemap(server = "CartoDB.Positron")
 
 
 
+
+
 <br>
 
 
 
-# WEEK 2 TO COME......
+## WEEK 2 TO COME......
 
 In week 2, you will focus on downloading other new map layers, like elevation and Open Street Map data, along with some basic statistical analysis.
 

@@ -761,15 +761,15 @@ go back and do the previous sections!</p>
 </p>
 </div>
 </div>
-<div id="week-1" class="section level1">
-<h1>WEEK 1</h1>
+<div id="moving-to-taiwan" class="section level1">
+<h1>Moving to Taiwan</h1>
 <p>The aim of EVERY LAB is to get comfortable writing up analyses of a
 complex dataset for a specific person or user. The modelling steps may
 be similar across labs, but the topic and context will vary—so you’ll
 need to think carefully about what matters in each case.</p>
 <p><br></p>
-<div id="moving-to-taiwan" class="section level2">
-<h2>Moving to Taiwan</h2>
+<div id="week-1" class="section level2">
+<h2>WEEK 1</h2>
 <p>Your friend is about to move to Sindian District in New Taipei City,
 Taiwan. They’re thinking about buying a house—and they’ve asked for your
 help figuring out what affects house prices in the area. This matters a
@@ -780,19 +780,19 @@ afford to live in Taipei?</a></p>
 help. This is real-life data, described in detail here: <a
 href="https://archive.ics.uci.edu/dataset/477/real+estate+valuation+data+set">UCI
 Real Estate Valuation Data Set</a></p>
-<p><br> #### <em>Your Goal</em><br />
-To understand which factors influence house prices in Sindian District,
-New Taipei City, Taiwan, and communicate your results to a non-technical
-reader.</p>
+<p><br></p>
+<p><strong>Your Goal</strong></p>
+<p>To understand which factors influence house prices in Sindian
+District, New Taipei City, Taiwan, and communicate your results to a
+non-technical reader.</p>
 <p><strong>You are writing the rest of this report for your
 friend!</strong><br />
 Make sure to explain your findings clearly. Your friend doesn’t study
 data science or geography, so use language that they can understand and
 explain any jargon.</p>
-<div id="instructions" class="section level3">
-<h3>Instructions</h3>
-<div id="basics" class="section level4">
-<h4>Basics</h4>
+<p><br></p>
+<div id="summary-analysis" class="section level3">
+<h3>Summary analysis</h3>
 <p><br />
 </p>
 <ol style="list-style-type: decimal">
@@ -915,11 +915,10 @@ Expand here for a tutorial on how to make histograms. Click section 2
 <div class="small-gap">
 
 </div>
+<p><br></p>
 </div>
-<div id="making-spatial-data" class="section level4">
-<h4>Making spatial data</h4>
-<p><br />
-</p>
+<div id="making-your-data-spatial" class="section level3">
+<h3>Making your data “spatial”</h3>
 <ol start="5" style="list-style-type: decimal">
 <li>Make the data “spatial”.</li>
 </ol>
@@ -999,12 +998,15 @@ lose the background map).</p>
 <p><br />
 </p>
 </div>
-<div id="making-better-maps" class="section level4">
-<h4>Making better maps</h4>
+<div id="making-better-maps" class="section level3">
+<h3>Making better maps</h3>
 <p>QTM is great for quick looks, but in terms of making professional
 output, it can be hard to get it to look really good. So here’s how to
 make professional looking maps of your output that you can use in a pdf
 or printout.</p>
+<p><br></p>
+<div id="the-tmap-package" class="section level4 unnumbered">
+<h4 class="unnumbered">The tmap package</h4>
 <p>The first thing to know is that tmap is currently going through a
 HUGE revamp. Code that used to work for “version 3” is being switched to
 “version 4”. I think I have all of it, but if you see warning messages,
@@ -1012,17 +1014,20 @@ you can either ignore them or ask chatgpt what the updated code is.</p>
 <p>This is a very detailed guide. <a
 href="https://tmap.geocompx.org/nutshell"
 class="uri">https://tmap.geocompx.org/nutshell</a></p>
+<p>In tmap, we build maps in LAYERS. We connect each layer with with the
++ sign - First, we choose the dataset we want using tm_shape(), <br> -
+Then we choose how to represent it (e.g. dots for points, raster for
+grids, polygons for areas)<br> - Then we can add overall map layers like
+legends or basemaps. <br></p>
 <p><br></p>
-<div id="how-does-it-work" class="section level5">
-<h5>How does it work?</h5>
-<p>We build maps in LAYERS. First, we choose the dataset we want, then
-we choose how to represent it (e.g. dots for points, raster for grids,
-polygons for areas), then add overall map layers like legends or
-basemaps. We connect each layer with with a +.</p>
+<ol start="7" style="list-style-type: decimal">
+<li>Get the basic tmap code running</li>
+</ol>
 <ul>
 <li>Make a new code chunk and copy and run this code. Although the
 structure is there, I PURPOSELY chose settings that made the map look
-terrible! your job is to fix them.</li>
+terrible! In the next step, you will fix this. In this step, I want to
+make sure you can get the code to run.</li>
 </ul>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="co"># A better static map</span></span>
 <span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a><span class="co"># set up a color scale for your variable</span></span>
@@ -1033,27 +1038,107 @@ terrible! your job is to fix them.</li>
 <span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a><span class="fu">tm_shape</span>(house_sf) <span class="sc">+</span></span>
 <span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a>  <span class="fu">tm_dots</span>(</span>
 <span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a>    <span class="at">fill        =</span> <span class="st">&quot;Distance.Station&quot;</span>,</span>
-<span id="cb9-10"><a href="#cb9-10" tabindex="-1"></a>    <span class="at">size        =</span> <span class="dv">3</span>,</span>
+<span id="cb9-10"><a href="#cb9-10" tabindex="-1"></a>    <span class="at">size        =</span> <span class="dv">6</span>,</span>
 <span id="cb9-11"><a href="#cb9-11" tabindex="-1"></a>    <span class="at">fill.scale  =</span> distance_color_scale,</span>
 <span id="cb9-12"><a href="#cb9-12" tabindex="-1"></a>    <span class="at">fill.legend  =</span> <span class="fu">tm_legend</span>(<span class="st">&quot;Title?? Units??&quot;</span>)) <span class="sc">+</span></span>
 <span id="cb9-13"><a href="#cb9-13" tabindex="-1"></a><span class="fu">tm_basemap</span>(<span class="at">server =</span> <span class="st">&quot;CartoDB.VoyagerNoLabels&quot;</span>)</span></code></pre></div>
-<p>Expand this tutorial to see what each part means.</p>
-<p>TUTORIAL</p>
 <ol start="7" style="list-style-type: decimal">
 <li>Make a better map in tmap</li>
 </ol>
-<p>Your job is to make a better static map than the one above that’s
-useful for your friend to see the <strong>distance to the
-station</strong> for each house.</p>
-<p>For example, here is mine for house price..</p>
+<ul>
+<li>Expand the tutorials below to understand how to modify the code.
+<br><br></li>
+<li>Then make a BETTR static map than the one above for the DISTANCE TO
+THE STATION for each house.<br><br></li>
+<li>It should be: <br><br></li>
+<li>Useful for your friend to see the distance to the station for each
+house.<br></li>
+<li>Contain some useful background map to help you assess the
+pattern/process<br></li>
+<li>Colorblind friendly<br></li>
+<li>Have your own personal stamp on it! For example, here is mine for
+house price.. (code hidden but all based on things in the
+tutorial)<br></li>
+</ul>
+<p><img src="in_GEOG364_Lab3_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p>Tutorials..</p>
+<details>
+<summary>
+Expand here for a tutorial on tm_scale_intervals
+</summary>
+<p><br></p>
+<p><strong>What <code>tm_scale_intervals()</code> does</strong> <br></p>
+<p><code>tm_scale_intervals()</code> tells R how to cut your data into
+classes and which color palette to use.</p>
+<p>For example:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>price_scale <span class="ot">&lt;-</span> <span class="fu">tm_scale_intervals</span>(<span class="at">values =</span> <span class="st">&quot;viridis&quot;</span>, <span class="at">style =</span> <span class="st">&quot;jenks&quot;</span>)</span></code></pre></div>
+<ul>
+<li>tm_scale_intervals() : the name of the command</li>
+<li><code>values = "viridis"</code> : use the viridis color palette</li>
+<li><code>style = "jenks"</code> : use the jenks technique to split the
+data into intervals</li>
+</ul>
+<p><br><br></p>
+<p><strong>Choosing a <code>style</code></strong> <br></p>
+<p>Styles listed roughly from most to less common. All create intervals
+in different ways—try a few to see what looks best. <strong>There’s no
+single “right” style—experiment and pick the clearest map.</strong></p>
+<p><br></p>
+<ul>
+<li><strong>jenks</strong> – natural clusters (great first try for
+environmental or socio-economic data)</li>
+<li><strong>quantile</strong> – same number of features per class (good
+for highlighting rank)</li>
+<li><strong>equal</strong> – equal-width ranges (good if data are fairly
+uniform)</li>
+<li><strong>pretty</strong> – nicely rounded numbers (simple readable
+map)</li>
+<li><strong>fixed</strong> – you set the breakpoints (e.g. policy
+thresholds)</li>
+<li><strong>sd</strong> – classes by standard deviation from mean
+(emphasises difference from average)</li>
+<li><strong>kmeans</strong>, <strong>hclust</strong>,
+<strong>bclust</strong> – cluster-based (useful for complex
+distributions)</li>
+<li><strong>fisher</strong> – another algorithm for natural breaks</li>
+<li><strong>dpih</strong>, <strong>headtails</strong>,
+<strong>log10_pretty</strong>, <strong>cat</strong> – special cases
+(e.g. heavy tails, log scale, or already-categorical data)</li>
+</ul>
+<p><br><br></p>
+<p><strong>Colour palettes</strong> <br></p>
+<p>There are MANY palettes; just type the name in
+<code>values = "palette_name"</code>. Good defaults:
+<code>"viridis"</code>, <code>"plasma"</code>, <code>"cividis"</code>,
+or any RColorBrewer name like <code>"brewer.blues"</code>.</p>
+<p>For more choice and built-in colourblind checking, we can use the new
+cols4all package.</p>
+<ul>
+<li>Go to the Packages tab, click install and install
+<code>cols4all</code></li>
+<li>Go to the Packages tab, click install and install
+<code>shinyjs</code></li>
+<li>Now go to your library code chunk at the top, add
+<code>library(cols4all)</code> and run</li>
+<li>IN THE CONSOLE, type <code>c4a_gui()</code> and press enter.</li>
+</ul>
+<p>This will open an interactive palette browser where you can check out
+different palettes and assess their color-blindness properties. Pick a
+palette name and use it in <code>values</code>.</p>
+<p>Remember to consider if your data is naturally SEQUENTIAL, DIVERGING,
+or CATEGORICAL and to choose accordingly (<a
+href="https://www.datawrapper.de/blog/diverging-vs-sequential-color-scales"
+class="uri">https://www.datawrapper.de/blog/diverging-vs-sequential-color-scales</a>)</p>
+</details>
+<div class="small-gap">
+
+</div>
 <p><br></p>
 </div>
 </div>
 </div>
-</div>
-</div>
-<div id="week-2-to-come" class="section level1">
-<h1>WEEK 2 TO COME……</h1>
+<div id="week-2-to-come" class="section level2">
+<h2>WEEK 2 TO COME……</h2>
 <p>In week 2, you will focus on downloading other new map layers, like
 elevation and Open Street Map data, along with some basic statistical
 analysis.</p>
@@ -1062,6 +1147,7 @@ analysis.</p>
 <hr />
 <p><br />
 </p>
+</div>
 </div>
 <div id="what-to-submit" class="section level1">
 <h1>What to submit?</h1>
