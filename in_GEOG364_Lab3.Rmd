@@ -7,7 +7,7 @@ output:
     theme: flatly
     toc: true
     toc_float: true
-    toc_depth: 4
+    toc_depth: 3
 editor_options: 
   markdown: 
     wrap: sentence
@@ -849,31 +849,189 @@ tm_basemap(server = "CartoDB.Positron")+
 
 
 
-## WEEK 2 TO COME......
+## WEEK 2 
 
-In week 2, you will focus on downloading other new map layers, like elevation and Open Street Map data, along with some basic statistical analysis.
+### Tidying your reports
 
+Dr G: After reviewing your earlier lab submissions (grades coming this week), I noticed that many of you are missing some very easy things that would make your reports look a lot more professional.
 
-\
-
-------------------------------------------------------------------------
-
-\
-
-# What to submit?
-
-Nothing yet!  
+So, I’m going to list those things clearly here. From this lab onwards, you’ll start losing style points if they’re missing — not because I’m being picky, but because they’re quick fixes!
 
 <br>
 
+#### 1. Delete the starter text each time you create a new Markdown file {-}
 
-\
+Every time you make a new R Markdown file, RStudio automatically fills it with some example text as shown in the figure below. You never need this!  Think of it like this: imagine opening a new Word document, and it already had a paragraph saying, “Hi, this is Microsoft Word! Here’s how you make text italic…” — you’d delete that before writing your paper. Same idea here.
+
+
+**SO BEING CAREFUL TO NOT DELETE THE YAML CODE AND TOP CODE CHUNK, scroll to the top and delete the starter text**.  You never need it! Scroll to the top of your reports now and make sure it's gone.
+
+
+![](./index_images/im_L03_FriendlyMarkdownText.png)
+
+<br><br>
+
+
+#### 2. Move all your library commands to the top {-}
+
+You should always have a code chunk near the top of your script that contains all your library() commands. Running this chunk is like pre-loading all the apps your report will need to work properly. Lately, I’ve noticed that many of you are starting to use ChatGPT — which is great! — but it often gives instructions that include the library() command right along with the code you're copying. That means you're pasting library() into lots of different places in your report.  
+
+**From now on: the only place you should put library() commands is in your 'library' chunk near the top. If you run each time you open Rstudio, all your packages will be loaded for the entire RStudio session. SO NO LIBRARY() COMMANDS BELOW THAT POINT! **  
+
+This is good practice because it makes your code easier to read, avoids repetition, and helps others (including me!) see all the libraries/apps you use in one place.  It also means that it's easy to work out the difference between an error with your code vs an error with the underlying package that loads it.
+
+**So go through your report now**.  Every time you have used the library(..) lower down, move it to the library command at the top (or delete if you have already loaded that library)
+
+![](./index_images/im_L03_Movelibcommands.png)
+
+<br><br>
+
+
+#### 3. Remove View() and other interactive commands {-}
+
+R includes some great interactive commands. For example:
+
+ - `View(house)` opens your data in a new tab so you can look at it
+ - `file.choose()` lets you browse your computer to find a file
+
+These are very helpful while you're working — and R will often suggest them. 
+
+But they can cause problems when you knit. When you click Knit, you're asking RStudio to turn your work into a webpage or PDF. If your code includes an instruction like “open a new tab to show the data”, it may crash the knitting process — or just silently fail.
+
+So: don’t leave interactive commands in your final report! If you need them while working:
+
+ - Type them into the console
+ - or run them, then delete the line
+ - or (for View()), just click the object’s name in the Environment tab
+
+Knit-friendly reports should run start to finish without needing you to click or respond to anything.
+
+<br><br>
+
+
+#### 4. Use headings and sub-headings {-}
+
+In my instructions, I usually only ask you to include the basic top-level headings.
+
+But the more structure you add, the easier it is to navigate your report — especially using the table of contents, which lets us jump straight to each section. This makes your work much easier to grade. Imagine how untidy these instructions would be without headings and subheadings.
+
+
+So think about what sub-headings might help. You could:
+
+ - add one for each question
+ - break up a long explanation when you're talking to your friend about Taiwan
+ - separate different steps in your analysis
+
+
+![](./index_images/im_L03_Headings.png)
+
+
+------------------------------------------------------------------------
+
+<br><br>
+
+### Adding Raster Elevation data
+
+OK! Now your reports are back in shape, lets continue to add more information about your Taiwan example. 
+
+We often want to include raster information about
+
+
+
+
+
+
+------------------------------------------------------------------------
+
+<br><br>
+
+### Adding Open Street map
+
+
+
+
+
+------------------------------------------------------------------------
+
+<br><br>
+
+### Better plots
+
+
+
+
+
+------------------------------------------------------------------------
+
+<br><br>
+
+### Questions from your friend
+
+
+
+
+
+
+
+------------------------------------------------------------------------
+
+### Your reflections
+
+
+
+
+
+
+
+------------------------------------------------------------------------
+
+
+
+# Submitting your Lab
+
+Remember to save your work throughout and to spell check your writing (next to the save button). Now, press the knit button again. If you have not made any mistakes in the code then R should create a html file in your lab3 folder, complete with a very recent time-stamp.
+
+<br>
+
+### If you are on posit cloud:
+
+You can download each of your .RmD and html files by:
+
+ - Clicking on the little box next to the Rmd in the Files tab, then going to the little blue cogwheel (might need to make your Rstudio full screen) and clicking export.<br>
+
+```{r, Lab2FigDownload, echo=FALSE,fig.align='center',out.width="90%"}
+knitr::include_graphics('./index_images/im_T2_Download.png')
+```
+
+
+ - Repeat the process exactly for the html file underneath it (e,g, just have the html clicked.)<br>
+ 
+ - Now go to Canvas and submit BOTH your html and your .Rmd file in Lab 2.
+
+
+<br>
+
+### Posit desktop
+
+ - Go to your Lab 3 folder,  In that folder, double click on the html file. This will open it in your browser. CHECK THAT THIS IS WHAT YOU WANT TO SUBMIT <br>
+
+- Now go to Canvas and submit BOTH your html and your .Rmd file in Lab 3.<br>
+
+```{r, echo=FALSE}
+knitr::include_graphics("./index_images/pg_364Lab1_Basics_2021_fig1.png")
+```
+
+<br>
 
 ------------------------------------------------------------------------
 
 \
 
 # Grading rubric
+
+## Lab 3
+
+To come
 
 ## Overall
 

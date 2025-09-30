@@ -686,9 +686,10 @@ Task. Change the theme and knit
 isn’t not lumen (see here to view available themes - <a
 href="https://bootswatch.com/"
 class="uri">https://bootswatch.com/</a>.). <br></p>
-<p>Some might not work, but these are likely to: “default”, “bootstrap”,
-“cerulean”, “cosmo”, “darkly”, “flatly”, “journal”, “lumen”, “paper”,
-“readable”, “sandstone”, “simplex”, “spacelab”, “united”, “yeti”.</p>
+<p><strong>Some might not work</strong>, but these are likely to:
+“default”, “bootstrap”, “cerulean”, “cosmo”, “darkly”, “flatly”,
+“journal”, “lumen”, “paper”, “readable”, “sandstone”, “simplex”,
+“spacelab”, “united”, “yeti”.</p>
 </details>
 <div class="small-gap">
 
@@ -1245,30 +1246,181 @@ based on things in the tutorial)</p>
 </div>
 </div>
 </div>
-<div id="week-2-to-come" class="section level2">
-<h2>WEEK 2 TO COME……</h2>
-<p>In week 2, you will focus on downloading other new map layers, like
-elevation and Open Street Map data, along with some basic statistical
-analysis.</p>
-<p><br />
-</p>
-<hr />
-<p><br />
-</p>
-</div>
-</div>
-<div id="what-to-submit" class="section level1">
-<h1>What to submit?</h1>
-<p>Nothing yet!</p>
+<div id="week-2" class="section level2">
+<h2>WEEK 2</h2>
+<div id="tidying-your-reports" class="section level3">
+<h3>Tidying your reports</h3>
+<p>Dr G: After reviewing your earlier lab submissions (grades coming
+this week), I noticed that many of you are missing some very easy things
+that would make your reports look a lot more professional.</p>
+<p>So, I’m going to list those things clearly here. From this lab
+onwards, you’ll start losing style points if they’re missing — not
+because I’m being picky, but because they’re quick fixes!</p>
 <p><br></p>
-<p><br />
-</p>
+<div
+id="delete-the-starter-text-each-time-you-create-a-new-markdown-file"
+class="section level4 unnumbered">
+<h4 class="unnumbered">1. Delete the starter text each time you create a
+new Markdown file</h4>
+<p>Every time you make a new R Markdown file, RStudio automatically
+fills it with some example text as shown in the figure below. You never
+need this! Think of it like this: imagine opening a new Word document,
+and it already had a paragraph saying, “Hi, this is Microsoft Word!
+Here’s how you make text italic…” — you’d delete that before writing
+your paper. Same idea here.</p>
+<p><strong>SO BEING CAREFUL TO NOT DELETE THE YAML CODE AND TOP CODE
+CHUNK, scroll to the top and delete the starter text</strong>. You never
+need it! Scroll to the top of your reports now and make sure it’s
+gone.</p>
+<p><img src="index_images/im_L03_FriendlyMarkdownText.png" /></p>
+<p><br><br></p>
+</div>
+<div id="move-all-your-library-commands-to-the-top"
+class="section level4 unnumbered">
+<h4 class="unnumbered">2. Move all your library commands to the top</h4>
+<p>You should always have a code chunk near the top of your script that
+contains all your library() commands. Running this chunk is like
+pre-loading all the apps your report will need to work properly. Lately,
+I’ve noticed that many of you are starting to use ChatGPT — which is
+great! — but it often gives instructions that include the library()
+command right along with the code you’re copying. That means you’re
+pasting library() into lots of different places in your report.</p>
+<p><strong>From now on: the only place you should put library() commands
+is in your ‘library’ chunk near the top. If you run each time you open
+Rstudio, all your packages will be loaded for the entire RStudio
+session. SO NO LIBRARY() COMMANDS BELOW THAT POINT! </strong></p>
+<p>This is good practice because it makes your code easier to read,
+avoids repetition, and helps others (including me!) see all the
+libraries/apps you use in one place. It also means that it’s easy to
+work out the difference between an error with your code vs an error with
+the underlying package that loads it.</p>
+<p><strong>So go through your report now</strong>. Every time you have
+used the library(..) lower down, move it to the library command at the
+top (or delete if you have already loaded that library)</p>
+<p><img src="index_images/im_L03_MoveLibCommands.png" /></p>
+<p><br><br></p>
+</div>
+<div id="remove-view-and-other-interactive-commands"
+class="section level4 unnumbered">
+<h4 class="unnumbered">3. Remove View() and other interactive
+commands</h4>
+<p>R includes some great interactive commands. For example:</p>
+<ul>
+<li><code>View(house)</code> opens your data in a new tab so you can
+look at it</li>
+<li><code>file.choose()</code> lets you browse your computer to find a
+file</li>
+</ul>
+<p>These are very helpful while you’re working — and R will often
+suggest them.</p>
+<p>But they can cause problems when you knit. When you click Knit,
+you’re asking RStudio to turn your work into a webpage or PDF. If your
+code includes an instruction like “open a new tab to show the data”, it
+may crash the knitting process — or just silently fail.</p>
+<p>So: don’t leave interactive commands in your final report! If you
+need them while working:</p>
+<ul>
+<li>Type them into the console</li>
+<li>or run them, then delete the line</li>
+<li>or (for View()), just click the object’s name in the Environment
+tab</li>
+</ul>
+<p>Knit-friendly reports should run start to finish without needing you
+to click or respond to anything.</p>
+<p><br><br></p>
+</div>
+<div id="use-headings-and-sub-headings"
+class="section level4 unnumbered">
+<h4 class="unnumbered">4. Use headings and sub-headings</h4>
+<p>In my instructions, I usually only ask you to include the basic
+top-level headings.</p>
+<p>But the more structure you add, the easier it is to navigate your
+report — especially using the table of contents, which lets us jump
+straight to each section. This makes your work much easier to grade.
+Imagine how untidy these instructions would be without headings and
+subheadings.</p>
+<p>So think about what sub-headings might help. You could:</p>
+<ul>
+<li>add one for each question</li>
+<li>break up a long explanation when you’re talking to your friend about
+Taiwan</li>
+<li>separate different steps in your analysis</li>
+</ul>
+<p><img src="index_images/im_L03_Headings.png" /></p>
+<hr />
+<p><br><br></p>
+</div>
+</div>
+<div id="adding-raster-elevation-data" class="section level3">
+<h3>Adding Raster Elevation data</h3>
+<p>OK! Now your reports are back in shape, lets continue to add more
+information about your Taiwan example.</p>
+<p>We often want to include raster information about</p>
+<hr />
+<p><br><br></p>
+</div>
+<div id="adding-open-street-map" class="section level3">
+<h3>Adding Open Street map</h3>
+<hr />
+<p><br><br></p>
+</div>
+<div id="better-plots" class="section level3">
+<h3>Better plots</h3>
+<hr />
+<p><br><br></p>
+</div>
+<div id="questions-from-your-friend" class="section level3">
+<h3>Questions from your friend</h3>
+<hr />
+</div>
+<div id="your-reflections" class="section level3">
+<h3>Your reflections</h3>
+<hr />
+</div>
+</div>
+</div>
+<div id="submitting-your-lab" class="section level1">
+<h1>Submitting your Lab</h1>
+<p>Remember to save your work throughout and to spell check your writing
+(next to the save button). Now, press the knit button again. If you have
+not made any mistakes in the code then R should create a html file in
+your lab3 folder, complete with a very recent time-stamp.</p>
+<p><br></p>
+<div id="if-you-are-on-posit-cloud" class="section level3">
+<h3>If you are on posit cloud:</h3>
+<p>You can download each of your .RmD and html files by:</p>
+<ul>
+<li><p>Clicking on the little box next to the Rmd in the Files tab, then
+going to the little blue cogwheel (might need to make your Rstudio full
+screen) and clicking export.<br></p></li>
+<li><p>Repeat the process exactly for the html file underneath it (e,g,
+just have the html clicked.)<br></p></li>
+<li><p>Now go to Canvas and submit BOTH your html and your .Rmd file in
+Lab 2.</p></li>
+</ul>
+<p><br></p>
+</div>
+<div id="posit-desktop" class="section level3">
+<h3>Posit desktop</h3>
+<ul>
+<li><p>Go to your Lab 3 folder, In that folder, double click on the html
+file. This will open it in your browser. CHECK THAT THIS IS WHAT YOU
+WANT TO SUBMIT <br></p></li>
+<li><p>Now go to Canvas and submit BOTH your html and your .Rmd file in
+Lab 3.<br></p></li>
+</ul>
+<p><br></p>
 <hr />
 <p><br />
 </p>
+</div>
 </div>
 <div id="grading-rubric" class="section level1">
 <h1>Grading rubric</h1>
+<div id="lab-3" class="section level2">
+<h2>Lab 3</h2>
+<p>To come</p>
+</div>
 <div id="overall" class="section level2">
 <h2>Overall</h2>
 <p>Overall, here is what your lab should correspond to:</p>
@@ -1471,7 +1623,7 @@ $(document).ready(function ()  {
 
     // establish options
     var options = {
-      selectors: "h1,h2,h3,h4",
+      selectors: "h1,h2,h3",
       theme: "bootstrap3",
       context: '.toc-content',
       hashGenerator: function (text) {
