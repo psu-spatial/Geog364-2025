@@ -956,7 +956,7 @@ Then type/copy this code EXACTLY. Making sure to ALSO adjust the code chunk opti
 
 ![](./index_images/im_L03_ElevCodeChunk.png)
 
-```{r, results='hide', include=FALSE}
+```{r, results='hide', include=FALSE, eval=FALSE}
 #---------------------------------------------------------
 # Get elevation data
 #---------------------------------------------------------
@@ -968,9 +968,25 @@ boundingbox <- st_bbox(elevation)
 
 **STEP 3** - Look at the data <br>
 
-Make a new code chunk and just type in the word elevation and run the chunk. It should give you a summary of your elevation dataset.  
+ - Make a new code chunk and just type in the word elevation and run the chunk. It should give you a summary of your elevation dataset.  
 
-Also make a very basic plot by typing plot(elevation) and running the code chunk. You will explain this later on and make better maps!
+ - Also make a very basic plot by typing plot(elevation) and running the code chunk. 
+
+
+**STEP 4** - Explain what you did <br>
+
+Your friend is interested in the coding process!  Explain to them in CLEAR langauge exactly what you just did, including
+
+ - What does the get_elev_raster command do?
+ - What does z = 14 mean?
+ - What does crop="locations" mean?
+ - In the summary, how many grid-cells are there?
+ - What units are the extent/projection in?
+ 
+Use google to help!  And use the get_elev_raster help file by typing ?get_elev_raster into the console and pressing enter
+ 
+OPTIONAL, for a detailed tutorial, see <https://rspatialdata.github.io/elevation.html> 
+
 
 ------------------------------------------------------------------------
 
@@ -978,8 +994,7 @@ Also make a very basic plot by typing plot(elevation) and running the code chunk
 
 ### Add Open Street Map Data
 
-
-
+In the last year or so, it has also become possible to access the VAST amount of d
 
 
 ------------------------------------------------------------------------
