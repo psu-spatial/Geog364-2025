@@ -940,7 +940,7 @@ In our world of big data, we have access to a LOT of raster (gridded) datasets. 
 
 <br><br>
 
-**STEP 1** - Check the library <br>
+**STEP 1 - Check the library** <br>
 
 Go to the library code chunk. Make sure `library(elevatr)` exists and that the code chunk runs.
 
@@ -949,7 +949,7 @@ Go to the library code chunk. Make sure `library(elevatr)` exists and that the c
  
 <br><br>
  
-**STEP 2** - Download the elevation for your area <br>
+**STEP 2 - Download the elevation for your area** <br>
 
 Scroll back to the end of your report (maybe make a new sub-section..) and make a new code chunk.
 
@@ -966,14 +966,18 @@ elevation   <- get_elev_raster(house_sf, z=14, crop="locations")
 
 <br><br>
 
-**STEP 3** - Look at the data <br>
+**STEP 3 - Look at the data** <br>
 
  - Make a new code chunk and just type in the word elevation and run the chunk. It should give you a summary of your elevation dataset.  
 
  - Also make a very basic plot by typing plot(elevation) and running the code chunk. 
+ 
+You are going to make better maps later in the lab.
+
+<br><br>
 
 
-**STEP 4** - Explain what you did <br>
+**STEP 4 - Explain what you did** <br>
 
 Your friend is interested in the coding process!  Explain to them in CLEAR langauge exactly what you just did, including
 
@@ -996,7 +1000,9 @@ OPTIONAL, for a detailed tutorial, see <https://rspatialdata.github.io/elevation
 
 In the last year or so, it has also become possible to access the VAST amount of data from Open Street Map. It's a little bit clunky to access, but with ChatGPT (or your AI of choice) helping, its not too hard.
 
-**STEP 1** - Check the library <br>
+<br><br>
+
+**STEP 1 - Check the library** <br>
 
 Go to the library code chunk. Make sure `library(osmdata)` exists and that the code chunk runs.
 
@@ -1005,7 +1011,7 @@ Go to the library code chunk. Make sure `library(osmdata)` exists and that the c
  
 <br><br>
  
-**STEP 2** - Download railways for your area <br>
+**STEP 2 - Download railways for your area** <br>
 
 Scroll back to the end of your report (maybe make a new sub-section..) and make a new code chunk.
 
@@ -1031,7 +1037,7 @@ railways <- all_raildata$osm_lines
 
 <br><br>
 
-**STEP 3** - Edit the code to download major roads <br>
+**STEP 3 - Edit the code to download major roads** <br>
 
 Now, I want you to edit this command to download major road data.  To do this.
 
@@ -1043,7 +1049,7 @@ Now, I want you to edit this command to download major road data.  To do this.
  
  <br><br>
 
-**STEP 4** - Explain <br>
+**STEP 4 - Explain what you did** <br>
 
 Your friend is also curious about this code.  
 
@@ -1061,13 +1067,133 @@ These might help, and you are welcome to use AI to help, but you need to write y
 <br><br>
 
 
+### Show me something new!  
+
+Labs are designed to be hard to get 100%!  So this challenge is to push people who are finding it easy for those final 4 marks.
+
+**CHALLENGE:  Copy my code above into a new code chunk then edit, to download ANYTHING else from Open Street Map and add it to your maps below. 
+
+ - You get 2 marks for any attempt here, or even explaining what you tried to do if it didn't work.
+ - You get 3 points for relevant line data
+ - You get 4 points for relevant point/polygon data 
+
+HINTS
+
+ - Hint 1, I'm extracting LINES for roads and railways in the final line of the code chunk. 
+ - Hint 2, Think of things that might actually be in this area. You could always go here, zoom in to Taipei and take a look https://www.openstreetmap.org/.  If you get an error it might be that this type of object doesn't exist.
+ - Hint 3, you're welcome to ask chatgpt/AI to help.
+ - Hint 4, by relevant, I mean relevant to your friend.
+ 
+
+
+<br><br>
+
 ------------------------------------------------------------------------
 
 <br><br>
 
 ### Better plots
 
+OK, now we have a load of new layers we can add to our plots, from elevation to roads to railways.
 
+We can add them to tmap in exactly the same way as before. tm_shape to load the data, then choose how to plot it.  For example, here is another "bad map".
+
+```{r, eval=FALSE}
+
+#-----------------------------
+# Color scales
+#-----------------------------
+price_scale <- tm_scale_intervals(values = "magma", style = "jenks")
+elev_scale  <- tm_scale_continuous(values="pu_gn_div",midpoint = NA)
+
+#-----------------------------
+# Final  map
+#-----------------------------
+# turn off interactive
+tmap_mode("plot") 
+
+# and plot
+tm_shape(elevation) + # Elevation, plotted as a raster
+  tm_raster(
+    col.scale  = elev_scale,
+    col_alpha  = 0.9,
+    col.legend = tm_legend("??????")
+  ) +
+tm_shape(railways) + # Railways, plotted as lines
+  tm_lines(
+    col_alpha  = 0.9,
+    lty        = "dashed",
+    lwd        = 4,
+    col        = "blue4",
+    col.legend = tm_legend("Huh??")
+  ) +
+tm_shape(house_sf) +  # Houses, plotted as dots.
+  tm_dots(
+    fill        = "House.Price",
+    size        = 1.4,
+    fill.scale  = price_scale,
+    fill.legend  = tm_legend("Something about houses?")
+  ) +
+tm_basemap(server = "CartoDB.Positron")
+
+```
+
+
+**YOUR TASK**.  Make a new code chunk and starting with my code above, improve this map!
+
+ 
+**Essentially - Make a final map that maps the house.price column with the CORRECT UNITS, in a way your (color blind) friend would love.**
+
+ - You need to add in the commands to plot roads (hint, copy the railway one)
+ - You can adjust to your old settings from week 1..
+ - You can adjust the transparency of layers using alpha.
+ -  If you don't want to use the gui to pick palettes google color.brewer in R and viridis in R for some names.
+ 
+For the 100% show me something new, see if you can get your new layer to plot too.
+ 
+<br><br>
+
+Here is my best attempt so far.
+
+```{r, include=FALSE, fig.show="true"}
+#-----------------------------
+# Color scales
+#-----------------------------
+price_scale <- tm_scale_intervals(values = "viridis", style = "jenks")
+elev_scale  <- tm_scale_continuous(values="pu_gn_div",midpoint = NA)
+
+
+tmap_mode("plot")
+tm_shape(elevation) +
+  tm_raster(
+    col.scale  = elev_scale,
+    col_alpha  = 0.3,
+    col.legend = tm_legend("Elevation (masl)")
+  ) +
+tm_shape(railways) +
+  tm_lines(
+    col_alpha  = 0.4,
+    lty        = "dashed",
+    lwd        = 1.25,
+    col.legend = tm_legend("Railway line")
+  ) +
+tm_shape(house_sf) +
+  tm_dots(
+    fill        = "House.Price",
+    size        = 0.4,
+    fill.scale  = price_scale,
+    fill.legend  = tm_legend("House Price")
+  ) +
+tm_add_legend(
+    type  = "lines",
+    labels= "Railway line",
+    fill   = "black",
+    lty   = "dashed",
+    lwd   = 1.25
+  ) +     
+tm_basemap(server = "CartoDB.Positron")
+
+```
 
 
 
@@ -1103,6 +1229,8 @@ Your friend is interested in the coding process!  Explain to them in CLEAR langa
 
 
 ------------------------------------------------------------------------
+
+
 
 
 

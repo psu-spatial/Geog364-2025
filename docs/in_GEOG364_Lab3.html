@@ -1360,7 +1360,7 @@ datasets. Today you will download fine scale elevation data for the
 whole region. The code to do this is very easy from the elevatr
 package:</p>
 <p><br><br></p>
-<p><strong>STEP 1</strong> - Check the library <br></p>
+<p><strong>STEP 1 - Check the library</strong> <br></p>
 <p>Go to the library code chunk. Make sure <code>library(elevatr)</code>
 exists and that the code chunk runs.</p>
 <ul>
@@ -1371,7 +1371,7 @@ click install to go to the app store. Install, then re-run the library
 code chunk.</li>
 </ul>
 <p><br><br></p>
-<p><strong>STEP 2</strong> - Download the elevation for your area
+<p><strong>STEP 2 - Download the elevation for your area</strong>
 <br></p>
 <p>Scroll back to the end of your report (maybe make a new
 sub-section..) and make a new code chunk.</p>
@@ -1381,7 +1381,7 @@ report will be full of 100 “elevation downloading warning messages”. Now
 run the code chunk, it might take a little while to run.</p>
 <p><img src="index_images/im_L03_ElevCodeChunk.png" /></p>
 <p><br><br></p>
-<p><strong>STEP 3</strong> - Look at the data <br></p>
+<p><strong>STEP 3 - Look at the data</strong> <br></p>
 <ul>
 <li><p>Make a new code chunk and just type in the word elevation and run
 the chunk. It should give you a summary of your elevation
@@ -1389,7 +1389,9 @@ dataset.</p></li>
 <li><p>Also make a very basic plot by typing plot(elevation) and running
 the code chunk.</p></li>
 </ul>
-<p><strong>STEP 4</strong> - Explain what you did <br></p>
+<p>You are going to make better maps later in the lab.</p>
+<p><br><br></p>
+<p><strong>STEP 4 - Explain what you did</strong> <br></p>
 <p>Your friend is interested in the coding process! Explain to them in
 CLEAR langauge exactly what you just did, including</p>
 <ul>
@@ -1413,7 +1415,8 @@ class="uri">https://rspatialdata.github.io/elevation.html</a></p>
 VAST amount of data from Open Street Map. It’s a little bit clunky to
 access, but with ChatGPT (or your AI of choice) helping, its not too
 hard.</p>
-<p><strong>STEP 1</strong> - Check the library <br></p>
+<p><br><br></p>
+<p><strong>STEP 1 - Check the library</strong> <br></p>
 <p>Go to the library code chunk. Make sure <code>library(osmdata)</code>
 exists and that the code chunk runs.</p>
 <ul>
@@ -1424,7 +1427,7 @@ click install to go to the app store. Install, then re-run the library
 code chunk.</li>
 </ul>
 <p><br><br></p>
-<p><strong>STEP 2</strong> - Download railways for your area <br></p>
+<p><strong>STEP 2 - Download railways for your area</strong> <br></p>
 <p>Scroll back to the end of your report (maybe make a new
 sub-section..) and make a new code chunk.</p>
 <p>Today we are going to download railway data, but know that you can
@@ -1446,7 +1449,7 @@ have run the elevation code chunk above.</p>
 <span id="cb14-11"><a href="#cb14-11" tabindex="-1"></a></span>
 <span id="cb14-12"><a href="#cb14-12" tabindex="-1"></a>railways <span class="ot">&lt;-</span> all_raildata<span class="sc">$</span>osm_lines </span></code></pre></div>
 <p><br><br></p>
-<p><strong>STEP 3</strong> - Edit the code to download major roads
+<p><strong>STEP 3 - Edit the code to download major roads</strong>
 <br></p>
 <p>Now, I want you to edit this command to download major road data. To
 do this.</p>
@@ -1459,8 +1462,8 @@ the variable names etc, switch to road.<br><br> C. Instead of
 you need <code>value = c("primary")) |&gt;</code><br><br> E. Run and it
 shouldn’t give an error. <br><br></p>
 <p><br><br></p>
-<p><strong>STEP 4</strong> - Explain <br> Your friend is also curious
-about this code.</p>
+<p><strong>STEP 4 - Explain what you did</strong> <br></p>
+<p>Your friend is also curious about this code.</p>
 <ul>
 <li>Tell them what OpenStreetMap is (and why it’s cool) - use
 google!</li>
@@ -1481,11 +1484,95 @@ class="uri">https://wiki.openstreetmap.org/wiki/Map_features</a></li>
 class="uri">https://taginfo.openstreetmap.org/</a></li>
 </ul>
 <p><br><br></p>
+</div>
+<div id="show-me-something-new" class="section level3">
+<h3>Show me something new!</h3>
+<p>Labs are designed to be hard to get 100%! So this challenge is to
+push people who are finding it easy for those final 4 marks.</p>
+<p>**CHALLENGE: Copy my code above into a new code chunk then edit, to
+download ANYTHING else from Open Street Map and add it to your maps
+below.</p>
+<ul>
+<li>You get 2 marks for any attempt here, or even explaining what you
+tried to do if it didn’t work.</li>
+<li>You get 3 points for relevant line data</li>
+<li>You get 4 points for relevant point/polygon data</li>
+</ul>
+<p>HINTS</p>
+<ul>
+<li>Hint 1, I’m extracting LINES for roads and railways in the final
+line of the code chunk.</li>
+<li>Hint 2, Think of things that might actually be in this area. You
+could always go here, zoom in to Taipei and take a look <a
+href="https://www.openstreetmap.org/"
+class="uri">https://www.openstreetmap.org/</a>. If you get an error it
+might be that this type of object doesn’t exist.</li>
+<li>Hint 3, you’re welcome to ask chatgpt/AI to help.</li>
+<li>Hint 4, by relevant, I mean relevant to your friend.</li>
+</ul>
+<p><br><br></p>
 <hr />
 <p><br><br></p>
 </div>
 <div id="better-plots" class="section level3">
 <h3>Better plots</h3>
+<p>OK, now we have a load of new layers we can add to our plots, from
+elevation to roads to railways.</p>
+<p>We can add them to tmap in exactly the same way as before. tm_shape
+to load the data, then choose how to plot it. For example, here is
+another “bad map”.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="co">#-----------------------------</span></span>
+<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a><span class="co"># Color scales</span></span>
+<span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a><span class="co">#-----------------------------</span></span>
+<span id="cb15-4"><a href="#cb15-4" tabindex="-1"></a>price_scale <span class="ot">&lt;-</span> <span class="fu">tm_scale_intervals</span>(<span class="at">values =</span> <span class="st">&quot;magma&quot;</span>, <span class="at">style =</span> <span class="st">&quot;jenks&quot;</span>)</span>
+<span id="cb15-5"><a href="#cb15-5" tabindex="-1"></a>elev_scale  <span class="ot">&lt;-</span> <span class="fu">tm_scale_continuous</span>(<span class="at">values=</span><span class="st">&quot;pu_gn_div&quot;</span>,<span class="at">midpoint =</span> <span class="cn">NA</span>)</span>
+<span id="cb15-6"><a href="#cb15-6" tabindex="-1"></a></span>
+<span id="cb15-7"><a href="#cb15-7" tabindex="-1"></a><span class="co">#-----------------------------</span></span>
+<span id="cb15-8"><a href="#cb15-8" tabindex="-1"></a><span class="co"># Final  map</span></span>
+<span id="cb15-9"><a href="#cb15-9" tabindex="-1"></a><span class="co">#-----------------------------</span></span>
+<span id="cb15-10"><a href="#cb15-10" tabindex="-1"></a><span class="co"># turn off interactive</span></span>
+<span id="cb15-11"><a href="#cb15-11" tabindex="-1"></a><span class="fu">tmap_mode</span>(<span class="st">&quot;plot&quot;</span>) </span>
+<span id="cb15-12"><a href="#cb15-12" tabindex="-1"></a></span>
+<span id="cb15-13"><a href="#cb15-13" tabindex="-1"></a><span class="co"># and plot</span></span>
+<span id="cb15-14"><a href="#cb15-14" tabindex="-1"></a><span class="fu">tm_shape</span>(elevation) <span class="sc">+</span> <span class="co"># Elevation, plotted as a raster</span></span>
+<span id="cb15-15"><a href="#cb15-15" tabindex="-1"></a>  <span class="fu">tm_raster</span>(</span>
+<span id="cb15-16"><a href="#cb15-16" tabindex="-1"></a>    <span class="at">col.scale  =</span> elev_scale,</span>
+<span id="cb15-17"><a href="#cb15-17" tabindex="-1"></a>    <span class="at">col_alpha  =</span> <span class="fl">0.9</span>,</span>
+<span id="cb15-18"><a href="#cb15-18" tabindex="-1"></a>    <span class="at">col.legend =</span> <span class="fu">tm_legend</span>(<span class="st">&quot;??????&quot;</span>)</span>
+<span id="cb15-19"><a href="#cb15-19" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb15-20"><a href="#cb15-20" tabindex="-1"></a><span class="fu">tm_shape</span>(railways) <span class="sc">+</span> <span class="co"># Railways, plotted as lines</span></span>
+<span id="cb15-21"><a href="#cb15-21" tabindex="-1"></a>  <span class="fu">tm_lines</span>(</span>
+<span id="cb15-22"><a href="#cb15-22" tabindex="-1"></a>    <span class="at">col_alpha  =</span> <span class="fl">0.9</span>,</span>
+<span id="cb15-23"><a href="#cb15-23" tabindex="-1"></a>    <span class="at">lty        =</span> <span class="st">&quot;dashed&quot;</span>,</span>
+<span id="cb15-24"><a href="#cb15-24" tabindex="-1"></a>    <span class="at">lwd        =</span> <span class="dv">4</span>,</span>
+<span id="cb15-25"><a href="#cb15-25" tabindex="-1"></a>    <span class="at">col        =</span> <span class="st">&quot;blue4&quot;</span>,</span>
+<span id="cb15-26"><a href="#cb15-26" tabindex="-1"></a>    <span class="at">col.legend =</span> <span class="fu">tm_legend</span>(<span class="st">&quot;Huh??&quot;</span>)</span>
+<span id="cb15-27"><a href="#cb15-27" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb15-28"><a href="#cb15-28" tabindex="-1"></a><span class="fu">tm_shape</span>(house_sf) <span class="sc">+</span>  <span class="co"># Houses, plotted as dots.</span></span>
+<span id="cb15-29"><a href="#cb15-29" tabindex="-1"></a>  <span class="fu">tm_dots</span>(</span>
+<span id="cb15-30"><a href="#cb15-30" tabindex="-1"></a>    <span class="at">fill        =</span> <span class="st">&quot;House.Price&quot;</span>,</span>
+<span id="cb15-31"><a href="#cb15-31" tabindex="-1"></a>    <span class="at">size        =</span> <span class="fl">1.4</span>,</span>
+<span id="cb15-32"><a href="#cb15-32" tabindex="-1"></a>    <span class="at">fill.scale  =</span> price_scale,</span>
+<span id="cb15-33"><a href="#cb15-33" tabindex="-1"></a>    <span class="at">fill.legend  =</span> <span class="fu">tm_legend</span>(<span class="st">&quot;Something about houses?&quot;</span>)</span>
+<span id="cb15-34"><a href="#cb15-34" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb15-35"><a href="#cb15-35" tabindex="-1"></a><span class="fu">tm_basemap</span>(<span class="at">server =</span> <span class="st">&quot;CartoDB.Positron&quot;</span>)</span></code></pre></div>
+<p><strong>YOUR TASK</strong>. Make a new code chunk and starting with
+my code above, improve this map!</p>
+<p><strong>Essentially - Make a final map that maps the house.price
+column with the CORRECT UNITS, in a way your (color blind) friend would
+love.</strong></p>
+<ul>
+<li>You need to add in the commands to plot roads (hint, copy the
+railway one)</li>
+<li>You can adjust to your old settings from week 1..</li>
+<li>You can adjust the transparency of layers using alpha.</li>
+<li>If you don’t want to use the gui to pick palettes google
+color.brewer in R and viridis in R for some names.</li>
+</ul>
+<p>For the 100% show me something new, see if you can get your new layer
+to plot too.</p>
+<p><br><br></p>
+<p>Here is my best attempt so far.</p>
 <hr />
 <p><br><br></p>
 </div>
