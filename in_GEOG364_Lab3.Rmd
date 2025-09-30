@@ -1139,6 +1139,8 @@ tm_basemap(server = "CartoDB.Positron")
 ```
 
 
+<br><br>
+
 **YOUR TASK**.  Make a new code chunk and starting with my code above, improve this map!
 
  
@@ -1203,34 +1205,73 @@ tm_basemap(server = "CartoDB.Positron")
 
 ### Questions from your friend
 
-Units
 
-Domain
+#### Q1. Unit Conversion
 
-Walking north???
+Your friend is  concerned about the units of your house.price column and isn't sure what they mean. When they looked at the summary, it said the mean of house.price was `r round(mean(house$House.Price,na.rm=TRUE))`.  When they went to the webpage for the dataset, they found this for the price column. 
 
+![](./index_images/im_L03_PriceCol.png)
 
+They came back with a skeptical question:
+*“Wait… so a house only costs $37.50?? That can’t be right!”*
 
-**STEP 4** - Explain what you did <br>
+<br><br>
 
-Your friend is interested in the coding process!  Explain to them in CLEAR langauge exactly what you just did and what the elevation summary means. 
+**STEP 1** **Write a response to your friend.** 
+
+Explain what the number actually means — including the units — and clear up the confusion. As part of your answer, explain what this does and doesn’t allow you to do in your analysis. For example:
+
+ - Can you compare prices of huge houses vs small apartments?
+ - What kind of comparisons are fair using this house.price column?
  
+*HINT, if you didn't realise this until now, you have time to go back and edit your week 1 report.......*
+
+<br><br>
+
+**STEP 2, Convert to US dollars per square foot.
+
+We can easily do basic maths in R.  For example, this code will take the House.Price column of the house data, divide each value by 10 and multiply each value by 2. Then it saves the answer as a new column in the house data called DrG. 
+
+```{r}
+
+# You can call columns whatever you like!
+house$DrG <- house$House.Price / 10 * 2
+
+```
 
 
+<br> 
+
+**Based on this, convert the house.price data from `10000*NTW Dollars per ping` to US Dollars per square foot**.  For example here are the steps broken down.
+
+ - [1] Make a new code chunk  <br><br>
+ 
+ - [2] Multiply the house.price column by 10000 (just like I did above) to go from `10000NTW Dollars per ping` to just `NTWDollars per ping` and save as a new column, <br><br>
+ 
+ - [3] Google Taiwan Dollar to USD conversion and use this to edit your code to calculate the house.price data in US Dollars per ping.
+ 
+ - [4] Google "convert ping to square foot" and use this to edit your code to calculate the house.price data in US Dollars per square food. <br><br>
+ 
+<br><br>
+
+**STEP 3, Summarise
+
+Use the summary command compare the house.price column and your new one.  Compare it to cities like New York, or State College for your friend (google!)
+
+<br><br>
 
 ------------------------------------------------------------------------
 
 ### Your reflections
 
+Based on all of the above, write a paragraph that summarises your advice to your friend about what seems to impact house prices in New Taipei, and the spatial distribution of prices across the neighbourhood.  
+
+In a second paragraph, summarise the limitations and strengths of your data and what you would do if you had more time (WITH THIS DATASET) to give them more advice. 
 
 
-
-
-
+<br><br>
 
 ------------------------------------------------------------------------
-
-
 
 
 
