@@ -35,6 +35,7 @@ library(plotly)
 library(tmap)
 library(viridis)
 library(elevatr)
+library(osmdata)
 
 # Data
 house  <- read_excel("./index_data/Lab03_house.xlsx")
@@ -956,12 +957,11 @@ Then type/copy this code EXACTLY. Making sure to ALSO adjust the code chunk opti
 
 ![](./index_images/im_L03_ElevCodeChunk.png)
 
-```{r, results='hide', include=FALSE, eval=FALSE}
+```{r, results='hide', include=FALSE}
 #---------------------------------------------------------
 # Get elevation data
 #---------------------------------------------------------
 elevation   <- get_elev_raster(house_sf, z=14, crop="locations")
-boundingbox <- st_bbox(elevation)
 ```
 
 <br><br>
@@ -994,7 +994,71 @@ OPTIONAL, for a detailed tutorial, see <https://rspatialdata.github.io/elevation
 
 ### Add Open Street Map Data
 
-In the last year or so, it has also become possible to access the VAST amount of d
+In the last year or so, it has also become possible to access the VAST amount of data from Open Street Map. It's a little bit clunky to access, but with ChatGPT (or your AI of choice) helping, its not too hard.
+
+**STEP 1** - Check the library <br>
+
+Go to the library code chunk. Make sure `library(osmdata)` exists and that the code chunk runs.
+
+ - If it's not there, type it in and press run (check the spelling!)
+ - If it says the package doesn't exist, go to the Packages tab, and click install to go to the app store. Install, then re-run the library code chunk.
+ 
+<br><br>
+ 
+**STEP 2** - Download railways for your area <br>
+
+Scroll back to the end of your report (maybe make a new sub-section..) and make a new code chunk.
+
+Today we are going to download railway data, but know that you can download ANYTHING you can find on open street map (from fire stations, to cyber cafes, to graffiti locations).
+
+Type/copy this code EXACTLY to get the railway data. Now run the code chunk, it might take a little while to run.  It will ONLY work if you have run the elevation code chunk above.
+
+```{r}
+#---------------------------------------------------------
+# Get Railway tracks as lines from open street map
+#---------------------------------------------------------
+boundingbox <- st_bbox(elevation)
+
+all_raildata <- opq(bbox = boundingbox) |>
+  add_osm_feature(
+    key = "railway",
+    value = c("rail", "light_rail", "subway", "tram", "narrow_gauge", "monorail")) |>
+  osmdata_sf()
+
+railways <- all_raildata$osm_lines 
+
+```
+
+<br><br>
+
+**STEP 3** - Edit the code to download major roads <br>
+
+Now, I want you to edit this command to download major road data.  To do this.
+
+ A. Make a new code chunk and copy/paste the full railway command into it (everything above) <br><br>
+ B. Everytime the code mentions rail in the variable names etc, switch to road.<br><br>
+ C. Instead of `key = "railway"` , you need `key = "highway"`<br><br>
+ D. Instead of `value = c("rail", "light_rail", "subway", "tram", "narrow_gauge", "monorail")) |>`<br>, you need `value = c("primary")) |>`<br><br>
+ E. Run and it shouldn't give an error. <br><br>
+ 
+ <br><br>
+
+**STEP 4** - Explain <br>
+
+Your friend is also curious about this code.  
+
+ - Tell them what OpenStreetMap is (and why it's cool) - use google!
+ - Explain this bit of the code e.g. what are the keys and values...  
+ <br> `add_osm_feature(
+    key = "railway", value = c("rail", "light_rail", "subway", "tram", "narrow_gauge", "monorail")) |>`
+    
+These might help, and you are welcome to use AI to help, but you need to write your answer in your own words.  
+
+ - https://wiki.openstreetmap.org/wiki/Tags  
+ - https://wiki.openstreetmap.org/wiki/Map_features 
+ - https://taginfo.openstreetmap.org/ 
+
+<br><br>
 
 
 ------------------------------------------------------------------------

@@ -1410,7 +1410,54 @@ class="uri">https://rspatialdata.github.io/elevation.html</a></p>
 <div id="add-open-street-map-data" class="section level3">
 <h3>Add Open Street Map Data</h3>
 <p>In the last year or so, it has also become possible to access the
-VAST amount of d</p>
+VAST amount of data from Open Street Map. It’s a little bit clunky to
+access, but with ChatGPT (or your AI of choice) helping, its not too
+hard.</p>
+<p><strong>STEP 1</strong> - Check the library <br></p>
+<p>Go to the library code chunk. Make sure <code>library(osmdata)</code>
+exists and that the code chunk runs.</p>
+<ul>
+<li>If it’s not there, type it in and press run (check the
+spelling!)</li>
+<li>If it says the package doesn’t exist, go to the Packages tab, and
+click install to go to the app store. Install, then re-run the library
+code chunk.</li>
+</ul>
+<p><br><br></p>
+<p><strong>STEP 2</strong> - Download railways for your area <br></p>
+<p>Scroll back to the end of your report (maybe make a new
+sub-section..) and make a new code chunk.</p>
+<p>Today we are going to download railway data, but know that you can
+download ANYTHING you can find on open street map (from fire stations,
+to cyber cafes, to graffiti locations).</p>
+<p>Type/copy this code EXACTLY to get the railway data. Now run the code
+chunk, it might take a little while to run. It will ONLY work if you
+have run the elevation code chunk above.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="co">#---------------------------------------------------------</span></span>
+<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a><span class="co"># Get Railway tracks as lines from open street map</span></span>
+<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a><span class="co">#---------------------------------------------------------</span></span>
+<span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a>boundingbox <span class="ot">&lt;-</span> <span class="fu">st_bbox</span>(elevation)</span>
+<span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a></span>
+<span id="cb14-6"><a href="#cb14-6" tabindex="-1"></a>all_raildata <span class="ot">&lt;-</span> <span class="fu">opq</span>(<span class="at">bbox =</span> boundingbox) <span class="sc">|&gt;</span></span>
+<span id="cb14-7"><a href="#cb14-7" tabindex="-1"></a>  <span class="fu">add_osm_feature</span>(</span>
+<span id="cb14-8"><a href="#cb14-8" tabindex="-1"></a>    <span class="at">key =</span> <span class="st">&quot;railway&quot;</span>,</span>
+<span id="cb14-9"><a href="#cb14-9" tabindex="-1"></a>    <span class="at">value =</span> <span class="fu">c</span>(<span class="st">&quot;rail&quot;</span>, <span class="st">&quot;light_rail&quot;</span>, <span class="st">&quot;subway&quot;</span>, <span class="st">&quot;tram&quot;</span>, <span class="st">&quot;narrow_gauge&quot;</span>, <span class="st">&quot;monorail&quot;</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb14-10"><a href="#cb14-10" tabindex="-1"></a>  <span class="fu">osmdata_sf</span>()</span>
+<span id="cb14-11"><a href="#cb14-11" tabindex="-1"></a></span>
+<span id="cb14-12"><a href="#cb14-12" tabindex="-1"></a>railways <span class="ot">&lt;-</span> all_raildata<span class="sc">$</span>osm_lines </span></code></pre></div>
+<p><br><br></p>
+<p><strong>STEP 3</strong> - Edit the code to download major roads
+<br></p>
+<p>Now, I want you to edit this command to download major road data. To
+do this.</p>
+<p>A. Make a new code chunk and copy/paste the full railway command into
+it (everything above) <br><br> B. Everytime the code mentions rail in
+the variable names etc, switch to road.<br><br> C. Instead of
+<code>key = "railway"</code> , you need
+<code>key = "highway"</code><br><br> D. Instead of
+<code>value = c("rail", "light_rail", "subway", "tram", "narrow_gauge", "monorail")) |&gt;</code><br>,
+you need <code>value = c("primary")) |&gt;</code><br><br> E. Run and it
+shouldn’t give an error. <br><br></p>
 <hr />
 <p><br><br></p>
 </div>
