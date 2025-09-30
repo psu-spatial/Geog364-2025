@@ -1155,7 +1155,7 @@ For the 100% show me something new, see if you can get your new layer to plot to
 
 Here is my best attempt so far.
 
-```{r, include=FALSE, fig.show="true"}
+```{r, echo=FALSE,fig.show=TRUE}
 #-----------------------------
 # Color scales
 #-----------------------------
