@@ -34,6 +34,7 @@ library(sf)
 library(plotly)
 library(tmap)
 library(viridis)
+library(elevatr)
 
 # Data
 house  <- read_excel("./index_data/Lab03_house.xlsx")
@@ -930,22 +931,52 @@ So think about what sub-headings might help. You could:
 
 <br><br>
 
-### Adding Raster Elevation data
+### Add Raster Elevation data
 
 OK! Now your reports are back in shape, lets continue to add more information about your Taiwan example. 
 
-We often want to include raster information about
+In our world of big data, we have access to a LOT of raster (gridded) datasets. Today you will download fine scale elevation data for the whole region. The code to do this is very easy from the elevatr package:
 
+<br><br>
 
+**STEP 1** - Check the library <br>
 
+Go to the library code chunk. Make sure `library(elevatr)` exists and that the code chunk runs.
 
+ - If it's not there, type it in and press run (check the spelling!)
+ - If it says the package doesn't exist, go to the Packages tab, and click install to go to the app store. Install, then re-run the library code chunk.
+ 
+<br><br>
+ 
+**STEP 2** - Download the elevation for your area <br>
 
+Scroll back to the end of your report (maybe make a new sub-section..) and make a new code chunk.
+
+Then type/copy this code EXACTLY. Making sure to ALSO adjust the code chunk options at the top! If you miss the results='hide', your final report will be full of 100 "elevation downloading warning messages".  Now run the code chunk, it might take a little while to run.
+
+![](./index_images/im_L03_ElevCodeChunk.png)
+
+```{r, results='hide', include=FALSE}
+#---------------------------------------------------------
+# Get elevation data
+#---------------------------------------------------------
+elevation   <- get_elev_raster(house_sf, z=14, crop="locations")
+boundingbox <- st_bbox(elevation)
+```
+
+<br><br>
+
+**STEP 3** - Look at the data <br>
+
+Make a new code chunk and just type in the word elevation and run the chunk. It should give you a summary of your elevation dataset.  
+
+Also make a very basic plot by typing plot(elevation) and running the code chunk. You will explain this later on and make better maps!
 
 ------------------------------------------------------------------------
 
 <br><br>
 
-### Adding Open Street map
+### Add Open Street Map Data
 
 
 
@@ -967,9 +998,18 @@ We often want to include raster information about
 
 ### Questions from your friend
 
+Units
+
+Domain
+
+Walking north???
 
 
 
+**STEP 4** - Explain what you did <br>
+
+Your friend is interested in the coding process!  Explain to them in CLEAR langauge exactly what you just did and what the elevation summary means. 
+ 
 
 
 

@@ -1351,16 +1351,46 @@ Taiwan</li>
 <p><br><br></p>
 </div>
 </div>
-<div id="adding-raster-elevation-data" class="section level3">
-<h3>Adding Raster Elevation data</h3>
+<div id="add-raster-elevation-data" class="section level3">
+<h3>Add Raster Elevation data</h3>
 <p>OK! Now your reports are back in shape, lets continue to add more
 information about your Taiwan example.</p>
-<p>We often want to include raster information about</p>
+<p>In our world of big data, we have access to a LOT of raster (gridded)
+datasets. Today you will download fine scale elevation data for the
+whole region. The code to do this is very easy from the elevatr
+package:</p>
+<p><br><br></p>
+<p><strong>STEP 1</strong> - Check the library <br></p>
+<p>Go to the library code chunk. Make sure <code>library(elevatr)</code>
+exists and that the code chunk runs.</p>
+<ul>
+<li>If it’s not there, type it in and press run (check the
+spelling!)</li>
+<li>If it says the package doesn’t exist, go to the Packages tab, and
+click install to go to the app store. Install, then re-run the library
+code chunk.</li>
+</ul>
+<p><br><br></p>
+<p><strong>STEP 2</strong> - Download the elevation for your area
+<br></p>
+<p>Scroll back to the end of your report (maybe make a new
+sub-section..) and make a new code chunk.</p>
+<p>Then type/copy this code EXACTLY. Making sure to ALSO adjust the code
+chunk options at the top! If you miss the results=‘hide’, your final
+report will be full of 100 “elevation downloading warning messages”. Now
+run the code chunk, it might take a little while to run.</p>
+<p><img src="index_images/im_L03_ElevCodeChunk.png" /></p>
+<p><br><br></p>
+<p><strong>STEP 3</strong> - Look at the data <br></p>
+<p>Make a new code chunk and just type in the word elevation and run the
+chunk. It should give you a summary of your elevation dataset.</p>
+<p>Also make a very basic plot by typing plot(elevation) and running the
+code chunk. You will explain this later on and make better maps!</p>
 <hr />
 <p><br><br></p>
 </div>
-<div id="adding-open-street-map" class="section level3">
-<h3>Adding Open Street map</h3>
+<div id="add-open-street-map-data" class="section level3">
+<h3>Add Open Street Map Data</h3>
 <hr />
 <p><br><br></p>
 </div>
@@ -1371,6 +1401,13 @@ information about your Taiwan example.</p>
 </div>
 <div id="questions-from-your-friend" class="section level3">
 <h3>Questions from your friend</h3>
+<p>Units</p>
+<p>Domain</p>
+<p>Walking north???</p>
+<p><strong>STEP 4</strong> - Explain what you did <br></p>
+<p>Your friend is interested in the coding process! Explain to them in
+CLEAR langauge exactly what you just did and what the elevation summary
+means.</p>
 <hr />
 </div>
 <div id="your-reflections" class="section level3">
