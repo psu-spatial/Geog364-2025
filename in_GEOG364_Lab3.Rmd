@@ -1203,10 +1203,7 @@ tm_basemap(server = "CartoDB.Positron")
 
 <br><br>
 
-### Questions from your friend
-
-
-#### Q1. Unit Conversion
+### A question from your friend
 
 Your friend is  concerned about the units of your house.price column and isn't sure what they mean. When they looked at the summary, it said the mean of house.price was `r round(mean(house$House.Price,na.rm=TRUE))`.  When they went to the webpage for the dataset, they found this for the price column. 
 
@@ -1217,18 +1214,18 @@ They came back with a skeptical question:
 
 <br><br>
 
-**STEP 1** **Write a response to your friend.** 
+**STEP 1. Write a response to your friend.** 
 
 Explain what the number actually means — including the units — and clear up the confusion. As part of your answer, explain what this does and doesn’t allow you to do in your analysis. For example:
 
  - Can you compare prices of huge houses vs small apartments?
  - What kind of comparisons are fair using this house.price column?
  
-*HINT, if you didn't realise this until now, you have time to go back and edit your week 1 report.......*
+*HINT, if you didn't realise this until now, you have time to go back and edit your work from last week*
 
 <br><br>
 
-**STEP 2, Convert to US dollars per square foot.
+**STEP 2, Convert to US dollars per square foot**.
 
 We can easily do basic maths in R.  For example, this code will take the House.Price column of the house data, divide each value by 10 and multiply each value by 2. Then it saves the answer as a new column in the house data called DrG. 
 
@@ -1242,7 +1239,7 @@ house$DrG <- house$House.Price / 10 * 2
 
 <br> 
 
-**Based on this, convert the house.price data from `10000*NTW Dollars per ping` to US Dollars per square foot**.  For example here are the steps broken down.
+**Based on this, convert the house.price data from** `10000*NTW Dollars per ping` **to US Dollars per square foot**.  For example here are the steps broken down.
 
  - [1] Make a new code chunk  <br><br>
  
@@ -1254,7 +1251,7 @@ house$DrG <- house$House.Price / 10 * 2
  
 <br><br>
 
-**STEP 3, Summarise
+**STEP 3, Summarise**
 
 Use the summary command compare the house.price column and your new one.  Compare it to cities like New York, or State College for your friend (google!)
 
@@ -1318,6 +1315,8 @@ knitr::include_graphics("./index_images/pg_364Lab1_Basics_2021_fig1.png")
 # Grading rubric
 
 ## Lab 3
+
+
 
 To come
 
