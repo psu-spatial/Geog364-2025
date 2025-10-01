@@ -1,5 +1,5 @@
 ---
-title: "Lab 3:"
+title: "Lab 3: Spatial Basics"
 output:
   html_document:
     css: projectlab.css
@@ -15,6 +15,61 @@ editor_options:
 
 
 ```{r, include=FALSE,echo=FALSE, warning=FALSE, message=FALSE}
+
+## TO DO FOR FUTURE VERSIONS. MERGE THE MAPPING STUFF. 
+## ADD IN THE SCATTERPLOTS e.g. walking North from STAT462 2025
+## MLR?? 
+
+
+# Make structure similar to this?
+#------------------------------------------
+#  The problem
+#------------------------------------------
+#  Read and prepare the data
+#  Read into R (read_excel) and check structure
+#  Clean and rename columns if needed
+#  Convert to spatial object (st_as_sf, crs = 4326)
+#------------------------------------------
+# Define the study and data context
+#------------------------------------------
+# State the decision problem (friend/boss house-buying question)
+# Define the population of interest and discuss representativeness
+# Describe key variables and their units (response = House.Price). 
+# Inc Summary statistics and distribution of House.Price 
+# (mean, median, range, IQR – and histogram)
+# Note any data limitations (temporal coverage, sample bias, missing variables)
+# Discuss spatial fallacies/properties e.g. locational fallacy? (nope) etc etc
+#------------------------------------------
+# Add more data
+#------------------------------------------
+# Elevation raster (get_elev_raster)
+#------------------------------------------
+# Get elevation
+#------------------------------------------
+# OpenStreetMap
+#------------------------------------------
+# OpenStreetMap features: railway lines, stations, parks, roads
+#------------------------------------------
+# Spatial analysis and mapping
+#------------------------------------------
+# Quick interactive map of points coloured by price (tmap, qtm)
+# Main map from my example
+#------------------------------------------
+# Describe spatial patterns
+#------------------------------------------
+# Simple linear regression (price ~ latitude)
+# Use maps to explain the scatterplots e.g. should I just walk north
+#------------------------------------------
+# Conclusions
+#------------------------------------------
+# What processes are happening? Summarise main drivers of price from combined evidence 
+# Discuss practical implications for a house-buyer
+```
+
+
+
+```{r, include=FALSE,echo=FALSE, warning=FALSE, message=FALSE}
+
 knitr::opts_chunk$set(eval = TRUE, 
                       fig.show = "hide", 
                       message = FALSE, 
