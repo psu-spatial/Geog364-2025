@@ -100,7 +100,7 @@ This lab guide follows and supplements the material presented in Chapters 4 and 
 
 ### Create a project & get the data
 
-There are two options here depending on whether you are using R-studio on the website (posit cloud) or your own computer (R-Desktop). If you are using a lab computerm choose the R-Desktop route.
+There are two options here depending on whether you are using R-studio on the website (posit cloud) or your own computer (R-Desktop). If you are using a lab computer choose the R-Desktop route.
 
 #### Option 1. Posit Cloud Website Users
 
@@ -450,7 +450,7 @@ For example, consider the figure below, where I have plotted the same data at tw
 
 Your sample is must be representative of your population, so ALL THE STATISTICS TESTS assume that there is an equal chance that any location within your domain could contain data.
 
-If you make your domain too big, your data will appear to be clustered, but in fact ut might mean you simply didn’t collect data in part of the domain. For example, if you were asked to assess if the dots in case A and B below were arranged uniformly or were clustered together, you would have very different outcomes, despite the dots themselves being identical.
+If you make your domain too big, your data will appear to be clustered, but in fact it might mean you simply didn’t collect data in part of the domain. For example, if you were asked to assess if the dots in case A and B below were arranged uniformly or were clustered together, you would have very different outcomes, despite the dots themselves being identical.
 
 ![](index_images/pg_Lab4_Domain2.png){width="100%"}
 
@@ -502,11 +502,11 @@ I know they must be from two out of these four experiments:
 
 * **COVID-19 Clusters in Central Pennsylvania**. <br> The local government has asked for help identifying clusters of COVID-19 cases across central PA. The aim is to prioritize mobile testing units and health messaging in affected towns.
 
-* **Mediterranean Vineyard Clusters**. <br> An international agricultural group is funding a study of vineyard clustering in two Mediterranean islands, aiming to evaluate whether specific microclimates or land use policies are influencing planting decisions.
+* **Mediterranean Vineyard Clusters**. <br> An international agricultural group is funding a study of vineyard clustering in two Mediterranean islands, aiming to evaluate whether specific micro-climates or land use policies are influencing planting decisions.
 
-* **Smooth-Hound Shark Hotspots**. <br> You are working with the regional fishing board to identify hotspots for Smooth-Hound Shark activity. The goal is to define seasonal no-fishing zones to support sustainable stock management. The data represents tagged shark locations in the last month.
+* **Smooth-Hound Shark Hot-spots**. <br> You are working with the regional fishing board to identify hot-spots for Smooth-Hound Shark activity. The goal is to define seasonal no-fishing zones to support sustainable stock management. The data represents tagged shark locations in the last month.
 
-* **Polar Bear Cluster Study in the Arctic**. <br> PSU ecologists are investigating polar bear movement patterns across the Arctic. Using GPS collar data, they are analyzing seasonal hotspots for foraging and denning, particularly in response to changing sea ice patterns.
+* **Polar Bear Cluster Study in the Arctic**. <br> PSU ecologists are investigating polar bear movement patterns across the Arctic. Using GPS collar data, they are analyzing seasonal hot-spots for foraging and denning, particularly in response to changing sea ice patterns.
 
 <br>
 
@@ -565,7 +565,7 @@ I know they must be from two out of these four experiments:
 
 # Understanding Distance
 
-In this section, we'll explore different ways to assess distance and proximity using OpenStreetMap (OSM) data. We'll focus on fire station locations in Chicago and learn how to map them, extract relevant features, calculate distances, and define neighbourhoods.
+In this section, we'll explore different ways to assess distance and proximity using OpenStreetMap (OSM) data. We'll focus on fire station locations in Chicago and learn how to map them, extract relevant features, calculate distances, and define neighborhoods.
 
 <br>
 
@@ -576,7 +576,6 @@ In this section, we'll explore different ways to assess distance and proximity u
 <details>
 <summary>**Expand and complete!**</summary>
 <br>
-
 
 -   This code will load the locations of all the Fire-Stations in Chicago into R. Copy carefully into your report and run.
 
@@ -639,11 +638,10 @@ fire_station_buildings <- fire_stationdata$osm_polygons
 
 -   It's clear our polygons are VERY small compared to the overall area. And in terms of the topic, I don't really care how big the fire station buildings are, just that they exist. So let's choose the MEAN CENTRE and convert it into points.\
     \
-    As we discussed in class, there are a few ways to do this. Given that we don't really care about the shape of our buildings, lets use st_centroid, which will find the "centre of mass" of each building.
+    As we discussed in class, there are a few ways to do this. Given that we don't really care about the shape of our buildings, lets use st_centroid, which will find the "center of mass" of each building.
 
     \
-    \
-    ![](index_images/pg_lab4_MeanCentre.png)
+![](index_images/pg_lab4_MeanCentre.png)
 
 -   Add this command into your lab script and run. This will convert the fire station data into points. It might give you a warning about geometries, ignore it!
 
@@ -666,7 +664,7 @@ You should see something like this:
 
 9.  Closest stations challenge
 
-Now we have the fire station locations, we want to consider "neighbourhood".  Which fire-stations are *closest* to one another and what does "closest" even mean?
+Now we have the fire station locations, we want to consider "neighborhood".  Which fire-stations are *closest* to one another and what does "closest" even mean?
 
 This is a genuine issue faced by emergency authorities. For example, it is needed when considering which stations deserve new vehicles, or where to put new stations.
 
@@ -674,16 +672,10 @@ Have a look at this report, which explores the issue for Columbus Ohio - and whi
 
 <br>
 
-10. Measuing distance
-
-<details>
-<summary>**Expand for instructions**</summary>
-<br>
+10. Measuring distance
 
 In your report, come up with AT LEAST three different ways that you could measure the 'closeness' or 'distance' between fire-stations. Use the reading above to justify your answers. We will also talk about this in class.
 
-
-<br>
 
 ## Check-in
 
@@ -702,7 +694,7 @@ Your report & R-Studio should look something like the screenshot below (it might
 
 |                                                                                                                                                                                                                   |                                                      |
 |------------------------|----------------------------------------|
-| <br><br> _Chicago has a set internal neighbourhoods, arranged informally into "sides" e.g. "Northside", "SouthSide"... These neighbourhood are not federally recognized, but they are used by the city and by local people.  So.. we can access this data via downloading it from Chicago's City Data Portal._ <br><br>Let's subset to a smaller dataset, because I know that the people on POSIT-Cloud have been struggling.  Specifically, we are going to focus on South East Chicago. | [![Chicago's neighbourhoods](index_images/pg_lab4_ChicagoSides.png){width="800"}](https://commons.wikimedia.org/wiki/File:Chicago_community_areas_map.svg) |
+| <br><br> _Chicago has a set internal neighborhoods, arranged informally into "sides" e.g. "Northside", "SouthSide"... These neighborhood are not federally recognized, but they are used by the city and by local people.  So.. we can access this data via downloading it from Chicago's City Data Portal._ <br><br>Let's subset to a smaller dataset, because I know that the people on POSIT-Cloud have been struggling.  Specifically, we are going to focus on South East Chicago. | [![Chicago's neighbourhoods](index_images/pg_lab4_ChicagoSides.png){width="800"}](https://commons.wikimedia.org/wiki/File:Chicago_community_areas_map.svg) |
 
 
 
@@ -804,7 +796,7 @@ qtm(CommunityAreas_SE)
   
 ```{r, eval=FALSE}
 
-# Subset the firestations
+# Subset the fire stations
  fire_station_local <- st_intersection(fire_stations, 
                                        CommunityAreas_SE)
 
@@ -842,7 +834,7 @@ I want to check your understanding of what we have just done.  So after the code
 
 ## Measuring distance
 
-As discussed in class, there are several ways we can measure distance using R-Studio.  Here, we are going to explore cartesian distance (e.g. "as the crow flies" or straight line distance) and driving distance using Open Street map.
+As discussed in class, there are several ways we can measure distance using R-Studio.  Here, we are going to explore Cartesian distance (e.g. "as the crow flies" or straight line distance) and driving distance using Open Street map.
 
 <br>
 
@@ -854,7 +846,7 @@ As discussed in class, there are several ways we can measure distance using R-St
 
 The code below will calculate the straight-line and driving distance between two locations in our dataset.
 
- - We can calculate the straight-line distance between two objects using the st_distance() command.  This defaults to calculating distances in metres, so I often change it to km.
+ - We can calculate the straight-line distance between two objects using the st_distance() command.  This defaults to calculating distances in meters, so I often change it to km.
 
  - We can calculate driving distances (and routes) between two objects using the osrmRoute() command. You can also choose walking or cycling.
  
@@ -862,12 +854,12 @@ The code below will calculate the straight-line and driving distance between two
  
 **YOU NEED A NEW PACKAGE! <br> GO TO THE PACKAGES TAB INSTALL/DOWNLOAD THE `osrm` package. <br>THEN SCROLL UP TO YOUR LIBRARY CODE CHUNK IN YOUR REPORT. ADD `library(osrm)` AND RUN THE CODE CHUNK. THEN SCROLL BACK DOWN TO THE END OF YOUR REPORT**  
 
- - Copy these code chunks into your report, understand what they are doing and run them. You should see that the cartesian distance is ~2.19km and the driving distance ~3.04km, alongside a map.
+ - Copy these code chunks into your report, understand what they are doing and run them. You should see that the Cartesian distance is ~2.19km and the driving distance ~3.04km, alongside a map.
  
 
 ```{r, eval=FALSE}
 # Choose which locations you want to look at the distance between
-# In our case, we are choosing objects/rows from our firestation data.
+# In our case, we are choosing objects/rows from our fire station data.
 # They could be row numbers you type manually or some sort of filter
 # I am showing you both examples
  
@@ -935,6 +927,7 @@ tm_shape(line_between) +
  - Justify why you chose those two stations in your lab report. (You don't have to be right, you just have to have some reasoning why you chose those two points).
 
 
+
 \
 
 ------------------------------------------------------------------------
@@ -983,11 +976,62 @@ knitr::include_graphics("./index_images/pg_364Lab1_Basics_2021_fig1.png")
 
 # Grading rubric
 
-## Lab 4
+-   **Submitting Rmd & HTML (20 pts)**
+    -   20: Both .Rmd and .html submitted
+    -   10:Only one file submitted
+
+<br>
+
+-   **General style (10 pts)**
+    -   10: Great style: \
+        *Easy to find answers; no library-loading printouts; no code warnings; YAML works*
+    -   8: Minor issues: \
+        *Occasional hard-to-find answers; library-loading text printed; missing table of contents*
+    -   6: Major issues: \
+        \*Hard to find answers; multiple code issues
+
+<br>
+
+-   **General writing (10 pts)**
+    -   10: Great writing: \
+        *Full sentences, you have written up what your code does in the report. You have used units where appropriate.*
+    -   8: Minor issues: \
+        *To complete*
+    -   6: Major issues: \
+        *To complete*
+
+<br>
+
+-   **Data Detective (20 pts). Sliding scale**
+    -   20: Exceptional \
+        *Code works. It's clear you understand and can communicate domain & fallacies. You chose the right experiments and your domain choice links with the scenario. I could use this as a detailed worked answer.*
+    -   16: Great work: \
+        *Code works, it's clear you understand and can communicate domain. You chose the right experiments and your domain choice links with the scenario. Slightly less nuance or less clear communication*
+    -   12: Reasonable attempt: \
+        *Code works and some attempt at explaining the ideas. Lots missing. It's clear how you worked out which scenario linked with each map.*
+    -   10: Minor attempt \
+        *Code works and some attempt at explaining the ideas. Lots missing.*
+    -   5: Any attempt
+
+<br>
+
+-   **OSM Setup, Mapping & Subsetting (20 pts). Sliding scale**
+    -   **20:** Exceptional: <br> *All steps correct, clean, and well-explained with accurate maps, code, answers.*
+    -   **15:** Reasonable attempt: <br> *Data loaded and mapped but with partial errors or unclear interpretation.*
+    -   10: Minor attempt \
+        *Code works and some attempt at explaining the ideas. Lots missing.*
+    -   5: Any attempt
+
+<br>
+
+-   **Measuring & Justifying Distance (20 pts) Sliding scale**
+    -   **20:** Exceptional: <br> *All steps correct, clean, and well-explained with accurate maps, code, answers.*
+    -   **15:** Reasonable attempt: <br> *Data loaded and mapped but with partial errors or unclear interpretation.*
+    -   10: Minor attempt \
+        *Code works and some attempt at explaining the ideas. Lots missing.*
+    -   5: Any attempt
 
 
-
-To come
 
 ## Overall
 

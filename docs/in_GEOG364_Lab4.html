@@ -511,7 +511,7 @@ lost).<br />
 <h3>Create a project &amp; get the data</h3>
 <p>There are two options here depending on whether you are using
 R-studio on the website (posit cloud) or your own computer (R-Desktop).
-If you are using a lab computerm choose the R-Desktop route.</p>
+If you are using a lab computer choose the R-Desktop route.</p>
 <div id="option-1.-posit-cloud-website-users" class="section level4">
 <h4>Option 1. Posit Cloud Website Users</h4>
 <details>
@@ -849,7 +849,7 @@ your domain, or all your statistical tests won’t work</strong>
 STATISTICS TESTS assume that there is an equal chance that any location
 within your domain could contain data.</p>
 <p>If you make your domain too big, your data will appear to be
-clustered, but in fact ut might mean you simply didn’t collect data in
+clustered, but in fact it might mean you simply didn’t collect data in
 part of the domain. For example, if you were asked to assess if the dots
 in case A and B below were arranged uniformly or were clustered
 together, you would have very different outcomes, despite the dots
@@ -914,16 +914,16 @@ and health messaging in affected towns.</p></li>
 <li><p><strong>Mediterranean Vineyard Clusters</strong>. <br> An
 international agricultural group is funding a study of vineyard
 clustering in two Mediterranean islands, aiming to evaluate whether
-specific microclimates or land use policies are influencing planting
+specific micro-climates or land use policies are influencing planting
 decisions.</p></li>
-<li><p><strong>Smooth-Hound Shark Hotspots</strong>. <br> You are
-working with the regional fishing board to identify hotspots for
+<li><p><strong>Smooth-Hound Shark Hot-spots</strong>. <br> You are
+working with the regional fishing board to identify hot-spots for
 Smooth-Hound Shark activity. The goal is to define seasonal no-fishing
 zones to support sustainable stock management. The data represents
 tagged shark locations in the last month.</p></li>
 <li><p><strong>Polar Bear Cluster Study in the Arctic</strong>. <br> PSU
 ecologists are investigating polar bear movement patterns across the
-Arctic. Using GPS collar data, they are analyzing seasonal hotspots for
+Arctic. Using GPS collar data, they are analyzing seasonal hot-spots for
 foraging and denning, particularly in response to changing sea ice
 patterns.</p></li>
 </ul>
@@ -1006,7 +1006,7 @@ choice.</li>
 <p>In this section, we’ll explore different ways to assess distance and
 proximity using OpenStreetMap (OSM) data. We’ll focus on fire station
 locations in Chicago and learn how to map them, extract relevant
-features, calculate distances, and define neighbourhoods.</p>
+features, calculate distances, and define neighborhoods.</p>
 <p><br></p>
 <div id="chicago-fire-set-up" class="section level2">
 <h2>Chicago fire set-up</h2>
@@ -1096,9 +1096,8 @@ CENTRE and convert it into points.<br />
 <br />
 As we discussed in class, there are a few ways to do this. Given that we
 don’t really care about the shape of our buildings, lets use
-st_centroid, which will find the “centre of mass” of each building.</p>
+st_centroid, which will find the “center of mass” of each building.</p>
 <p><br />
-<br />
 <img src="index_images/pg_lab4_MeanCentre.png" /></p></li>
 <li><p>Add this command into your lab script and run. This will convert
 the fire station data into points. It might give you a warning about
@@ -1124,7 +1123,7 @@ it.</li>
 <li>Closest stations challenge</li>
 </ol>
 <p>Now we have the fire station locations, we want to consider
-“neighbourhood”. Which fire-stations are <em>closest</em> to one another
+“neighborhood”. Which fire-stations are <em>closest</em> to one another
 and what does “closest” even mean?</p>
 <p>This is a genuine issue faced by emergency authorities. For example,
 it is needed when considering which stations deserve new vehicles, or
@@ -1136,18 +1135,12 @@ class="uri">https://storymaps.arcgis.com/stories/0037b3eb93904ed6aa00cbba424af0d
 It was completed by one of our MGIS alumni, Rob Ford.</p>
 <p><br></p>
 <ol start="10" style="list-style-type: decimal">
-<li>Measuing distance</li>
+<li>Measuring distance</li>
 </ol>
-<details>
-<summary>
-<strong>Expand for instructions</strong>
-</summary>
-<p><br></p>
 <p>In your report, come up with AT LEAST three different ways that you
 could measure the ‘closeness’ or ‘distance’ between fire-stations. Use
 the reading above to justify your answers. We will also talk about this
 in class.</p>
-<p><br></p>
 </div>
 <div id="check-in" class="section level2">
 <h2>Check-in</h2>
@@ -1166,12 +1159,12 @@ below (it might not be <em>identical</em> but it should be similar).</p>
 </colgroup>
 <tbody>
 <tr class="odd">
-<td><br><br> <em>Chicago has a set internal neighbourhoods, arranged
+<td><br><br> <em>Chicago has a set internal neighborhoods, arranged
 informally into “sides” e.g. “Northside”, “SouthSide”… These
-neighbourhood are not federally recognized, but they are used by the
-city and by local people. So.. we can access this data via downloading
-it from Chicago’s City Data Portal.</em> <br><br>Let’s subset to a
-smaller dataset, because I know that the people on POSIT-Cloud have been
+neighborhood are not federally recognized, but they are used by the city
+and by local people. So.. we can access this data via downloading it
+from Chicago’s City Data Portal.</em> <br><br>Let’s subset to a smaller
+dataset, because I know that the people on POSIT-Cloud have been
 struggling. Specifically, we are going to focus on South East
 Chicago.</td>
 <td><a
@@ -1276,7 +1269,7 @@ communities.</p></li>
 <li><p>In your lab report, make a new code chunk and copy/run this code
 to filter to these communities.</p></li>
 </ul>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="co"># Subset the firestations</span></span>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="co"># Subset the fire stations</span></span>
 <span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a> fire_station_local <span class="ot">&lt;-</span> <span class="fu">st_intersection</span>(fire_stations, </span>
 <span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>                                       CommunityAreas_SE)</span>
 <span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a></span>
@@ -1321,7 +1314,7 @@ data…)</em></li>
 <div id="measuring-distance" class="section level2">
 <h2>Measuring distance</h2>
 <p>As discussed in class, there are several ways we can measure distance
-using R-Studio. Here, we are going to explore cartesian distance
+using R-Studio. Here, we are going to explore Cartesian distance
 (e.g. “as the crow flies” or straight line distance) and driving
 distance using Open Street map.</p>
 <p><br></p>
@@ -1338,7 +1331,7 @@ between two locations in our dataset.</p>
 <ul>
 <li><p>We can calculate the straight-line distance between two objects
 using the st_distance() command. This defaults to calculating distances
-in metres, so I often change it to km.</p></li>
+in meters, so I often change it to km.</p></li>
 <li><p>We can calculate driving distances (and routes) between two
 objects using the osrmRoute() command. You can also choose walking or
 cycling.</p></li>
@@ -1351,11 +1344,11 @@ AND RUN THE CODE CHUNK. THEN SCROLL BACK DOWN TO THE END OF YOUR
 REPORT</strong></p>
 <ul>
 <li>Copy these code chunks into your report, understand what they are
-doing and run them. You should see that the cartesian distance is
+doing and run them. You should see that the Cartesian distance is
 ~2.19km and the driving distance ~3.04km, alongside a map.</li>
 </ul>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="co"># Choose which locations you want to look at the distance between</span></span>
-<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a><span class="co"># In our case, we are choosing objects/rows from our firestation data.</span></span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a><span class="co"># In our case, we are choosing objects/rows from our fire station data.</span></span>
 <span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a><span class="co"># They could be row numbers you type manually or some sort of filter</span></span>
 <span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a><span class="co"># I am showing you both examples</span></span>
 <span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a> </span>
@@ -1455,10 +1448,93 @@ Lab 4.<br></p></li>
 </div>
 <div id="grading-rubric" class="section level1">
 <h1>Grading rubric</h1>
-<div id="lab-4" class="section level2">
-<h2>Lab 4</h2>
-<p>To come</p>
-</div>
+<ul>
+<li><strong>Submitting Rmd &amp; HTML (20 pts)</strong>
+<ul>
+<li>20: Both .Rmd and .html submitted</li>
+<li>10:Only one file submitted</li>
+</ul></li>
+</ul>
+<p><br></p>
+<ul>
+<li><strong>General style (10 pts)</strong>
+<ul>
+<li>10: Great style:<br />
+<em>Easy to find answers; no library-loading printouts; no code
+warnings; YAML works</em></li>
+<li>8: Minor issues:<br />
+<em>Occasional hard-to-find answers; library-loading text printed;
+missing table of contents</em></li>
+<li>6: Major issues:<br />
+*Hard to find answers; multiple code issues</li>
+</ul></li>
+</ul>
+<p><br></p>
+<ul>
+<li><strong>General writing (10 pts)</strong>
+<ul>
+<li>10: Great writing:<br />
+<em>Full sentences, you have written up what your code does in the
+report. You have used units where appropriate.</em></li>
+<li>8: Minor issues:<br />
+<em>To complete</em></li>
+<li>6: Major issues:<br />
+<em>To complete</em></li>
+</ul></li>
+</ul>
+<p><br></p>
+<ul>
+<li><strong>Data Detective (20 pts). Sliding scale</strong>
+<ul>
+<li>20: Exceptional<br />
+<em>Code works. It’s clear you understand and can communicate domain
+&amp; fallacies. You chose the right experiments and your domain choice
+links with the scenario. I could use this as a detailed worked
+answer.</em></li>
+<li>16: Great work:<br />
+<em>Code works, it’s clear you understand and can communicate domain.
+You chose the right experiments and your domain choice links with the
+scenario. Slightly less nuance or less clear communication</em></li>
+<li>12: Reasonable attempt:<br />
+<em>Code works and some attempt at explaining the ideas. Lots missing.
+It’s clear how you worked out which scenario linked with each
+map.</em></li>
+<li>10: Minor attempt<br />
+<em>Code works and some attempt at explaining the ideas. Lots
+missing.</em></li>
+<li>5: Any attempt</li>
+</ul></li>
+</ul>
+<p><br></p>
+<ul>
+<li><strong>OSM Setup, Mapping &amp; Subsetting (20 pts). Sliding
+scale</strong>
+<ul>
+<li><strong>20:</strong> Exceptional: <br> <em>All steps correct, clean,
+and well-explained with accurate maps, code, answers.</em></li>
+<li><strong>15:</strong> Reasonable attempt: <br> <em>Data loaded and
+mapped but with partial errors or unclear interpretation.</em></li>
+<li>10: Minor attempt<br />
+<em>Code works and some attempt at explaining the ideas. Lots
+missing.</em></li>
+<li>5: Any attempt</li>
+</ul></li>
+</ul>
+<p><br></p>
+<ul>
+<li><strong>Measuring &amp; Justifying Distance (20 pts) Sliding
+scale</strong>
+<ul>
+<li><strong>20:</strong> Exceptional: <br> <em>All steps correct, clean,
+and well-explained with accurate maps, code, answers.</em></li>
+<li><strong>15:</strong> Reasonable attempt: <br> <em>Data loaded and
+mapped but with partial errors or unclear interpretation.</em></li>
+<li>10: Minor attempt<br />
+<em>Code works and some attempt at explaining the ideas. Lots
+missing.</em></li>
+<li>5: Any attempt</li>
+</ul></li>
+</ul>
 <div id="overall" class="section level2">
 <h2>Overall</h2>
 <p>Overall, here is what your lab should correspond to:</p>
