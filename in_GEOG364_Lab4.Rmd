@@ -413,6 +413,8 @@ Your lab script should now look similar this, but with your theme and YAML optio
 
 # Spatial Domain
 
+## Introduction (READ THIS!)
+
 Your spatial domain describes both the environment or area within which your data exists and defines the spatial boundaries of your analysis. If this domain is misrepresented (either by including irrelevant areas, or excluding critical regions) it can distort the results and lead to incorrect inferences about spatial patterns.
 
 There is no perfect domain for three reasons. Expand each button below to find out more details. 
@@ -559,12 +561,379 @@ I know they must be from two out of these four experiments:
 * Explain your reasoning in your own words.
 
 
-<br><br><br><br><br><br>
+<br><br>
 
-# Distance
+# Understanding Distance
+
+In this section, we'll explore different ways to assess distance and proximity using OpenStreetMap (OSM) data. We'll focus on fire station locations in Chicago and learn how to map them, extract relevant features, calculate distances, and define neighbourhoods.
+
+<br>
+
+## Chicago fire set-up
+
+6.  Get the data
+
+<details>
+<summary>**Expand and complete!**</summary>
+<br>
 
 
-## FULLY REFRESH/RELOAD THE PAGE FOR UPDATED INSTRUCTIONS 
+-   This code will load the locations of all the Fire-Stations in Chicago into R. Copy carefully into your report and run.
+
+```{r, results='hide', eval=FALSE}
+# Get a RECTANGULAR bounding box for Chicago
+bbox_city_rectangle <- getbb("Chicago, USA") 
+
+# Now query OpenStreetMap 
+fire_stationdata <- opq(bbox = bbox_city_rectangle) %>%
+     add_osm_feature(key = "amenity", value = "fire_station") %>%
+     osmdata_sf()
+
+# Look at the data
+fire_stationdata
+```
+
+<br>
+
+-   You should see a list of the data you have just downloaded. This command returns EVERYTHING related to fire stations in the area and you can see that there is space for every type of vector data, in our case 1586 points and 165 polygons. From a quick glance, I think the polygons refer to fire station buildings and the points are ANYTHING fire-service related.
+
+-   Click here to understand what you just did: <https://www.youtube.com/watch?v=kcpiH6dDWLE>
+
+-   To read more about how OSM stores fire-station data, see here - <https://wiki.openstreetmap.org/wiki/Emergency_facilities_and_amenities>
+
+<br><br>
+</details>
+::: small-gap
+:::
+
+
+## Make a map
+
+7. Extract polygons & map
+
+<details>
+<summary>**Expand and complete!**</summary>
+<br>
+
+-   The point data is often messy (people adding fire-hoses etc). So we are going to focus on the polygon fire station buildings.
+-   Add this command into your lab script and run. This will turn fire-stations into the type of spatial file you are used to.
+
+```{r, results='hide', eval=FALSE}
+fire_station_buildings <- fire_stationdata$osm_polygons
+```
+
+
+- Now, Make a map of the fire stations in Chicago, remembering if you are using tmap that you are using tm_polygons() NOT tm_dots().
+
+<br><br>
+</details>
+::: small-gap
+:::
+
+
+8. Find centroids & map
+
+<details>
+<summary>**Expand and complete!**</summary>
+<br>
+
+-   It's clear our polygons are VERY small compared to the overall area. And in terms of the topic, I don't really care how big the fire station buildings are, just that they exist. So let's choose the MEAN CENTRE and convert it into points.\
+    \
+    As we discussed in class, there are a few ways to do this. Given that we don't really care about the shape of our buildings, lets use st_centroid, which will find the "centre of mass" of each building.
+
+    \
+    \
+    ![](index_images/pg_lab4_MeanCentre.png)
+
+-   Add this command into your lab script and run. This will convert the fire station data into points. It might give you a warning about geometries, ignore it!
+
+```{r, results='hide', eval=FALSE}
+fire_stations <- st_centroid(fire_station_buildings)
+```
+
+<br><br>
+
+ - In your report, Make a map of the fire station locations (points e.g. tm_dots) - it will be easier to make out a pattern. Describe the features of the pattern you see and what you think might be causing it.
+
+You should see something like this:
+
+![](index_images/pg_lab4_firestations.png){width="90%"}
+<br><br>
+</details>
+<br><br>
+
+## Closest stations
+
+9.  Closest stations challenge
+
+Now we have the fire station locations, we want to consider "neighbourhood".  Which fire-stations are *closest* to one another and what does "closest" even mean?
+
+This is a genuine issue faced by emergency authorities. For example, it is needed when considering which stations deserve new vehicles, or where to put new stations.
+
+Have a look at this report, which explores the issue for Columbus Ohio - and which gets to use several billion pieces of data.. <https://storymaps.arcgis.com/stories/0037b3eb93904ed6aa00cbba424af0da>.  It was completed by one of our MGIS alumni, Rob Ford.
+
+<br>
+
+10. Measuing distance
+
+<details>
+<summary>**Expand for instructions**</summary>
+<br>
+
+In your report, come up with AT LEAST three different ways that you could measure the 'closeness' or 'distance' between fire-stations. Use the reading above to justify your answers. We will also talk about this in class.
+
+
+<br>
+
+## Check-in
+
+Your report & R-Studio should look something like the screenshot below (it might not be _identical_ but it should be similar).  
+
+
+![](index_images/pg_lab4_week2.png){width="100%"}
+
+
+<br>
+
+
+## Subsetting data
+
+<br>
+
+|                                                                                                                                                                                                                   |                                                      |
+|------------------------|----------------------------------------|
+| <br><br> _Chicago has a set internal neighbourhoods, arranged informally into "sides" e.g. "Northside", "SouthSide"... These neighbourhood are not federally recognized, but they are used by the city and by local people.  So.. we can access this data via downloading it from Chicago's City Data Portal._ <br><br>Let's subset to a smaller dataset, because I know that the people on POSIT-Cloud have been struggling.  Specifically, we are going to focus on South East Chicago. | [![Chicago's neighbourhoods](index_images/pg_lab4_ChicagoSides.png){width="800"}](https://commons.wikimedia.org/wiki/File:Chicago_community_areas_map.svg) |
+
+
+
+<br>
+
+
+13. Get the boundary data & read into R
+
+
+<details>
+<summary>**Expand for instructions**</summary>
+<br><br>
+
+
+ - Go to this website. <https://data.cityofchicago.org/Facilities-Geographic-Boundaries/Boundaries-Community-Areas-current-/cauq-8yn6>
+
+ - On the top right, click Export, then choose the GeoJSON format. Move/upload the file into your project folder.
+ 
+![](index_images/pg_lab4_ChicagoData.png){width="80%"}
+
+<br><br>
+
+ 
+ - In your lab report, read the data into R using the `st_read()` command - e.g. copy/paste the code-chunk below:
+ 
+```{r, eval=FALSE}
+CommunityAreas <- st_read("Boundaries - Community Areas (current).geojson")
+CommunityAreas
+
+# make a quick map
+qtm(CommunityAreas)
+```
+ 
+ - Your map should look like Chicago boundaries.
+ 
+ 
+
+<br><br>
+</details>
+
+::: small-gap
+:::
+
+
+14. Select our area of interest.
+
+<details>
+<summary>**Expand for instructions**</summary>
+<br> 
+ 
+ 
+ - We are going to focus on the following community areas in the far South East of the city:
+ 
+    - "ROSELAND"
+    - "PULLMAN"
+    - "SOUTH DEERING"
+    - "EAST SIDE"
+    - "WEST PULLMAN"
+    - "RIVERDALE"
+    - "HEGEWISCH"
+ 
+ <br>
+ 
+ - In your lab report, make a new code chunk and copy this code across to filter to these communities. If you get a weird error, try re-typing the quote marks.
+
+```{r, eval=FALSE}
+CommunityAreas_SE <- CommunityAreas  %>%
+   filter(community %in% c("ROSELAND",
+                           "PULLMAN",
+                           "SOUTH DEERING",
+                           "EAST SIDE",
+                           "WEST PULLMAN",
+                           "RIVERDALE",
+                           "HEGEWISCH"))
+
+# make a quick map
+qtm(CommunityAreas_SE)
+
+```
+
+
+<br><br>
+</details>
+::: small-gap
+:::
+
+
+15. Subset the fire-stations to this area.
+
+<details>
+<summary>**Expand for instructions**</summary>
+<br> 
+ 
+
+
+ - Finally, we're going to use the `st_intersection()` command to select only the fire stations within our chosen communities.
+ 
+  - In your lab report, make a new code chunk and copy/run this code to filter to these communities. 
+  
+```{r, eval=FALSE}
+
+# Subset the firestations
+ fire_station_local <- st_intersection(fire_stations, 
+                                       CommunityAreas_SE)
+
+
+# Make a quick plot
+ tm_shape(CommunityAreas_SE) +
+   tm_borders() +
+   tm_shape(fire_station_local) +
+   tm_dots(col = "red", size = 0.5)+
+   tmap_mode("view")
+```
+ 
+ 
+<br><br>
+</details>
+::: small-gap
+:::
+
+16. Questions
+
+<details>
+<summary>**Expand for instructions**</summary>
+<br>  
+
+I want to check your understanding of what we have just done.  So after the code, please answer the following questions in your lab report.  Remember you can look at the data by clicking its name in the environment tab, or by using summary(), head(), table() etc.
+
+1. How many fire stations are inside CommunityAreas_SE? <br><br>
+2. How many unique zip-codes/post-codes are there in the fire_station_local data? <br> _(hint, table command.  <br>hint2. there is a useful column inside fire_station_local called addr.postcode)_ <br><br>
+3. Are there any fire-stations in Riverdale?  If so, how many? <br>  _(hint, look at the community column in fire_station_local data...)_ 
+
+<br><br>
+</details>
+<br><br>
+
+
+## Measuring distance
+
+As discussed in class, there are several ways we can measure distance using R-Studio.  Here, we are going to explore cartesian distance (e.g. "as the crow flies" or straight line distance) and driving distance using Open Street map.
+
+<br>
+
+17. Calculating distance code
+
+<details>
+<summary>**Expand for instructions**</summary>
+<br>  
+
+The code below will calculate the straight-line and driving distance between two locations in our dataset.
+
+ - We can calculate the straight-line distance between two objects using the st_distance() command.  This defaults to calculating distances in metres, so I often change it to km.
+
+ - We can calculate driving distances (and routes) between two objects using the osrmRoute() command. You can also choose walking or cycling.
+ 
+<br> 
+ 
+**YOU NEED A NEW PACKAGE! <br> GO TO THE PACKAGES TAB INSTALL/DOWNLOAD THE `osrm` package. <br>THEN SCROLL UP TO YOUR LIBRARY CODE CHUNK IN YOUR REPORT. ADD `library(osrm)` AND RUN THE CODE CHUNK. THEN SCROLL BACK DOWN TO THE END OF YOUR REPORT**  
+
+ - Copy these code chunks into your report, understand what they are doing and run them. You should see that the cartesian distance is ~2.19km and the driving distance ~3.04km, alongside a map.
+ 
+
+```{r, eval=FALSE}
+# Choose which locations you want to look at the distance between
+# In our case, we are choosing objects/rows from our firestation data.
+# They could be row numbers you type manually or some sort of filter
+# I am showing you both examples
+ 
+location1 <- fire_station_local[1,]
+location2 <- dplyr::filter(fire_station_local,osm_id == "210429692")
+```
+
+<br>
+
+```{r, eval=FALSE}
+# Calculate the straight line distance
+Distance_Cartesian_m  <- st_distance(location1,location2)
+Distance_Cartesian_km <- as.numeric(Distance_Cartesian_m/1000)
+Distance_Cartesian_km
+```
+
+<br>
+
+```{r, eval=FALSE}
+# And driving distance 
+Distance_Driving <- osrmRoute(src = location1,dst = location2,
+                              overview = "full",osrm.profile="car")
+Distance_Driving
+
+```
+
+<br>
+
+```{r, eval=FALSE}
+
+# To plot the straight line distance we need to manually
+# create a straight line between our locations
+line_between <- st_cast(st_union(location1, location2), "LINESTRING")
+
+# Step 4: Plot both lines and annotate them
+tm_shape(line_between) +
+   tm_lines(col = "red", lwd = 2, title.col = "Euclidean Line") +
+   tm_shape(Distance_Driving) +
+   tm_lines(col = "blue", lwd = 2, title.col = "Driving Line") +
+   tm_shape(fire_station_local) +
+   tm_dots() + tm_legend()+
+   tmap_mode("view")
+
+```
+
+
+<br><br>
+</details>
+
+<br>
+
+18. Challenge
+
+<details>
+<summary>**Expand for instructions**</summary>
+<br>
+
+ - Choose two fire-stations that are "close" in terms of straight-line distance, but "far apart" in terms of driving distance.
+
+ - Hint, try running `qtm(fire_station_local) + tm_text("osm_id")` to help you work out which station is which.
+
+ - In your report, edit the code (above) that you just ran to calculate the distance between your chosen stations. Run the code and make a map of the two distances. <br>
+ _Hint You ONLY need to edit the row numbers in the first code chunk then run_
+
+ - Justify why you chose those two stations in your lab report. (You don't have to be right, you just have to have some reasoning why you chose those two points).
+
 
 \
 

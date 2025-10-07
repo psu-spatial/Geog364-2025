@@ -800,6 +800,8 @@ go back and do the previous sections!</p>
 </div>
 <div id="spatial-domain" class="section level1">
 <h1>Spatial Domain</h1>
+<div id="introduction-read-this" class="section level2">
+<h2>Introduction (READ THIS!)</h2>
 <p>Your spatial domain describes both the environment or area within
 which your data exists and defines the spatial boundaries of your
 analysis. If this domain is misrepresented (either by including
@@ -897,6 +899,7 @@ done. This also links to the spatial fallacy of “fuzzy borders”</p>
 <p><br><br></p>
 </details>
 <p><br></p>
+</div>
 <div id="challenge-a.-data-detective" class="section level2">
 <h2>Challenge A. Data detective</h2>
 <p><br></p>
@@ -995,14 +998,418 @@ choice.</li>
 <strong>uniformly</strong> distributed.</li>
 <li>Explain your reasoning in your own words.</li>
 </ul>
-<p><br><br><br><br><br><br></p>
+<p><br><br></p>
 </div>
 </div>
-<div id="distance" class="section level1">
-<h1>Distance</h1>
-<div id="fully-refreshreload-the-page-for-updated-instructions"
-class="section level2">
-<h2>FULLY REFRESH/RELOAD THE PAGE FOR UPDATED INSTRUCTIONS</h2>
+<div id="understanding-distance" class="section level1">
+<h1>Understanding Distance</h1>
+<p>In this section, we’ll explore different ways to assess distance and
+proximity using OpenStreetMap (OSM) data. We’ll focus on fire station
+locations in Chicago and learn how to map them, extract relevant
+features, calculate distances, and define neighbourhoods.</p>
+<p><br></p>
+<div id="chicago-fire-set-up" class="section level2">
+<h2>Chicago fire set-up</h2>
+<ol start="6" style="list-style-type: decimal">
+<li>Get the data</li>
+</ol>
+<details>
+<summary>
+<strong>Expand and complete!</strong>
+</summary>
+<p><br></p>
+<ul>
+<li>This code will load the locations of all the Fire-Stations in
+Chicago into R. Copy carefully into your report and run.</li>
+</ul>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co"># Get a RECTANGULAR bounding box for Chicago</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>bbox_city_rectangle <span class="ot">&lt;-</span> <span class="fu">getbb</span>(<span class="st">&quot;Chicago, USA&quot;</span>) </span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="co"># Now query OpenStreetMap </span></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>fire_stationdata <span class="ot">&lt;-</span> <span class="fu">opq</span>(<span class="at">bbox =</span> bbox_city_rectangle) <span class="sc">%&gt;%</span></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>     <span class="fu">add_osm_feature</span>(<span class="at">key =</span> <span class="st">&quot;amenity&quot;</span>, <span class="at">value =</span> <span class="st">&quot;fire_station&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>     <span class="fu">osmdata_sf</span>()</span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a><span class="co"># Look at the data</span></span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a>fire_stationdata</span></code></pre></div>
+<p><br></p>
+<ul>
+<li><p>You should see a list of the data you have just downloaded. This
+command returns EVERYTHING related to fire stations in the area and you
+can see that there is space for every type of vector data, in our case
+1586 points and 165 polygons. From a quick glance, I think the polygons
+refer to fire station buildings and the points are ANYTHING fire-service
+related.</p></li>
+<li><p>Click here to understand what you just did: <a
+href="https://www.youtube.com/watch?v=kcpiH6dDWLE"
+class="uri">https://www.youtube.com/watch?v=kcpiH6dDWLE</a></p></li>
+<li><p>To read more about how OSM stores fire-station data, see here -
+<a
+href="https://wiki.openstreetmap.org/wiki/Emergency_facilities_and_amenities"
+class="uri">https://wiki.openstreetmap.org/wiki/Emergency_facilities_and_amenities</a></p></li>
+</ul>
+<br><br>
+</details>
+<div class="small-gap">
+
+</div>
+</div>
+<div id="make-a-map" class="section level2">
+<h2>Make a map</h2>
+<ol start="7" style="list-style-type: decimal">
+<li>Extract polygons &amp; map</li>
+</ol>
+<details>
+<summary>
+<strong>Expand and complete!</strong>
+</summary>
+<p><br></p>
+<ul>
+<li>The point data is often messy (people adding fire-hoses etc). So we
+are going to focus on the polygon fire station buildings.</li>
+<li>Add this command into your lab script and run. This will turn
+fire-stations into the type of spatial file you are used to.</li>
+</ul>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>fire_station_buildings <span class="ot">&lt;-</span> fire_stationdata<span class="sc">$</span>osm_polygons</span></code></pre></div>
+<ul>
+<li>Now, Make a map of the fire stations in Chicago, remembering if you
+are using tmap that you are using tm_polygons() NOT tm_dots().</li>
+</ul>
+<br><br>
+</details>
+<div class="small-gap">
+
+</div>
+<ol start="8" style="list-style-type: decimal">
+<li>Find centroids &amp; map</li>
+</ol>
+<details>
+<summary>
+<strong>Expand and complete!</strong>
+</summary>
+<p><br></p>
+<ul>
+<li><p>It’s clear our polygons are VERY small compared to the overall
+area. And in terms of the topic, I don’t really care how big the fire
+station buildings are, just that they exist. So let’s choose the MEAN
+CENTRE and convert it into points.<br />
+<br />
+As we discussed in class, there are a few ways to do this. Given that we
+don’t really care about the shape of our buildings, lets use
+st_centroid, which will find the “centre of mass” of each building.</p>
+<p><br />
+<br />
+<img src="index_images/pg_lab4_MeanCentre.png" /></p></li>
+<li><p>Add this command into your lab script and run. This will convert
+the fire station data into points. It might give you a warning about
+geometries, ignore it!</p></li>
+</ul>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>fire_stations <span class="ot">&lt;-</span> <span class="fu">st_centroid</span>(fire_station_buildings)</span></code></pre></div>
+<p><br><br></p>
+<ul>
+<li>In your report, Make a map of the fire station locations (points
+e.g. tm_dots) - it will be easier to make out a pattern. Describe the
+features of the pattern you see and what you think might be causing
+it.</li>
+</ul>
+<p>You should see something like this:</p>
+<img src="index_images/pg_lab4_firestations.png" style="width:90.0%" />
+<br><br>
+</details>
+<p><br><br></p>
+</div>
+<div id="closest-stations" class="section level2">
+<h2>Closest stations</h2>
+<ol start="9" style="list-style-type: decimal">
+<li>Closest stations challenge</li>
+</ol>
+<p>Now we have the fire station locations, we want to consider
+“neighbourhood”. Which fire-stations are <em>closest</em> to one another
+and what does “closest” even mean?</p>
+<p>This is a genuine issue faced by emergency authorities. For example,
+it is needed when considering which stations deserve new vehicles, or
+where to put new stations.</p>
+<p>Have a look at this report, which explores the issue for Columbus
+Ohio - and which gets to use several billion pieces of data.. <a
+href="https://storymaps.arcgis.com/stories/0037b3eb93904ed6aa00cbba424af0da"
+class="uri">https://storymaps.arcgis.com/stories/0037b3eb93904ed6aa00cbba424af0da</a>.
+It was completed by one of our MGIS alumni, Rob Ford.</p>
+<p><br></p>
+<ol start="10" style="list-style-type: decimal">
+<li>Measuing distance</li>
+</ol>
+<details>
+<summary>
+<strong>Expand for instructions</strong>
+</summary>
+<p><br></p>
+<p>In your report, come up with AT LEAST three different ways that you
+could measure the ‘closeness’ or ‘distance’ between fire-stations. Use
+the reading above to justify your answers. We will also talk about this
+in class.</p>
+<p><br></p>
+</div>
+<div id="check-in" class="section level2">
+<h2>Check-in</h2>
+<p>Your report &amp; R-Studio should look something like the screenshot
+below (it might not be <em>identical</em> but it should be similar).</p>
+<p><img src="index_images/pg_lab4_week2.png" style="width:100.0%" /></p>
+<p><br></p>
+</div>
+<div id="subsetting-data" class="section level2">
+<h2>Subsetting data</h2>
+<p><br></p>
+<table>
+<colgroup>
+<col width="37%" />
+<col width="62%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><br><br> <em>Chicago has a set internal neighbourhoods, arranged
+informally into “sides” e.g. “Northside”, “SouthSide”… These
+neighbourhood are not federally recognized, but they are used by the
+city and by local people. So.. we can access this data via downloading
+it from Chicago’s City Data Portal.</em> <br><br>Let’s subset to a
+smaller dataset, because I know that the people on POSIT-Cloud have been
+struggling. Specifically, we are going to focus on South East
+Chicago.</td>
+<td><a
+href="https://commons.wikimedia.org/wiki/File:Chicago_community_areas_map.svg"><img
+src="index_images/pg_lab4_ChicagoSides.png" width="800"
+alt="Chicago’s neighbourhoods" /></a></td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<ol start="13" style="list-style-type: decimal">
+<li>Get the boundary data &amp; read into R</li>
+</ol>
+<details>
+<summary>
+<strong>Expand for instructions</strong>
+</summary>
+<p><br><br></p>
+<ul>
+<li><p>Go to this website. <a
+href="https://data.cityofchicago.org/Facilities-Geographic-Boundaries/Boundaries-Community-Areas-current-/cauq-8yn6"
+class="uri">https://data.cityofchicago.org/Facilities-Geographic-Boundaries/Boundaries-Community-Areas-current-/cauq-8yn6</a></p></li>
+<li><p>On the top right, click Export, then choose the GeoJSON format.
+Move/upload the file into your project folder.</p></li>
+</ul>
+<p><img src="index_images/pg_lab4_ChicagoData.png"
+style="width:80.0%" /></p>
+<p><br><br></p>
+<ul>
+<li>In your lab report, read the data into R using the
+<code>st_read()</code> command - e.g. copy/paste the code-chunk
+below:</li>
+</ul>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>CommunityAreas <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">&quot;Boundaries - Community Areas (current).geojson&quot;</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>CommunityAreas</span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a><span class="co"># make a quick map</span></span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a><span class="fu">qtm</span>(CommunityAreas)</span></code></pre></div>
+<ul>
+<li>Your map should look like Chicago boundaries.</li>
+</ul>
+<br><br>
+</details>
+<div class="small-gap">
+
+</div>
+<ol start="14" style="list-style-type: decimal">
+<li>Select our area of interest.</li>
+</ol>
+<details>
+<summary>
+<strong>Expand for instructions</strong>
+</summary>
+<p><br></p>
+<ul>
+<li><p>We are going to focus on the following community areas in the far
+South East of the city:</p>
+<ul>
+<li>“ROSELAND”</li>
+<li>“PULLMAN”</li>
+<li>“SOUTH DEERING”</li>
+<li>“EAST SIDE”</li>
+<li>“WEST PULLMAN”</li>
+<li>“RIVERDALE”</li>
+<li>“HEGEWISCH”</li>
+</ul></li>
+</ul>
+<p><br></p>
+<ul>
+<li>In your lab report, make a new code chunk and copy this code across
+to filter to these communities. If you get a weird error, try re-typing
+the quote marks.</li>
+</ul>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>CommunityAreas_SE <span class="ot">&lt;-</span> CommunityAreas  <span class="sc">%&gt;%</span></span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>   <span class="fu">filter</span>(community <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;ROSELAND&quot;</span>,</span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>                           <span class="st">&quot;PULLMAN&quot;</span>,</span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>                           <span class="st">&quot;SOUTH DEERING&quot;</span>,</span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>                           <span class="st">&quot;EAST SIDE&quot;</span>,</span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a>                           <span class="st">&quot;WEST PULLMAN&quot;</span>,</span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a>                           <span class="st">&quot;RIVERDALE&quot;</span>,</span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a>                           <span class="st">&quot;HEGEWISCH&quot;</span>))</span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a><span class="co"># make a quick map</span></span>
+<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a><span class="fu">qtm</span>(CommunityAreas_SE)</span></code></pre></div>
+<br><br>
+</details>
+<div class="small-gap">
+
+</div>
+<ol start="15" style="list-style-type: decimal">
+<li>Subset the fire-stations to this area.</li>
+</ol>
+<details>
+<summary>
+<strong>Expand for instructions</strong>
+</summary>
+<p><br></p>
+<ul>
+<li><p>Finally, we’re going to use the <code>st_intersection()</code>
+command to select only the fire stations within our chosen
+communities.</p></li>
+<li><p>In your lab report, make a new code chunk and copy/run this code
+to filter to these communities.</p></li>
+</ul>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="co"># Subset the firestations</span></span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a> fire_station_local <span class="ot">&lt;-</span> <span class="fu">st_intersection</span>(fire_stations, </span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>                                       CommunityAreas_SE)</span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a><span class="co"># Make a quick plot</span></span>
+<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a> <span class="fu">tm_shape</span>(CommunityAreas_SE) <span class="sc">+</span></span>
+<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a>   <span class="fu">tm_borders</span>() <span class="sc">+</span></span>
+<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a>   <span class="fu">tm_shape</span>(fire_station_local) <span class="sc">+</span></span>
+<span id="cb9-10"><a href="#cb9-10" tabindex="-1"></a>   <span class="fu">tm_dots</span>(<span class="at">col =</span> <span class="st">&quot;red&quot;</span>, <span class="at">size =</span> <span class="fl">0.5</span>)<span class="sc">+</span></span>
+<span id="cb9-11"><a href="#cb9-11" tabindex="-1"></a>   <span class="fu">tmap_mode</span>(<span class="st">&quot;view&quot;</span>)</span></code></pre></div>
+<br><br>
+</details>
+<div class="small-gap">
+
+</div>
+<ol start="16" style="list-style-type: decimal">
+<li>Questions</li>
+</ol>
+<details>
+<summary>
+<strong>Expand for instructions</strong>
+</summary>
+<p><br></p>
+<p>I want to check your understanding of what we have just done. So
+after the code, please answer the following questions in your lab
+report. Remember you can look at the data by clicking its name in the
+environment tab, or by using summary(), head(), table() etc.</p>
+<ol style="list-style-type: decimal">
+<li>How many fire stations are inside CommunityAreas_SE? <br><br></li>
+<li>How many unique zip-codes/post-codes are there in the
+fire_station_local data? <br> <em>(hint, table command. <br>hint2. there
+is a useful column inside fire_station_local called addr.postcode)</em>
+<br><br></li>
+<li>Are there any fire-stations in Riverdale? If so, how many? <br>
+<em>(hint, look at the community column in fire_station_local
+data…)</em></li>
+</ol>
+<br><br>
+</details>
+<p><br><br></p>
+</div>
+<div id="measuring-distance" class="section level2">
+<h2>Measuring distance</h2>
+<p>As discussed in class, there are several ways we can measure distance
+using R-Studio. Here, we are going to explore cartesian distance
+(e.g. “as the crow flies” or straight line distance) and driving
+distance using Open Street map.</p>
+<p><br></p>
+<ol start="17" style="list-style-type: decimal">
+<li>Calculating distance code</li>
+</ol>
+<details>
+<summary>
+<strong>Expand for instructions</strong>
+</summary>
+<p><br></p>
+<p>The code below will calculate the straight-line and driving distance
+between two locations in our dataset.</p>
+<ul>
+<li><p>We can calculate the straight-line distance between two objects
+using the st_distance() command. This defaults to calculating distances
+in metres, so I often change it to km.</p></li>
+<li><p>We can calculate driving distances (and routes) between two
+objects using the osrmRoute() command. You can also choose walking or
+cycling.</p></li>
+</ul>
+<p><br></p>
+<p><strong>YOU NEED A NEW PACKAGE! <br> GO TO THE PACKAGES TAB
+INSTALL/DOWNLOAD THE <code>osrm</code> package. <br>THEN SCROLL UP TO
+YOUR LIBRARY CODE CHUNK IN YOUR REPORT. ADD <code>library(osrm)</code>
+AND RUN THE CODE CHUNK. THEN SCROLL BACK DOWN TO THE END OF YOUR
+REPORT</strong></p>
+<ul>
+<li>Copy these code chunks into your report, understand what they are
+doing and run them. You should see that the cartesian distance is
+~2.19km and the driving distance ~3.04km, alongside a map.</li>
+</ul>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="co"># Choose which locations you want to look at the distance between</span></span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a><span class="co"># In our case, we are choosing objects/rows from our firestation data.</span></span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a><span class="co"># They could be row numbers you type manually or some sort of filter</span></span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a><span class="co"># I am showing you both examples</span></span>
+<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a> </span>
+<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a>location1 <span class="ot">&lt;-</span> fire_station_local[<span class="dv">1</span>,]</span>
+<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a>location2 <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(fire_station_local,osm_id <span class="sc">==</span> <span class="st">&quot;210429692&quot;</span>)</span></code></pre></div>
+<p><br></p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="co"># Calculate the straight line distance</span></span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a>Distance_Cartesian_m  <span class="ot">&lt;-</span> <span class="fu">st_distance</span>(location1,location2)</span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a>Distance_Cartesian_km <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(Distance_Cartesian_m<span class="sc">/</span><span class="dv">1000</span>)</span>
+<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a>Distance_Cartesian_km</span></code></pre></div>
+<p><br></p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="co"># And driving distance </span></span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a>Distance_Driving <span class="ot">&lt;-</span> <span class="fu">osrmRoute</span>(<span class="at">src =</span> location1,<span class="at">dst =</span> location2,</span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a>                              <span class="at">overview =</span> <span class="st">&quot;full&quot;</span>,<span class="at">osrm.profile=</span><span class="st">&quot;car&quot;</span>)</span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a>Distance_Driving</span></code></pre></div>
+<p><br></p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="co"># To plot the straight line distance we need to manually</span></span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a><span class="co"># create a straight line between our locations</span></span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a>line_between <span class="ot">&lt;-</span> <span class="fu">st_cast</span>(<span class="fu">st_union</span>(location1, location2), <span class="st">&quot;LINESTRING&quot;</span>)</span>
+<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a><span class="co"># Step 4: Plot both lines and annotate them</span></span>
+<span id="cb13-6"><a href="#cb13-6" tabindex="-1"></a><span class="fu">tm_shape</span>(line_between) <span class="sc">+</span></span>
+<span id="cb13-7"><a href="#cb13-7" tabindex="-1"></a>   <span class="fu">tm_lines</span>(<span class="at">col =</span> <span class="st">&quot;red&quot;</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">title.col =</span> <span class="st">&quot;Euclidean Line&quot;</span>) <span class="sc">+</span></span>
+<span id="cb13-8"><a href="#cb13-8" tabindex="-1"></a>   <span class="fu">tm_shape</span>(Distance_Driving) <span class="sc">+</span></span>
+<span id="cb13-9"><a href="#cb13-9" tabindex="-1"></a>   <span class="fu">tm_lines</span>(<span class="at">col =</span> <span class="st">&quot;blue&quot;</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">title.col =</span> <span class="st">&quot;Driving Line&quot;</span>) <span class="sc">+</span></span>
+<span id="cb13-10"><a href="#cb13-10" tabindex="-1"></a>   <span class="fu">tm_shape</span>(fire_station_local) <span class="sc">+</span></span>
+<span id="cb13-11"><a href="#cb13-11" tabindex="-1"></a>   <span class="fu">tm_dots</span>() <span class="sc">+</span> <span class="fu">tm_legend</span>()<span class="sc">+</span></span>
+<span id="cb13-12"><a href="#cb13-12" tabindex="-1"></a>   <span class="fu">tmap_mode</span>(<span class="st">&quot;view&quot;</span>)</span></code></pre></div>
+<br><br>
+</details>
+<p><br></p>
+<ol start="18" style="list-style-type: decimal">
+<li>Challenge</li>
+</ol>
+<details>
+<summary>
+<strong>Expand for instructions</strong>
+</summary>
+<p><br></p>
+<ul>
+<li><p>Choose two fire-stations that are “close” in terms of
+straight-line distance, but “far apart” in terms of driving
+distance.</p></li>
+<li><p>Hint, try running
+<code>qtm(fire_station_local) + tm_text("osm_id")</code> to help you
+work out which station is which.</p></li>
+<li><p>In your report, edit the code (above) that you just ran to
+calculate the distance between your chosen stations. Run the code and
+make a map of the two distances. <br> <em>Hint You ONLY need to edit the
+row numbers in the first code chunk then run</em></p></li>
+<li><p>Justify why you chose those two stations in your lab report. (You
+don’t have to be right, you just have to have some reasoning why you
+chose those two points).</p></li>
+</ul>
 <p><br />
 </p>
 <hr />
