@@ -521,8 +521,17 @@ Task 1. Get the data
 <p><br> All the data is on the Lab 4 canvas page. But here’s a shortcut.
 Click each link below to download the data.</p>
 <ul>
-<li>CLICK THIS LINK FOR THE MEDICAL DATA: <a
-href="https://psu.instructure.com/files/182917064/download?download_frd=1">Medical_data.xlsx</a></li>
+<li>CLICK THIS LINK for the medical data: <a
+href="https://psu.instructure.com/courses/2396422/files/182917064/download?download_frd=1">Lab04_Medical_data.xlsx</a></li>
+</ul>
+</details>
+<ul>
+<li>CLICK THIS LINK for mystery data 1: <a
+href="https://psu.instructure.com/courses/2396422/files/182920273/download?download_frd=1">Lab04_MysteryData1.gpkg</a>
+</details></li>
+<li>CLICK THIS LINK for mystery data 2: <a
+href="https://psu.instructure.com/courses/2328607/files/168452715/download?download_frd=1">Lab04_MysteryData2.gpkg</a>
+</details></li>
 </ul>
 </details>
 <div class="small-gap">
@@ -611,10 +620,18 @@ Task 2. Get the data &amp; <strong>put it in your Lab 4 folder</strong>
 Click each link below to download the data and put it directly into your
 Lab 4 folder.</p>
 <ul>
-<li>CLICK THIS LINK FOR THE MEDICAL DATA: <a
-href="https://psu.instructure.com/files/182917064/download?download_frd=1">Medical_data.xlsx</a></li>
+<li>CLICK THIS LINK for the medical data: <a
+href="https://psu.instructure.com/courses/2396422/files/182917064/download?download_frd=1">Lab04_Medical_data.xlsx</a></li>
 </ul>
 </details>
+<ul>
+<li>CLICK THIS LINK for mystery data 1: <a
+href="https://psu.instructure.com/courses/2396422/files/182920273/download?download_frd=1">Lab04_MysteryData1.gpkg</a>
+</details></li>
+<li>CLICK THIS LINK for mystery data 2: <a
+href="https://psu.instructure.com/courses/2328607/files/168452715/download?download_frd=1">Lab04_MysteryData2.gpkg</a>
+</details></li>
+</ul>
 <div class="small-gap">
 
 </div>
@@ -778,8 +795,211 @@ go back and do the previous sections!</p>
 </p>
 <hr />
 <p><br />
-# Spatial Wrangling</p>
+</p>
 </div>
+</div>
+<div id="spatial-domain" class="section level1">
+<h1>Spatial Domain</h1>
+<p>Your spatial domain describes both the environment or area within
+which your data exists and defines the spatial boundaries of your
+analysis. If this domain is misrepresented (either by including
+irrelevant areas, or excluding critical regions) it can distort the
+results and lead to incorrect inferences about spatial patterns.</p>
+<p>There is no perfect domain for three reasons. Expand each button
+below to find out more details.</p>
+<details>
+<summary>
+<strong>1. It depends on your needs</strong>
+</summary>
+<p><br></p>
+<p>In part your choice of domain is going to depend on WHY you are
+looking at the data. As we have seen in class, patterns such as
+clustering are scale dependent - and so are the processes that cause
+them. So you might choose a certain domain depending on your needs.</p>
+<p>For example, consider the figure below, where I have plotted the same
+data at two different scales:</p>
+<ul>
+<li><p>For example, a CDC representative for Pennsylvania might be
+interested in considering the entire area as their ‘domain’ if they want
+to understand the progression of a disease outbreak. At the moment it’s
+clearly clustered in State College - useful information that can lead
+directly to action.</p></li>
+<li><p>They might ALSO be interested in analyzing the data across a
+smaller domain to see if they can identify locations where the disease
+is being spread (say one hall-of-residence). In this case, it’s clear we
+don’t see a single easy cluster of cases. In fact they seem to be rather
+uniformly spread out (maybe the locational fallacy is at play?)</p></li>
+</ul>
+<p><img src="index_images/pg_Lab4_Domain1.png"
+style="width:100.0%" /></p>
+<p><br><br></p>
+</details>
+<div class="small-gap">
+
+</div>
+<details>
+<summary>
+<strong>Your data must have an equal chance of appearing anywhere in
+your domain, or all your statistical tests won’t work</strong>
+</summary>
+<p><br></p>
+<p>Your sample is must be representative of your population, so ALL THE
+STATISTICS TESTS assume that there is an equal chance that any location
+within your domain could contain data.</p>
+<p>If you make your domain too big, your data will appear to be
+clustered, but in fact ut might mean you simply didn’t collect data in
+part of the domain. For example, if you were asked to assess if the dots
+in case A and B below were arranged uniformly or were clustered
+together, you would have very different outcomes, despite the dots
+themselves being identical.</p>
+<p><img src="index_images/pg_Lab4_Domain2.png"
+style="width:100.0%" /></p>
+<p><br><br></p>
+</details>
+<div class="small-gap">
+
+</div>
+<details>
+<summary>
+<strong>Its CRUCIAL to consider the “non-uniformity of space</strong>
+</summary>
+<p><br></p>
+<p>As we discussed above, there should be an equal chance of seeing your
+data anywhere in your domain. BUT.. Unlike traditional statistics, where
+sampling is assumed to be random and uniform, spatial data is more
+nuanced. Landscape features, political borders, and human activity vary
+greatly across space and they can all impact the structure and
+interpretation of your data.</p>
+<p>This effect is called the <strong>‘non uniformity of space’</strong>
+– when we know more information about the background map than we can see
+in our actual data.</p>
+<p>For example:</p>
+<ul>
+<li><p>Is an area with low population density in a city linked to ‘a
+lack of data collection’, ‘a lake/park’ or some sociopolitical reason?
+Just looking at population density won’t tell you the answer, we also
+need to look at the background map.</p></li>
+<li><p>Equally, data might look clustered, but in fact there are just
+areas where it’s not possible to have points. For example, without the
+nuance of the background map you might get very different conclusions
+from an analysis of bike parking in Helsinki:</p></li>
+</ul>
+<p><img src="index_images/pg_Lab4_Domain3NonUnif.png"
+style="width:100.0%" /></p>
+<p><br></p>
+<p><strong>So consider the non uniformity of space when designing your
+domain</strong></p>
+<p>Your domain doesn’t have to be square! So we are balancing the need
+for our domain to only contain landscapes that have an ‘equal chance’ of
+seeing our data (e.g. we can’t get bike parking in the ocean’, vs the
+complexity of making your domain so complex that you can’t get anything
+done. This also links to the spatial fallacy of “fuzzy borders”</p>
+<p><br><br></p>
+</details>
+<p><br></p>
+<div id="challenge-a.-data-detective" class="section level2">
+<h2>Challenge A. Data detective</h2>
+<p><br></p>
+<p>I recently found two ‘mystery files’ on my computer that I had
+forgotten to name correctly.</p>
+<p>I know they must be from two out of these four experiments:</p>
+<ul>
+<li><p><strong>COVID-19 Clusters in Central Pennsylvania</strong>. <br>
+The local government has asked for help identifying clusters of COVID-19
+cases across central PA. The aim is to prioritize mobile testing units
+and health messaging in affected towns.</p></li>
+<li><p><strong>Mediterranean Vineyard Clusters</strong>. <br> An
+international agricultural group is funding a study of vineyard
+clustering in two Mediterranean islands, aiming to evaluate whether
+specific microclimates or land use policies are influencing planting
+decisions.</p></li>
+<li><p><strong>Smooth-Hound Shark Hotspots</strong>. <br> You are
+working with the regional fishing board to identify hotspots for
+Smooth-Hound Shark activity. The goal is to define seasonal no-fishing
+zones to support sustainable stock management. The data represents
+tagged shark locations in the last month.</p></li>
+<li><p><strong>Polar Bear Cluster Study in the Arctic</strong>. <br> PSU
+ecologists are investigating polar bear movement patterns across the
+Arctic. Using GPS collar data, they are analyzing seasonal hotspots for
+foraging and denning, particularly in response to changing sea ice
+patterns.</p></li>
+</ul>
+<p><br></p>
+<ol style="list-style-type: decimal">
+<li>Check your setup</li>
+</ol>
+<ul>
+<li>If you haven’t already, GO AND DO THE SET-UP SECTION. You should now
+have your project running, your Lab 4 report open, and your library code
+chunk run.</li>
+</ul>
+<p><br></p>
+<ol start="2" style="list-style-type: decimal">
+<li>Read in the data</li>
+</ol>
+<ul>
+<li>Create a heading called <strong>Mystery Data</strong>.</li>
+<li>Create a code chunk and use the <code>st_read()</code> command to
+read each dataset into R.</li>
+</ul>
+<details>
+<summary>
+Expand for a tutorial on st_read()
+</summary>
+<p><br></p>
+<div class="collapsible-content">
+<iframe src="https://psu-spatial.github.io/Stat462-2025/in_T07_ReadingInData.html#16_Loading_spatial_data_with_st_read" style="width: 100%; height: 700px; border: none;">
+</iframe>
+</div>
+</details>
+<div class="small-gap">
+
+</div>
+<p><br></p>
+<ol start="3" style="list-style-type: decimal">
+<li>Map the data</li>
+</ol>
+<ul>
+<li>In your lab report, explore and map the data. Remember that there
+are mapping tutorials in Lab 3, or in your Lab 3 report! You can also
+check this online guide: <a
+href="https://r-tmap.github.io/tmap-book/layers.html">https://r-tmap.github.io/tmap-book/layers.html</a></li>
+</ul>
+<p><br></p>
+<ol start="4" style="list-style-type: decimal">
+<li>Match the data to the experiment</li>
+</ol>
+<ul>
+<li>Using your maps, work out which experiment each dataset matches (see
+the exercise intro).</li>
+<li>Explain your reasoning in your report, providing common-sense
+evidence to support your explanation of the non-uniformity of space.
+<em>Hint: this isn’t meant to be a trick – it should be fairly
+straightforward.</em> <em>Hint 2: if you’re stuck, remember you can
+enter interactive mode with <code>tm_mode("view")</code>.</em></li>
+</ul>
+<p><br></p>
+<ol start="5" style="list-style-type: decimal">
+<li>Choose an appropriate spatial domain</li>
+</ol>
+<ul>
+<li>For <strong>each</strong> of your two chosen scenarios, describe
+what you think would be a good spatial domain (study area) given the aim
+of the research project.</li>
+<li>Consider both the geography and the research question: What area
+makes sense to include? What might be too broad or too narrow? Does the
+non uniformity of space, locational fallacy or edge effects impact your
+choice.</li>
+<li>Then describe in words whether the points in your dataset seem
+<strong>clustered</strong>, <strong>dispersed</strong>, or
+<strong>uniformly</strong> distributed.</li>
+<li>Explain your reasoning in your own words.</li>
+</ul>
+<p><br><br><br><br><br><br></p>
+</div>
+</div>
+<div id="distance" class="section level1">
+<h1>Distance</h1>
 <div id="fully-refreshreload-the-page-for-updated-instructions"
 class="section level2">
 <h2>FULLY REFRESH/RELOAD THE PAGE FOR UPDATED INSTRUCTIONS</h2>
