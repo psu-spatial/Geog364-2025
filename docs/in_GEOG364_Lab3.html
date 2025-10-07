@@ -11,7 +11,7 @@
 
 
 
-<title>Lab 3:</title>
+<title>Lab 3: Spatial Basics</title>
 
 <script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -56,9 +56,8 @@
   }
 </style>
 <style type="text/css" data-origin="pandoc">
-html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -434,6 +433,9 @@ div.tocify {
     <li>
       <a href="in_GEOG364_Lab3.html">Lab 3: Spatial Basics</a>
     </li>
+    <li>
+      <a href="in_GEOG364_Lab4.html">Lab 4: Spatial Wrangling</a>
+    </li>
   </ul>
 </li>
       </ul>
@@ -448,7 +450,7 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Lab 3:</h1>
+<h1 class="title toc-ignore">Lab 3: Spatial Basics</h1>
 
 </div>
 
@@ -1241,7 +1243,7 @@ we can build our knowledge of how to easily make beautiful maps.</p>
 <p><br></p>
 <p>Here is my current example for house price.. (code hidden but all
 based on things in the tutorial)</p>
-<p><img src="in_GEOG364_Lab3_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<p><img src="in_GEOG364_Lab3_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
 <p><br></p>
 </div>
 </div>
@@ -1574,14 +1576,12 @@ color.brewer in R and viridis in R for some names.</li>
 to plot too.</p>
 <p><br><br></p>
 <p>Here is my best attempt so far.</p>
-<p><img src="in_GEOG364_Lab3_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<p><img src="in_GEOG364_Lab3_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
 <hr />
 <p><br><br></p>
 </div>
-<div id="questions-from-your-friend" class="section level3">
-<h3>Questions from your friend</h3>
-<div id="q1.-unit-conversion" class="section level4">
-<h4>Q1. Unit Conversion</h4>
+<div id="a-question-from-your-friend" class="section level3">
+<h3>A question from your friend</h3>
 <p>Your friend is concerned about the units of your house.price column
 and isn’t sure what they mean. When they looked at the summary, it said
 the mean of house.price was 38. When they went to the webpage for the
@@ -1590,8 +1590,7 @@ dataset, they found this for the price column.</p>
 <p>They came back with a skeptical question: <em>“Wait… so a house only
 costs $37.50?? That can’t be right!”</em></p>
 <p><br><br></p>
-<p><strong>STEP 1</strong> <strong>Write a response to your
-friend.</strong></p>
+<p><strong>STEP 1. Write a response to your friend.</strong></p>
 <p>Explain what the number actually means — including the units — and
 clear up the confusion. As part of your answer, explain what this does
 and doesn’t allow you to do in your analysis. For example:</p>
@@ -1601,9 +1600,9 @@ and doesn’t allow you to do in your analysis. For example:</p>
 column?</li>
 </ul>
 <p><em>HINT, if you didn’t realise this until now, you have time to go
-back and edit your week 1 report…….</em></p>
+back and edit your work from last week</em></p>
 <p><br><br></p>
-<p>**STEP 2, Convert to US dollars per square foot.</p>
+<p><strong>STEP 2, Convert to US dollars per square foot</strong>.</p>
 <p>We can easily do basic maths in R. For example, this code will take
 the House.Price column of the house data, divide each value by 10 and
 multiply each value by 2. Then it saves the answer as a new column in
@@ -1611,8 +1610,8 @@ the house data called DrG.</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="co"># You can call columns whatever you like!</span></span>
 <span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a>house<span class="sc">$</span>DrG <span class="ot">&lt;-</span> house<span class="sc">$</span>House.Price <span class="sc">/</span> <span class="dv">10</span> <span class="sc">*</span> <span class="dv">2</span></span></code></pre></div>
 <p><br></p>
-<p><strong>Based on this, convert the house.price data from
-<code>10000*NTW Dollars per ping</code> to US Dollars per square
+<p><strong>Based on this, convert the house.price data from</strong>
+<code>10000*NTW Dollars per ping</code> <strong>to US Dollars per square
 foot</strong>. For example here are the steps broken down.</p>
 <ul>
 <li><p>[1] Make a new code chunk <br><br></p></li>
@@ -1628,12 +1627,12 @@ your code to calculate the house.price data in US Dollars per square
 food. <br><br></p></li>
 </ul>
 <p><br><br></p>
-<p>**STEP 3, Summarise</p>
+<p><strong>STEP 3, Summarise</strong></p>
 <p>Use the summary command compare the house.price column and your new
-one. Compare it to cities like New York, or State College.</p>
+one. Compare it to cities like New York, or State College for your
+friend (google!)</p>
 <p><br><br></p>
 <hr />
-</div>
 </div>
 <div id="your-reflections" class="section level3">
 <h3>Your reflections</h3>
@@ -1694,7 +1693,7 @@ Lab 3.<br></p></li>
 <div id="overall" class="section level2">
 <h2>Overall</h2>
 <p>Overall, here is what your lab should correspond to:</p>
-<table class=" lightable-classic-2 table table-striped table-hover table-responsive" style="color: black; font-family: &quot;Arial Narrow&quot;, &quot;Source Sans Pro&quot;, sans-serif; margin-left: auto; margin-right: auto; color: black; margin-left: auto; margin-right: auto;">
+<table class=" lightable-classic-2 table table-striped table-hover table-responsive" style="font-family: &quot;Arial Narrow&quot;, &quot;Source Sans Pro&quot;, sans-serif; margin-left: auto; margin-right: auto; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
 <th style="text-align:left;">

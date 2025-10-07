@@ -13,7 +13,9 @@ navbar:
         - text: "Lab 2: Data summary"
           href: in_GEOG364_Lab2.html
         - text: "Lab 3: Spatial Basics"
-          href: in_GEOG364_Lab3.html          
+          href: in_GEOG364_Lab3.html        
+        - text: "Lab 4: Spatial Wrangling"
+          href: in_GEOG364_Lab4.html              
 output:
   html_document:
     theme: flatly
