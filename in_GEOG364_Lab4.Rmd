@@ -112,10 +112,8 @@ There are two options here depending on whether you are using R-studio on the we
 All the data is on the Lab 4 canvas page.  But here's a shortcut. Click each link below to download the data.  
 
  - CLICK THIS LINK for the medical data: [Lab04_Medical_data.xlsx](https://psu.instructure.com/courses/2396422/files/182917064/download?download_frd=1)
-</details>
  - CLICK THIS LINK for mystery data 1: [Lab04_MysteryData1.gpkg](https://psu.instructure.com/courses/2396422/files/182920273/download?download_frd=1)
-</details>
- - CLICK THIS LINK for mystery data 2: [Lab04_MysteryData2.gpkg](https://psu.instructure.com/courses/2328607/files/168452715/download?download_frd=1)
+ - CLICK THIS LINK for mystery data 2: [Lab04_MysteryData2.gpkg](https://psu.instructure.com/courses/2396422/files/168452715/download?download_frd=1)
 </details>
 
 
