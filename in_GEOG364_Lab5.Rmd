@@ -291,6 +291,7 @@ library(ggthemes)
 library(viridis)
 library(RColorBrewer)
 library(plotly)
+library(units)
 ```
 
 <br>
@@ -440,9 +441,35 @@ Look at the best practice for chloropleths <https://blog.datawrapper.de/chorople
 
 \
 
-# NEXT PART
+# Moran's I & Autocorrelation
 
-### RELOAD THIS PAGE FOR MORE!
+## Autocorrelation basics
+
+Now we will focus on autocorrelation. 
+
+1. Make a new section 
+
+Make a new section in your lab script called Autocorrelation.  In this section, I will leave it up to you to make clear sub-headings to make it easy for grading. 
+
+<br>
+
+2. Explain in your report:
+
+(see Monday's lecture and reading)
+
+ - What is spatial autocorrelation and why is it important?
+ - What is positive/negative/zero autocorrelation and what patterns/processes would you expect to see.
+ - For one of the maps you made above, state which map you chose and explain whether you think you see positive/negative/zero autocorrelation (and your reasoning)
+ - Why will total population look much more clustered than population density?
+
+<br>
+
+## Spatial weights matrices
+
+
+#### REFRESH THE PAGE FOR MORE
+
+
 
 \
 
@@ -491,7 +518,48 @@ knitr::include_graphics("./index_images/pg_364Lab1_Basics_2021_fig1.png")
 
 ## Lab 5
 
+# CHECK THIS BEFORE YOU SUBMIT!
 
+People who use this section get better grades...
+
+## Predict your grade
+
+
+# Grading rubric
+
+-   **Submitting Rmd & HTML (15 pts)**
+    -   20: Both .Rmd and .html submitted
+    -   10:Only one file submitted
+
+<br>
+
+-   **General style (10 pts)**
+    -   10: Great style: \
+        *Easy to find answers; no library-loading printouts; no code warnings; YAML works*
+    -   8: Minor issues: \
+        *Occasional hard-to-find answers; library-loading text printed; missing table of contents*
+    -   6: Major issues: \
+        \*Hard to find answers; multiple code issues
+
+<br>
+
+-   **General writing (10 pts)** <br> Your code and document is neat and easy to read. LOOK AT YOUR HTML FILE
+IN YOUR WEB-BROWSER BEFORE YOU SUBMIT. There is also a spell check next to the save button. You have written your answers below the relevant code chunk in full sentences in a way that is easy to find and grade. For example, you have written in full sentences, it is clear what your answers are referring to.
+    -   10: Great writing: \
+        *Full sentences, you have written up what your code does in the report. You have used units where appropriate.*
+    -   8: Minor issues: \
+        *To complete*
+    -   6: Major issues: \
+        *To complete*
+
+
+-  **US-Census Data** - 25 MARKS**
+
+    -   Download the census data & make/explain maps for Iowa [10]
+    
+    -   Your MAUP answers [10]
+
+    -   Best practice [5]
 
 To come
 

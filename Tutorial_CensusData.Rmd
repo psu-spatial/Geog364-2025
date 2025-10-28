@@ -161,7 +161,11 @@ If you add new variables, make sure they are inside the parentheses for the vari
 
 ## Wrangling census data
 
-If you got it working and click on/view ACS_county.sf from the Environment tab, you should now see that it has downloaded each one of your variables for every county in Maine and NH
+The `ACS_county.sf` object consists of an `sf` vector layer representing census data aggregated at the county subdivision level for 2019 *(src. Census Bureau 5-year ACS)*.
+
+If you got it working and click on/view ACS_county.sf from the Environment tab, you should now see that it has downloaded each one of your variables for every county in Maine and NH. 
+
+<br>
 
 ### Estimates vs Margin of Error {.unnumbered}
 
