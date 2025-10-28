@@ -11,7 +11,7 @@
 
 
 
-<title>Lab 5:</title>
+<title>Lab 5: Autocorrelation</title>
 
 <script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -436,6 +436,9 @@ div.tocify {
     <li>
       <a href="in_GEOG364_Lab4.html">Lab 4: Spatial Wrangling</a>
     </li>
+    <li>
+      <a href="in_GEOG364_Lab5.html">Lab 5: Moran's I</a>
+    </li>
   </ul>
 </li>
       </ul>
@@ -450,7 +453,7 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Lab 5:</h1>
+<h1 class="title toc-ignore">Lab 5: Autocorrelation</h1>
 
 </div>
 
@@ -461,23 +464,23 @@ div.tocify {
 <div id="welcome-to-lab-5" class="section level1">
 <h1>Welcome to Lab 5!</h1>
 <p><strong>Aim of the lab</strong></p>
-<p>In this guide you will learn how to download, clean and manage data -
-a process known as Data Wrangling - in R. You will be working with data
-on California counties. The objectives of this guide are as follows</p>
-<ol style="list-style-type: decimal">
-<li>Learn how to read data into R</li>
-<li>Learn about tidyverse</li>
-<li>Learn data wrangling functions</li>
-</ol>
-<p>This lab guide follows and supplements the material presented in
-Chapters 4 and 8-13 in the textbook <a
-href="http://r4ds.had.co.nz/index.html">R for Data Science</a>
-(RDS).</p>
+<p>In this guide you will learn how to:</p>
+<ul>
+<li>Access and use census data in R</li>
+<li>Run hypothesis tests</li>
+<li>Assess and visuralise autocorrelation</li>
+</ul>
+<p>This lab guide follows and supplements the material presented in the
+textbook <a
+href="https://mgimond.github.io/Spatial/spatial-autocorrelation-in-r.html">Spatial
+Autocorrelation in R</a>.</p>
 <p class="comment">
+<div id="boxgreen">
 <p><strong>This is a TWO WEEK LAB</strong> See <a
 href="https://psu.instructure.com/courses/2396422/assignments/17585714">here</a>
 for assignment guidelines. You must submit an <code>.Rmd</code> file and
 its associated <code>.html</code> file.</p>
+</div>
 <p><br />
 </p>
 <div id="boxedtext">
@@ -485,13 +488,10 @@ its associated <code>.html</code> file.</p>
 <strong>Getting help</strong><br />
 - Kiely (and often Dr G) will be present during your lab sessions. This
 is the easiest way to get help.<br />
-- There is a Piazza discussion board. Kiely will explain more in this
-week’s lab and will check it at least once a day.<br />
 - Dr G has weekly office hours and genuinely enjoys helping with R, even
 if you feel stuck or overwhelmed.<br />
-- If you have posted on Piazza and received no response after 24 hours,
-you may send a Canvas message to Kiely or Dr G (or if you are completely
-lost).<br />
+- You may send a Canvas message to Kiely or Dr G (or if you are
+completely lost).<br />
 <br />
 </p>
 </div>
@@ -509,26 +509,12 @@ lost).<br />
 <h3>Create a project &amp; get the data</h3>
 <p>There are two options here depending on whether you are using
 R-studio on the website (posit cloud) or your own computer (R-Desktop).
-If you are using a lab computerm choose the R-Desktop route.</p>
+If you are using a lab computer choose the R-Desktop route.</p>
 <div id="option-1.-posit-cloud-website-users" class="section level4">
 <h4>Option 1. Posit Cloud Website Users</h4>
 <details>
 <summary>
-Task 1. Get the data
-</summary>
-<p><br> All the data is on the Lab 5 canvas page. But here’s a shortcut.
-Click each link below to download the data.</p>
-<ul>
-<li>CLICK THIS LINK FOR THE MEDICAL DATA: <a
-href="https://psu.instructure.com/files/182917064/download?download_frd=1">Medical_data.xlsx</a></li>
-</ul>
-</details>
-<div class="small-gap">
-
-</div>
-<details>
-<summary>
-Task 2. Create a project for Lab 5 (expand for instructions)
+Task 1. Create a project for Lab 5 (expand for instructions)
 </summary>
 <div class="collapsible-content">
 <iframe src="https://psu-spatial.github.io/Stat462-2025/T5_ProjectsPositCloud.html" style="width: 100%; height: 700px; border: none;">
@@ -541,16 +527,7 @@ Task 2. Create a project for Lab 5 (expand for instructions)
 </div>
 <details>
 <summary>
-Task 3. Upload your dataset to the website. (expand for reminder)
-</summary>
-<p><img src="index_images/im_T2_Upload.png" /></p>
-</details>
-<div class="small-gap">
-
-</div>
-<details>
-<summary>
-Task 4. Install more packages (expand for instructions)
+Task 2. Install more packages (expand for instructions)
 </summary>
 <p><br></p>
 <p>Unfortunately on the website you need to install your packages each
@@ -600,50 +577,13 @@ Task 1. Create a project for Lab 5
 <div class="small-gap">
 
 </div>
-<details>
-<summary>
-Task 2. Get the data &amp; <strong>put it in your Lab 5 folder</strong>
-</summary>
-<p><br></p>
-<p>All the data is on the Lab 5 canvas page. But here’s a shortcut.
-Click each link below to download the data and put it directly into your
-Lab 5 folder.</p>
-<ul>
-<li>CLICK THIS LINK FOR THE MEDICAL DATA: <a
-href="https://psu.instructure.com/files/182917064/download?download_frd=1">Medical_data.xlsx</a></li>
-</ul>
-</details>
-<div class="small-gap">
-
-</div>
-<details>
-<summary>
-Task 3. Install some packages
-</summary>
-<p><br></p>
-<p>We need to install some more packages.<br>Go to to the packages tab,
-click install to get to the app-store and download/install these
-packages. If your computer says its missing a package later on, install
-anything it suggests.</p>
-<ul>
-<li><code>elevatr</code></li>
-<li><code>osmdata</code></li>
-<li><code>cols4all</code></li>
-<li><code>shinyjs</code></li>
-</ul>
-<p>Remember DO NOT put <code>install.packages()</code> into your
-lab-script - copy and paste it into thee console.</p>
-<p><br><em>Reminder: <a
-href="https://hgreatrex.github.io/Geog364_2024/pg_Tut3_basics.html#Tutorial_3G:_Packages">Tutorial:
-Packages cheatsheet</a></em>.</p>
-</details>
 <p><br></p>
 </div>
 </div>
 <div id="set-up-your-lab-5-report" class="section level3">
 <h3>Set-up your Lab 5 report</h3>
-<p>You are welcome to use/edit the template you made in Lab 5. If you
-are unsure what I mean by that, follow these instructions.</p>
+<p>You are welcome to use/edit the template you made in previous labs.
+If you are unsure what I mean by that, follow these instructions.</p>
 <details>
 <summary>
 Task. Create your RMarkdown file - expand &amp; look at Tutorial 4B and
@@ -660,53 +600,61 @@ Task. Create your RMarkdown file - expand &amp; look at Tutorial 4B and
 </div>
 <details>
 <summary>
-Task. Edit your YAML code
+Task. Edit your YAML code &amp; ADD A NEW THEME
 </summary>
 <p><br></p>
-<p>Lets use similar options to Lab 5, although you could try a different
-theme. Remember YAML code is annoying to edit, because here, <em>spaces
-really do matter</em>. Everything has to be perfect or it won’t
-knit.</p>
-<p><strong>Select everything in my code chunk here and replace your YAML
-with this (remember the — on line 1 and at the end).</strong></p>
-<p>Now edit the author name to your own. If you wonder what Sys.Date()
-is, don’t touch it - it automatically gives you the current date.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="sc">---</span></span>
-<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>title<span class="sc">:</span> <span class="st">&quot;GEOG-364 - Lab 5&quot;</span></span>
-<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>author<span class="sc">:</span> <span class="st">&quot;hlg5155&quot;</span></span>
-<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>date<span class="sc">:</span> <span class="st">&quot;`r Sys.Date()`&quot;</span></span>
-<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>output<span class="sc">:</span></span>
-<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>  html_document<span class="sc">:</span></span>
-<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>    toc<span class="sc">:</span> true</span>
-<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>    toc_float<span class="sc">:</span> yes</span>
-<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a>    number_sections<span class="sc">:</span> yes</span>
-<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a>    theme<span class="sc">:</span> lumen</span>
-<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a>    df_print<span class="sc">:</span> paged</span>
-<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a><span class="sc">---</span></span></code></pre></div>
+<p>Lets use similar options to Lab 4. Remember YAML code is annoying to
+edit, because here, <em>spaces really do matter</em>. Everything has to
+be perfect or it won’t knit.</p>
+<ul>
+<li><p><strong>Select everything in my code chunk here and replace your
+YAML with this (remember the — on line 1 and at the
+end).</strong></p></li>
+<li><p>Now edit the author name to your own. If you wonder what
+Sys.Date() is, don’t touch it - it automatically gives you the current
+date.</p></li>
+<li><p>Now change your theme to your favourite one of these - you can
+see what it looks like by pressing knit. Note, DO NOT put quote marks
+around the theme name.</p>
+<ul>
+<li>bootstrap</li>
+<li>cerulean</li>
+<li>cosmo</li>
+<li>darkly</li>
+<li>flatly</li>
+<li>journal</li>
+<li>lumen</li>
+<li>paper</li>
+<li>readable</li>
+<li>sandstone</li>
+<li>simplex</li>
+<li>spacelab</li>
+<li>united</li>
+<li>yeti</li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co">#---------------------------------------------------------</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="co"># </span><span class="al">NOTE</span><span class="co">, Your theme does NOT have quote marks around it </span></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="co">#---------------------------------------------------------</span></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="sc">---</span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>title<span class="sc">:</span> <span class="st">&quot;GEOG-364 - Lab 5&quot;</span></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>author<span class="sc">:</span> <span class="st">&quot;hlg5155&quot;</span></span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>date<span class="sc">:</span> <span class="st">&quot;`r Sys.Date()`&quot;</span></span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>output<span class="sc">:</span></span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a>  html_document<span class="sc">:</span></span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a>    toc<span class="sc">:</span> true</span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a>    toc_float<span class="sc">:</span> yes</span>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a>    number_sections<span class="sc">:</span> yes</span>
+<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a>    theme<span class="sc">:</span> lumen</span>
+<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a>    df_print<span class="sc">:</span> paged</span>
+<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a><span class="sc">---</span></span></code></pre></div>
 </details>
 <div class="small-gap">
 
 </div>
 <details>
 <summary>
-Task. Change the theme and knit
-</summary>
-<p><br></p>
-<p>In the YAML code, change the theme to any one of your choice that
-isn’t not lumen (see here to view available themes - <a
-href="https://bootswatch.com/"
-class="uri">https://bootswatch.com/</a>.). <br></p>
-<p><strong>Some might not work</strong>, but these are likely to:
-“default”, “bootstrap”, “cerulean”, “cosmo”, “darkly”, “flatly”,
-“journal”, “lumen”, “paper”, “readable”, “sandstone”, “simplex”,
-“spacelab”, “united”, “yeti”.</p>
-</details>
-<div class="small-gap">
-
-</div>
-<details>
-<summary>
-Task. Clean the file and create/run your library code chunk
+Task. Delete the existing text and create/run your library code chunk
 </summary>
 <p><br></p>
 <ul>
@@ -741,6 +689,9 @@ error.<br></p></li>
 R-Studio (in the same way you need to click on an app on your phone
 before you can use it). <br></p></li>
 </ul>
+<p>You might need additional libraries as you work through the lab. If
+so, add them in this code chunk AND REMEMBER TO RERUN. If you see a
+little yellow bar at the top asking you to install them,click yes!</p>
 <p><br></p>
 </details>
 <div class="small-gap">
@@ -772,6 +723,7 @@ go back and do the previous sections!</p>
 <p><br></p>
 <p><img src="index_images/pg_364Lab2_Summary_2021_fig2.png" /></p>
 <p><br></p>
+<p><br></p>
 <p><br />
 </p>
 <hr />
@@ -779,14 +731,109 @@ go back and do the previous sections!</p>
 </p>
 </div>
 </div>
-<div id="fully-refreshreload-the-page-for-updated-instructions"
-class="section level1">
-<h1>FULLY REFRESH/RELOAD THE PAGE FOR UPDATED INSTRUCTIONS</h1>
+<div id="accessing-us-census-data" class="section level1">
+<h1>Accessing US-Census Data</h1>
+<p>The tutorial below will show you how to download and use data from
+the US census and American Community survey. Read the lab instructions
+first, then us the tutorial to help you do it.</p>
+<ol style="list-style-type: decimal">
+<li>Make a new section</li>
+</ol>
+<p>Make a new section in your lab script called US-Census data</p>
+<p><br></p>
+<p>Using this page or google, read about the American Community Survey -
+<a href="https://www.census.gov/programs-surveys/acs/about.html"
+class="uri">https://www.census.gov/programs-surveys/acs/about.html</a></p>
+<p>Explain what the US-Census American Community survey is and why it’s
+a useful dataset. Explain what the object of analysis is and its
+boundaries in time (e.g. does one survey represent all of US
+history?)</p>
+<p><br></p>
+<ol start="2" style="list-style-type: decimal">
+<li>Read through the tutorial below</li>
+</ol>
+<p>As you read - know that, the tutorial is focused on Maine and New
+Hampshire. YOU WILL BE FOCUSED ON IOWA. Looking at the list of
+variables, choose one or two additional variables that interest you. For
+example, past students have looked at water, poverty (access to
+sanitation), access to broadband, demographics and crime etc. <br></p>
+<details>
+<summary>
+Expand for tutorial - Census data
+</summary>
+<p><br></p>
+<div class="collapsible-content">
+<iframe src="https://psu-spatial.github.io/Geog364-2025/Tutorial_CensusData" style="width: 100%; height: 700px; border: none;">
+</iframe>
+</div>
+</details>
+<div class="small-gap">
+
+</div>
+<ol start="3" style="list-style-type: decimal">
+<li>Download census data. <br></li>
+</ol>
+<p>Use the tutorial code to download county level American Community
+Survey for Iowa, including:</p>
+<ul>
+<li>housevalue (“B25075_001”)</li>
+<li>total_pop (“B05012_001”)</li>
+<li>total_house (“B25001_001”)</li>
+<li>med.income (“B19013_001”)</li>
+<li>AND a few variables of your own (see previous step)</li>
+</ul>
+<p><br></p>
+<p><em>REMEMBER THAT YOU NEED TO GET YOUR API KEY FIRST FROM THE START
+OF THE TUTORIAL, AND IT WON’T WORK UNTIL YOU HAVE FULLY RESTARTED
+R-STUDIO.</em></p>
+<p><br></p>
+<ol start="4" style="list-style-type: decimal">
+<li>Make 3 maps from this data that show something interesting about
+Iowa.</li>
+</ol>
+<p>Write a few sentences under each one interpreting your results
+e.g. look at google maps, why are certain counties/high or low. <br>
+Bonus marks for something that’s genuinely interesting, rather than just
+two random variables you decided on. <br><br> If you want to continue to
+improve your tmap chloropleths. <a
+href="https://rpubs.com/erikaaldisa/choroplethmapping"
+class="uri">https://rpubs.com/erikaaldisa/choroplethmapping</a></p>
+<p><br></p>
+<ol start="5" style="list-style-type: decimal">
+<li>MAUP</li>
+</ol>
+<p>WE WILL COVER THIS ON WEDNESDAY Explain the modifiable areal map
+problem and both the shape and zone effects. Write any impacts of MAUP
+do you see in your analyses and why.</p>
+<p><br></p>
+<ol start="6" style="list-style-type: decimal">
+<li>Chloropleths</li>
+</ol>
+<p>Using google, explain what a chloropleth map is and why MAUP is a
+problem.</p>
+<p><br></p>
+<ol start="7" style="list-style-type: decimal">
+<li>Use the best practice for chloropleths</li>
+</ol>
+<p>Look at the best practice for chloropleths <a
+href="https://blog.datawrapper.de/choroplethmaps/"
+class="uri">https://blog.datawrapper.de/choroplethmaps/</a> and make a
+new version of one of your plots with at least one improvement,
+explaining what you did. If you can’t get it working, you can get most
+of the marks for explaining what you WANTED to do.</p>
 <p><br />
 </p>
 <hr />
 <p><br />
 </p>
+</div>
+<div id="next-part" class="section level1">
+<h1>NEXT PART</h1>
+<div id="reload-this-page-for-more" class="section level3">
+<h3>RELOAD THIS PAGE FOR MORE!</h3>
+<p><br />
+</p>
+</div>
 </div>
 <div id="submitting-your-lab" class="section level1">
 <h1>Submitting your Lab</h1>

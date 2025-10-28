@@ -15,7 +15,9 @@ navbar:
         - text: "Lab 3: Spatial Basics"
           href: in_GEOG364_Lab3.html        
         - text: "Lab 4: Spatial Wrangling"
-          href: in_GEOG364_Lab4.html              
+          href: in_GEOG364_Lab4.html  
+        - text: "Lab 5: Moran's I"
+          href: in_GEOG364_Lab5.html          
 output:
   html_document:
     theme: flatly

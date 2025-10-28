@@ -1,5 +1,5 @@
 ---
-title: "Lab 5:"
+title: "Lab 5: Autocorrelation"
 output:
   html_document:
     css: projectlab.css
@@ -61,18 +61,19 @@ house_sf <- st_as_sf(house,coords=c("Longitude","Latitude"),crs=4326)
 
 **Aim of the lab**
 
-In this guide you will learn how to download, clean and manage data - a process known as Data Wrangling - in R. You will be working with data on California counties. The objectives of this guide are as follows
+In this guide you will learn how to:
 
-1.  Learn how to read data into R
-2.  Learn about tidyverse
-3.  Learn data wrangling functions
+ - Access and use census data in R 
+ - Run hypothesis tests 
+ - Assess and visuralise autocorrelation
 
-This lab guide follows and supplements the material presented in Chapters 4 and 8-13 in the textbook [R for Data Science](http://r4ds.had.co.nz/index.html) (RDS).
+This lab guide follows and supplements the material presented in the textbook [Spatial Autocorrelation in R](https://mgimond.github.io/Spatial/spatial-autocorrelation-in-r.html).
 
 <p class="comment">
 
+::: {#boxgreen}
 **This is a TWO WEEK LAB** See [here](https://psu.instructure.com/courses/2396422/assignments/17585714) for assignment guidelines. You must submit an `.Rmd` file and its associated `.html` file. 
-
+::: 
 
 \
 
@@ -81,9 +82,8 @@ This lab guide follows and supplements the material presented in Chapters 4 and 
 **Getting help** 
 \
  - Kiely (and often Dr G) will be present during your lab sessions. This is the easiest way to get help. \
- - There is a Piazza discussion board. Kiely will explain more in this week’s lab and will check it at least once a day. \
  - Dr G has weekly office hours and genuinely enjoys helping with R, even if you feel stuck or overwhelmed. \
- - If you have posted on Piazza and received no response after 24 hours, you may send a Canvas message to Kiely or Dr G (or if you are completely lost).\
+ - You may send a Canvas message to Kiely or Dr G (or if you are completely lost).\
  \
 :::
 
@@ -99,28 +99,14 @@ This lab guide follows and supplements the material presented in Chapters 4 and 
 
 ### Create a project & get the data
 
-There are two options here depending on whether you are using R-studio on the website (posit cloud) or your own computer (R-Desktop). If you are using a lab computerm choose the R-Desktop route.
+There are two options here depending on whether you are using R-studio on the website (posit cloud) or your own computer (R-Desktop). If you are using a lab computer choose the R-Desktop route.
 
 #### Option 1. Posit Cloud Website Users
 
-<details>
-
-<summary>Task 1. Get the data </summary>
-
-<br>
-All the data is on the Lab 5 canvas page.  But here's a shortcut. Click each link below to download the data.  
-
- - CLICK THIS LINK FOR THE MEDICAL DATA: [Medical_data.xlsx](https://psu.instructure.com/files/182917064/download?download_frd=1)
-
-
-</details>
-
-::: small-gap
-:::
 
 <details>
 
-<summary>Task 2. Create a project for Lab 5 (expand for instructions)</summary>
+<summary>Task 1. Create a project for Lab 5 (expand for instructions)</summary>
 
 ::: collapsible-content
 <iframe src="https://psu-spatial.github.io/Stat462-2025/T5_ProjectsPositCloud.html" style="width: 100%; height: 700px; border: none;">
@@ -134,21 +120,10 @@ All the data is on the Lab 5 canvas page.  But here's a shortcut. Click each lin
 ::: small-gap
 :::
 
-<details>
-
-<summary>Task 3. Upload your dataset to the website. (expand for reminder)</summary>
-
-![](index_images/im_T2_Upload.png)
-
-
-</details>
-
-::: small-gap
-:::
 
 <details>
 
-<summary>Task 4. Install more packages (expand for instructions)</summary>
+<summary>Task 2. Install more packages (expand for instructions)</summary>
 
 <br>
 
@@ -207,45 +182,11 @@ cheatsheet](https://psu-spatial.github.io/Stat462-2025/T6_Packages.html)*.
 ::: small-gap
 :::
 
-<details>
-
-<summary>Task 2. Get the data & **put it in your Lab 5 folder**</summary>
-
-<br>
-
-All the data is on the Lab 5 canvas page.  But here's a shortcut. Click each link below to download the data and put it directly into your Lab 5 folder.
-
- - CLICK THIS LINK FOR THE MEDICAL DATA: [Medical_data.xlsx](https://psu.instructure.com/files/182917064/download?download_frd=1)
-</details>
-
-::: small-gap
-:::
-
-<details>
-
-<summary>Task 3. Install some packages</summary>
-
-<br>
-
-We need to install some more packages.<br>Go to to the packages tab, click install to get to the app-store and download/install these packages. If your computer says its missing a package later on, install anything it suggests.
-
--   `elevatr`
--   `osmdata`
--   `cols4all`
--   `shinyjs`
-
-Remember DO NOT put `install.packages()` into your lab-script - copy and paste it into thee console.
-
-<br>*Reminder: [Tutorial: Packages
-cheatsheet](https://hgreatrex.github.io/Geog364_2024/pg_Tut3_basics.html#Tutorial_3G:_Packages)*.
-
-</details>
-
 <br>
 
 ### Set-up your Lab 5 report
 
-You are welcome to use/edit the template you made in Lab 5. If you are unsure what I mean by that, follow these instructions.
+You are welcome to use/edit the template you made in previous labs. If you are unsure what I mean by that, follow these instructions.
 
 <details>
 
@@ -268,18 +209,39 @@ You are welcome to use/edit the template you made in Lab 5. If you are unsure wh
 
 <details>
 
-<summary>Task. Edit your YAML code</summary>
+<summary>Task. Edit your YAML code & ADD A NEW THEME</summary>
 
 <br>
 
-Lets use similar options to Lab 5, although you could try a different theme.  Remember YAML code is annoying to edit, because here, *spaces really do matter*. Everything has to be perfect or it won't knit.
+Lets use similar options to Lab 4.  Remember YAML code is annoying to edit, because here, *spaces really do matter*. Everything has to be perfect or it won't knit.
 
-**Select everything in my code chunk here and replace your YAML with this (remember the --- on line 1 and at the end).**
+ - **Select everything in my code chunk here and replace your YAML with this (remember the --- on line 1 and at the end).**
 
-Now edit the author name to your own.  If you wonder what Sys.Date() is, don't touch it - it automatically gives you the current date.
+ - Now edit the author name to your own.  If you wonder what Sys.Date() is, don't touch it - it automatically gives you the current date.
+ 
+ - Now change your theme to your favourite one of these - you can see what it looks like by pressing knit. Note, DO NOT put quote marks around the theme name.
+   - bootstrap
+   - cerulean
+   - cosmo
+   - darkly
+   - flatly
+   - journal
+   - lumen
+   - paper
+   - readable
+   - sandstone
+   - simplex
+   - spacelab
+   - united
+   - yeti
+ 
+
 
 ```{r,eval=FALSE}
 
+#---------------------------------------------------------
+# NOTE, Your theme does NOT have quote marks around it 
+#---------------------------------------------------------
 ---
 title: "GEOG-364 - Lab 5"
 author: "hlg5155"
@@ -298,32 +260,15 @@ output:
 
 
 
-
-
 </details>
 
 ::: small-gap
 :::
 
-<details>
-
-<summary>Task. Change the theme and knit</summary>
-
-<br>
-
-In the YAML code, change the theme to any one of your choice that isn't not lumen (see here to view available themes -
-<https://bootswatch.com/>.). <br>
-
-**Some might not work**, but these are likely to: “default”, “bootstrap”, “cerulean”, “cosmo”, “darkly”, “flatly”, “journal”, “lumen”, “paper”, “readable”, “sandstone”, “simplex”, “spacelab”, “united”, “yeti”.
-
-</details>
-
-::: small-gap
-:::
 
 <details>
 
-<summary>Task. Clean the file and create/run your library code chunk</summary>
+<summary>Task. Delete the existing text and create/run your library code chunk</summary>
 
 <br>
 
@@ -353,6 +298,8 @@ library(plotly)
  - Press the green arrow on the right of the code chunk to run the code inside it. You will see a load of "loading text" telling your details about the packages you just loaded.<br><br> Press the green arrow AGAIN. The text should disappear unless there is an error.<br>
 
 -   Note, remember to run this code chunk EVERY TIME your start R-Studio (in the same way you need to click on an app on your phone before you can use it). <br>
+
+You might need additional libraries as you work through the lab. If so, add them in this code chunk AND REMEMBER TO RERUN. If you see a little yellow bar at the top asking you to install them,click yes!
 
 <br>
 
@@ -392,6 +339,103 @@ Your lab script should now look similar this, but with your theme and YAML optio
 
 <br>
 
+<br>
+
+
+
+\
+
+------------------------------------------------------------------------
+
+\
+
+
+# Accessing US-Census Data
+
+The tutorial below will show you how to download and use data from the US census and
+American Community survey. Read the lab instructions first, then us the tutorial to help you do it.
+
+
+
+1. Make a  new section
+
+Make a new section in your lab script called US-Census data
+
+<br>
+
+Using this page or google, read about the American Community Survey - 
+https://www.census.gov/programs-surveys/acs/about.html
+
+Explain what the US-Census American Community survey is and why it's a useful dataset.  Explain what the object of analysis is and its boundaries in time (e.g. does one survey represent all of US history?)
+
+<br>
+
+2. Read through the tutorial below
+
+As you read - know that, the tutorial is focused on Maine and New Hampshire. YOU WILL BE FOCUSED ON IOWA. Looking at the list of variables, choose one or two additional variables that interest you. For example, past students have looked at water, poverty (access to sanitation), access to broadband, demographics and crime etc. <br>
+
+
+
+<details>
+
+<summary>Expand for tutorial - Census data</summary>
+
+<br>
+
+::: collapsible-content
+<iframe src="https://psu-spatial.github.io/Geog364-2025/Tutorial_CensusData" style="width: 100%; height: 700px; border: none;">
+</iframe>
+:::
+
+</details>
+
+::: small-gap
+:::
+
+
+3. Download census data. <br>
+
+Use the tutorial code to download county level American Community Survey for Iowa, including:
+
+ - housevalue ("B25075_001")
+ - total_pop ("B05012_001") 
+ - total_house ("B25001_001")
+ - med.income  ("B19013_001") 
+ - AND a few variables of your own (see previous step)
+
+<br>
+
+*REMEMBER THAT YOU NEED TO GET YOUR API KEY FIRST FROM THE START OF THE TUTORIAL, AND IT WON'T WORK UNTIL YOU HAVE FULLY RESTARTED R-STUDIO.*
+
+<br>
+
+
+4.  Make 3 maps from this data that show something interesting about Iowa. 
+
+Write a few sentences under each one interpreting your results e.g. look at google maps, why are certain counties/high or low. <br> Bonus marks for something that's genuinely interesting, rather than just two random variables you decided on. <br><br> If you want to continue to improve your tmap chloropleths.
+    <https://rpubs.com/erikaaldisa/choroplethmapping> 
+    
+<br>
+
+5.  MAUP
+
+WE WILL COVER THIS ON WEDNESDAY Explain the modifiable areal map problem and both the shape and zone
+    effects. Write any impacts of MAUP do  you see in your analyses and why. 
+    
+<br>
+
+6.  Chloropleths
+
+Using google, explain what a chloropleth map is and why MAUP is a problem.
+
+<br>
+
+7.  Use the best practice for chloropleths
+
+Look at the best practice for chloropleths <https://blog.datawrapper.de/choroplethmaps/> and make a new version
+    of one of your plots with at least one improvement, explaining what
+    you did. If you can't get it working, you can get most of the marks
+    for explaining what you WANTED to do.
 
 
 \
@@ -400,13 +444,12 @@ Your lab script should now look similar this, but with your theme and YAML optio
 
 \
 
-# FULLY REFRESH/RELOAD THE PAGE FOR UPDATED INSTRUCTIONS 
+# NEXT PART
+
+### RELOAD THIS PAGE FOR MORE!
 
 \
 
-------------------------------------------------------------------------
-
-\
 
 # Submitting your Lab
 

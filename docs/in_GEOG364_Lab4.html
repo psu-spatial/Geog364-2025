@@ -436,6 +436,9 @@ div.tocify {
     <li>
       <a href="in_GEOG364_Lab4.html">Lab 4: Spatial Wrangling</a>
     </li>
+    <li>
+      <a href="in_GEOG364_Lab5.html">Lab 5: Moran's I</a>
+    </li>
   </ul>
 </li>
       </ul>
@@ -737,14 +740,13 @@ open them. Make a new code chunk containing this code.<br></p></li>
 <span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="fu">library</span>(terra)</span>
 <span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
 <span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a><span class="fu">library</span>(tmap)</span>
-<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a><span class="fu">library</span>(elevatr)</span>
-<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a><span class="fu">library</span>(osmdata)</span>
-<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a><span class="fu">library</span>(ggstatsplot)</span>
-<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a><span class="fu">library</span>(ggthemes)</span>
-<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a><span class="fu">library</span>(viridis)</span>
-<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a><span class="fu">library</span>(RColorBrewer)</span>
-<span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a><span class="fu">library</span>(plotly)</span></code></pre></div>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a><span class="fu">library</span>(ggthemes)</span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a><span class="fu">library</span>(viridis)</span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a><span class="fu">library</span>(RColorBrewer)</span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a><span class="fu">library</span>(plotly)</span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a><span class="fu">library</span>(spatstat)</span>
+<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a><span class="fu">library</span>(sfdep)</span></code></pre></div>
 <p><br></p>
 <ul>
 <li><p>Press the green arrow on the right of the code chunk to run the
@@ -1534,7 +1536,7 @@ missing.</em></li>
 <div id="overall" class="section level2">
 <h2>Overall</h2>
 <p>Overall, here is what your lab should correspond to:</p>
-<table class=" lightable-classic-2 table table-striped table-hover table-responsive" style="color: black; font-family: &quot;Arial Narrow&quot;, &quot;Source Sans Pro&quot;, sans-serif; margin-left: auto; margin-right: auto; color: black; margin-left: auto; margin-right: auto;">
+<table class=" lightable-classic-2 table table-striped table-hover table-responsive" style="font-family: &quot;Arial Narrow&quot;, &quot;Source Sans Pro&quot;, sans-serif; margin-left: auto; margin-right: auto; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
 <th style="text-align:left;">
