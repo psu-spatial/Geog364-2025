@@ -357,7 +357,7 @@ American Community survey. Read the lab instructions first, then us the tutorial
 
 
 
-1. Make a  new section
+1. Make a  new section & explain ACS
 
 Make a new section in your lab script called US-Census data
 
@@ -366,14 +366,13 @@ Make a new section in your lab script called US-Census data
 Using this page or google, read about the American Community Survey - 
 https://www.census.gov/programs-surveys/acs/about.html
 
-Explain what the US-Census American Community survey is and why it's a useful dataset.  Explain what the object of analysis is and its boundaries in time (e.g. does one survey represent all of US history?)
+*Now, Explain what the US-Census American Community survey is and why it's a useful dataset*. Make sure to include what the object of analysis is and its boundaries in time (e.g. does one survey represent all of US history?)
 
 <br>
 
 2. Read through the tutorial below
 
 As you read - know that, the tutorial is focused on Maine and New Hampshire. YOU WILL BE FOCUSED ON IOWA. Looking at the list of variables, choose one or two additional variables that interest you. For example, past students have looked at water, poverty (access to sanitation), access to broadband, demographics and crime etc. <br>
-
 
 
 <details>
@@ -393,9 +392,9 @@ As you read - know that, the tutorial is focused on Maine and New Hampshire. YOU
 :::
 
 
-3. Download census data. <br>
+3. Download census data using the tutorial. <br>
 
-Use the tutorial code to download county level American Community Survey for Iowa, including:
+Use the tutorial code to download county level American Community Survey for *IOWA*, including:
 
  - housevalue ("B25075_001")
  - total_pop ("B05012_001") 
@@ -417,10 +416,10 @@ Write a few sentences under each one interpreting your results e.g. look at goog
     
 <br>
 
-5.  MAUP
+5.  The Modifiable Areal Map Problem MAUP
 
 WE WILL COVER THIS ON WEDNESDAY Explain the modifiable areal map problem and both the shape and zone
-    effects. Write any impacts of MAUP do  you see in your analyses and why. 
+    effects. Write any impacts of MAUP that you see in your analyses of Iowa and your reasoning. 
     
 <br>
 
@@ -432,10 +431,7 @@ Using google, explain what a chloropleth map is and why MAUP is a problem.
 
 7.  Use the best practice for chloropleths
 
-Look at the best practice for chloropleths <https://blog.datawrapper.de/choroplethmaps/> and make a new version
-    of one of your plots with at least one improvement, explaining what
-    you did. If you can't get it working, you can get most of the marks
-    for explaining what you WANTED to do.
+Look at the best practice for chloropleths <https://blog.datawrapper.de/choroplethmaps/> and make a new version of one of your plots with at least one improvement, explaining what you did. If you can't get it working, you can get most of the marks for explaining what you WANTED to do.
 
 
 \
