@@ -1,0 +1,295 @@
+---
+output:
+  html_document:
+    toc: false
+    number_sections: false
+    df_print: paged
+---
+
+# TUTORIAL Spatial Autocorrelation part 1
+
+## Libraries needed for this tutorial.
+
+Make sure all of these libraries are at the top of your lab script in a code chunk, and run the code chunk! If you run the code chunk and it says a package is missing, either click "install" if the little yellow bar appears at the top, or go to the Packages tab, and click Install to go to the package 'app store'.
+
+```{r,message=FALSE, warning=FALSE}
+library(readxl)
+library(tidyverse)
+library(dplyr)
+library(terra)
+library(sf)
+library(tmap)
+library(ggplot2)
+library(ggthemes)
+library(viridis)
+library(RColorBrewer)
+library(plotly)
+library(spatstat)
+library(sfdep)
+library(tidycensus)
+library(units)
+library(sfdep)
+library(spatstat)
+```
+
+<br>
+
+
+## Introduction
+
+In this tutorial, we introduce **spatial autocorrelation**, a property that describes how values at one location relate to values at nearby locations.
+
+This concept is rooted in **Tobler’s First Law of Geography** which states:
+
+```{block type="note", eval = FALSE}
+_"The first law of geography: Everything is related to everything else, but near things are more related than distant things."_ Waldo R. Tobler [@Tobler1970] 
+```
+
+This principle underpins much of spatial analysis. It suggests that spatial data often exhibit **non-random patterns**, where nearby features tend to have similar attribute values. Spatial autocorrelation provides a formal way to quantify this tendency.
+
+```{r f13-random-maps, echo=FALSE}
+knitr::include_graphics("index_images/im_L05_Random_maps.png")
+```
+
+To make the mathematical foundations of autocorrelation more accessible, we shift from the point used in the previous labs to a simpler dataset composed of **polygonal areal units** (e.g., counties). This allows us to clearly illustrate how spatial relationships are defined, how spatial weights are constructed, and how measures like **Moran’s I** are computed.
+
+This chapter focuses on:
+
+-   Defining spatial autocorrelation and its role in spatial statistics.
+-   Constructing spatial weights to represent neighborhood relationships.
+-   Computing and interpreting **global** and **local Moran’s I** statistics.
+-   Using permutation-based hypothesis testing to assess significance.
+
+## Example dataset, Maine Income
+
+Let's start with a working example: 2020 median per capita income for the state of Maine. We can get US Census data using the tidycensus package. If you're doing Lab 5, you have already done this. I'm including so it's a standalone tutorial
+
+<details>
+
+<summary>If you're doing lab 5 you DO NOT NEED TO DO THIS AGAIN</summary>
+
+<br>
+
+I'm including this so that we're looking at a standalone tutorial
+
+```{r,message=FALSE, warning=FALSE, include=FALSE,results="hide"}
+
+# Download some data for Maine and NH using get_acs
+# THIS WILL NOT WORK IF YOU DID'T RUN YOUR API KEY CODE & RESTART R-STUDIO
+ACS_county.sf <- get_acs(geography = "county", 
+                         year = 2019,
+                         variables = c(housevalue  = "B25075_001",  # house value
+                                       total_pop   = "B05012_001",  # total population
+                                       total_house = "B25001_001",  # no. houses
+                                       med.income  = "B19013_001"), # median income  
+                         state = c("ME"),
+                         survey = "acs5", geometry = TRUE,
+                         output = "wide", show_call = FALSE)
+st_coordinates(ACS_county.sf)
+
+# OPTIONAL. For more advanced work, you probably want to keep the error columns
+# If you don't run it, remember all your columns have an E on the end of the name 
+ACS_county.sf <- ACS_county.sf %>%
+  select(
+    GEOID, 
+    NAME,
+    housevalue   = housevalueE, 
+    total_pop    = total_popE, 
+    total_house  = total_houseE, 
+    med.income   = med.incomeE,
+    geometry 
+    )
+
+st_coordinates(ACS_county.sf)
+
+
+# Change the map projection to Albers equal projection, 
+# then remove empty polygons (lakes etc) and fix any broken geometry
+ACS_county.sf <- ACS_county.sf %>%
+  st_transform(5070) %>%
+  filter(!st_is_empty(geometry)) %>%
+  st_make_valid()
+
+
+# Find the areas in each county & change the units from metres squared to km squared
+ACS_county.sf$Area  <- st_area(ACS_county.sf)
+ACS_county.sf$Area  <- as.numeric(set_units(ACS_county.sf$Area,"km^2"))
+
+
+
+# OPTIONAL & DEPENDS ON THE VARIABLES YOU DOWNLOAD
+# Divide the total population & housing by the area to give the population/housing density
+ACS_county.sf$pop_density_km2  <- ACS_county.sf$total_pop   / ACS_county.sf$Area
+ACS_county.sf$house_density_km2 <- ACS_county.sf$total_house / ACS_county.sf$Area
+
+
+
+```
+
+</details>
+
+::: small-gap
+:::
+
+
+
+```{r fig03, fig.height=3, fig.cap="Map of 2020 median per capita income for Maine counties (USA).", echo = FALSE, message=FALSE, fig.align='center'}
+
+# Turn off interactive
+tmap_mode("plot") 
+
+# Add a basemap of your choice 
+# Then plot the income column of your data
+tm_basemap("CartoDB.Voyager") +
+tm_shape(ACS_county.sf) + 
+  tm_polygons(
+    fill        = "med.income",
+    fill.scale  = tm_scale_intervals(values = "brewer.blues", style = "jenks"),
+    fill_alpha  = 0.7,
+    fill.legend = tm_legend("Maine average income per county (USD)")
+  ) 
+
+```
+
+<br>
+
+<br>
+
+## Introducing Global Moran's *I* 
+
+While maps can sometimes reveal clusters of similar values, our visual interpretation is often limited, especially when patterns are subtle or complex. Here, it may seem apparent that, when aggregated at the county level, the income distribution appears clustered with high counties surrounded by high counties and low counties surrounded by low counties. But a qualitative description may not be sufficient; we might want to quantify the degree to which similar (or dissimilar) counties are clustered.
+
+To move beyond subjective impressions, we need a **quantitative and objective measure** of spatial patterning. Specifically, we want to quantify the *degree* to which similar attribute values are clustered or dispersed across space.
+
+One widely used statistic for this purpose is **Moran’s I** , a measure of **global spatial autocorrelation**. It quantifies the overall tendency for features with similar values to be located near one another, based on a defined spatial relationship (e.g., contiguity or distance). In essence, Moran’s *I* is a correlation coefficient between a variable and its spatially lagged counterpart.
+
+::: {#boxgreen}
+The Moran’s *I* statistic is a measure of spatial autocorrelation that quantifies the degree to which similar values (like income) cluster together in space. It is computed as the correlation between a variable and its spatially lagged counterpart, based on a defined spatial weights matrix.
+:::
+
+<br>
+
+### Computing neighborhood & spatial weights
+
+**But before we go about computing this correlation, we need to come up with a way to define a neighbor.**
+
+One approach is to define a neighbor as being any contiguous polygon. For example, the northern most county (Aroostook), has four contiguous neighbors while the southern most county (York) has just two contiguous counties. Other neighborhood definitions can include distance bands (e.g. counties within 100 km) and k nearest neighbors (e.g. the 2 closest neighbors). Note that distance bands and k nearest neighbors are usually measured using the polygon's centroids and not their boundaries.
+
+```{r fig04, echo=FALSE, fig.cap="Maps show the links between each polygon and their respective neighbor(s) based on the neighborhood definition. A contiguous neighbor is defined as one that shares a boundary or a vertex with the polygon of interest.  Orange numbers indicate the number of neighbors for each polygon. Note that the top most county has no neighbors when a neighborhood definition of a 100 km distance band is used (i.e. no centroids are within a 100 km search radius)", out.width=600, fig.align='center'}
+knitr::include_graphics("index_images/im_L05_Diff_neighbors.png")
+```
+
+Once we have chosen a definition of neighborhood, the next step is to identify which polygons are neighbors and to represent that as a spatial weights matrix
+
+#### Work out neighbors
+
+Lots of examples here: https://sfdep.josiahparry.com/
+
+As described in lectures, there are many ways to calculate neighbourhood. Here are a few of them. They all rely on getting the geometry of each polygon and our choice of centroid
+
+```{r}
+# First get the geometry/coords and the central point in each polygon
+ACS_county.geometry <- st_geometry(ACS_county.sf)
+ACS_county.centroid <- st_centroid(ACS_county.sf)
+```
+
+<br>
+
+To calculate and plot the three nearest neighbours (nearest centroids)
+
+```{r}
+neighbor.nearest3 <- st_knn(ACS_county.centroid, k = 3)
+neighbor.nearest3
+
+plot(ACS_county.geometry, border='blue')
+plot(neighbor.nearest3, st_coordinates(ACS_county.centroid), 
+     col='black', lwd=1, pch=16, cex=.8, add=TRUE)
+```
+
+
+<br>
+
+To calculate and plot adjacency neighbors:
+
+ - QUEENS ADJACENCY → touch at any point (edges or corners)
+ - ROOKS ADJACENCY → touch by edges only (rook adjacency)
+
+```{r}
+# Queens
+neighbor.queens   <- st_contiguity(ACS_county.geometry, queen=TRUE)
+neighbor.queens
+
+plot(ACS_county.geometry, border='darkcyan')
+plot(neighbor.queens, st_coordinates(ACS_county.centroid), 
+     col='black', lwd=1, pch=16, cex=.8, add=TRUE)
+
+```
+
+or
+
+
+```{r}
+# Rooks
+neighbor.rooks   <- st_contiguity(ACS_county.geometry, queen=FALSE)
+neighbor.rooks
+
+plot(ACS_county.geometry, border='darkorange')
+plot(neighbor.rooks, st_coordinates(ACS_county.centroid), 
+     col='black', lwd=1, pch=16, cex=.8, add=TRUE)
+
+```
+
+To calculate and plot second order weights
+
+
+```{r}
+st_nb_lag_cumul(neighbor.rooks, 2)
+
+plot(ACS_county.geometry, border='darkorange')
+plot(neighbor.rooks, st_coordinates(ACS_county.centroid), 
+     col='black', lwd=1, pch=16, cex=.8, add=TRUE)
+```
+
+
+
+
+
+neighbor.rooks    <- st_contiguity(ACS_county.geometry, queen=FALSE)
+neighbor.rooks
+
+
+
+We can take a quick look using this plot command
+
+```{r}
+
+plot(st_geometry(ACS_county.sf), border='blue')
+
+plot(neighbor.queens, st_coordinates(st_centroid(ACS_county.sf)), 
+     col='black', lwd=2, add=TRUE)
+
+```
+
+
+#### Create the matrix
+
+THEN `nb2listw` turns this into a spatial weights matrix. If your code is working, the summary should look similar to above.
+
+```{r}
+weights.matrix  <- nb2listw(neighbor.queens, style="W", zero.policy=TRUE)
+weights.matrix
+```
+
+We can view this as a matrix as we did in class using the nb2mat command
+
+```{r}
+neighbor.matrix <- nb2mat(neighbor.queens, style = "B", zero.policy = TRUE)
+neighbor.matrix
+```
+
+In our example, we use a first-order queen contiguity rule, which treats two counties as neighbors if they touch at any point — even just a corner.
+
+**In our working example, we adopt a adjacency neighborhood approach using a queen's 1st order method (see previous lectures)**
+
+The `poly2nb` command calculates which polygons are neighbours according to queens 1st order. You can see that on average each county is connected to 4.125 other counties.
+
