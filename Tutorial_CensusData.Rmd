@@ -1,9 +1,9 @@
 ---
-title:  "<br> Tutorial: Census Data"
 output:
-  rmdformats::robobook:
-    highlight: kate
-    number_sections: yes
+  html_document:
+    toc: false
+    number_sections: false
+    df_print: paged
 ---
 
 # Getting/Plotting US-Census data
