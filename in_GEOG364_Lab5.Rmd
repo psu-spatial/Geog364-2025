@@ -552,7 +552,7 @@ Use the code in the tutorial to create a Moran's scatterplot for the *median inc
 <br>
 
 ::: collapsible-content
-<iframe src="https://psu-spatial.github.io/Geog364-2025/Tutorial_Moran.html" style="width: 100%; height: 700px; border: none;">
+<iframe src="https://psu-spatial.github.io/Geog364-2025/Tutorial_Moran.html#Calculating_Morans_I" style="width: 100%; height: 700px; border: none;">
 </iframe>
 :::
 

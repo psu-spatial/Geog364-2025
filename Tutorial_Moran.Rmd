@@ -255,7 +255,7 @@ We then plot *HouseValue~lag~* against *HouseValue* for each county. A positive 
 
 
 
-## Calculating Moran's I
+## Calculating Morans I
 
 The Moran's *I* coefficient between *HouseValue~lag~* and *HouseValue* is nothing more than the slope of the least squares regression line that best fits the points *after* standardizing both variables (i.e., converting them to z-scores), which centers them on the mean and scales them by their standard deviation.
 
