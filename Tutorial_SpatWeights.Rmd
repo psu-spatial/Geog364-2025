@@ -78,28 +78,6 @@ ACS_county.sf$pop_density_km2  <- ACS_county.sf$total_pop   / ACS_county.sf$Area
 ACS_county.sf$house_density_km2 <- ACS_county.sf$total_house / ACS_county.sf$Area
 
 
-# SPATIAL WEIGHTS. I choose queens 1st order, you might try something else
-
-# First get the geometry/coords 
-ACS_county.geometry <- st_geometry(ACS_county.sf)
-
-# Then the central point in each polygon
-ACS_county.centroid <- st_centroid(ACS_county.sf)
-
-# Finally, extract the Queens neigbours
-neighbor.queens   <- st_contiguity(ACS_county.geometry, queen=TRUE)
-
-# And plot
-plot(ACS_county.geometry, border='darkcyan')
-plot(neighbor.queens, st_coordinates(ACS_county.centroid), 
-     col='black', lwd=1, pch=16, cex=.8, add=TRUE)
-
-# and get the spatial weights matrix
-weights.queens <- st_weights(neighbor.queens)
-
-# Turn off interactive
-tmap_mode("plot") 
-
 # Add a basemap of your choice 
 # Then plot the income column of your data
 outputmap <- tm_basemap("CartoDB.Voyager") +
@@ -219,6 +197,16 @@ ACS_county.sf$Area  <- as.numeric(set_units(ACS_county.sf$Area,"km^2"))
 ACS_county.sf$pop_density_km2  <- ACS_county.sf$total_pop   / ACS_county.sf$Area
 ACS_county.sf$house_density_km2 <- ACS_county.sf$total_house / ACS_county.sf$Area
 
+
+# OPTIONAL make a quick plot
+tm_basemap("CartoDB.Voyager") +
+tm_shape(ACS_county.sf) + 
+  tm_polygons(
+    fill        = "med.income",
+    fill.scale  = tm_scale_intervals(values = "brewer.blues", style = "jenks"),
+    fill_alpha  = 0.7,
+    fill.legend = tm_legend("Maine average income per county (USD)")
+  ) 
 
 ```
 

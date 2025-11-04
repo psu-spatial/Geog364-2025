@@ -404,12 +404,6 @@ class="section level1">
 <h2>Check before you start</h2>
 <p>Here is how I load the example data for this tutorial which focuses
 on 2020 median per capita income for the state of Maine.</p>
-<div class="figure" style="text-align: center">
-<img src="Tutorial_Moran_files/figure-html/fig03-1.png" alt="Map of 2020 median per capita income for Maine counties (USA)." width="672" />
-<p class="caption">
-Map of 2020 median per capita income for Maine counties (USA).
-</p>
-</div>
 <details>
 <summary>
 <strong>Code to load the example data. IF YOU’RE DOING LAB 5 this was
@@ -487,281 +481,58 @@ plotting</p>
 <span id="cb2-44"><a href="#cb2-44" tabindex="-1"></a><span class="co"># OPTIONAL &amp; DEPENDS ON THE VARIABLES YOU DOWNLOAD</span></span>
 <span id="cb2-45"><a href="#cb2-45" tabindex="-1"></a><span class="co"># Divide the total population &amp; housing by the area to give the population/housing density</span></span>
 <span id="cb2-46"><a href="#cb2-46" tabindex="-1"></a>ACS_county.sf<span class="sc">$</span>pop_density_km2  <span class="ot">&lt;-</span> ACS_county.sf<span class="sc">$</span>total_pop   <span class="sc">/</span> ACS_county.sf<span class="sc">$</span>Area</span>
-<span id="cb2-47"><a href="#cb2-47" tabindex="-1"></a>ACS_county.sf<span class="sc">$</span>house_density_km2 <span class="ot">&lt;-</span> ACS_county.sf<span class="sc">$</span>total_house <span class="sc">/</span> ACS_county.sf<span class="sc">$</span>Area</span></code></pre></div>
+<span id="cb2-47"><a href="#cb2-47" tabindex="-1"></a>ACS_county.sf<span class="sc">$</span>house_density_km2 <span class="ot">&lt;-</span> ACS_county.sf<span class="sc">$</span>total_house <span class="sc">/</span> ACS_county.sf<span class="sc">$</span>Area</span>
+<span id="cb2-48"><a href="#cb2-48" tabindex="-1"></a></span>
+<span id="cb2-49"><a href="#cb2-49" tabindex="-1"></a></span>
+<span id="cb2-50"><a href="#cb2-50" tabindex="-1"></a><span class="co">#SPATIAL WEIGHTS - I chose 1st order QUEENS</span></span>
+<span id="cb2-51"><a href="#cb2-51" tabindex="-1"></a><span class="co"># First get the geometry/coords </span></span>
+<span id="cb2-52"><a href="#cb2-52" tabindex="-1"></a><span class="co"># Then the central point in each polygon</span></span>
+<span id="cb2-53"><a href="#cb2-53" tabindex="-1"></a><span class="co"># Finally, extract the Queens neigbours</span></span>
+<span id="cb2-54"><a href="#cb2-54" tabindex="-1"></a><span class="co"># and get the spatial weights matrix</span></span>
+<span id="cb2-55"><a href="#cb2-55" tabindex="-1"></a>ACS_county.geometry <span class="ot">&lt;-</span> <span class="fu">st_geometry</span>(ACS_county.sf)</span>
+<span id="cb2-56"><a href="#cb2-56" tabindex="-1"></a>ACS_county.centroid <span class="ot">&lt;-</span> <span class="fu">st_centroid</span>(ACS_county.sf)</span>
+<span id="cb2-57"><a href="#cb2-57" tabindex="-1"></a>neighbor.queens   <span class="ot">&lt;-</span> <span class="fu">st_contiguity</span>(ACS_county.geometry, <span class="at">queen=</span><span class="cn">TRUE</span>)</span>
+<span id="cb2-58"><a href="#cb2-58" tabindex="-1"></a>weights.queens <span class="ot">&lt;-</span> <span class="fu">st_weights</span>(neighbor.queens)</span></code></pre></div>
 </details>
 <div class="small-gap">
 
 </div>
 <p><br></p>
 </div>
-<div id="introduction" class="section level2">
-<h2>Introduction</h2>
-<p>In this tutorial, we introduce <strong>spatial
-autocorrelation</strong>, a property that describes how values at one
-location relate to values at nearby locations.</p>
-<p>This concept is rooted in <strong>Tobler’s First Law of
-Geography</strong> which states:</p>
-<blockquote>
-<p><em>“The first law of geography: Everything is related to everything
-else, but near things are more related than distant things.”</em> Waldo
-R. Tobler <span class="citation">[@Tobler1970]</span></p>
-</blockquote>
-<p>This principle underpins much of spatial analysis. It suggests that
-spatial data often exhibit <strong>non-random patterns</strong>, where
-nearby features tend to have similar attribute values. Spatial
-autocorrelation provides a formal way to quantify this tendency.</p>
-<p><img src="index_images/im_L05_Random_maps.png" width="1662" /></p>
-<p>To make the mathematical foundations of autocorrelation more
-accessible, we shift from the point used in the previous labs to a
-simpler dataset composed of <strong>polygonal areal units</strong>
-(e.g., counties). This allows us to clearly illustrate how spatial
-relationships are defined, how spatial weights are constructed, and how
-measures like <strong>Moran’s I</strong> are computed.</p>
-<p>This chapter focuses on:</p>
-<ul>
-<li>Defining spatial autocorrelation and its role in spatial
-statistics.</li>
-<li>Constructing spatial weights to represent neighborhood
-relationships.</li>
-<li>Computing and interpreting <strong>global</strong> and <strong>local
-Moran’s I</strong> statistics.</li>
-<li>Using permutation-based hypothesis testing to assess
-significance.</li>
-</ul>
+<div id="morans-i-scatterplot" class="section level2">
+<h2>Moran’s I scatterplot</h2>
+<p>Once we’ve defined a neighborhood for our analysis, we identify the
+neighbors for each polygon in our dataset then summaries the values for
+each neighborhood cluster (by computing their mean values, for example).
+This summarized neighborhood value is sometimes referred to as a
+spatially lagged value (<em>X<sub>lag</sub></em>).</p>
+<p>Using R, it’s now very easy for us to calculate the Moran’s I
+scatterplot</p>
+<p>The old spdep package has a very easy scatterplot function to make a
+moran’s plot. But unfortunately the new sfdep package has not yet
+followed suit. so here’s a work-around</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co"># PUT THIS IN YOUR LIRBARY CODE CHUNK &amp; RUN/INSTALL</span></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="fu">library</span>(spdep)</span></code></pre></div>
+<pre><code>## Loading required package: spData</code></pre>
+<pre><code>## To access larger datasets in this package, install the spDataLarge
+## package with: `install.packages(&#39;spDataLarge&#39;,
+## repos=&#39;https://nowosad.github.io/drat/&#39;, type=&#39;source&#39;)`</code></pre>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="co"># calculate the sp version of weights </span></span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>weights.queens.sp <span class="ot">&lt;-</span> spdep<span class="sc">::</span><span class="fu">nb2listw</span>(neighbor.queens)</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>  </span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a><span class="co"># and plot , the first line adjusts the margins to make it neater.</span></span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar=</span><span class="fu">c</span>(<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">1</span>,<span class="dv">1</span>))   </span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a><span class="fu">moran.plot</span>(ACS_county.sf<span class="sc">$</span>housevalue, </span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>           weights.queens.sp, </span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a>           <span class="at">xlab  =</span> <span class="st">&quot;Average House Value per county (USD)&quot;</span>,</span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a>           <span class="at">ylab  =</span> <span class="st">&quot;Average house value of </span><span class="sc">\n</span><span class="st"> neighbouring counties (Queens 1st)&quot;</span>,</span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a>           <span class="at">labels=</span>ACS_county.sf<span class="sc">$</span>NAME,</span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a>            <span class="at">zero.policy =</span> T)</span></code></pre></div>
+<p><img src="Tutorial_Moran_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p><br><br></p>
 </div>
-<div id="introducing-global-morans-i" class="section level2">
-<h2>Introducing Global Moran’s <em>I</em></h2>
-<p>While maps can sometimes reveal clusters of similar values, our
-visual interpretation is often limited, especially when patterns are
-subtle or complex. Here, it may seem apparent that, when aggregated at
-the county level, the income distribution appears clustered with high
-counties surrounded by high counties and low counties surrounded by low
-counties. But a qualitative description may not be sufficient; we might
-want to quantify the degree to which similar (or dissimilar) counties
-are clustered.</p>
-<p>To move beyond subjective impressions, we need a <strong>quantitative
-and objective measure</strong> of spatial patterning. Specifically, we
-want to quantify the <em>degree</em> to which similar attribute values
-are clustered or dispersed across space.</p>
-<p>One widely used statistic for this purpose is <strong>Moran’s
-I</strong> , a measure of <strong>global spatial
-autocorrelation</strong>. It quantifies the overall tendency for
-features with similar values to be located near one another, based on a
-defined spatial relationship (e.g., contiguity or distance). In essence,
-Moran’s <em>I</em> is a correlation coefficient between a variable and
-its spatially lagged counterpart.</p>
-<div id="boxgreen">
-<p>The Moran’s <em>I</em> statistic is a measure of spatial
-autocorrelation that quantifies the degree to which similar values (like
-income) cluster together in space. It is computed as the correlation
-between a variable and its spatially lagged counterpart, based on a
-defined spatial weights matrix.</p>
-</div>
-<p><br></p>
-</div>
-<div id="calculating-spatial-weightsneighbourhood"
-class="section level2">
-<h2>Calculating spatial weights/neighbourhood</h2>
-<div id="computing-neighborhood-spatial-weights" class="section level3">
-<h3>Computing neighborhood &amp; spatial weights</h3>
-<p><strong>But before we go about computing this correlation, we need to
-come up with a way to define a neighbor.</strong></p>
-<p>One approach is to define a neighbor as being any contiguous polygon.
-For example, the northern most county (Aroostook), has four contiguous
-neighbors while the southern most county (York) has just two contiguous
-counties. Other neighborhood definitions can include distance bands
-(e.g. counties within 100 km) and k nearest neighbors (e.g. the 2
-closest neighbors). Note that distance bands and k nearest neighbors are
-usually measured using the polygon’s centroids and not their
-boundaries.</p>
-<div class="figure" style="text-align: center">
-<img src="index_images/im_L05_Diff_neighbors.png" alt="Maps show the links between each polygon and their respective neighbor(s) based on the neighborhood definition. A contiguous neighbor is defined as one that shares a boundary or a vertex with the polygon of interest.  Orange numbers indicate the number of neighbors for each polygon. Note that the top most county has no neighbors when a neighborhood definition of a 100 km distance band is used (i.e. no centroids are within a 100 km search radius)" width="600" />
-<p class="caption">
-Maps show the links between each polygon and their respective
-neighbor(s) based on the neighborhood definition. A contiguous neighbor
-is defined as one that shares a boundary or a vertex with the polygon of
-interest. Orange numbers indicate the number of neighbors for each
-polygon. Note that the top most county has no neighbors when a
-neighborhood definition of a 100 km distance band is used (i.e. no
-centroids are within a 100 km search radius)
-</p>
-</div>
-<p>Once we have chosen a definition of neighborhood, the next step is to
-identify which polygons are neighbors and to represent that as a spatial
-weights matrix.</p>
-<p>As described in lectures, there are many ways to calculate
-neighbourhood. Here are a few of them.</p>
-<div id="nearest-neighbours" class="section level4">
-<h4>Nearest neighbours</h4>
-<p>In this method, we first get the shapes of the polygons using
-<code>st_geometry</code>, then extract the central point using
-<code>st_centroid</code> . We then calculate the nearest neighbours
-using <code>st_knn</code>, which allows us to choose how many nearest
-neighbours you want to count.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co"># First get the geometry/coords </span></span>
-<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>ACS_county.geometry <span class="ot">&lt;-</span> <span class="fu">st_geometry</span>(ACS_county.sf)</span>
-<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="co"># Then the central point in each polygon</span></span>
-<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>ACS_county.centroid <span class="ot">&lt;-</span> <span class="fu">st_centroid</span>(ACS_county.sf)</span></code></pre></div>
-<pre><code>## Warning: st_centroid assumes attributes are constant over geometries</code></pre>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co"># Finally, extract the nearest neigbours</span></span>
-<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>neighbor.nearest3 <span class="ot">&lt;-</span> <span class="fu">st_knn</span>(ACS_county.centroid, <span class="at">k =</span> <span class="dv">3</span>)</span>
-<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a></span>
-<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="co"># Type its name to see the summary. </span></span>
-<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>neighbor.nearest3</span></code></pre></div>
-<pre><code>## Neighbour list object:
-## Number of regions: 16 
-## Number of nonzero links: 48 
-## Percentage nonzero weights: 18.75 
-## Average number of links: 3 
-## Non-symmetric neighbours list</code></pre>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="co"># and get the spatial weights matrix</span></span>
-<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>weights.nearest3 <span class="ot">&lt;-</span> <span class="fu">st_weights</span>(neighbor.nearest3)</span></code></pre></div>
-<p><br></p>
-<p>To calculate and plot the three nearest neighbours (nearest
-centroids), we first plot the shapes, followed by the neighbours.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="fu">plot</span>(ACS_county.geometry, <span class="at">border=</span><span class="st">&#39;blue&#39;</span>)</span>
-<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="fu">plot</span>(neighbor.nearest3, </span>
-<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>     <span class="fu">st_coordinates</span>(ACS_county.centroid), </span>
-<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>     <span class="at">col=</span><span class="st">&#39;black&#39;</span>, <span class="at">lwd=</span><span class="dv">1</span>, <span class="at">pch=</span><span class="dv">16</span>, <span class="at">cex=</span>.<span class="dv">8</span>, <span class="at">add=</span><span class="cn">TRUE</span>)</span></code></pre></div>
-<p><img src="Tutorial_Moran_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
-<p>In the summary above, you should be able to see that each polygon has
-an average of 3 links to its neighbours. Makes sense given we’re asking
-the 3 nearest neighbours!</p>
-<p><br></p>
-</div>
-<div id="queens-rooks-adjacency" class="section level4">
-<h4>Queens &amp; Rook’s adjacency</h4>
-<p>It’s similar to calculate and plot adjacency neighbors, but we
-switchout st_knn for <code>st_contiguity.</code></p>
-<ul>
-<li>QUEENS ADJACENCY → touch at any point (edges or corners)</li>
-<li>ROOKS ADJACENCY → touch by edges only (rook adjacency)</li>
-</ul>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="co"># First get the geometry/coords </span></span>
-<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>ACS_county.geometry <span class="ot">&lt;-</span> <span class="fu">st_geometry</span>(ACS_county.sf)</span>
-<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a></span>
-<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a><span class="co"># Then the central point in each polygon</span></span>
-<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a>ACS_county.centroid <span class="ot">&lt;-</span> <span class="fu">st_centroid</span>(ACS_county.sf)</span></code></pre></div>
-<pre><code>## Warning: st_centroid assumes attributes are constant over geometries</code></pre>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="co"># Finally, extract the Queens neigbours</span></span>
-<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a>neighbor.queens   <span class="ot">&lt;-</span> <span class="fu">st_contiguity</span>(ACS_county.geometry, <span class="at">queen=</span><span class="cn">TRUE</span>)</span>
-<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a></span>
-<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a><span class="co"># And plot</span></span>
-<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a><span class="fu">plot</span>(ACS_county.geometry, <span class="at">border=</span><span class="st">&#39;darkcyan&#39;</span>)</span>
-<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a><span class="fu">plot</span>(neighbor.queens, <span class="fu">st_coordinates</span>(ACS_county.centroid), </span>
-<span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a>     <span class="at">col=</span><span class="st">&#39;black&#39;</span>, <span class="at">lwd=</span><span class="dv">1</span>, <span class="at">pch=</span><span class="dv">16</span>, <span class="at">cex=</span>.<span class="dv">8</span>, <span class="at">add=</span><span class="cn">TRUE</span>)</span></code></pre></div>
-<p><img src="Tutorial_Moran_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="co"># and get the spatial weights matrix</span></span>
-<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a>weights.queens <span class="ot">&lt;-</span> <span class="fu">st_weights</span>(neighbor.queens)</span></code></pre></div>
-<p>Or for Rooks:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="co"># First get the geometry/coords </span></span>
-<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a>ACS_county.geometry <span class="ot">&lt;-</span> <span class="fu">st_geometry</span>(ACS_county.sf)</span>
-<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a></span>
-<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a><span class="co"># Then the central point in each polygon</span></span>
-<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a>ACS_county.centroid <span class="ot">&lt;-</span> <span class="fu">st_centroid</span>(ACS_county.sf)</span></code></pre></div>
-<pre><code>## Warning: st_centroid assumes attributes are constant over geometries</code></pre>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="co"># Finally, extract the Rook&#39;sneigbours</span></span>
-<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a>neighbor.rooks   <span class="ot">&lt;-</span> <span class="fu">st_contiguity</span>(ACS_county.geometry, <span class="at">queen=</span><span class="cn">FALSE</span>)</span>
-<span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a></span>
-<span id="cb15-4"><a href="#cb15-4" tabindex="-1"></a><span class="co"># And plot</span></span>
-<span id="cb15-5"><a href="#cb15-5" tabindex="-1"></a><span class="fu">plot</span>(ACS_county.geometry, <span class="at">border=</span><span class="st">&#39;darkcyan&#39;</span>)</span>
-<span id="cb15-6"><a href="#cb15-6" tabindex="-1"></a><span class="fu">plot</span>(neighbor.rooks, <span class="fu">st_coordinates</span>(ACS_county.centroid), </span>
-<span id="cb15-7"><a href="#cb15-7" tabindex="-1"></a>     <span class="at">col=</span><span class="st">&#39;black&#39;</span>, <span class="at">lwd=</span><span class="dv">1</span>, <span class="at">pch=</span><span class="dv">16</span>, <span class="at">cex=</span>.<span class="dv">8</span>, <span class="at">add=</span><span class="cn">TRUE</span>)</span></code></pre></div>
-<p><img src="Tutorial_Moran_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="co"># and get the spatial weights matrix</span></span>
-<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a>weights.rooks <span class="ot">&lt;-</span> <span class="fu">st_weights</span>(neighbor.rooks)</span></code></pre></div>
-</div>
-<div id="second-order-weights" class="section level4">
-<h4>Second order weights</h4>
-<p>To calculate and plot second order weights, we use the cumulative
-<code>st_nb_lag_cumul</code> function.</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="co"># Second order queens</span></span>
-<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a>neighbor.queens<span class="fl">.2</span>nd   <span class="ot">&lt;-</span> <span class="fu">st_nb_lag_cumul</span>(neighbor.queens, <span class="dv">2</span>)</span>
-<span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a>weights.queens<span class="fl">.2</span>nd    <span class="ot">&lt;-</span> <span class="fu">st_weights</span>(neighbor.queens<span class="fl">.2</span>nd)</span>
-<span id="cb17-4"><a href="#cb17-4" tabindex="-1"></a>neighbor.queens<span class="fl">.2</span>nd</span></code></pre></div>
-<pre><code>## Neighbour list object:
-## Number of regions: 16 
-## Number of nonzero links: 146 
-## Percentage nonzero weights: 57.03125 
-## Average number of links: 9.125</code></pre>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a><span class="co"># and plot</span></span>
-<span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a><span class="fu">plot</span>(ACS_county.geometry, <span class="at">border=</span><span class="st">&#39;darkorange&#39;</span>)</span>
-<span id="cb19-3"><a href="#cb19-3" tabindex="-1"></a><span class="fu">plot</span>(neighbor.queens<span class="fl">.2</span>nd, <span class="fu">st_coordinates</span>(ACS_county.centroid), </span>
-<span id="cb19-4"><a href="#cb19-4" tabindex="-1"></a>     <span class="at">col=</span><span class="st">&#39;black&#39;</span>, <span class="at">lwd=</span><span class="dv">1</span>, <span class="at">pch=</span><span class="dv">16</span>, <span class="at">cex=</span>.<span class="dv">8</span>, <span class="at">add=</span><span class="cn">TRUE</span>)</span></code></pre></div>
-<p><img src="Tutorial_Moran_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
-<p>Or</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a><span class="co"># Third order Rooms</span></span>
-<span id="cb20-2"><a href="#cb20-2" tabindex="-1"></a>neighbor.rooks<span class="fl">.3</span>nd   <span class="ot">&lt;-</span> <span class="fu">st_nb_lag_cumul</span>(neighbor.rooks, <span class="dv">3</span>)</span>
-<span id="cb20-3"><a href="#cb20-3" tabindex="-1"></a>weights.rooks<span class="fl">.3</span>rd    <span class="ot">&lt;-</span> <span class="fu">st_weights</span>(neighbor.rooks<span class="fl">.3</span>nd)</span>
-<span id="cb20-4"><a href="#cb20-4" tabindex="-1"></a>neighbor.rooks<span class="fl">.3</span>nd</span></code></pre></div>
-<pre><code>## Neighbour list object:
-## Number of regions: 16 
-## Number of nonzero links: 206 
-## Percentage nonzero weights: 80.46875 
-## Average number of links: 12.875</code></pre>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a><span class="co"># and plot</span></span>
-<span id="cb22-2"><a href="#cb22-2" tabindex="-1"></a><span class="fu">plot</span>(ACS_county.geometry, <span class="at">border=</span><span class="st">&#39;darkorange&#39;</span>)</span>
-<span id="cb22-3"><a href="#cb22-3" tabindex="-1"></a><span class="fu">plot</span>(neighbor.queens<span class="fl">.2</span>nd, <span class="fu">st_coordinates</span>(ACS_county.centroid), </span>
-<span id="cb22-4"><a href="#cb22-4" tabindex="-1"></a>     <span class="at">col=</span><span class="st">&#39;black&#39;</span>, <span class="at">lwd=</span><span class="dv">1</span>, <span class="at">pch=</span><span class="dv">16</span>, <span class="at">cex=</span>.<span class="dv">8</span>, <span class="at">add=</span><span class="cn">TRUE</span>)</span></code></pre></div>
-<p><img src="Tutorial_Moran_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
-<p>We’re now up to 12 neighbours on average per polygon. So every
-polygon is now connected with MANY others, which I’m guessing will mean
-very smooth resulting field (e.g. everything is being averaged out).</p>
-</div>
-</div>
-<div id="extracting-weights" class="section level3">
-<h3>Extracting weights</h3>
-<p>To find the weights and neighbours for a specific polygon, you have
-two choices.</p>
-<p>First we can look up the weights in the output we already have. They
-are saved as a new type of R data called a list. First, we get the names
-of the counties (note it doesn’t have to be name, you can look up any
-column).</p>
-<p>Here is our data</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" tabindex="-1"></a><span class="fu">head</span>(ACS_county.sf)</span></code></pre></div>
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["GEOID"],"name":[1],"type":["chr"],"align":["left"]},{"label":["NAME"],"name":[2],"type":["chr"],"align":["left"]},{"label":["housevalue"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["total_pop"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["total_house"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["med.income"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["geometry"],"name":[7],"type":["s_GEOMET"],"align":["right"]},{"label":["Area"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["pop_density_km2"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["house_density_km2"],"name":[10],"type":["dbl"],"align":["right"]}],"data":[{"1":"23003","2":"Aroostook County, Maine","3":"21246","4":"67809","5":"39916","6":"41123","7":"<s_GEOMET>","8":"17682.180","9":"3.834878","10":"2.257414","_rn_":"1"},{"1":"23029","2":"Washington County, Maine","3":"10553","4":"31491","5":"23364","6":"41347","7":"<s_GEOMET>","8":"7352.572","9":"4.282991","10":"3.177664","_rn_":"2"},{"1":"23027","2":"Waldo County, Maine","3":"13649","4":"39539","5":"22455","6":"51931","7":"<s_GEOMET>","8":"1977.145","9":"19.998026","10":"11.357284","_rn_":"3"},{"1":"23031","2":"York County, Maine","3":"63026","4":"204316","5":"110226","6":"67830","7":"<s_GEOMET>","8":"2652.900","9":"77.016089","10":"41.549244","_rn_":"4"},{"1":"23007","2":"Franklin County, Maine","3":"9410","4":"29982","5":"22181","6":"51422","7":"<s_GEOMET>","8":"4514.348","9":"6.641491","10":"4.913445","_rn_":"5"},{"1":"23021","2":"Piscataquis County, Maine","3":"5332","4":"16836","5":"15463","6":"40890","7":"<s_GEOMET>","8":"11338.005","9":"1.484917","10":"1.363820","_rn_":"6"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
-</div>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a><span class="co"># Make a copy so we don&#39;t mess up the original</span></span>
-<span id="cb24-2"><a href="#cb24-2" tabindex="-1"></a>NeighboursTest.sf <span class="ot">&lt;-</span> ACS_county.sf</span>
-<span id="cb24-3"><a href="#cb24-3" tabindex="-1"></a></span>
-<span id="cb24-4"><a href="#cb24-4" tabindex="-1"></a><span class="co"># Search for York in the main file</span></span>
-<span id="cb24-5"><a href="#cb24-5" tabindex="-1"></a>index_York      <span class="ot">&lt;-</span> <span class="fu">grep</span>(<span class="st">&quot;York&quot;</span>,ACS_county.sf<span class="sc">$</span>NAME)</span>
-<span id="cb24-6"><a href="#cb24-6" tabindex="-1"></a></span>
-<span id="cb24-7"><a href="#cb24-7" tabindex="-1"></a><span class="co"># and get the neighbours ONLY of our York polygon</span></span>
-<span id="cb24-8"><a href="#cb24-8" tabindex="-1"></a>neighbors_York  <span class="ot">&lt;-</span> neighbor.rooks<span class="fl">.3</span>nd[[index_York]]</span>
-<span id="cb24-9"><a href="#cb24-9" tabindex="-1"></a>weights_York    <span class="ot">&lt;-</span> weights.rooks<span class="fl">.3</span>rd[[index_York]]</span>
-<span id="cb24-10"><a href="#cb24-10" tabindex="-1"></a></span>
-<span id="cb24-11"><a href="#cb24-11" tabindex="-1"></a><span class="co"># Make a blank column and fill with the weights</span></span>
-<span id="cb24-12"><a href="#cb24-12" tabindex="-1"></a>NeighboursTest.sf<span class="sc">$</span>WeightsYork <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb24-13"><a href="#cb24-13" tabindex="-1"></a>NeighboursTest.sf<span class="sc">$</span>WeightsYork[neighbors_York] <span class="ot">&lt;-</span> weights_York</span>
-<span id="cb24-14"><a href="#cb24-14" tabindex="-1"></a></span>
-<span id="cb24-15"><a href="#cb24-15" tabindex="-1"></a><span class="co"># YOU MIGHT NOT WANT TO DO THESE, OPTIONAL OUTPUTS</span></span>
-<span id="cb24-16"><a href="#cb24-16" tabindex="-1"></a><span class="co"># Write out a message</span></span>
-<span id="cb24-17"><a href="#cb24-17" tabindex="-1"></a><span class="fu">message</span>(<span class="st">&quot;Requested neighbours&quot;</span>)</span></code></pre></div>
-<pre><code>## Requested neighbours</code></pre>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" tabindex="-1"></a>NeighboursTest.sf[neighbors_York,<span class="fu">c</span>(<span class="st">&quot;GEOID&quot;</span>,<span class="st">&quot;NAME&quot;</span>,<span class="st">&quot;WeightsYork&quot;</span>)]</span></code></pre></div>
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["GEOID"],"name":[1],"type":["chr"],"align":["left"]},{"label":["NAME"],"name":[2],"type":["chr"],"align":["left"]},{"label":["WeightsYork"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["geometry"],"name":[4],"type":["s_GEOMET"],"align":["right"]}],"data":[{"1":"23007","2":"Franklin County, Maine","3":"0.125","4":"<s_GEOMET>","_rn_":"5"},{"1":"23015","2":"Lincoln County, Maine","3":"0.125","4":"<s_GEOMET>","_rn_":"7"},{"1":"23023","2":"Sagadahoc County, Maine","3":"0.125","4":"<s_GEOMET>","_rn_":"8"},{"1":"23017","2":"Oxford County, Maine","3":"0.125","4":"<s_GEOMET>","_rn_":"9"},{"1":"23025","2":"Somerset County, Maine","3":"0.125","4":"<s_GEOMET>","_rn_":"10"},{"1":"23005","2":"Cumberland County, Maine","3":"0.125","4":"<s_GEOMET>","_rn_":"11"},{"1":"23001","2":"Androscoggin County, Maine","3":"0.125","4":"<s_GEOMET>","_rn_":"12"},{"1":"23011","2":"Kennebec County, Maine","3":"0.125","4":"<s_GEOMET>","_rn_":"13"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
-</div>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" tabindex="-1"></a><span class="co"># and make a quick plot</span></span>
-<span id="cb27-2"><a href="#cb27-2" tabindex="-1"></a><span class="fu">qtm</span>(NeighboursTest.sf,<span class="st">&quot;WeightsYork&quot;</span>)<span class="sc">+</span></span>
-<span id="cb27-3"><a href="#cb27-3" tabindex="-1"></a><span class="fu">qtm</span>(NeighboursTest.sf[index_York,],<span class="at">fill=</span><span class="st">&quot;red&quot;</span>)</span></code></pre></div>
-<p><img src="Tutorial_Moran_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
-</div>
-<div id="more-examples" class="section level3">
-<h3>More examples?</h3>
-<p>MANY more examples here: <a href="https://sfdep.josiahparry.com/"
-class="uri">https://sfdep.josiahparry.com/</a>. Josiah now runs the
-spatial stats section of ESRI. He and I are known to have long
-conversations about spatial weights matrices…</p>
-<p><br></p>
-</div>
+<div id="morans-i-scatterplot-1" class="section level2">
+<h2>Moran’s I scatterplot</h2>
 </div>
 </div>
 

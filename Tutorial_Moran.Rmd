@@ -71,45 +71,21 @@ ACS_county.sf$Area  <- st_area(ACS_county.sf)
 ACS_county.sf$Area  <- as.numeric(set_units(ACS_county.sf$Area,"km^2"))
 
 
-
 # OPTIONAL & DEPENDS ON THE VARIABLES YOU DOWNLOAD
 # Divide the total population & housing by the area to give the population/housing density
 ACS_county.sf$pop_density_km2  <- ACS_county.sf$total_pop   / ACS_county.sf$Area
 ACS_county.sf$house_density_km2 <- ACS_county.sf$total_house / ACS_county.sf$Area
 
 
-# SPATIAL WEIGHTS. I choose queens 1st order, you might try something else
-
+#SPATIAL WEIGHTS - I chose 1st order QUEENS
 # First get the geometry/coords 
-ACS_county.geometry <- st_geometry(ACS_county.sf)
-
 # Then the central point in each polygon
-ACS_county.centroid <- st_centroid(ACS_county.sf)
-
 # Finally, extract the Queens neigbours
-neighbor.queens   <- st_contiguity(ACS_county.geometry, queen=TRUE)
-
-# And plot
-plot(ACS_county.geometry, border='darkcyan')
-plot(neighbor.queens, st_coordinates(ACS_county.centroid), 
-     col='black', lwd=1, pch=16, cex=.8, add=TRUE)
-
 # and get the spatial weights matrix
+ACS_county.geometry <- st_geometry(ACS_county.sf)
+ACS_county.centroid <- st_centroid(ACS_county.sf)
+neighbor.queens   <- st_contiguity(ACS_county.geometry, queen=TRUE)
 weights.queens <- st_weights(neighbor.queens)
-
-# Turn off interactive
-tmap_mode("plot") 
-
-# Add a basemap of your choice 
-# Then plot the income column of your data
-outputmap <- tm_basemap("CartoDB.Voyager") +
-tm_shape(ACS_county.sf) + 
-  tm_polygons(
-    fill        = "med.income",
-    fill.scale  = tm_scale_intervals(values = "brewer.blues", style = "jenks"),
-    fill_alpha  = 0.7,
-    fill.legend = tm_legend("Maine average income per county (USD)")
-  ) 
 
 
 
@@ -124,13 +100,6 @@ tm_shape(ACS_county.sf) +
 
 Here is how I load the example data for this tutorial which focuses on 2020 median per capita income for the state of Maine.
 
-```{r fig03, fig.height=3, fig.cap="Map of 2020 median per capita income for Maine counties (USA).", echo = FALSE, message=FALSE, fig.align='center'}
-
-# Turn off interactive
-tmap_mode("plot") 
-outputmap
-
-```
 
 
 <details>
@@ -220,6 +189,18 @@ ACS_county.sf$pop_density_km2  <- ACS_county.sf$total_pop   / ACS_county.sf$Area
 ACS_county.sf$house_density_km2 <- ACS_county.sf$total_house / ACS_county.sf$Area
 
 
+#SPATIAL WEIGHTS - I chose 1st order QUEENS
+# First get the geometry/coords 
+# Then the central point in each polygon
+# Finally, extract the Queens neigbours
+# and get the spatial weights matrix
+ACS_county.geometry <- st_geometry(ACS_county.sf)
+ACS_county.centroid <- st_centroid(ACS_county.sf)
+neighbor.queens   <- st_contiguity(ACS_county.geometry, queen=TRUE)
+weights.queens <- st_weights(neighbor.queens)
+
+
+
 ```
 
 
@@ -230,258 +211,51 @@ ACS_county.sf$house_density_km2 <- ACS_county.sf$total_house / ACS_county.sf$Are
 :::
 
 
-
-
 <br>
 
+## Moran's I scatterplot
+
+Once we've defined a neighborhood for our analysis, we identify the neighbors for each polygon in our dataset then summaries the values for each neighborhood cluster (by computing their mean values, for example). This summarized neighborhood value is sometimes referred to as a spatially lagged value (*X~lag~*).
 
 
-## Introduction
-
-In this tutorial, we introduce **spatial autocorrelation**, a property that describes how values at one location relate to values at nearby locations.
-
-This concept is rooted in **Tobler’s First Law of Geography** which states:
-
-> *"The first law of geography: Everything is related to everything else, but near things are more related than distant things."* Waldo R. Tobler [@Tobler1970]
-
-This principle underpins much of spatial analysis.
-It suggests that spatial data often exhibit **non-random patterns**, where nearby features tend to have similar attribute values.
-Spatial autocorrelation provides a formal way to quantify this tendency.
-
-```{r, echo=FALSE}
-knitr::include_graphics("index_images/im_L05_Random_maps.png")
-```
-
-To make the mathematical foundations of autocorrelation more accessible, we shift from the point used in the previous labs to a simpler dataset composed of **polygonal areal units** (e.g., counties).
-This allows us to clearly illustrate how spatial relationships are defined, how spatial weights are constructed, and how measures like **Moran’s I** are computed.
-
-This chapter focuses on:
-
--   Defining spatial autocorrelation and its role in spatial statistics.
--   Constructing spatial weights to represent neighborhood relationships.
--   Computing and interpreting **global** and **local Moran’s I** statistics.
--   Using permutation-based hypothesis testing to assess significance.
+Using R, it's now very easy for us to calculate the Moran's I scatterplot
 
 
-## Introducing Global Moran's *I*
+The old spdep package has a very easy scatterplot function to make a moran's plot. But unfortunately the new sfdep package has not yet followed suit. so here's a work-around
 
-While maps can sometimes reveal clusters of similar values, our visual interpretation is often limited, especially when patterns are subtle or complex.
-Here, it may seem apparent that, when aggregated at the county level, the income distribution appears clustered with high counties surrounded by high counties and low counties surrounded by low counties.
-But a qualitative description may not be sufficient; we might want to quantify the degree to which similar (or dissimilar) counties are clustered.
-
-To move beyond subjective impressions, we need a **quantitative and objective measure** of spatial patterning.
-Specifically, we want to quantify the *degree* to which similar attribute values are clustered or dispersed across space.
-
-One widely used statistic for this purpose is **Moran’s I** , a measure of **global spatial autocorrelation**.
-It quantifies the overall tendency for features with similar values to be located near one another, based on a defined spatial relationship (e.g., contiguity or distance).
-In essence, Moran’s *I* is a correlation coefficient between a variable and its spatially lagged counterpart.
-
-::: {#boxgreen}
-The Moran’s *I* statistic is a measure of spatial autocorrelation that quantifies the degree to which similar values (like income) cluster together in space.
-It is computed as the correlation between a variable and its spatially lagged counterpart, based on a defined spatial weights matrix.
-:::
-
-<br>
-
-## Calculating spatial weights/neighbourhood
-
-### Computing neighborhood & spatial weights
-
-**But before we go about computing this correlation, we need to come up with a way to define a neighbor.**
-
-One approach is to define a neighbor as being any contiguous polygon.
-For example, the northern most county (Aroostook), has four contiguous neighbors while the southern most county (York) has just two contiguous counties.
-Other neighborhood definitions can include distance bands (e.g. counties within 100 km) and k nearest neighbors (e.g. the 2 closest neighbors).
-Note that distance bands and k nearest neighbors are usually measured using the polygon's centroids and not their boundaries.
-
-```{r fig04, echo=FALSE, fig.cap="Maps show the links between each polygon and their respective neighbor(s) based on the neighborhood definition. A contiguous neighbor is defined as one that shares a boundary or a vertex with the polygon of interest.  Orange numbers indicate the number of neighbors for each polygon. Note that the top most county has no neighbors when a neighborhood definition of a 100 km distance band is used (i.e. no centroids are within a 100 km search radius)", out.width=600, fig.align='center'}
-knitr::include_graphics("index_images/im_L05_Diff_neighbors.png")
-```
-
-Once we have chosen a definition of neighborhood, the next step is to identify which polygons are neighbors and to represent that as a spatial weights matrix.
-
-As described in lectures, there are many ways to calculate neighbourhood.
-Here are a few of them.
-
-#### Nearest neighbours
-
-In this method, we first get the shapes of the polygons using `st_geometry`, then extract the central point using `st_centroid` .
-We then calculate the nearest neighbours using `st_knn`, which allows us to choose how many nearest neighbours you want to count.
-
-```{r}
-# First get the geometry/coords 
-ACS_county.geometry <- st_geometry(ACS_county.sf)
-
-# Then the central point in each polygon
-ACS_county.centroid <- st_centroid(ACS_county.sf)
-
-# Finally, extract the nearest neigbours
-neighbor.nearest3 <- st_knn(ACS_county.centroid, k = 3)
-
-# Type its name to see the summary. 
-neighbor.nearest3
-
-# and get the spatial weights matrix
-weights.nearest3 <- st_weights(neighbor.nearest3)
-
-```
-
-<br>
-
-To calculate and plot the three nearest neighbours (nearest centroids), we first plot the shapes, followed by the neighbours.
 
 ```{r}
 
-plot(ACS_county.geometry, border='blue')
-plot(neighbor.nearest3, 
-     st_coordinates(ACS_county.centroid), 
-     col='black', lwd=1, pch=16, cex=.8, add=TRUE)
-```
+# PUT THIS IN YOUR LIRBARY CODE CHUNK & RUN/INSTALL
+library(spdep)
 
-In the summary above, you should be able to see that each polygon has an average of 3 links to its neighbours.
-Makes sense given we're asking the 3 nearest neighbours!
+# calculate the sp version of weights 
+weights.queens.sp <- spdep::nb2listw(neighbor.queens)
+  
+# and plot , the first line adjusts the margins to make it neater.
+par(mar=c(5,6,1,1))   
+moran.plot(ACS_county.sf$housevalue, 
+           weights.queens.sp, 
+           xlab  = "Average House Value per county (USD)",
+           ylab  = "Average house value of \n neighbouring counties (Queens 1st)",
+           labels=ACS_county.sf$NAME,
+            zero.policy = T)
 
-<br>
 
-#### Queens & Rook's adjacency
-
-It's similar to calculate and plot adjacency neighbors, but we switchout st_knn for `st_contiguity.`
-
--   QUEENS ADJACENCY → touch at any point (edges or corners)
--   ROOKS ADJACENCY → touch by edges only (rook adjacency)
-
-```{r}
-# First get the geometry/coords 
-ACS_county.geometry <- st_geometry(ACS_county.sf)
-
-# Then the central point in each polygon
-ACS_county.centroid <- st_centroid(ACS_county.sf)
-
-# Finally, extract the Queens neigbours
-neighbor.queens   <- st_contiguity(ACS_county.geometry, queen=TRUE)
-
-# And plot
-plot(ACS_county.geometry, border='darkcyan')
-plot(neighbor.queens, st_coordinates(ACS_county.centroid), 
-     col='black', lwd=1, pch=16, cex=.8, add=TRUE)
-
-# and get the spatial weights matrix
-weights.queens <- st_weights(neighbor.queens)
 
 
 ```
 
-Or for Rooks:
-
-```{r}
-# First get the geometry/coords 
-ACS_county.geometry <- st_geometry(ACS_county.sf)
-
-# Then the central point in each polygon
-ACS_county.centroid <- st_centroid(ACS_county.sf)
-
-# Finally, extract the Rook'sneigbours
-neighbor.rooks   <- st_contiguity(ACS_county.geometry, queen=FALSE)
-
-# And plot
-plot(ACS_county.geometry, border='darkcyan')
-plot(neighbor.rooks, st_coordinates(ACS_county.centroid), 
-     col='black', lwd=1, pch=16, cex=.8, add=TRUE)
-
-# and get the spatial weights matrix
-weights.rooks <- st_weights(neighbor.rooks)
-
-```
-
-#### Second order weights
-
-To calculate and plot second order weights, we use the cumulative `st_nb_lag_cumul` function.
-
-```{r}
-# Second order queens
-neighbor.queens.2nd   <- st_nb_lag_cumul(neighbor.queens, 2)
-weights.queens.2nd    <- st_weights(neighbor.queens.2nd)
-neighbor.queens.2nd
-
-# and plot
-plot(ACS_county.geometry, border='darkorange')
-plot(neighbor.queens.2nd, st_coordinates(ACS_county.centroid), 
-     col='black', lwd=1, pch=16, cex=.8, add=TRUE)
-
-```
-
-Or
-
-```{r}
-# Third order Rooms
-neighbor.rooks.3nd   <- st_nb_lag_cumul(neighbor.rooks, 3)
-weights.rooks.3rd    <- st_weights(neighbor.rooks.3nd)
-neighbor.rooks.3nd
 
 
-# and plot
-plot(ACS_county.geometry, border='darkorange')
-plot(neighbor.queens.2nd, st_coordinates(ACS_county.centroid), 
-     col='black', lwd=1, pch=16, cex=.8, add=TRUE)
-
-```
-
-We're now up to 12 neighbours on average per polygon.
-So every polygon is now connected with MANY others, which I'm guessing will mean very smooth resulting field (e.g. everything is being averaged out).
-
-### Extracting weights
-
-To find the weights and neighbours for a specific polygon, you have two choices.
-
-First we can look up the weights in the output we already have.
-They are saved as a new type of R data called a list.
-First, we get the names of the counties (note it doesn't have to be name, you can look up any column).
-
-Here is our data
-
-```{r}
-head(ACS_county.sf)
-```
-
-```{r}
-
-# Make a copy so we don't mess up the original
-NeighboursTest.sf <- ACS_county.sf
-
-# Search for York in the main file
-index_York      <- grep("York",ACS_county.sf$NAME)
-
-# and get the neighbours ONLY of our York polygon
-neighbors_York  <- neighbor.rooks.3nd[[index_York]]
-weights_York    <- weights.rooks.3rd[[index_York]]
-
-# Make a blank column and fill with the weights
-NeighboursTest.sf$WeightsYork <- 0
-NeighboursTest.sf$WeightsYork[neighbors_York] <- weights_York
-
-# YOU MIGHT NOT WANT TO DO THESE, OPTIONAL OUTPUTS
-# Write out a message
-message("Requested neighbours")
-NeighboursTest.sf[neighbors_York,c("GEOID","NAME","WeightsYork")]
-
-# and make a quick plot
-qtm(NeighboursTest.sf,"WeightsYork")+
-qtm(NeighboursTest.sf[index_York,],fill="red")
+<br><br>
 
 
-```
 
-### More examples?
+## Moran's I scatterplot
 
-MANY more examples here: <https://sfdep.josiahparry.com/>.
-Josiah now runs the spatial stats section of ESRI.
-He and I are known to have long conversations about spatial weights matrices...
 
-<br>
 
-```{r, include=FALSE}
-# IF I CAN EXTRACT THE SPATIL WEIGHTS TOTAL NEIGHBOURS I CAN DO SOME CHECKS FOR EACH POLYGON TO LOOK FOR WARNING DISCREPENCIES IN SIZE, OR SHARP DISCONTINUITIES
-```
 
 
 
