@@ -635,9 +635,21 @@ Create a new section called Advanced.
 
 21. **SUPER-ADVANCED For the final 2 Marks**
 
+::: {#boxgreen}
+**You can easily get an A without attempting this. 
+::: 
+
+<br>
+
 In class we talked about calculating Moran's I  at differnet lags and there is a nice tutorial here. https://mgimond.github.io/Spatial/spatial-autocorrelation-in-r.html#app8_6
 
 Using the tutorial, see if you can calculate the lagged Moran's I for broadband access in PA. 
+
+
+
+
+<br><br>
+
 
 
 # Submitting your Lab
@@ -674,24 +686,19 @@ knitr::include_graphics('./index_images/im_T2_Download.png')
 knitr::include_graphics("./index_images/pg_364Lab1_Basics_2021_fig1.png")
 ```
 
-<br>
+<br><br>
 
 ------------------------------------------------------------------------
 
 \
 
-# Grading rubric
-
-## Lab 5
-
-# CHECK THIS BEFORE YOU SUBMIT!
+# CHECK THIS BEFORE YOU SUBMIT! (Lab)
 
 People who use this section get better grades...
 
-## Predict your grade
+<br>
 
-
-# Grading rubric
+## Grading rubric
 
 -   **Submitting Rmd & HTML (15 pts)**
     -   20: Both .Rmd and .html submitted
@@ -699,27 +706,18 @@ People who use this section get better grades...
 
 <br>
 
--   **General style (10 pts)**
+-   **General style & writing (20 pts)**
     -   10: Great style: \
-        *Easy to find answers; no library-loading printouts; no code warnings; YAML works*
+        *You have written your answers below the relevant code chunk in full sentences in a way that is easy to find and grade. For example, you have written in full sentences, it is clear what your answers are referring to. You have used units where appropriate; no library-loading printouts; no code warnings; YAML works*
     -   8: Minor issues: \
         *Occasional hard-to-find answers; library-loading text printed; missing table of contents*
     -   6: Major issues: \
         \*Hard to find answers; multiple code issues
 
-<br>
 
--   **General writing (10 pts)** <br> Your code and document is neat and easy to read. LOOK AT YOUR HTML FILE
-IN YOUR WEB-BROWSER BEFORE YOU SUBMIT. There is also a spell check next to the save button. You have written your answers below the relevant code chunk in full sentences in a way that is easy to find and grade. For example, you have written in full sentences, it is clear what your answers are referring to.
-    -   10: Great writing: \
-        *Full sentences, you have written up what your code does in the report. You have used units where appropriate.*
-    -   8: Minor issues: \
-        *To complete*
-    -   6: Major issues: \
-        *To complete*
+<br><br>
 
-
--  **US-Census Data** - 25 MARKS**
+-  **US-Census Data - 20 MARKS**
 
     -   Download the census data & make/explain maps for Iowa [10]
     
@@ -727,7 +725,49 @@ IN YOUR WEB-BROWSER BEFORE YOU SUBMIT. There is also a spell check next to the s
 
     -   Best practice [5]
 
-To come
+<br><br>
+
+-  **Spatial weights matrix - 10 MARKS**
+
+    -   You got the code working [5 MARKS]
+    
+    -   Your answers / interpretation [5 MARKS]
+
+<br><br>
+
+-  **Moran's I & scatterplot - 10 MARKS**
+
+    -   You got the code working [5 MARKS]
+    
+    -   Your answers / interpretation [5 MARKS]
+
+<br><br>
+
+-  **Morans Hypothesis test - 10 MARKS**
+
+    -   You got the code working [5 MARKS]
+    
+    -   Your answers / interpretation [5 MARKS]
+
+
+<br><br>
+
+-  **Advanced - 13 MARKS**
+
+    -   Sliding scale out of 10 for your code and interpretation of PA broadband [10]
+    
+    -   Sliding scale out of 3 for your code and interpretation of West Virginia broadband  [3]
+
+
+
+-  **Super advanced - 2 MARKS**
+
+    -   You made a good effort [1]
+    
+    -   Everything is working AND interpreted in the text [1]
+
+<br><br>
+
 
 ## Overall
 
