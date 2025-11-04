@@ -23,7 +23,9 @@ navbar:
         - text: "Getting Census Data"
           href: Tutorial_CensusData.html     
         - text: "Spatial Weights Matrices"
-          href: Tutorial_SpatWeights.html               
+          href: Tutorial_SpatWeights.html   
+        - text: "Moran's I"
+          href: Tutorial_Moran.html    
 output:
   html_document:
     theme: flatly
