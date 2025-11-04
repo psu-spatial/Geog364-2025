@@ -247,13 +247,96 @@ moran.plot(ACS_county.sf$housevalue,
 ```
 
 
+<br>
+
+We then plot *HouseValue~lag~* against *HouseValue* for each county. A positive slope means positive autocorrelation (smooth clusters, high values surrounded by high values). A negative slope means negative autocorrelation (high surrounded by low, chessboard effect).
 
 <br><br>
 
 
 
-## Moran's I scatterplot
+## Calculating Moran's I
 
+The Moran's *I* coefficient between *HouseValue~lag~* and *HouseValue* is nothing more than the slope of the least squares regression line that best fits the points *after* standardizing both variables (i.e., converting them to z-scores), which centers them on the mean and scales them by their standard deviation.
+
+
+The global_moran function outputs the global Moran's I along with the average number of neighbours.
+
+```{r}
+
+MoranI_HouseValue <- global_moran(ACS_county.sf$housevalue, 
+                                  nb = neighbor.queens,
+                                  wt = weights.queens)
+
+MoranI_HouseValue
+
+```
+
+In fact, lets add it as a title to the scatterplot. 
+
+```{r}
+
+# and plot , the first line adjusts the margins to make it neater.
+par(mar=c(5,6,2,1))   
+moran.plot(ACS_county.sf$housevalue, 
+           weights.queens.sp, 
+           xlab  = "Average House Value per county (USD)",
+           ylab  = "Average house value of \n neighbouring counties (Queens 1st)",
+           labels=ACS_county.sf$NAME,
+           zero.policy = T,
+           main= paste("Global Moran's I:",round(MoranI_HouseValue$I,3)))
+
+
+```
+
+
+
+## Moran's Hypothesis test
+
+
+If there is no degree of association between *HouseValue* and *HouseValue~lag~*, the slope will be close to flat (resulting in a Moran's *I* value near 0). In our working example, the slope is far from flat. So this raises the question: how significant is this Moran's *I* value (i.e. is the computed slope significantly different from 0)? There are two approaches to estimating the significance: an analytical solution and a Monte Carlo solution. 
+
+The analytical solution makes some restrictive assumptions about the data and thus cannot always be reliable. The other approach (and the one favored here) is a Monte Carlo test. This approach avoids parametric assumptions about the data distribution or spatial layout, relying instead on the assumption that values are exchangeable under the null hypothesis.
+
+In a Monte Carlo test (specifically, a permutation-based bootstrap test) we assess the significance of an observed Moran's *I* statistic by comparing it to a distribution of values generated under the null hypothesis of spatial randomness. This is done by **permuting** the attribute values across spatial units while keeping the spatial structure (e.g., neighborhood relationships) fixed.
+
+
+Here's the quick code to do this.
+
+```{r}
+global_moran_perm(ACS_county.sf$housevalue, 
+                   nb = neighbor.queens,
+                   wt = weights.queens,
+                   alternative="two.sided", #Should be one of "greater", "less", or "two.sided"
+                   nsim= 1000) 
+
+1/0.2098
+```
+
+So in this case, 
+
+ - H0:  The pattern in housevalues was caused by an indepedent random process
+ - H1:  The Global Moran's I value is so different to what we would expect,  we think H0 is false and that there is another process causing housevalues to be clustered or gridded.
+ 
+Or mathematically
+
+- H0: Global Moran's I = 0
+- H1: Global Moran's I != 0
+
+Then
+
+ - Observed statistic: Global Moran's I: 0.12411
+ - p-value = 0.2098.
+ 
+We're likely to see patterns with Moran's I >= 0.124 almost 20% of the time.  AKA nearly 1 in 5 random patterns are likely to have a Moran's I value this extreme. (1/0.2098 = 4.766).  This is a pretty high likelyhood of seeing a pattern like this. Normally we only trust results with p < 0.05, where a H0 would only happen by chance 1 time in 20.
+ 
+So in this case, I don't think we have enough evidence to reject H0.  E.g. there's no evidence the autocorrelation of housevalues is significant (p=0.2098)
+
+
+
+
+
+We are going to interpret this in detail during class, or see here https://mgimond.github.io/Spatial/chp13_0.html#monte-carlo-approach-to-estimating-significance
 
 
 

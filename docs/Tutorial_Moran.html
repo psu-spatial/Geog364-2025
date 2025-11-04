@@ -529,10 +529,115 @@ followed suit. so here’s a work-around</p>
 <span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a>           <span class="at">labels=</span>ACS_county.sf<span class="sc">$</span>NAME,</span>
 <span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a>            <span class="at">zero.policy =</span> T)</span></code></pre></div>
 <p><img src="Tutorial_Moran_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p><br></p>
+<p>We then plot <em>HouseValue<sub>lag</sub></em> against
+<em>HouseValue</em> for each county. A positive slope means positive
+autocorrelation (smooth clusters, high values surrounded by high
+values). A negative slope means negative autocorrelation (high
+surrounded by low, chessboard effect).</p>
 <p><br><br></p>
 </div>
-<div id="morans-i-scatterplot-1" class="section level2">
-<h2>Moran’s I scatterplot</h2>
+<div id="calculating-morans-i" class="section level2">
+<h2>Calculating Moran’s I</h2>
+<p>The Moran’s <em>I</em> coefficient between
+<em>HouseValue<sub>lag</sub></em> and <em>HouseValue</em> is nothing
+more than the slope of the least squares regression line that best fits
+the points <em>after</em> standardizing both variables (i.e., converting
+them to z-scores), which centers them on the mean and scales them by
+their standard deviation.</p>
+<p>The global_moran function outputs the global Moran’s I along with the
+average number of neighbours.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>MoranI_HouseValue <span class="ot">&lt;-</span> <span class="fu">global_moran</span>(ACS_county.sf<span class="sc">$</span>housevalue, </span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>                                  <span class="at">nb =</span> neighbor.queens,</span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>                                  <span class="at">wt =</span> weights.queens)</span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>MoranI_HouseValue</span></code></pre></div>
+<pre><code>## $I
+## [1] 0.1241145
+## 
+## $K
+## [1] 4.586472</code></pre>
+<p>In fact, lets add it as a title to the scatterplot.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="co"># and plot , the first line adjusts the margins to make it neater.</span></span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar=</span><span class="fu">c</span>(<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">2</span>,<span class="dv">1</span>))   </span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a><span class="fu">moran.plot</span>(ACS_county.sf<span class="sc">$</span>housevalue, </span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a>           weights.queens.sp, </span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a>           <span class="at">xlab  =</span> <span class="st">&quot;Average House Value per county (USD)&quot;</span>,</span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a>           <span class="at">ylab  =</span> <span class="st">&quot;Average house value of </span><span class="sc">\n</span><span class="st"> neighbouring counties (Queens 1st)&quot;</span>,</span>
+<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a>           <span class="at">labels=</span>ACS_county.sf<span class="sc">$</span>NAME,</span>
+<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a>           <span class="at">zero.policy =</span> T,</span>
+<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a>           <span class="at">main=</span> <span class="fu">paste</span>(<span class="st">&quot;Global Moran&#39;s I:&quot;</span>,<span class="fu">round</span>(MoranI_HouseValue<span class="sc">$</span>I,<span class="dv">3</span>)))</span></code></pre></div>
+<p><img src="Tutorial_Moran_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+</div>
+<div id="morans-hypothesis-test" class="section level2">
+<h2>Moran’s Hypothesis test</h2>
+<p>If there is no degree of association between <em>HouseValue</em> and
+<em>HouseValue<sub>lag</sub></em>, the slope will be close to flat
+(resulting in a Moran’s <em>I</em> value near 0). In our working
+example, the slope is far from flat. So this raises the question: how
+significant is this Moran’s <em>I</em> value (i.e. is the computed slope
+significantly different from 0)? There are two approaches to estimating
+the significance: an analytical solution and a Monte Carlo solution.</p>
+<p>The analytical solution makes some restrictive assumptions about the
+data and thus cannot always be reliable. The other approach (and the one
+favored here) is a Monte Carlo test. This approach avoids parametric
+assumptions about the data distribution or spatial layout, relying
+instead on the assumption that values are exchangeable under the null
+hypothesis.</p>
+<p>In a Monte Carlo test (specifically, a permutation-based bootstrap
+test) we assess the significance of an observed Moran’s <em>I</em>
+statistic by comparing it to a distribution of values generated under
+the null hypothesis of spatial randomness. This is done by
+<strong>permuting</strong> the attribute values across spatial units
+while keeping the spatial structure (e.g., neighborhood relationships)
+fixed.</p>
+<p>Here’s the quick code to do this.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="fu">global_moran_perm</span>(ACS_county.sf<span class="sc">$</span>housevalue, </span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>                   <span class="at">nb =</span> neighbor.queens,</span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a>                   <span class="at">wt =</span> weights.queens,</span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a>                   <span class="at">alternative=</span><span class="st">&quot;two.sided&quot;</span>, <span class="co">#Should be one of &quot;greater&quot;, &quot;less&quot;, or &quot;two.sided&quot;</span></span>
+<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a>                   <span class="at">nsim=</span> <span class="dv">1000</span>) </span></code></pre></div>
+<pre><code>## 
+##  Monte-Carlo simulation of Moran I
+## 
+## data:  x 
+## weights: listw  
+## number of simulations + 1: 1001 
+## 
+## statistic = 0.12411, observed rank = 877, p-value = 0.2478
+## alternative hypothesis: two.sided</code></pre>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="dv">1</span><span class="sc">/</span><span class="fl">0.2098</span></span></code></pre></div>
+<pre><code>## [1] 4.766444</code></pre>
+<p>So in this case,</p>
+<ul>
+<li>H0: The pattern in housevalues was caused by an indepedent random
+process</li>
+<li>H1: The Global Moran’s I value is so different to what we would
+expect, we think H0 is false and that there is another process causing
+housevalues to be clustered or gridded.</li>
+</ul>
+<p>Or mathematically</p>
+<ul>
+<li>H0: Global Moran’s I = 0</li>
+<li>H1: Global Moran’s I != 0</li>
+</ul>
+<p>Then</p>
+<ul>
+<li>Observed statistic: Global Moran’s I: 0.12411</li>
+<li>p-value = 0.2098.</li>
+</ul>
+<p>We’re likely to see patterns with Moran’s I &gt;= 0.124 almost 20% of
+the time. AKA nearly 1 in 5 random patterns are likely to have a Moran’s
+I value this extreme. (1/0.2098 = 4.766). This is a pretty high
+likelyhood of seeing a pattern like this. Normally we only trust results
+with p &lt; 0.05, where a H0 would only happen by chance 1 time in
+20.</p>
+<p>So in this case, I don’t think we have enough evidence to reject H0.
+E.g. there’s no evidence the autocorrelation of housevalues is
+significant (p=0.2098)</p>
+<p>We are going to interpret this in detail during class, or see here <a
+href="https://mgimond.github.io/Spatial/chp13_0.html#monte-carlo-approach-to-estimating-significance"
+class="uri">https://mgimond.github.io/Spatial/chp13_0.html#monte-carlo-approach-to-estimating-significance</a></p>
 </div>
 </div>
 
