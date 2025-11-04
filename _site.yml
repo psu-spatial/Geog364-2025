@@ -18,6 +18,12 @@ navbar:
           href: in_GEOG364_Lab4.html  
         - text: "Lab 5: Moran's I"
           href: in_GEOG364_Lab5.html          
+    - text: "Tutorials"
+      menu:  
+        - text: "Getting Census Data"
+          href: Tutorial_CensusData.html     
+        - text: "Spatial Weights Matrices"
+          href: Tutorial_SpatWeights.html               
 output:
   html_document:
     theme: flatly

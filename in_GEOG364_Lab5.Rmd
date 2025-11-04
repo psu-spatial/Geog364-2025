@@ -447,13 +447,13 @@ Look at the best practice for chloropleths <https://blog.datawrapper.de/chorople
 
 Now we will focus on autocorrelation. 
 
-1. Make a new section 
+8. Make a new section 
 
 Make a new section in your lab script called Autocorrelation.  In this section, I will leave it up to you to make clear sub-headings to make it easy for grading. 
 
 <br>
 
-2. Explain in your report:
+9. Explain in your report:
 
 (see Monday's lecture and reading)
 
@@ -466,12 +466,62 @@ Make a new section in your lab script called Autocorrelation.  In this section, 
 
 ## Spatial weights matrices
 
+To understand the autocorrelation, we first need to define neighbourhood.
 
-#### REFRESH THE PAGE FOR MORE
 
+10. Read through the tutorial below
+
+<details>
+
+<summary>Expand for tutorial - Spatial weights</summary>
+
+<br>
+
+::: collapsible-content
+<iframe src="https://psu-spatial.github.io/Geog364-2025/Tutorial_SpatWeights.html" style="width: 100%; height: 700px; border: none;">
+</iframe>
+:::
+
+</details>
+
+::: small-gap
+:::
+
+<br>
+
+
+11. Calculate the spatial weights
+
+Now use the tutorial above to calculate and plot these neighbours and spatial weights matrix for your Iowa dataset. 
+ -  QUEENS 1st order 
+ -  ROOKS 2nd order
+
+<br>
+
+13. Explain what you did
+
+Below your code, briefly explain the difference between nearest neighbour, Rook’s, and Queen’s spatial weights matrices. Your answer should describe how each defines adjacency and what kinds of spatial relationships they capture.
+
+14. Are the Hawkeyes neighbours?
+
+The Iowa Hawkeyes are based in Iowa City, Iowa (look up the county if needed).
+Your friend lives in Black Hawk County, Iowa. Using R code from the tutorial, determine whether Black Hawk County is a Rook’s 2nd-order neighbour of Iowa City’s county.
+Show your code and output.
 
 
 \
+
+## Moran's Scatterplots and Moran's I
+
+
+
+
+## Moran's hypothesis test
+
+
+
+
+
 
 
 # Submitting your Lab

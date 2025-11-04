@@ -441,6 +441,18 @@ div.tocify {
     </li>
   </ul>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Tutorials
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Tutorial_SpatWeights.html">Spatial Weights Matrices</a>
+    </li>
+  </ul>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         
@@ -833,14 +845,14 @@ of the marks for explaining what you WANTED to do.</p>
 <div id="autocorrelation-basics" class="section level2">
 <h2>Autocorrelation basics</h2>
 <p>Now we will focus on autocorrelation.</p>
-<ol style="list-style-type: decimal">
+<ol start="8" style="list-style-type: decimal">
 <li>Make a new section</li>
 </ol>
 <p>Make a new section in your lab script called Autocorrelation. In this
 section, I will leave it up to you to make clear sub-headings to make it
 easy for grading.</p>
 <p><br></p>
-<ol start="2" style="list-style-type: decimal">
+<ol start="9" style="list-style-type: decimal">
 <li>Explain in your report:</li>
 </ol>
 <p>(see Monday’s lecture and reading)</p>
@@ -858,11 +870,54 @@ density?</li>
 </div>
 <div id="spatial-weights-matrices" class="section level2">
 <h2>Spatial weights matrices</h2>
-<div id="refresh-the-page-for-more" class="section level4">
-<h4>REFRESH THE PAGE FOR MORE</h4>
+<p>To understand the autocorrelation, we first need to define
+neighbourhood.</p>
+<ol start="10" style="list-style-type: decimal">
+<li>Read through the tutorial below</li>
+</ol>
+<details>
+<summary>
+Expand for tutorial - Spatial weights
+</summary>
+<p><br></p>
+<div class="collapsible-content">
+<iframe src="https://psu-spatial.github.io/Geog364-2025/Tutorial_SpatWeights.html" style="width: 100%; height: 700px; border: none;">
+</iframe>
+</div>
+</details>
+<div class="small-gap">
+
+</div>
+<p><br></p>
+<ol start="11" style="list-style-type: decimal">
+<li>Calculate the spatial weights</li>
+</ol>
+<p>Now use the tutorial above to calculate and plot these neighbours and
+spatial weights matrix for your Iowa dataset. - QUEENS 1st order - ROOKS
+2nd order</p>
+<p><br></p>
+<ol start="13" style="list-style-type: decimal">
+<li>Explain what you did</li>
+</ol>
+<p>Below your code, briefly explain the difference between nearest
+neighbour, Rook’s, and Queen’s spatial weights matrices. Your answer
+should describe how each defines adjacency and what kinds of spatial
+relationships they capture.</p>
+<ol start="14" style="list-style-type: decimal">
+<li>Are the Hawkeyes neighbours?</li>
+</ol>
+<p>The Iowa Hawkeyes are based in Iowa City, Iowa (look up the county if
+needed). Your friend lives in Black Hawk County, Iowa. Using R code from
+the tutorial, determine whether Black Hawk County is a Rook’s 2nd-order
+neighbour of Iowa City’s county. Show your code and output.</p>
 <p><br />
 </p>
 </div>
+<div id="morans-scatterplots-and-morans-i" class="section level2">
+<h2>Moran’s Scatterplots and Moran’s I</h2>
+</div>
+<div id="morans-hypothesis-test" class="section level2">
+<h2>Moran’s hypothesis test</h2>
 </div>
 </div>
 <div id="submitting-your-lab" class="section level1">

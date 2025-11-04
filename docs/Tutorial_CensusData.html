@@ -275,6 +275,21 @@ $(document).ready(function () {
     </li>
   </ul>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Tutorials
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Tutorial_CensusData.html">Getting Census Data</a>
+    </li>
+    <li>
+      <a href="Tutorial_SpatWeights.html">Spatial Weights Matrices</a>
+    </li>
+  </ul>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         
@@ -481,9 +496,13 @@ not adding to the list of variables.</p>
 </div>
 <div id="wrangling-census-data" class="section level2">
 <h2>Wrangling census data</h2>
+<p>The <code>ACS_county.sf</code> object consists of an <code>sf</code>
+vector layer representing census data aggregated at the county
+subdivision level for 2019 <em>(src. Census Bureau 5-year ACS)</em>.</p>
 <p>If you got it working and click on/view ACS_county.sf from the
 Environment tab, you should now see that it has downloaded each one of
-your variables for every county in Maine and NH</p>
+your variables for every county in Maine and NH.</p>
+<p><br></p>
 <div id="estimates-vs-margin-of-error"
 class="section level3 unnumbered">
 <h3 class="unnumbered">Estimates vs Margin of Error</h3>
