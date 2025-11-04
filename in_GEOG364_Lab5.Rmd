@@ -587,21 +587,25 @@ Create a quick map of the *median income* in Iowa (you have the code for this hi
 
 # Advanced
 
-Congratulations! If you have made it here you already have a B.  I WILL GRADE PROGRESSIVELY DEPENDING ON HOW FAR THROUGH YOU GET.  As always, an A grade is reasonable, 100% is hard. 
- 
+::: {#boxgreen}
+Congratulations! If you have made it here you already have a B.<br><br>  For the next question, we will grade progressively depending on how far through you get. <br> As always, an A grade is reasonable, 100% is hard. 
+::: 
 
+<br>
 
-OK, so you have now worked through an entire assessment of Moran's I. In reality, it's much shorter than we just made it.  For a given dataset, we 
+OK, so you have now worked through an entire assessment of Moran's I. For a given dataset, we have
 
  - Read in the data
- - Make it spatial and assign map projection
- - (use st_make_value to remove features that crash the moran code)
- - Calculate neighbours and spatial weights matrix of your choice
- - Calculate the Moran's I scatterplot and hypothesis test.
+ - Made it spatial and assigned a map projection
+ - (used things like st_make_value to remove features that crash the moran code)
+ - Calculated neighbours and spatial weights matrix of our choice
+ - Calculated the Moran's I scatterplot and hypothesis test.
  
-In the question below, I'm asking you to run the whole process for a new scenario. Remember you can copy the code into a single code chunk, like I did at the start of the tutorials.
+In the question below, I'm asking you to run the whole process for a new scenario. Remember you can copy your existing code into a single code chunk, like I did at the start of the tutorials.
  
-20. Try the full process (15 marks)
+<br><br> 
+ 
+20. Try the full process (13 marks)
 
 ::: {#boxgreen}
 **You already HAVE the code to do this** You just need to copy/paste your code down here and edit for the new scenario. 
@@ -609,18 +613,27 @@ In the question below, I'm asking you to run the whole process for a new scenari
 Or see the beginning of each tutorial for a summary of the code. To make your life easier, look at the top of the page and you'll see the tutorials in order. You'll also find things like the census code for broadband access.
 ::: 
 
- - For 'broadband access' for counties in Pennsylvania and 1st order queens.
+<br> 
+
+Create a new section called Advanced. 
+
+<br> 
+
+ - **For 'broadband access' for counties in Pennsylvania and 1st order queens - 10 MARKS**
    + Download the data and wrangle
    + Make a chloropleth map 
    + Calculate the moran's I and show the moran's scatterplot 
    + Run a hypothesis test & interpret, assuming I consider the result significant at p=0.05
    + Relate everything back to the pattern you see and the PROCESSES creating broadband access patterns.
    
+<br>
 
- - Repeat for West Virginia and compare your results. Comment on any differences you see.
+ - **Repeat for West Virginia and compare your results. Comment on any differences you see - 3 MARKS**.
 
 
-21. For the final 2%
+<br>
+
+21. **SUPER-ADVANCED For the final 2 Marks**
 
 In class we talked about calculating Moran's I  at differnet lags and there is a nice tutorial here. https://mgimond.github.io/Spatial/spatial-autocorrelation-in-r.html#app8_6
 
