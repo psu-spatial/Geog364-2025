@@ -4,20 +4,13 @@ output:
     toc: false
     number_sections: false
     df_print: paged
+    css: projectlab.css
+    highlight: pygments
 ---
 
 
-# TUTORIAL Autocorrelation & Spatial Weights
+```{r,message=FALSE, warning=FALSE, include=FALSE,results="hide"}
 
-
-## Libraries needed for this tutorial.
-
-Make sure all of these libraries are at the top of your lab script in a code chunk, and run the code chunk!
-
-If you run the code chunk and it says a package is missing, either click "install" if the little yellow bar appears at the top, or go to the Packages tab, and click Install to go to the package 'app store'.
-
-
-```{r,message=FALSE, warning=FALSE}
 library(readxl)
 library(tidyverse)
 library(dplyr)
@@ -35,52 +28,6 @@ library(tidycensus)
 library(units)
 library(sfdep)
 library(spatstat)
-```
-
-<br>
-
-## Introduction
-
-In this tutorial, we introduce **spatial autocorrelation**, a property that describes how values at one location relate to values at nearby locations.
-
-This concept is rooted in **Tobler’s First Law of Geography** which states:
-
-> *"The first law of geography: Everything is related to everything else, but near things are more related than distant things."* Waldo R. Tobler [@Tobler1970]
-
-This principle underpins much of spatial analysis.
-It suggests that spatial data often exhibit **non-random patterns**, where nearby features tend to have similar attribute values.
-Spatial autocorrelation provides a formal way to quantify this tendency.
-
-```{r, echo=FALSE}
-knitr::include_graphics("index_images/im_L05_Random_maps.png")
-```
-
-To make the mathematical foundations of autocorrelation more accessible, we shift from the point used in the previous labs to a simpler dataset composed of **polygonal areal units** (e.g., counties).
-This allows us to clearly illustrate how spatial relationships are defined, how spatial weights are constructed, and how measures like **Moran’s I** are computed.
-
-This chapter focuses on:
-
--   Defining spatial autocorrelation and its role in spatial statistics.
--   Constructing spatial weights to represent neighborhood relationships.
--   Computing and interpreting **global** and **local Moran’s I** statistics.
--   Using permutation-based hypothesis testing to assess significance.
-
-## Example dataset, Maine Income
-
-Let's start with a working example: 2020 median per capita income for the state of Maine.
-We can get US Census data using the tidycensus package.
-If you're doing Lab 5, you have already done this.
-I'm including so it's a standalone tutorial
-
-<details>
-
-<summary>If you're doing lab 5 you DO NOT NEED TO RUN THE CODE IN THIS CHUNK AGAIN</summary>
-
-<br>
-
-I'm including this so that we're looking at a standalone tutorial
-
-```{r,message=FALSE, warning=FALSE, include=FALSE,results="hide"}
 
 # Download some data for Maine and NH using get_acs
 # THIS WILL NOT WORK IF YOU DID'T RUN YOUR API KEY CODE & RESTART R-STUDIO
@@ -131,22 +78,31 @@ ACS_county.sf$pop_density_km2  <- ACS_county.sf$total_pop   / ACS_county.sf$Area
 ACS_county.sf$house_density_km2 <- ACS_county.sf$total_house / ACS_county.sf$Area
 
 
+# SPATIAL WEIGHTS. I choose queens 1st order, you might try something else
 
-```
+# First get the geometry/coords 
+ACS_county.geometry <- st_geometry(ACS_county.sf)
 
-</details>
+# Then the central point in each polygon
+ACS_county.centroid <- st_centroid(ACS_county.sf)
 
-::: small-gap
-:::
+# Finally, extract the Queens neigbours
+neighbor.queens   <- st_contiguity(ACS_county.geometry, queen=TRUE)
 
-```{r fig03, fig.height=3, fig.cap="Map of 2020 median per capita income for Maine counties (USA).", echo = FALSE, message=FALSE, fig.align='center'}
+# And plot
+plot(ACS_county.geometry, border='darkcyan')
+plot(neighbor.queens, st_coordinates(ACS_county.centroid), 
+     col='black', lwd=1, pch=16, cex=.8, add=TRUE)
+
+# and get the spatial weights matrix
+weights.queens <- st_weights(neighbor.queens)
 
 # Turn off interactive
 tmap_mode("plot") 
 
 # Add a basemap of your choice 
 # Then plot the income column of your data
-tm_basemap("CartoDB.Voyager") +
+outputmap <- tm_basemap("CartoDB.Voyager") +
 tm_shape(ACS_county.sf) + 
   tm_polygons(
     fill        = "med.income",
@@ -155,11 +111,157 @@ tm_shape(ACS_county.sf) +
     fill.legend = tm_legend("Maine average income per county (USD)")
   ) 
 
+
+
 ```
 
 <br>
 
+# TUTORIAL Autocorrelation & Spatial Weights
+
+## Check before you start
+
+
+Here is how I load the example data for this tutorial which focuses on 2020 median per capita income for the state of Maine.
+
+```{r fig03, fig.height=3, fig.cap="Map of 2020 median per capita income for Maine counties (USA).", echo = FALSE, message=FALSE, fig.align='center'}
+
+# Turn off interactive
+tmap_mode("plot") 
+outputmap
+
+```
+
+
+<details>
+
+<summary>**Code to  load the example data. IF YOU'RE DOING LAB 5 this was covered in week 1**</summary>
+
 <br>
+
+
+
+First make sure all of these libraries are at the top of your lab script in a code chunk, and run the code chunk! If you run the code chunk and it says a package is missing, either click "install" if the little yellow bar appears at the top, or go to the Packages tab, and click Install to go to the package 'app store'.
+
+
+```{r,message=FALSE, warning=FALSE}
+library(readxl)
+library(tidyverse)
+library(dplyr)
+library(terra)
+library(sf)
+library(tmap)
+library(ggplot2)
+library(ggthemes)
+library(viridis)
+library(RColorBrewer)
+library(plotly)
+library(spatstat)
+library(sfdep)
+library(tidycensus)
+library(units)
+library(sfdep)
+library(spatstat)
+```
+
+<br>
+
+Then you can load your data from the census and tidy up, before plotting
+
+
+```{r, eval=FALSE}
+
+# Download some data for Maine and NH using get_acs
+# THIS WILL NOT WORK IF YOU DID'T RUN YOUR API KEY CODE & RESTART R-STUDIO
+ACS_county.sf <- get_acs(geography = "county", 
+                         year = 2019,
+                         variables = c(housevalue  = "B25075_001",  # house value
+                                       total_pop   = "B05012_001",  # total population
+                                       total_house = "B25001_001",  # no. houses
+                                       med.income  = "B19013_001"), # median income  
+                         state = c("ME"),
+                         survey = "acs5", geometry = TRUE,
+                         output = "wide", show_call = FALSE)
+#st_coordinates(ACS_county.sf)
+
+# OPTIONAL. For more advanced work, you probably want to keep the error columns
+# If you don't run it, remember all your columns have an E on the end of the name 
+ACS_county.sf <- ACS_county.sf %>%
+  select(
+    GEOID, 
+    NAME,
+    housevalue   = housevalueE, 
+    total_pop    = total_popE, 
+    total_house  = total_houseE, 
+    med.income   = med.incomeE,
+    geometry 
+    )
+
+#st_coordinates(ACS_county.sf)
+
+
+# Change the map projection to Albers equal projection, 
+# then remove empty polygons (lakes etc) and fix any broken geometry
+ACS_county.sf <- ACS_county.sf %>%
+  st_transform(5070) %>%
+  filter(!st_is_empty(geometry)) %>%
+  st_make_valid()
+
+
+# Find the areas in each county & change the units from metres squared to km squared
+ACS_county.sf$Area  <- st_area(ACS_county.sf)
+ACS_county.sf$Area  <- as.numeric(set_units(ACS_county.sf$Area,"km^2"))
+
+
+
+# OPTIONAL & DEPENDS ON THE VARIABLES YOU DOWNLOAD
+# Divide the total population & housing by the area to give the population/housing density
+ACS_county.sf$pop_density_km2  <- ACS_county.sf$total_pop   / ACS_county.sf$Area
+ACS_county.sf$house_density_km2 <- ACS_county.sf$total_house / ACS_county.sf$Area
+
+
+```
+
+
+
+</details>
+
+::: small-gap
+:::
+
+
+
+
+<br>
+
+
+
+## Introduction
+
+In this tutorial, we introduce **spatial autocorrelation**, a property that describes how values at one location relate to values at nearby locations.
+
+This concept is rooted in **Tobler’s First Law of Geography** which states:
+
+> *"The first law of geography: Everything is related to everything else, but near things are more related than distant things."* Waldo R. Tobler [@Tobler1970]
+
+This principle underpins much of spatial analysis.
+It suggests that spatial data often exhibit **non-random patterns**, where nearby features tend to have similar attribute values.
+Spatial autocorrelation provides a formal way to quantify this tendency.
+
+```{r, echo=FALSE}
+knitr::include_graphics("index_images/im_L05_Random_maps.png")
+```
+
+To make the mathematical foundations of autocorrelation more accessible, we shift from the point used in the previous labs to a simpler dataset composed of **polygonal areal units** (e.g., counties).
+This allows us to clearly illustrate how spatial relationships are defined, how spatial weights are constructed, and how measures like **Moran’s I** are computed.
+
+This chapter focuses on:
+
+-   Defining spatial autocorrelation and its role in spatial statistics.
+-   Constructing spatial weights to represent neighborhood relationships.
+-   Computing and interpreting **global** and **local Moran’s I** statistics.
+-   Using permutation-based hypothesis testing to assess significance.
+
 
 ## Introducing Global Moran's *I*
 
