@@ -18,14 +18,18 @@ navbar:
           href: in_GEOG364_Lab4.html  
         - text: "Lab 5: Moran's I"
           href: in_GEOG364_Lab5.html          
-    - text: "Tutorials"
+    - text: "Advanced Tutorials"
       menu:  
         - text: "Getting Census Data"
           href: Tutorial_CensusData.html     
         - text: "Spatial Weights Matrices"
           href: Tutorial_SpatWeights.html   
         - text: "Moran's I"
-          href: Tutorial_Moran.html    
+          href: Tutorial_Moran.html 
+    - text: "TURTLES"
+      menu:  
+        - text: "Tutorial"
+          href: Turtle_tutorial.html     
 output:
   html_document:
     theme: flatly
