@@ -35,3 +35,9 @@ Download the class lab script: <https://colab.research.google.com/drive/1auuZwue
 -   <https://larryriddle.agnesscott.org/ColabTurtlePlus/documentation2.html>
 
 -   Examples: <https://github.com/mathriddle/ColabTurtlePlus/tree/main/examples/files>
+
+# Art examples in R logo
+
+![](index_images/Example1 Logo.png)
+
+![](index_images/Screenshot 2023-03-20 at 12.20.07.png)
