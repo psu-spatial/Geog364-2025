@@ -1,5 +1,5 @@
 ---
-title: "Lab 6:"
+title: "Lab 6: LISA and Regression"
 output:
   html_document:
     css: projectlab.css
@@ -7,7 +7,7 @@ output:
     theme: flatly
     toc: true
     toc_float: true
-    toc_depth: 4
+    toc_depth: 3
 editor_options: 
   markdown: 
     wrap: sentence
@@ -15,41 +15,72 @@ editor_options:
 
 
 ```{r, include=FALSE,echo=FALSE, warning=FALSE, message=FALSE}
+# NOTES
+```
+
+
+
+```{r, include=FALSE,echo=FALSE, warning=FALSE, message=FALSE}
+
 knitr::opts_chunk$set(eval = TRUE, 
                       fig.show = "hide", 
                       message = FALSE, 
                       warning = FALSE)
 
 # Libraries
-library(openintro)
 library(tidyverse)
-library(broom)
 library(AER)
-library(readxl)
+library(broom)
+library(ggplot2)
 library(kableExtra)
+library(openintro)
+library(readxl)
+library(skimr)
+library(sp)
+library(sf)
+library(plotly)
+library(tmap)
+library(viridis)
+library(elevatr)
+library(osmdata)
+
 
 # Data
 rubric <- read_excel("./index_data/Table_LabRubric.xlsx")
+
 ```
 
+
+------------------------------------------------------------------------
+
 \
 
-# Overview
+# Welcome to Lab 6!
 
-\
-**Welcome to your GEOG-364 labs!**
+**Aim of the lab**
 
-The aim of these labs is to help you get comfortable programming in R and to practice techniques introduced in lectures and homework.
+In this guide you will learn how to:
+
+ - Run LISA analyses 
+ - Run a regression analysis and look at spatial residuals
+
+
+<p class="comment">
+
+::: {#boxgreen}
+**This is a TWO WEEK LAB** See [here](https://psu.instructure.com/courses/2396422/assignments/17585714) for assignment guidelines. You must submit an `.Rmd` file and its associated `.html` file. 
+::: 
 
 \
 
 ::: {#boxedtext}
-**Questions**
-
-Can you use Chat-GPT/AI?
-What’s the late policy?
-Where can you get help?\
-Click here for the answers.
+\
+**Getting help** 
+\
+ - Kiely (and often Dr G) will be present during your lab sessions. This is the easiest way to get help. \
+ - Dr G has weekly office hours and genuinely enjoys helping with R, even if you feel stuck or overwhelmed. \
+ - You may send a Canvas message to Kiely or Dr G (or if you are completely lost).\
+ \
 :::
 
 \
@@ -58,112 +89,372 @@ Click here for the answers.
 
 \
 
-# Lab 6
-
-**Aim of the lab**
-
+# Set-up. DON'T SKIP!
 
 \
 
-**Deadline & Late Penalty**
+### Create a project & get the data
 
--   Tuesday lab: to add
--   Thursday lab: to add
--   Friday lab: to add
+There are two options here depending on whether you are using R-studio on the website (posit cloud) or your own computer (R-Desktop). If you are using a lab computer choose the R-Desktop route.
 
-\
-
-**What to submit**
-
-You will submit both your Rmd and HTML files.
-
-\
-
-**How long should the lab take?**
-
-To add.
-
-\
-
-**Getting help**
-
--   Kiely (and often Dr G) will be present during your lab sessions. This is the easiest way to get help.
--   There is a Piazza discussion board. Kiely will explain more in this week’s lab and will check it at least once a day.
--   Dr G has weekly office hours and genuinely enjoys helping with R, even if you feel stuck or overwhelmed.
--   If you have posted on Piazza and received no response after 24 hours, you may send a Canvas message to Kiely or Dr G (or if you are completely lost).\
-
-\
+#### Option 1. Posit Cloud Website Users
 
 
-------------------------------------------------------------------------
+<details>
 
-\
+<summary>Task 1. Create a project for Lab 6 (expand for instructions)</summary>
 
-
-# Getting Started
-
-\
-
-
-## You should have already completed....
-
-This lab builds on Homework 1. I expect that if you have run R on your computer that it is using the most up-to-date version and that you have completed the R-basics in Data Camp. 
-
-\
-
-
-1.  **Create a new project for Project 2**, in order to store your data, analysis & reports. \
- Instructions here <https://psu-spatial.github.io/Stat462-2025/CH2_EACHLAB.html#1_R-Projects>
-
-
-
-
-
-------------------------------------------------------------------------
+::: collapsible-content
+<iframe src="https://psu-spatial.github.io/Stat462-2025/T5_ProjectsPositCloud.html" style="width: 100%; height: 700px; border: none;">
+</iframe>
+:::
 
 <br>
 
-# Next section
+</details>
 
-asdjlasdld asdjlasdld
+::: small-gap
+:::
 
-asdjlasdld asdjlasdld
 
-\
+<details>
 
-asdjlasdld asdjlasdld
+<summary>Task 2. Install more packages (expand for instructions)</summary>
 
-\
+<br>
+
+Unfortunately on the website you need to install your packages each time.<br>Go to to the packages tab, click install to get to the app-store and download/install these packages:
+
+-   `readxl`
+-   `viridis`
+-   `ggstatsplot`
+-   `terra`
+-   `tigris`
+-   `tidyverse`
+-   `dplyr`
+-   `tmap`
+-   `elevatr`
+-   `osmdata`
+-   `ggplot2`
+-   `ggthemes`
+-   `RColorBrewer`
+-   `plotly`
+-   `cols4all`
+-   `shinyjs`
+
+
+We will also need a package called sf, which runs a lot of the spatial commands in R. Unfortunately, posit cloud sometimes has a few technical issues with sf, so you will need to run a special command.
+
+IN THE CONSOLE, run these two commands.
+
+```{r,eval=FALSE}
+install.packages("remotes")
+remotes::install_github(repo = "r-spatial/sf", ref = "93a25fd8e2f5c6af7c080f92141cb2b765a04a84")
+```
+
+
+
+T6_Packages.html
+<br>*Reminder: [Tutorial: Packages
+cheatsheet](https://psu-spatial.github.io/Stat462-2025/T6_Packages.html)*.
+
+</details>
+
+#### Option 2. R-Desktop Users
+
+<details>
+
+<summary>Task 1. Create a project for Lab 6</summary>
+
+<br>
+
+::: collapsible-content
+<iframe src="https://psu-spatial.github.io/Stat462-2025/T5_ProjectsRDesktop.html" style="width: 100%; height: 700px; border: none;">
+</iframe>
+:::
+
+</details>
+
+::: small-gap
+:::
+
+<br>
+
+### Set-up your Lab 6 report
+
+You are welcome to use/edit the template you made in previous labs. If you are unsure what I mean by that, follow these instructions.
+
+<details>
+
+<summary>Task. Create your RMarkdown file - expand & look at Tutorial 4B and 4C</summary>
+
+<br>
+
+::: collapsible-content
+<iframe src="https://hgreatrex.github.io/Geog364_2024/pg_Tut4_markdown.html#Tutorial_4B:_Creating_a_markdown_document" style="width: 100%; height: 700px; border: none;">
+</iframe>
+:::
+
+
+</details>
+
+::: small-gap
+:::
+
+
+
+<details>
+
+<summary>Task. Edit your YAML code & ADD A NEW THEME</summary>
+
+<br>
+
+Lets use similar options to Lab 4.  Remember YAML code is annoying to edit, because here, *spaces really do matter*. Everything has to be perfect or it won't knit.
+
+ - **Select everything in my code chunk here and replace your YAML with this (remember the --- on line 1 and at the end).**
+
+ - Now edit the author name to your own.  If you wonder what Sys.Date() is, don't touch it - it automatically gives you the current date.
+ 
+ - Now change your theme to your favourite one of these - you can see what it looks like by pressing knit. Note, DO NOT put quote marks around the theme name.
+   - bootstrap
+   - cerulean
+   - cosmo
+   - darkly
+   - flatly
+   - journal
+   - lumen
+   - paper
+   - readable
+   - sandstone
+   - simplex
+   - spacelab
+   - united
+   - yeti
+ 
+
+
+```{r,eval=FALSE}
+
+#---------------------------------------------------------
+# NOTE, Your theme does NOT have quote marks around it 
+#---------------------------------------------------------
+---
+title: "GEOG-364 - Lab 6"
+author: "hlg5155"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_float: yes
+    number_sections: yes
+    theme: lumen
+    df_print: paged
+---
+  
+  
+```
+
+
+
+</details>
+
+::: small-gap
+:::
+
+
+<details>
+
+<summary>Task. Delete the existing text and create/run your library code chunk</summary>
+
+<br>
+
+ - Click on your lab script (the Rmd file) and delete all the 'welcome text' after line 11.<br>Press enter a few times and make a new level-1 heading called `Set Up`.<br>
+
+ - We should have all the packages we need installed, but we need to open them. Make a new code chunk containing this code.<br>
+
+```{r,message=FALSE,warning=FALSE, eval=FALSE}
+library(readxl)
+library(tidyverse)
+library(dplyr)
+library(terra)
+library(sf)
+library(tmap)
+library(elevatr)
+library(osmdata)
+library(ggstatsplot)
+library(ggplot2)
+library(ggthemes)
+library(viridis)
+library(RColorBrewer)
+library(plotly)
+library(units)
+```
+
+<br>
+
+ - Press the green arrow on the right of the code chunk to run the code inside it. You will see a load of "loading text" telling your details about the packages you just loaded.<br><br> Press the green arrow AGAIN. The text should disappear unless there is an error.<br>
+
+-   Note, remember to run this code chunk EVERY TIME your start R-Studio (in the same way you need to click on an app on your phone before you can use it). <br>
+
+You might need additional libraries as you work through the lab. If so, add them in this code chunk AND REMEMBER TO RERUN. If you see a little yellow bar at the top asking you to install them,click yes!
+
+<br>
+
+</details>
+
+::: small-gap
+:::
+
+<details>
+
+<summary>Task. Add warning=FALSE and message=FALSE to your library code chunk.
+</summary>
+
+
+<br>
+
+ - Expand here for a tutorial.
+
+::: collapsible-content
+<iframe src="https://psu-spatial.github.io/Stat462-2025/T7_Markdown_4bCodeChunkOptions.html" style="width: 100%; height: 700px; border: none;">
+
+</iframe>
+:::
+
+</details>
+
+::: small-gap
+:::
+
+### Check your progress
+
+Your lab script should now look similar this, but with your theme and YAML options of choice (you might have a few different libraries than in my screenshot). You should also be able to knit it successfully. If not, go back and do the previous sections!
+
+<br>
+
+![](index_images/pg_364Lab2_Summary_2021_fig2.png)
+
+<br><br>
 
 ------------------------------------------------------------------------
 
 \
 
-# Show me something new!
-
-adasdsad
 
 
-\
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ------------------------------------------------------------------------
 
-\
 
-# What to submit?
 
-asdjnasda
+
+# THIS LAB
+
+This week we will try a new approach. I will work through a tutorial on local autocorrelation using one dataset. Please create a new, separate Rmd file for the tutorial. Do not work in your lab script for this part, and do not submit the tutorial file. Follow along and make sure it knits.
+
+After the tutorial, you will complete a similar analysis on a different dataset in your actual lab script, using the questions below. 
+
+::: {#boxgreen}
+You should not submit the tutorial file. Creating one simply lets you follow along and copy code into your main lab script later. **Only the work in your lab script will be submitted and assessed. We will DEDUCT MARKS for submitting anything about Chicago/the tutorial** 
+:::
+
+<br><br>
+
+# A. Getting the data
+
+
+1. Look at the tutorial
+
+Run through **STEP 1** of the tutorial. You should stop when you made maps of the city.
 
 <br>
 
 
-\
+1. Create your own,
+
+Now,  IN YOUR LAB SCRIPT, reproduce the tutorial for any largish city of your choice in the USA., 
+Get the code working and making the plots.  For each step, in your own words explain what you are doing for each piece of code and why you chose that city.
+
+
+<br>
+
+# B. Autocorrelation
+
+REFRESH YOUR PAGE
+
+# Submitting your Lab
+
+Remember to save your work throughout and to spell check your writing (next to the save button). Now, press the knit button again. If you have not made any mistakes in the code then R should create a html file in your lab3 folder, complete with a very recent time-stamp.
+
+<br>
+
+### If you are on posit cloud:
+
+You can download each of your .RmD and html files by:
+
+ - Clicking on the little box next to the Rmd in the Files tab, then going to the little blue cogwheel (might need to make your Rstudio full screen) and clicking export.<br>
+
+```{r, Lab2FigDownload, echo=FALSE,fig.align='center',out.width="90%"}
+knitr::include_graphics('./index_images/im_T2_Download.png')
+```
+
+
+ - Repeat the process exactly for the html file underneath it (e,g, just have the html clicked.)<br>
+ 
+ - Now go to Canvas and submit BOTH your html and your .Rmd file in Lab 6.
+
+
+<br>
+
+### Posit desktop
+
+ - Go to your Lab 6 folder,  In that folder, double click on the html file. This will open it in your browser. CHECK THAT THIS IS WHAT YOU WANT TO SUBMIT <br>
+
+- Now go to Canvas and submit BOTH your html and your .Rmd file in Lab 6.<br>
+
+```{r, echo=FALSE}
+knitr::include_graphics("./index_images/pg_364Lab1_Basics_2021_fig1.png")
+```
+
+<br><br>
 
 ------------------------------------------------------------------------
 
 \
 
-# Grading rubric
+# GRADING RUBRIC
+
+To come
+
+<br><br>
+
 
 ## Overall
 

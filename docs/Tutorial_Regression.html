@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Tutorial_Regression.knit</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<link rel="stylesheet" href="projectlab.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="in_GEOG364_FAQ.html">FAQs</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    YOUR LABS
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="in_GEOG364_Lab1.html">Lab 1: Basics</a>
+    </li>
+    <li>
+      <a href="in_GEOG364_Lab2.html">Lab 2: Data summary</a>
+    </li>
+    <li>
+      <a href="in_GEOG364_Lab4.html">Lab 4: Spatial Wrangling</a>
+    </li>
+    <li>
+      <a href="in_GEOG364_Lab5.html">Lab 5: Moran's I</a>
+    </li>
+    <li>
+      <a href="in_GEOG364_Lab6.html">Lab 6: LISA and regression</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Advanced Tutorials
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Tutorial_CensusData.html">Getting Census Data</a>
+    </li>
+    <li>
+      <a href="Tutorial_SpatWeights.html">Spatial Weights Matrices</a>
+    </li>
+    <li>
+      <a href="Tutorial_Moran.html">Moran's I</a>
+    </li>
+    <li>
+      <a href="Tutorial_LISA.html">LISA</a>
+    </li>
+    <li>
+      <a href="Tutorial_Regression.html">Regression</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    TURTLES
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Turtle_tutorial.html">Tutorial</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+
+</div>
+
+
+<p><br></p>
+<div id="tutorial-autocorrelation-spatial-weights"
+class="section level1">
+<h1>TUTORIAL Autocorrelation &amp; Spatial Weights</h1>
+<div id="check-before-you-start" class="section level2">
+<h2>Check before you start</h2>
+<p>Here is how I load the example data for this tutorial which focuses
+on 2020 median per capita income for the state of Maine.</p>
+<div class="figure" style="text-align: center">
+<img src="Tutorial_Regression_files/figure-html/fig03-1.png" alt="Map of 2020 median per capita income for Maine counties (USA)." width="672" />
+<p class="caption">
+Map of 2020 median per capita income for Maine counties (USA).
+</p>
+</div>
+<details>
+<summary>
+<strong>Code to load the example data. IF YOU’RE DOING LAB 5 this was
+covered in week 1</strong>
+</summary>
+<p><br></p>
+<p>First make sure all of these libraries are at the top of your lab
+script in a code chunk, and run the code chunk! If you run the code
+chunk and it says a package is missing, either click “install” if the
+little yellow bar appears at the top, or go to the Packages tab, and
+click Install to go to the package ‘app store’.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="fu">library</span>(terra)</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a><span class="fu">library</span>(tmap)</span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a><span class="fu">library</span>(ggthemes)</span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a><span class="fu">library</span>(viridis)</span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a><span class="fu">library</span>(RColorBrewer)</span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a><span class="fu">library</span>(plotly)</span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a><span class="fu">library</span>(spatstat)</span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a><span class="fu">library</span>(sfdep)</span>
+<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a><span class="fu">library</span>(tidycensus)</span>
+<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a><span class="fu">library</span>(units)</span>
+<span id="cb1-16"><a href="#cb1-16" tabindex="-1"></a><span class="fu">library</span>(sfdep)</span>
+<span id="cb1-17"><a href="#cb1-17" tabindex="-1"></a><span class="fu">library</span>(spatstat)</span></code></pre></div>
+<p><br></p>
+<p>Then you can load your data from the census and tidy up, before
+plotting</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co"># Download some data for Maine and NH using get_acs</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="co"># THIS WILL NOT WORK IF YOU DID&#39;T RUN YOUR API KEY CODE &amp; RESTART R-STUDIO</span></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>ACS_county.sf <span class="ot">&lt;-</span> <span class="fu">get_acs</span>(<span class="at">geography =</span> <span class="st">&quot;county&quot;</span>, </span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>                         <span class="at">year =</span> <span class="dv">2019</span>,</span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>                         <span class="at">variables =</span> <span class="fu">c</span>(<span class="at">housevalue  =</span> <span class="st">&quot;B25075_001&quot;</span>,  <span class="co"># house value</span></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>                                       <span class="at">total_pop   =</span> <span class="st">&quot;B05012_001&quot;</span>,  <span class="co"># total population</span></span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>                                       <span class="at">total_house =</span> <span class="st">&quot;B25001_001&quot;</span>,  <span class="co"># no. houses</span></span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>                                       <span class="at">med.income  =</span> <span class="st">&quot;B19013_001&quot;</span>), <span class="co"># median income  </span></span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a>                         <span class="at">state =</span> <span class="fu">c</span>(<span class="st">&quot;ME&quot;</span>),</span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a>                         <span class="at">survey =</span> <span class="st">&quot;acs5&quot;</span>, <span class="at">geometry =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a>                         <span class="at">output =</span> <span class="st">&quot;wide&quot;</span>, <span class="at">show_call =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a><span class="co">#st_coordinates(ACS_county.sf)</span></span>
+<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a><span class="co"># OPTIONAL. For more advanced work, you probably want to keep the error columns</span></span>
+<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a><span class="co"># If you don&#39;t run it, remember all your columns have an E on the end of the name </span></span>
+<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a>ACS_county.sf <span class="ot">&lt;-</span> ACS_county.sf <span class="sc">%&gt;%</span></span>
+<span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a>  <span class="fu">select</span>(</span>
+<span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a>    GEOID, </span>
+<span id="cb2-19"><a href="#cb2-19" tabindex="-1"></a>    NAME,</span>
+<span id="cb2-20"><a href="#cb2-20" tabindex="-1"></a>    <span class="at">housevalue   =</span> housevalueE, </span>
+<span id="cb2-21"><a href="#cb2-21" tabindex="-1"></a>    <span class="at">total_pop    =</span> total_popE, </span>
+<span id="cb2-22"><a href="#cb2-22" tabindex="-1"></a>    <span class="at">total_house  =</span> total_houseE, </span>
+<span id="cb2-23"><a href="#cb2-23" tabindex="-1"></a>    <span class="at">med.income   =</span> med.incomeE,</span>
+<span id="cb2-24"><a href="#cb2-24" tabindex="-1"></a>    geometry </span>
+<span id="cb2-25"><a href="#cb2-25" tabindex="-1"></a>    )</span>
+<span id="cb2-26"><a href="#cb2-26" tabindex="-1"></a></span>
+<span id="cb2-27"><a href="#cb2-27" tabindex="-1"></a><span class="co">#st_coordinates(ACS_county.sf)</span></span>
+<span id="cb2-28"><a href="#cb2-28" tabindex="-1"></a></span>
+<span id="cb2-29"><a href="#cb2-29" tabindex="-1"></a></span>
+<span id="cb2-30"><a href="#cb2-30" tabindex="-1"></a><span class="co"># Change the map projection to Albers equal projection, </span></span>
+<span id="cb2-31"><a href="#cb2-31" tabindex="-1"></a><span class="co"># then remove empty polygons (lakes etc) and fix any broken geometry</span></span>
+<span id="cb2-32"><a href="#cb2-32" tabindex="-1"></a>ACS_county.sf <span class="ot">&lt;-</span> ACS_county.sf <span class="sc">%&gt;%</span></span>
+<span id="cb2-33"><a href="#cb2-33" tabindex="-1"></a>  <span class="fu">st_transform</span>(<span class="dv">5070</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb2-34"><a href="#cb2-34" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">st_is_empty</span>(geometry)) <span class="sc">%&gt;%</span></span>
+<span id="cb2-35"><a href="#cb2-35" tabindex="-1"></a>  <span class="fu">st_make_valid</span>()</span>
+<span id="cb2-36"><a href="#cb2-36" tabindex="-1"></a></span>
+<span id="cb2-37"><a href="#cb2-37" tabindex="-1"></a></span>
+<span id="cb2-38"><a href="#cb2-38" tabindex="-1"></a><span class="co"># Find the areas in each county &amp; change the units from metres squared to km squared</span></span>
+<span id="cb2-39"><a href="#cb2-39" tabindex="-1"></a>ACS_county.sf<span class="sc">$</span>Area  <span class="ot">&lt;-</span> <span class="fu">st_area</span>(ACS_county.sf)</span>
+<span id="cb2-40"><a href="#cb2-40" tabindex="-1"></a>ACS_county.sf<span class="sc">$</span>Area  <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">set_units</span>(ACS_county.sf<span class="sc">$</span>Area,<span class="st">&quot;km^2&quot;</span>))</span>
+<span id="cb2-41"><a href="#cb2-41" tabindex="-1"></a></span>
+<span id="cb2-42"><a href="#cb2-42" tabindex="-1"></a></span>
+<span id="cb2-43"><a href="#cb2-43" tabindex="-1"></a></span>
+<span id="cb2-44"><a href="#cb2-44" tabindex="-1"></a><span class="co"># OPTIONAL &amp; DEPENDS ON THE VARIABLES YOU DOWNLOAD</span></span>
+<span id="cb2-45"><a href="#cb2-45" tabindex="-1"></a><span class="co"># Divide the total population &amp; housing by the area to give the population/housing density</span></span>
+<span id="cb2-46"><a href="#cb2-46" tabindex="-1"></a>ACS_county.sf<span class="sc">$</span>pop_density_km2  <span class="ot">&lt;-</span> ACS_county.sf<span class="sc">$</span>total_pop   <span class="sc">/</span> ACS_county.sf<span class="sc">$</span>Area</span>
+<span id="cb2-47"><a href="#cb2-47" tabindex="-1"></a>ACS_county.sf<span class="sc">$</span>house_density_km2 <span class="ot">&lt;-</span> ACS_county.sf<span class="sc">$</span>total_house <span class="sc">/</span> ACS_county.sf<span class="sc">$</span>Area</span>
+<span id="cb2-48"><a href="#cb2-48" tabindex="-1"></a></span>
+<span id="cb2-49"><a href="#cb2-49" tabindex="-1"></a></span>
+<span id="cb2-50"><a href="#cb2-50" tabindex="-1"></a><span class="co"># OPTIONAL make a quick plot</span></span>
+<span id="cb2-51"><a href="#cb2-51" tabindex="-1"></a><span class="fu">tm_basemap</span>(<span class="st">&quot;CartoDB.Voyager&quot;</span>) <span class="sc">+</span></span>
+<span id="cb2-52"><a href="#cb2-52" tabindex="-1"></a><span class="fu">tm_shape</span>(ACS_county.sf) <span class="sc">+</span> </span>
+<span id="cb2-53"><a href="#cb2-53" tabindex="-1"></a>  <span class="fu">tm_polygons</span>(</span>
+<span id="cb2-54"><a href="#cb2-54" tabindex="-1"></a>    <span class="at">fill        =</span> <span class="st">&quot;med.income&quot;</span>,</span>
+<span id="cb2-55"><a href="#cb2-55" tabindex="-1"></a>    <span class="at">fill.scale  =</span> <span class="fu">tm_scale_intervals</span>(<span class="at">values =</span> <span class="st">&quot;brewer.blues&quot;</span>, <span class="at">style =</span> <span class="st">&quot;jenks&quot;</span>),</span>
+<span id="cb2-56"><a href="#cb2-56" tabindex="-1"></a>    <span class="at">fill_alpha  =</span> <span class="fl">0.7</span>,</span>
+<span id="cb2-57"><a href="#cb2-57" tabindex="-1"></a>    <span class="at">fill.legend =</span> <span class="fu">tm_legend</span>(<span class="st">&quot;Maine average income per county (USD)&quot;</span>)</span>
+<span id="cb2-58"><a href="#cb2-58" tabindex="-1"></a>  ) </span></code></pre></div>
+</details>
+<div class="small-gap">
+
+</div>
+<p><br></p>
+</div>
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>In this tutorial, we introduce <strong>spatial
+autocorrelation</strong>, a property that describes how values at one
+location relate to values at nearby locations.</p>
+<p>This concept is rooted in <strong>Tobler’s First Law of
+Geography</strong> which states:</p>
+<blockquote>
+<p><em>“The first law of geography: Everything is related to everything
+else, but near things are more related than distant things.”</em> Waldo
+R. Tobler <span class="citation">[@Tobler1970]</span></p>
+</blockquote>
+<p>This principle underpins much of spatial analysis. It suggests that
+spatial data often exhibit <strong>non-random patterns</strong>, where
+nearby features tend to have similar attribute values. Spatial
+autocorrelation provides a formal way to quantify this tendency.</p>
+<p><img src="index_images/im_L05_Random_maps.png" width="1662" /></p>
+<p>To make the mathematical foundations of autocorrelation more
+accessible, we shift from the point used in the previous labs to a
+simpler dataset composed of <strong>polygonal areal units</strong>
+(e.g., counties). This allows us to clearly illustrate how spatial
+relationships are defined, how spatial weights are constructed, and how
+measures like <strong>Moran’s I</strong> are computed.</p>
+<p>This chapter focuses on:</p>
+<ul>
+<li>Defining spatial autocorrelation and its role in spatial
+statistics.</li>
+<li>Constructing spatial weights to represent neighborhood
+relationships.</li>
+<li>Computing and interpreting <strong>global</strong> and <strong>local
+Moran’s I</strong> statistics.</li>
+<li>Using permutation-based hypothesis testing to assess
+significance.</li>
+</ul>
+</div>
+<div id="introducing-global-morans-i" class="section level2">
+<h2>Introducing Global Moran’s <em>I</em></h2>
+<p>While maps can sometimes reveal clusters of similar values, our
+visual interpretation is often limited, especially when patterns are
+subtle or complex. Here, it may seem apparent that, when aggregated at
+the county level, the income distribution appears clustered with high
+counties surrounded by high counties and low counties surrounded by low
+counties. But a qualitative description may not be sufficient; we might
+want to quantify the degree to which similar (or dissimilar) counties
+are clustered.</p>
+<p>To move beyond subjective impressions, we need a <strong>quantitative
+and objective measure</strong> of spatial patterning. Specifically, we
+want to quantify the <em>degree</em> to which similar attribute values
+are clustered or dispersed across space.</p>
+<p>One widely used statistic for this purpose is <strong>Moran’s
+I</strong> , a measure of <strong>global spatial
+autocorrelation</strong>. It quantifies the overall tendency for
+features with similar values to be located near one another, based on a
+defined spatial relationship (e.g., contiguity or distance). In essence,
+Moran’s <em>I</em> is a correlation coefficient between a variable and
+its spatially lagged counterpart.</p>
+<div id="boxgreen">
+<p>The Moran’s <em>I</em> statistic is a measure of spatial
+autocorrelation that quantifies the degree to which similar values (like
+income) cluster together in space. It is computed as the correlation
+between a variable and its spatially lagged counterpart, based on a
+defined spatial weights matrix.</p>
+</div>
+<p><br></p>
+</div>
+<div id="calculating-spatial-weightsneighbourhood"
+class="section level2">
+<h2>Calculating spatial weights/neighbourhood</h2>
+<div id="computing-neighborhood-spatial-weights" class="section level3">
+<h3>Computing neighborhood &amp; spatial weights</h3>
+<p><strong>But before we go about computing this correlation, we need to
+come up with a way to define a neighbor.</strong></p>
+<p>One approach is to define a neighbor as being any contiguous polygon.
+For example, the northern most county (Aroostook), has four contiguous
+neighbors while the southern most county (York) has just two contiguous
+counties. Other neighborhood definitions can include distance bands
+(e.g. counties within 100 km) and k nearest neighbors (e.g. the 2
+closest neighbors). Note that distance bands and k nearest neighbors are
+usually measured using the polygon’s centroids and not their
+boundaries.</p>
+<div class="figure" style="text-align: center">
+<img src="index_images/im_L05_Diff_neighbors.png" alt="Maps show the links between each polygon and their respective neighbor(s) based on the neighborhood definition. A contiguous neighbor is defined as one that shares a boundary or a vertex with the polygon of interest.  Orange numbers indicate the number of neighbors for each polygon. Note that the top most county has no neighbors when a neighborhood definition of a 100 km distance band is used (i.e. no centroids are within a 100 km search radius)" width="600" />
+<p class="caption">
+Maps show the links between each polygon and their respective
+neighbor(s) based on the neighborhood definition. A contiguous neighbor
+is defined as one that shares a boundary or a vertex with the polygon of
+interest. Orange numbers indicate the number of neighbors for each
+polygon. Note that the top most county has no neighbors when a
+neighborhood definition of a 100 km distance band is used (i.e. no
+centroids are within a 100 km search radius)
+</p>
+</div>
+<p>Once we have chosen a definition of neighborhood, the next step is to
+identify which polygons are neighbors and to represent that as a spatial
+weights matrix.</p>
+<p>As described in lectures, there are many ways to calculate
+neighbourhood. Here are a few of them.</p>
+<div id="nearest-neighbours" class="section level4">
+<h4>Nearest neighbours</h4>
+<p>In this method, we first get the shapes of the polygons using
+<code>st_geometry</code>, then extract the central point using
+<code>st_centroid</code> . We then calculate the nearest neighbours
+using <code>st_knn</code>, which allows us to choose how many nearest
+neighbours you want to count.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co"># First get the geometry/coords </span></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>ACS_county.geometry <span class="ot">&lt;-</span> <span class="fu">st_geometry</span>(ACS_county.sf)</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="co"># Then the central point in each polygon</span></span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>ACS_county.centroid <span class="ot">&lt;-</span> <span class="fu">st_centroid</span>(ACS_county.sf)</span></code></pre></div>
+<pre><code>## Warning: st_centroid assumes attributes are constant over geometries</code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co"># Finally, extract the nearest neigbours</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>neighbor.nearest3 <span class="ot">&lt;-</span> <span class="fu">st_knn</span>(ACS_county.centroid, <span class="at">k =</span> <span class="dv">3</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="co"># Type its name to see the summary. </span></span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>neighbor.nearest3</span></code></pre></div>
+<pre><code>## Neighbour list object:
+## Number of regions: 16 
+## Number of nonzero links: 48 
+## Percentage nonzero weights: 18.75 
+## Average number of links: 3 
+## Non-symmetric neighbours list</code></pre>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="co"># and get the spatial weights matrix</span></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>weights.nearest3 <span class="ot">&lt;-</span> <span class="fu">st_weights</span>(neighbor.nearest3)</span></code></pre></div>
+<p><br></p>
+<p>To calculate and plot the three nearest neighbours (nearest
+centroids), we first plot the shapes, followed by the neighbours.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="fu">plot</span>(ACS_county.geometry, <span class="at">border=</span><span class="st">&#39;blue&#39;</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="fu">plot</span>(neighbor.nearest3, </span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>     <span class="fu">st_coordinates</span>(ACS_county.centroid), </span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>     <span class="at">col=</span><span class="st">&#39;black&#39;</span>, <span class="at">lwd=</span><span class="dv">1</span>, <span class="at">pch=</span><span class="dv">16</span>, <span class="at">cex=</span>.<span class="dv">8</span>, <span class="at">add=</span><span class="cn">TRUE</span>)</span></code></pre></div>
+<p><img src="Tutorial_Regression_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>In the summary above, you should be able to see that each polygon has
+an average of 3 links to its neighbours. Makes sense given we’re asking
+the 3 nearest neighbours!</p>
+<p><br></p>
+</div>
+<div id="queens-rooks-adjacency" class="section level4">
+<h4>Queens &amp; Rook’s adjacency</h4>
+<p>It’s similar to calculate and plot adjacency neighbors, but we
+switchout st_knn for <code>st_contiguity.</code></p>
+<ul>
+<li>QUEENS ADJACENCY → touch at any point (edges or corners)</li>
+<li>ROOKS ADJACENCY → touch by edges only (rook adjacency)</li>
+</ul>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="co"># First get the geometry/coords </span></span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>ACS_county.geometry <span class="ot">&lt;-</span> <span class="fu">st_geometry</span>(ACS_county.sf)</span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a><span class="co"># Then the central point in each polygon</span></span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a>ACS_county.centroid <span class="ot">&lt;-</span> <span class="fu">st_centroid</span>(ACS_county.sf)</span></code></pre></div>
+<pre><code>## Warning: st_centroid assumes attributes are constant over geometries</code></pre>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="co"># Finally, extract the Queens neigbours</span></span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a>neighbor.queens   <span class="ot">&lt;-</span> <span class="fu">st_contiguity</span>(ACS_county.geometry, <span class="at">queen=</span><span class="cn">TRUE</span>)</span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a><span class="co"># And plot</span></span>
+<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a><span class="fu">plot</span>(ACS_county.geometry, <span class="at">border=</span><span class="st">&#39;darkcyan&#39;</span>)</span>
+<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a><span class="fu">plot</span>(neighbor.queens, <span class="fu">st_coordinates</span>(ACS_county.centroid), </span>
+<span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a>     <span class="at">col=</span><span class="st">&#39;black&#39;</span>, <span class="at">lwd=</span><span class="dv">1</span>, <span class="at">pch=</span><span class="dv">16</span>, <span class="at">cex=</span>.<span class="dv">8</span>, <span class="at">add=</span><span class="cn">TRUE</span>)</span></code></pre></div>
+<p><img src="Tutorial_Regression_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="co"># and get the spatial weights matrix</span></span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a>weights.queens <span class="ot">&lt;-</span> <span class="fu">st_weights</span>(neighbor.queens)</span></code></pre></div>
+<p>Or for Rooks:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="co"># First get the geometry/coords </span></span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a>ACS_county.geometry <span class="ot">&lt;-</span> <span class="fu">st_geometry</span>(ACS_county.sf)</span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a><span class="co"># Then the central point in each polygon</span></span>
+<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a>ACS_county.centroid <span class="ot">&lt;-</span> <span class="fu">st_centroid</span>(ACS_county.sf)</span></code></pre></div>
+<pre><code>## Warning: st_centroid assumes attributes are constant over geometries</code></pre>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="co"># Finally, extract the Rook&#39;sneigbours</span></span>
+<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a>neighbor.rooks   <span class="ot">&lt;-</span> <span class="fu">st_contiguity</span>(ACS_county.geometry, <span class="at">queen=</span><span class="cn">FALSE</span>)</span>
+<span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="#cb15-4" tabindex="-1"></a><span class="co"># And plot</span></span>
+<span id="cb15-5"><a href="#cb15-5" tabindex="-1"></a><span class="fu">plot</span>(ACS_county.geometry, <span class="at">border=</span><span class="st">&#39;darkcyan&#39;</span>)</span>
+<span id="cb15-6"><a href="#cb15-6" tabindex="-1"></a><span class="fu">plot</span>(neighbor.rooks, <span class="fu">st_coordinates</span>(ACS_county.centroid), </span>
+<span id="cb15-7"><a href="#cb15-7" tabindex="-1"></a>     <span class="at">col=</span><span class="st">&#39;black&#39;</span>, <span class="at">lwd=</span><span class="dv">1</span>, <span class="at">pch=</span><span class="dv">16</span>, <span class="at">cex=</span>.<span class="dv">8</span>, <span class="at">add=</span><span class="cn">TRUE</span>)</span></code></pre></div>
+<p><img src="Tutorial_Regression_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="co"># and get the spatial weights matrix</span></span>
+<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a>weights.rooks <span class="ot">&lt;-</span> <span class="fu">st_weights</span>(neighbor.rooks)</span></code></pre></div>
+</div>
+<div id="second-order-weights" class="section level4">
+<h4>Second order weights</h4>
+<p>To calculate and plot second order weights, we use the cumulative
+<code>st_nb_lag_cumul</code> function.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="co"># Second order queens</span></span>
+<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a>neighbor.queens<span class="fl">.2</span>nd   <span class="ot">&lt;-</span> <span class="fu">st_nb_lag_cumul</span>(neighbor.queens, <span class="dv">2</span>)</span>
+<span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a>weights.queens<span class="fl">.2</span>nd    <span class="ot">&lt;-</span> <span class="fu">st_weights</span>(neighbor.queens<span class="fl">.2</span>nd)</span>
+<span id="cb17-4"><a href="#cb17-4" tabindex="-1"></a>neighbor.queens<span class="fl">.2</span>nd</span></code></pre></div>
+<pre><code>## Neighbour list object:
+## Number of regions: 16 
+## Number of nonzero links: 146 
+## Percentage nonzero weights: 57.03125 
+## Average number of links: 9.125</code></pre>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a><span class="co"># and plot</span></span>
+<span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a><span class="fu">plot</span>(ACS_county.geometry, <span class="at">border=</span><span class="st">&#39;darkorange&#39;</span>)</span>
+<span id="cb19-3"><a href="#cb19-3" tabindex="-1"></a><span class="fu">plot</span>(neighbor.queens<span class="fl">.2</span>nd, <span class="fu">st_coordinates</span>(ACS_county.centroid), </span>
+<span id="cb19-4"><a href="#cb19-4" tabindex="-1"></a>     <span class="at">col=</span><span class="st">&#39;black&#39;</span>, <span class="at">lwd=</span><span class="dv">1</span>, <span class="at">pch=</span><span class="dv">16</span>, <span class="at">cex=</span>.<span class="dv">8</span>, <span class="at">add=</span><span class="cn">TRUE</span>)</span></code></pre></div>
+<p><img src="Tutorial_Regression_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>Or</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a><span class="co"># Third order Rooms</span></span>
+<span id="cb20-2"><a href="#cb20-2" tabindex="-1"></a>neighbor.rooks<span class="fl">.3</span>nd   <span class="ot">&lt;-</span> <span class="fu">st_nb_lag_cumul</span>(neighbor.rooks, <span class="dv">3</span>)</span>
+<span id="cb20-3"><a href="#cb20-3" tabindex="-1"></a>weights.rooks<span class="fl">.3</span>rd    <span class="ot">&lt;-</span> <span class="fu">st_weights</span>(neighbor.rooks<span class="fl">.3</span>nd)</span>
+<span id="cb20-4"><a href="#cb20-4" tabindex="-1"></a>neighbor.rooks<span class="fl">.3</span>nd</span></code></pre></div>
+<pre><code>## Neighbour list object:
+## Number of regions: 16 
+## Number of nonzero links: 206 
+## Percentage nonzero weights: 80.46875 
+## Average number of links: 12.875</code></pre>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a><span class="co"># and plot</span></span>
+<span id="cb22-2"><a href="#cb22-2" tabindex="-1"></a><span class="fu">plot</span>(ACS_county.geometry, <span class="at">border=</span><span class="st">&#39;darkorange&#39;</span>)</span>
+<span id="cb22-3"><a href="#cb22-3" tabindex="-1"></a><span class="fu">plot</span>(neighbor.queens<span class="fl">.2</span>nd, <span class="fu">st_coordinates</span>(ACS_county.centroid), </span>
+<span id="cb22-4"><a href="#cb22-4" tabindex="-1"></a>     <span class="at">col=</span><span class="st">&#39;black&#39;</span>, <span class="at">lwd=</span><span class="dv">1</span>, <span class="at">pch=</span><span class="dv">16</span>, <span class="at">cex=</span>.<span class="dv">8</span>, <span class="at">add=</span><span class="cn">TRUE</span>)</span></code></pre></div>
+<p><img src="Tutorial_Regression_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p>We’re now up to 12 neighbours on average per polygon. So every
+polygon is now connected with MANY others, which I’m guessing will mean
+very smooth resulting field (e.g. everything is being averaged out).</p>
+</div>
+</div>
+<div id="extracting-weights" class="section level3">
+<h3>Extracting weights</h3>
+<p>To find the weights and neighbours for a specific polygon, you have
+two choices.</p>
+<p>First we can look up the weights in the output we already have. They
+are saved as a new type of R data called a list. First, we get the names
+of the counties (note it doesn’t have to be name, you can look up any
+column).</p>
+<p>Here is our data</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" tabindex="-1"></a><span class="fu">head</span>(ACS_county.sf)</span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["GEOID"],"name":[1],"type":["chr"],"align":["left"]},{"label":["NAME"],"name":[2],"type":["chr"],"align":["left"]},{"label":["housevalue"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["total_pop"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["total_house"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["med.income"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["geometry"],"name":[7],"type":["s_GEOMET"],"align":["right"]},{"label":["Area"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["pop_density_km2"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["house_density_km2"],"name":[10],"type":["dbl"],"align":["right"]}],"data":[{"1":"23003","2":"Aroostook County, Maine","3":"21246","4":"67809","5":"39916","6":"41123","7":"<s_GEOMET>","8":"17682.180","9":"3.834878","10":"2.257414","_rn_":"1"},{"1":"23029","2":"Washington County, Maine","3":"10553","4":"31491","5":"23364","6":"41347","7":"<s_GEOMET>","8":"7352.572","9":"4.282991","10":"3.177664","_rn_":"2"},{"1":"23027","2":"Waldo County, Maine","3":"13649","4":"39539","5":"22455","6":"51931","7":"<s_GEOMET>","8":"1977.145","9":"19.998026","10":"11.357284","_rn_":"3"},{"1":"23031","2":"York County, Maine","3":"63026","4":"204316","5":"110226","6":"67830","7":"<s_GEOMET>","8":"2652.900","9":"77.016089","10":"41.549244","_rn_":"4"},{"1":"23007","2":"Franklin County, Maine","3":"9410","4":"29982","5":"22181","6":"51422","7":"<s_GEOMET>","8":"4514.348","9":"6.641491","10":"4.913445","_rn_":"5"},{"1":"23021","2":"Piscataquis County, Maine","3":"5332","4":"16836","5":"15463","6":"40890","7":"<s_GEOMET>","8":"11338.005","9":"1.484917","10":"1.363820","_rn_":"6"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a><span class="co"># Make a copy so we don&#39;t mess up the original</span></span>
+<span id="cb24-2"><a href="#cb24-2" tabindex="-1"></a>NeighboursTest.sf <span class="ot">&lt;-</span> ACS_county.sf</span>
+<span id="cb24-3"><a href="#cb24-3" tabindex="-1"></a></span>
+<span id="cb24-4"><a href="#cb24-4" tabindex="-1"></a><span class="co"># Search for York in the main file</span></span>
+<span id="cb24-5"><a href="#cb24-5" tabindex="-1"></a>index_York      <span class="ot">&lt;-</span> <span class="fu">grep</span>(<span class="st">&quot;York&quot;</span>,ACS_county.sf<span class="sc">$</span>NAME)</span>
+<span id="cb24-6"><a href="#cb24-6" tabindex="-1"></a></span>
+<span id="cb24-7"><a href="#cb24-7" tabindex="-1"></a><span class="co"># and get the neighbours ONLY of our York polygon</span></span>
+<span id="cb24-8"><a href="#cb24-8" tabindex="-1"></a>neighbors_York  <span class="ot">&lt;-</span> neighbor.rooks<span class="fl">.3</span>nd[[index_York]]</span>
+<span id="cb24-9"><a href="#cb24-9" tabindex="-1"></a>weights_York    <span class="ot">&lt;-</span> weights.rooks<span class="fl">.3</span>rd[[index_York]]</span>
+<span id="cb24-10"><a href="#cb24-10" tabindex="-1"></a></span>
+<span id="cb24-11"><a href="#cb24-11" tabindex="-1"></a><span class="co"># Make a blank column and fill with the weights</span></span>
+<span id="cb24-12"><a href="#cb24-12" tabindex="-1"></a>NeighboursTest.sf<span class="sc">$</span>WeightsYork <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb24-13"><a href="#cb24-13" tabindex="-1"></a>NeighboursTest.sf<span class="sc">$</span>WeightsYork[neighbors_York] <span class="ot">&lt;-</span> weights_York</span>
+<span id="cb24-14"><a href="#cb24-14" tabindex="-1"></a></span>
+<span id="cb24-15"><a href="#cb24-15" tabindex="-1"></a><span class="co"># YOU MIGHT NOT WANT TO DO THESE, OPTIONAL OUTPUTS</span></span>
+<span id="cb24-16"><a href="#cb24-16" tabindex="-1"></a><span class="co"># Write out a message</span></span>
+<span id="cb24-17"><a href="#cb24-17" tabindex="-1"></a><span class="fu">message</span>(<span class="st">&quot;Requested neighbours&quot;</span>)</span></code></pre></div>
+<pre><code>## Requested neighbours</code></pre>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" tabindex="-1"></a>NeighboursTest.sf[neighbors_York,<span class="fu">c</span>(<span class="st">&quot;GEOID&quot;</span>,<span class="st">&quot;NAME&quot;</span>,<span class="st">&quot;WeightsYork&quot;</span>)]</span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["GEOID"],"name":[1],"type":["chr"],"align":["left"]},{"label":["NAME"],"name":[2],"type":["chr"],"align":["left"]},{"label":["WeightsYork"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["geometry"],"name":[4],"type":["s_GEOMET"],"align":["right"]}],"data":[{"1":"23007","2":"Franklin County, Maine","3":"0.125","4":"<s_GEOMET>","_rn_":"5"},{"1":"23015","2":"Lincoln County, Maine","3":"0.125","4":"<s_GEOMET>","_rn_":"7"},{"1":"23023","2":"Sagadahoc County, Maine","3":"0.125","4":"<s_GEOMET>","_rn_":"8"},{"1":"23017","2":"Oxford County, Maine","3":"0.125","4":"<s_GEOMET>","_rn_":"9"},{"1":"23025","2":"Somerset County, Maine","3":"0.125","4":"<s_GEOMET>","_rn_":"10"},{"1":"23005","2":"Cumberland County, Maine","3":"0.125","4":"<s_GEOMET>","_rn_":"11"},{"1":"23001","2":"Androscoggin County, Maine","3":"0.125","4":"<s_GEOMET>","_rn_":"12"},{"1":"23011","2":"Kennebec County, Maine","3":"0.125","4":"<s_GEOMET>","_rn_":"13"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" tabindex="-1"></a><span class="co"># and make a quick plot</span></span>
+<span id="cb27-2"><a href="#cb27-2" tabindex="-1"></a><span class="fu">qtm</span>(NeighboursTest.sf,<span class="st">&quot;WeightsYork&quot;</span>)<span class="sc">+</span></span>
+<span id="cb27-3"><a href="#cb27-3" tabindex="-1"></a><span class="fu">qtm</span>(NeighboursTest.sf[index_York,],<span class="at">fill=</span><span class="st">&quot;red&quot;</span>)</span></code></pre></div>
+<p><img src="Tutorial_Regression_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+</div>
+<div id="more-examples" class="section level3">
+<h3>More examples?</h3>
+<p>MANY more examples here: <a href="https://sfdep.josiahparry.com/"
+class="uri">https://sfdep.josiahparry.com/</a>. Josiah now runs the
+spatial stats section of ESRI. He and I are known to have long
+conversations about spatial weights matrices…</p>
+<p><br></p>
+</div>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

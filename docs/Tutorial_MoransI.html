@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Tutorial_MoransI.knit</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="in_GEOG364_FAQ.html">FAQs</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    YOUR LABS
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="in_GEOG364_Lab1.html">Lab 1: Basics</a>
+    </li>
+    <li>
+      <a href="in_GEOG364_Lab2.html">Lab 2: Data summary</a>
+    </li>
+    <li>
+      <a href="in_GEOG364_Lab4.html">Lab 4: Spatial Wrangling</a>
+    </li>
+    <li>
+      <a href="in_GEOG364_Lab5.html">Lab 5: Moran's I</a>
+    </li>
+    <li>
+      <a href="in_GEOG364_Lab6.html">Lab 6: LISA and regression</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Advanced Tutorials
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Tutorial_CensusData.html">Getting Census Data</a>
+    </li>
+    <li>
+      <a href="Tutorial_SpatWeights.html">Spatial Weights Matrices</a>
+    </li>
+    <li>
+      <a href="Tutorial_Moran.html">Moran's I</a>
+    </li>
+    <li>
+      <a href="Tutorial_LISA.html">LISA</a>
+    </li>
+    <li>
+      <a href="Tutorial_Regression.html">Regression</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    TURTLES
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Turtle_tutorial.html">Tutorial</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+
+</div>
+
+
+<div id="tutorial-spatial-autocorrelation-part-1"
+class="section level1">
+<h1>TUTORIAL Spatial Autocorrelation part 1</h1>
+<div id="libraries-needed-for-this-tutorial." class="section level2">
+<h2>Libraries needed for this tutorial.</h2>
+<p>Make sure all of these libraries are at the top of your lab script in
+a code chunk, and run the code chunk! If you run the code chunk and it
+says a package is missing, either click “install” if the little yellow
+bar appears at the top, or go to the Packages tab, and click Install to
+go to the package ‘app store’.</p>
+<pre class="r"><code>library(readxl)
+library(tidyverse)
+library(dplyr)
+library(terra)
+library(sf)
+library(tmap)
+library(ggplot2)
+library(ggthemes)
+library(viridis)
+library(RColorBrewer)
+library(plotly)
+library(spatstat)
+library(sfdep)
+library(tidycensus)
+library(units)
+library(sfdep)
+library(spatstat)</code></pre>
+<p><br></p>
+</div>
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>In this tutorial, we introduce <strong>spatial
+autocorrelation</strong>, a property that describes how values at one
+location relate to values at nearby locations.</p>
+<p>This concept is rooted in <strong>Tobler’s First Law of
+Geography</strong> which states:</p>
+<div class="note">
+<p>
+<em>“The first law of geography: Everything is related to everything
+else, but near things are more related than distant things.”</em> Waldo
+R. Tobler <span class="citation"><span
+class="citation">[@Tobler1970]</span></span>
+</p>
+</div>
+<p>This principle underpins much of spatial analysis. It suggests that
+spatial data often exhibit <strong>non-random patterns</strong>, where
+nearby features tend to have similar attribute values. Spatial
+autocorrelation provides a formal way to quantify this tendency.</p>
+<p><img src="index_images/im_L05_Random_maps.png" width="1662" /></p>
+<p>To make the mathematical foundations of autocorrelation more
+accessible, we shift from the point used in the previous labs to a
+simpler dataset composed of <strong>polygonal areal units</strong>
+(e.g., counties). This allows us to clearly illustrate how spatial
+relationships are defined, how spatial weights are constructed, and how
+measures like <strong>Moran’s I</strong> are computed.</p>
+<p>This chapter focuses on:</p>
+<ul>
+<li>Defining spatial autocorrelation and its role in spatial
+statistics.</li>
+<li>Constructing spatial weights to represent neighborhood
+relationships.</li>
+<li>Computing and interpreting <strong>global</strong> and <strong>local
+Moran’s I</strong> statistics.</li>
+<li>Using permutation-based hypothesis testing to assess
+significance.</li>
+</ul>
+</div>
+<div id="example-dataset-maine-income" class="section level2">
+<h2>Example dataset, Maine Income</h2>
+<p>Let’s start with a working example: 2020 median per capita income for
+the state of Maine. We can get US Census data using the tidycensus
+package. If you’re doing Lab 5, you have already done this. I’m
+including so it’s a standalone tutorial</p>
+<details>
+<summary>
+If you’re doing lab 5 you DO NOT NEED TO RUN THE CODE IN THIS CHUNK
+AGAIN
+</summary>
+<p><br></p>
+<p>I’m including this so that we’re looking at a standalone tutorial</p>
+</details>
+<div class="small-gap">
+
+</div>
+<div class="figure" style="text-align: center">
+<img src="Tutorial_MoransI_files/figure-html/fig03-1.png" alt="Map of 2020 median per capita income for Maine counties (USA)." width="672" />
+<p class="caption">
+Map of 2020 median per capita income for Maine counties (USA).
+</p>
+</div>
+<p><br></p>
+<p><br></p>
+</div>
+<div id="introducing-global-morans-i" class="section level2">
+<h2>Introducing Global Moran’s <em>I</em></h2>
+<p>While maps can sometimes reveal clusters of similar values, our
+visual interpretation is often limited, especially when patterns are
+subtle or complex. Here, it may seem apparent that, when aggregated at
+the county level, the income distribution appears clustered with high
+counties surrounded by high counties and low counties surrounded by low
+counties. But a qualitative description may not be sufficient; we might
+want to quantify the degree to which similar (or dissimilar) counties
+are clustered.</p>
+<p>To move beyond subjective impressions, we need a <strong>quantitative
+and objective measure</strong> of spatial patterning. Specifically, we
+want to quantify the <em>degree</em> to which similar attribute values
+are clustered or dispersed across space.</p>
+<p>One widely used statistic for this purpose is <strong>Moran’s
+I</strong> , a measure of <strong>global spatial
+autocorrelation</strong>. It quantifies the overall tendency for
+features with similar values to be located near one another, based on a
+defined spatial relationship (e.g., contiguity or distance). In essence,
+Moran’s <em>I</em> is a correlation coefficient between a variable and
+its spatially lagged counterpart.</p>
+<div id="boxgreen">
+<p>The Moran’s <em>I</em> statistic is a measure of spatial
+autocorrelation that quantifies the degree to which similar values (like
+income) cluster together in space. It is computed as the correlation
+between a variable and its spatially lagged counterpart, based on a
+defined spatial weights matrix.</p>
+</div>
+<p><br></p>
+</div>
+<div id="calculating-spatial-weightsneighbourhood"
+class="section level2">
+<h2>Calculating spatial weights/neighbourhood</h2>
+<div id="computing-neighborhood-spatial-weights" class="section level3">
+<h3>Computing neighborhood &amp; spatial weights</h3>
+<p><strong>But before we go about computing this correlation, we need to
+come up with a way to define a neighbor.</strong></p>
+<p>One approach is to define a neighbor as being any contiguous polygon.
+For example, the northern most county (Aroostook), has four contiguous
+neighbors while the southern most county (York) has just two contiguous
+counties. Other neighborhood definitions can include distance bands
+(e.g. counties within 100 km) and k nearest neighbors (e.g. the 2
+closest neighbors). Note that distance bands and k nearest neighbors are
+usually measured using the polygon’s centroids and not their
+boundaries.</p>
+<div class="figure" style="text-align: center">
+<img src="index_images/im_L05_Diff_neighbors.png" alt="Maps show the links between each polygon and their respective neighbor(s) based on the neighborhood definition. A contiguous neighbor is defined as one that shares a boundary or a vertex with the polygon of interest.  Orange numbers indicate the number of neighbors for each polygon. Note that the top most county has no neighbors when a neighborhood definition of a 100 km distance band is used (i.e. no centroids are within a 100 km search radius)" width="600" />
+<p class="caption">
+Maps show the links between each polygon and their respective
+neighbor(s) based on the neighborhood definition. A contiguous neighbor
+is defined as one that shares a boundary or a vertex with the polygon of
+interest. Orange numbers indicate the number of neighbors for each
+polygon. Note that the top most county has no neighbors when a
+neighborhood definition of a 100 km distance band is used (i.e. no
+centroids are within a 100 km search radius)
+</p>
+</div>
+<p>Once we have chosen a definition of neighborhood, the next step is to
+identify which polygons are neighbors and to represent that as a spatial
+weights matrix.</p>
+<p>As described in lectures, there are many ways to calculate
+neighbourhood. Here are a few of them.</p>
+<div id="nearest-neighbours" class="section level4">
+<h4>Nearest neighbours</h4>
+<p>In this method, we first get the shapes of the polygons using
+<code>st_geometry</code>, then extract the central point using
+<code>st_centroid</code> . We then calculate the nearest neighbours
+using <code>st_knn</code>, which allows us to choose how many nearest
+neighbours you want to count.</p>
+<pre class="r"><code># First get the geometry/coords 
+ACS_county.geometry &lt;- st_geometry(ACS_county.sf)
+
+# Then the central point in each polygon
+ACS_county.centroid &lt;- st_centroid(ACS_county.sf)</code></pre>
+<pre><code>## Warning: st_centroid assumes attributes are constant over geometries</code></pre>
+<pre class="r"><code># Finally, extract the nearest neigbours
+neighbor.nearest3 &lt;- st_knn(ACS_county.centroid, k = 3)
+neighbor.nearest3</code></pre>
+<pre><code>## Neighbour list object:
+## Number of regions: 16 
+## Number of nonzero links: 48 
+## Percentage nonzero weights: 18.75 
+## Average number of links: 3 
+## Non-symmetric neighbours list</code></pre>
+<pre class="r"><code># and get the spatial weights matrix
+weights.nearest3 &lt;- st_weights(neighbor.nearest3)</code></pre>
+<p><br></p>
+<p>To calculate and plot the three nearest neighbours (nearest
+centroids), we first plot the shapes, followed by the neighbours.</p>
+<pre class="r"><code>plot(ACS_county.geometry, border=&#39;blue&#39;)
+plot(neighbor.nearest3, 
+     st_coordinates(ACS_county.centroid), 
+     col=&#39;black&#39;, lwd=1, pch=16, cex=.8, add=TRUE)</code></pre>
+<p><img src="Tutorial_MoransI_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p><br></p>
+</div>
+<div id="queens-rooks-adjacency" class="section level4">
+<h4>Queens &amp; Rook’s adjacency</h4>
+<p>It’s similar to calculate and plot adjacency neighbors, but we
+switchout st_knn for <code>st_contiguity.</code></p>
+<ul>
+<li>QUEENS ADJACENCY → touch at any point (edges or corners)</li>
+<li>ROOKS ADJACENCY → touch by edges only (rook adjacency)</li>
+</ul>
+<pre class="r"><code># First get the geometry/coords 
+ACS_county.geometry &lt;- st_geometry(ACS_county.sf)
+
+# Then the central point in each polygon
+ACS_county.centroid &lt;- st_centroid(ACS_county.sf)</code></pre>
+<pre><code>## Warning: st_centroid assumes attributes are constant over geometries</code></pre>
+<pre class="r"><code># Finally, extract the Queens neigbours
+neighbor.queens   &lt;- st_contiguity(ACS_county.geometry, queen=TRUE)
+
+# And plot
+plot(ACS_county.geometry, border=&#39;darkcyan&#39;)
+plot(neighbor.queens, st_coordinates(ACS_county.centroid), 
+     col=&#39;black&#39;, lwd=1, pch=16, cex=.8, add=TRUE)</code></pre>
+<p><img src="Tutorial_MoransI_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<pre class="r"><code># and get the spatial weights matrix
+weights.queens &lt;- st_weights(neighbor.queens)</code></pre>
+<p>Or for Rooks:</p>
+<pre class="r"><code># First get the geometry/coords 
+ACS_county.geometry &lt;- st_geometry(ACS_county.sf)
+
+# Then the central point in each polygon
+ACS_county.centroid &lt;- st_centroid(ACS_county.sf)</code></pre>
+<pre><code>## Warning: st_centroid assumes attributes are constant over geometries</code></pre>
+<pre class="r"><code># Finally, extract the Rook&#39;sneigbours
+neighbor.rooks   &lt;- st_contiguity(ACS_county.geometry, queen=FALSE)
+
+# And plot
+plot(ACS_county.geometry, border=&#39;darkcyan&#39;)
+plot(neighbor.rooks, st_coordinates(ACS_county.centroid), 
+     col=&#39;black&#39;, lwd=1, pch=16, cex=.8, add=TRUE)</code></pre>
+<p><img src="Tutorial_MoransI_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<pre class="r"><code># and get the spatial weights matrix
+weights.rooks &lt;- st_weights(neighbor.rooks)</code></pre>
+</div>
+<div id="second-order-weights" class="section level4">
+<h4>Second order weights</h4>
+<p>To calculate and plot second order weights, we use the cumulative
+<code>st_nb_lag_cumul</code> function.</p>
+<pre class="r"><code># Second order queens
+neighbor.queens.2nd   &lt;- st_nb_lag_cumul(neighbor.queens, 2)
+weights.queens.2nd    &lt;- st_weights(neighbor.queens.2nd)
+
+# Third order Rooms
+neighbor.rooks.3nd   &lt;- st_nb_lag_cumul(neighbor.rooks, 3)
+weights.rooks.3rd    &lt;- st_weights(neighbor.rooks.3nd)
+
+
+# and plot
+plot(ACS_county.geometry, border=&#39;darkorange&#39;)
+plot(neighbor.queens.2nd, st_coordinates(ACS_county.centroid), 
+     col=&#39;black&#39;, lwd=1, pch=16, cex=.8, add=TRUE)</code></pre>
+<p><img src="Tutorial_MoransI_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+</div>
+<div id="more-examples" class="section level4">
+<h4>More examples?</h4>
+<p>MANY more examples here: <a href="https://sfdep.josiahparry.com/"
+class="uri">https://sfdep.josiahparry.com/</a></p>
+<p><br></p>
+</div>
+</div>
+<div id="create-the-matrix" class="section level3">
+<h3>Create the matrix</h3>
+<p>THEN <code>nb2listw</code> turns this into a spatial weights matrix.
+If your code is working, the summary should look similar to above.</p>
+<pre class="r"><code>weights.matrix  &lt;- nb2listw(neighbor.queens, style=&quot;W&quot;, zero.policy=TRUE)
+weights.matrix</code></pre>
+<pre><code>## Characteristics of weights list object:
+## Neighbour list object:
+## Number of regions: 16 
+## Number of nonzero links: 66 
+## Percentage nonzero weights: 25.78125 
+## Average number of links: 4.125 
+## 
+## Weights style: W 
+## Weights constants summary:
+##    n  nn S0       S1       S2
+## W 16 256 16 8.222222 65.98889</code></pre>
+<p>We can view this as a matrix as we did in class using the nb2mat
+command</p>
+<pre class="r"><code>neighbor.matrix &lt;- nb2mat(neighbor.queens, style = &quot;B&quot;, zero.policy = TRUE)
+neighbor.matrix</code></pre>
+<pre><code>##    1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16
+## 1  0 1 0 0 0 1 0 0 0  1  0  0  0  0  0  1
+## 2  1 0 0 0 0 0 0 0 0  0  0  0  0  0  1  1
+## 3  0 0 0 0 0 0 1 0 0  1  0  0  1  1  1  1
+## 4  0 0 0 0 0 0 0 0 1  0  1  0  0  0  0  0
+## 5  0 0 0 0 0 0 0 0 1  1  0  1  1  0  0  0
+## 6  1 0 0 0 0 0 0 0 0  1  0  0  0  0  0  1
+## 7  0 0 1 0 0 0 0 1 0  0  0  0  1  1  0  0
+## 8  0 0 0 0 0 0 1 0 0  0  1  1  1  0  0  0
+## 9  0 0 0 1 1 0 0 0 0  0  1  1  0  0  0  0
+## 10 1 0 1 0 1 1 0 0 0  0  0  0  1  0  0  1
+## 11 0 0 0 1 0 0 0 1 1  0  0  1  0  0  0  0
+## 12 0 0 0 0 1 0 0 1 1  0  1  0  1  0  0  0
+## 13 0 0 1 0 1 0 1 1 0  1  0  1  0  0  0  0
+## 14 0 0 1 0 0 0 1 0 0  0  0  0  0  0  0  0
+## 15 0 1 1 0 0 0 0 0 0  0  0  0  0  0  0  1
+## 16 1 1 1 0 0 1 0 0 0  1  0  0  0  0  1  0
+## attr(,&quot;call&quot;)
+## nb2mat(neighbours = neighbor.queens, style = &quot;B&quot;, zero.policy = TRUE)</code></pre>
+<p>In our example, we use a first-order queen contiguity rule, which
+treats two counties as neighbors if they touch at any point — even just
+a corner.</p>
+<p><strong>In our working example, we adopt a adjacency neighborhood
+approach using a queen’s 1st order method (see previous
+lectures)</strong></p>
+<p>The <code>poly2nb</code> command calculates which polygons are
+neighbours according to queens 1st order. You can see that on average
+each county is connected to 4.125 other counties.</p>
+</div>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

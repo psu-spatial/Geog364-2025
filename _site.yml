@@ -16,6 +16,8 @@ navbar:
           href: in_GEOG364_Lab4.html  
         - text: "Lab 5: Moran's I"
           href: in_GEOG364_Lab5.html          
+        - text: "Lab 6: LISA and regression"
+          href: in_GEOG364_Lab6.html           
     - text: "Advanced Tutorials"
       menu:  
         - text: "Getting Census Data"
@@ -24,6 +26,10 @@ navbar:
           href: Tutorial_SpatWeights.html   
         - text: "Moran's I"
           href: Tutorial_Moran.html 
+        - text: "LISA"
+          href: Tutorial_LISA.html            
+        - text: "Regression"
+          href: Tutorial_Regression.html           
     - text: "TURTLES"
       menu:  
         - text: "Tutorial"
