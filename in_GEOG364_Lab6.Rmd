@@ -13,12 +13,9 @@ editor_options:
     wrap: sentence
 ---
 
-
 ```{r, include=FALSE,echo=FALSE, warning=FALSE, message=FALSE}
 # NOTES
 ```
-
-
 
 ```{r, include=FALSE,echo=FALSE, warning=FALSE, message=FALSE}
 
@@ -50,7 +47,6 @@ rubric <- read_excel("./index_data/Table_LabRubric.xlsx")
 
 ```
 
-
 ------------------------------------------------------------------------
 
 \
@@ -61,26 +57,27 @@ rubric <- read_excel("./index_data/Table_LabRubric.xlsx")
 
 In this guide you will learn how to:
 
- - Run LISA analyses 
- - Run a regression analysis and look at spatial residuals
-
+-   Run LISA analyses
+-   Run a regression analysis and look at spatial residuals
 
 <p class="comment">
 
 ::: {#boxgreen}
-**This is a TWO WEEK LAB** See [here](https://psu.instructure.com/courses/2396422/assignments/17585714) for assignment guidelines. You must submit an `.Rmd` file and its associated `.html` file. 
-::: 
+**This is a TWO WEEK LAB** See [here](https://psu.instructure.com/courses/2396422/assignments/17585714) for assignment guidelines.
+You must submit an `.Rmd` file and its associated `.html` file.
+:::
 
 \
 
 ::: {#boxedtext}
 \
-**Getting help** 
+**Getting help**\
+- Kiely (and often Dr G) will be present during your lab sessions.
+This is the easiest way to get help.\
+- Dr G has weekly office hours and genuinely enjoys helping with R, even if you feel stuck or overwhelmed.\
+- You may send a Canvas message to Kiely or Dr G (or if you are completely lost).\
+
 \
- - Kiely (and often Dr G) will be present during your lab sessions. This is the easiest way to get help. \
- - Dr G has weekly office hours and genuinely enjoys helping with R, even if you feel stuck or overwhelmed. \
- - You may send a Canvas message to Kiely or Dr G (or if you are completely lost).\
- \
 :::
 
 \
@@ -95,17 +92,19 @@ In this guide you will learn how to:
 
 ### Create a project & get the data
 
-There are two options here depending on whether you are using R-studio on the website (posit cloud) or your own computer (R-Desktop). If you are using a lab computer choose the R-Desktop route.
+There are two options here depending on whether you are using R-studio on the website (posit cloud) or your own computer (R-Desktop).
+If you are using a lab computer choose the R-Desktop route.
 
 #### Option 1. Posit Cloud Website Users
 
-
 <details>
 
-<summary>Task 1. Create a project for Lab 6 (expand for instructions)</summary>
+<summary>Task 1.
+Create a project for Lab 6 (expand for instructions)</summary>
 
 ::: collapsible-content
 <iframe src="https://psu-spatial.github.io/Stat462-2025/T5_ProjectsPositCloud.html" style="width: 100%; height: 700px; border: none;">
+
 </iframe>
 :::
 
@@ -116,10 +115,10 @@ There are two options here depending on whether you are using R-studio on the we
 ::: small-gap
 :::
 
-
 <details>
 
-<summary>Task 2. Install more packages (expand for instructions)</summary>
+<summary>Task 2.
+Install more packages (expand for instructions)</summary>
 
 <br>
 
@@ -142,8 +141,8 @@ Unfortunately on the website you need to install your packages each time.<br>Go 
 -   `cols4all`
 -   `shinyjs`
 
-
-We will also need a package called sf, which runs a lot of the spatial commands in R. Unfortunately, posit cloud sometimes has a few technical issues with sf, so you will need to run a special command.
+We will also need a package called sf, which runs a lot of the spatial commands in R.
+Unfortunately, posit cloud sometimes has a few technical issues with sf, so you will need to run a special command.
 
 IN THE CONSOLE, run these two commands.
 
@@ -152,11 +151,7 @@ install.packages("remotes")
 remotes::install_github(repo = "r-spatial/sf", ref = "93a25fd8e2f5c6af7c080f92141cb2b765a04a84")
 ```
 
-
-
-T6_Packages.html
-<br>*Reminder: [Tutorial: Packages
-cheatsheet](https://psu-spatial.github.io/Stat462-2025/T6_Packages.html)*.
+T6_Packages.html <br>*Reminder: [Tutorial: Packages cheatsheet](https://psu-spatial.github.io/Stat462-2025/T6_Packages.html)*.
 
 </details>
 
@@ -164,12 +159,14 @@ cheatsheet](https://psu-spatial.github.io/Stat462-2025/T6_Packages.html)*.
 
 <details>
 
-<summary>Task 1. Create a project for Lab 6</summary>
+<summary>Task 1.
+Create a project for Lab 6</summary>
 
 <br>
 
 ::: collapsible-content
 <iframe src="https://psu-spatial.github.io/Stat462-2025/T5_ProjectsRDesktop.html" style="width: 100%; height: 700px; border: none;">
+
 </iframe>
 :::
 
@@ -182,56 +179,60 @@ cheatsheet](https://psu-spatial.github.io/Stat462-2025/T6_Packages.html)*.
 
 ### Set-up your Lab 6 report
 
-You are welcome to use/edit the template you made in previous labs. If you are unsure what I mean by that, follow these instructions.
+You are welcome to use/edit the template you made in previous labs.
+If you are unsure what I mean by that, follow these instructions.
 
 <details>
 
-<summary>Task. Create your RMarkdown file - expand & look at Tutorial 4B and 4C</summary>
+<summary>Task.
+Create your RMarkdown file - expand & look at Tutorial 4B and 4C</summary>
 
 <br>
 
 ::: collapsible-content
 <iframe src="https://hgreatrex.github.io/Geog364_2024/pg_Tut4_markdown.html#Tutorial_4B:_Creating_a_markdown_document" style="width: 100%; height: 700px; border: none;">
+
 </iframe>
 :::
-
 
 </details>
 
 ::: small-gap
 :::
 
-
-
 <details>
 
-<summary>Task. Edit your YAML code & ADD A NEW THEME</summary>
+<summary>Task.
+Edit your YAML code & ADD A NEW THEME</summary>
 
 <br>
 
-Lets use similar options to Lab 4.  Remember YAML code is annoying to edit, because here, *spaces really do matter*. Everything has to be perfect or it won't knit.
+Lets use similar options to Lab 4.
+Remember YAML code is annoying to edit, because here, *spaces really do matter*.
+Everything has to be perfect or it won't knit.
 
- - **Select everything in my code chunk here and replace your YAML with this (remember the --- on line 1 and at the end).**
+-   **Select everything in my code chunk here and replace your YAML with this (remember the --- on line 1 and at the end).**
 
- - Now edit the author name to your own.  If you wonder what Sys.Date() is, don't touch it - it automatically gives you the current date.
- 
- - Now change your theme to your favourite one of these - you can see what it looks like by pressing knit. Note, DO NOT put quote marks around the theme name.
-   - bootstrap
-   - cerulean
-   - cosmo
-   - darkly
-   - flatly
-   - journal
-   - lumen
-   - paper
-   - readable
-   - sandstone
-   - simplex
-   - spacelab
-   - united
-   - yeti
- 
+-   Now edit the author name to your own.
+    If you wonder what Sys.Date() is, don't touch it - it automatically gives you the current date.
 
+-   Now change your theme to your favourite one of these - you can see what it looks like by pressing knit.
+    Note, DO NOT put quote marks around the theme name.
+
+    -   bootstrap
+    -   cerulean
+    -   cosmo
+    -   darkly
+    -   flatly
+    -   journal
+    -   lumen
+    -   paper
+    -   readable
+    -   sandstone
+    -   simplex
+    -   spacelab
+    -   united
+    -   yeti
 
 ```{r,eval=FALSE}
 
@@ -254,23 +255,22 @@ output:
   
 ```
 
-
-
 </details>
 
 ::: small-gap
 :::
 
-
 <details>
 
-<summary>Task. Delete the existing text and create/run your library code chunk</summary>
+<summary>Task.
+Delete the existing text and create/run your library code chunk</summary>
 
 <br>
 
- - Click on your lab script (the Rmd file) and delete all the 'welcome text' after line 11.<br>Press enter a few times and make a new level-1 heading called `Set Up`.<br>
+-   Click on your lab script (the Rmd file) and delete all the 'welcome text' after line 11.<br>Press enter a few times and make a new level-1 heading called `Set Up`.<br>
 
- - We should have all the packages we need installed, but we need to open them. Make a new code chunk containing this code.<br>
+-   We should have all the packages we need installed, but we need to open them.
+    Make a new code chunk containing this code.<br>
 
 ```{r,message=FALSE,warning=FALSE, eval=FALSE}
 library(readxl)
@@ -292,11 +292,15 @@ library(units)
 
 <br>
 
- - Press the green arrow on the right of the code chunk to run the code inside it. You will see a load of "loading text" telling your details about the packages you just loaded.<br><br> Press the green arrow AGAIN. The text should disappear unless there is an error.<br>
+-   Press the green arrow on the right of the code chunk to run the code inside it.
+    You will see a load of "loading text" telling your details about the packages you just loaded.<br><br> Press the green arrow AGAIN.
+    The text should disappear unless there is an error.<br>
 
--   Note, remember to run this code chunk EVERY TIME your start R-Studio (in the same way you need to click on an app on your phone before you can use it). <br>
+-   Note, remember to run this code chunk EVERY TIME your start R-Studio (in the same way you need to click on an app on your phone before you can use it).
+    <br>
 
-You might need additional libraries as you work through the lab. If so, add them in this code chunk AND REMEMBER TO RERUN. If you see a little yellow bar at the top asking you to install them,click yes!
+You might need additional libraries as you work through the lab.
+If so, add them in this code chunk AND REMEMBER TO RERUN. If you see a little yellow bar at the top asking you to install them,click yes!
 
 <br>
 
@@ -307,13 +311,11 @@ You might need additional libraries as you work through the lab. If so, add them
 
 <details>
 
-<summary>Task. Add warning=FALSE and message=FALSE to your library code chunk.
-</summary>
+<summary>Task.
+Add warning=FALSE and message=FALSE to your library code chunk.</summary>
 
+<br><br><br>
 
-<br>
-
- - Expand here for a tutorial.
 
 ::: collapsible-content
 <iframe src="https://psu-spatial.github.io/Stat462-2025/T7_Markdown_4bCodeChunkOptions.html" style="width: 100%; height: 700px; border: none;">
@@ -328,7 +330,9 @@ You might need additional libraries as you work through the lab. If so, add them
 
 ### Check your progress
 
-Your lab script should now look similar this, but with your theme and YAML options of choice (you might have a few different libraries than in my screenshot). You should also be able to knit it successfully. If not, go back and do the previous sections!
+Your lab script should now look similar this, but with your theme and YAML options of choice (you might have a few different libraries than in my screenshot).
+You should also be able to knit it successfully.
+If not, go back and do the previous sections!
 
 <br>
 
@@ -340,136 +344,114 @@ Your lab script should now look similar this, but with your theme and YAML optio
 
 \
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ------------------------------------------------------------------------
-
-
-
 
 # THIS LAB
 
-This week we will try a new approach. I will work through a tutorial on local autocorrelation using one dataset. Please create a new, separate Rmd file for the tutorial. Do not work in your lab script for this part, and do not submit the tutorial file. Follow along and make sure it knits.
+This week we will try a new approach.
+I will work through a tutorial on local autocorrelation using one dataset.
+Please create a new, separate Rmd file for the tutorial.
+Do not work in your lab script for this part, and do not submit the tutorial file.
+Follow along and make sure it knits.
 
-After the tutorial, you will complete a similar analysis on a different dataset in your actual lab script, using the questions below. 
+After the tutorial, you will complete a similar analysis on a different dataset in your actual lab script, using the questions below.
+
+<div>
 
 ::: {#boxgreen}
-You should not submit the tutorial file. Creating one simply lets you follow along and copy code into your main lab script later. **Only the work in your lab script will be submitted and assessed. We will DEDUCT MARKS for submitting anything about Chicago/the tutorial** 
-:::
+You should not submit the tutorial file.
+Creating one simply lets you follow along and copy code into your main lab script later.
+**Only the work in your lab script will be submitted and assessed. We will DEDUCT MARKS for submitting anything about Chicago/the tutorial**
+::: 
+
+</div>
 
 <br><br>
 
-
 ## A. Getting the data
 
+1.  Look at the tutorial
 
-1. Look at the tutorial
-
-Run through **STEP 1** of the tutorial here <https://psu-spatial.github.io/Geog364-2025/Tutorial_LISA.html>
-You should stop when you made maps of the city. e.g. don't carry onto step 2.
+Run through **STEP 1** of the tutorial here <https://psu-spatial.github.io/Geog364-2025/Tutorial_LISA.html> You should stop when you made maps of the city.
+e.g. don't carry onto step 2.
 
 <br>
 
+2.  Create your own,
 
-2. Create your own,
+Now, IN YOUR LAB SCRIPT, reproduce the tutorial for any largish city of your choice in the USA.
 
-Now,  IN YOUR LAB SCRIPT, reproduce the tutorial for any largish city of your choice in the USA., 
-Get the code working and making the plots.  For each step, in your own words explain what you are doing for each piece of code and why you chose your city.
+-   Get the code working and making the plots.
+
+-   For each step, in your own words explain what you are doing for each piece of code and why you chose your city.
 
 If you get errors, choose a different city!
-
 
 <br><br>
 
 ## B. Global Autocorrelation
 
-3. Look at STEP 2 of the tutorial
+3.  Look at STEP 2 of the tutorial
 
 Run through **STEP 2** of the tutorial here <https://psu-spatial.github.io/Geog364-2025/Tutorial_LISA.html>.
 Don't carry onto Local Moran's I.
 
 <br>
 
+4.  Create your own,
 
-4. Create your own,
+Now, continue for your city, creating a spatial weights matrix of your choice and running a Moran's scatterplot and Moran's test.
 
-Now, continue for your city, creating a spatial weights matrix of your choice and running a Moran's scatterplot and Moran's test.  
- - Fully write out the hypothesis test for your city in the text
- - Make sure to describe the pattern you see in the moran's scatterplot in the text and relate to your map.
+-   Fully write out the hypothesis test for your city in the text
 
-
+-   Make sure to describe the pattern you see in the moran's scatterplot in the text and relate to your map.
 
 <br><br><br><br>
-
 
 ## C. Autocorrelation LISA
 
+3.  Look at STEP 3 of the tutorial
 
-3. Look at STEP 3 of the tutorial
-
-Run through the rest of **STEP 3** of the tutorial here <https://psu-spatial.github.io/Geog364-2025/Tutorial_LISA.html>
-.
+Run through the rest of **STEP 3** of the tutorial here <https://psu-spatial.github.io/Geog364-2025/Tutorial_LISA.html> .
 
 <br>
 
+4.  Create your own.
 
-4. Create your own.
+Now make some LISA plots for your city.
+We will discuss what these mean during Wednesdays class.
 
-Now make some LISA plots for your city.  We will discuss what these mean during Wednesdays class. Based on that, see if you can interpret the results for your city, including
+<br>
 
-a) Whether your results correspond to reality. Remember you can change your background map to identify where places are and do some googling! For example 
+5.  Interpret your results in the text.
 
-  + Is your "high surrounded by high" downtown? rich suburbs? 
-  + Is your "low surrounded by low" poorer areas?
-  + Any outliers and can you work out WHY they are outliers
-  
-b) The significance of your results e.g. where is highly significant and where is not?
+Based on that, see if you can interpret the results for your city in your lab report.
+Remember you can change your background map to identify where places are and do some googling!
+Your answer should talk about
 
+-   **What your results mean (e.g. what are the colors and how do they correspond to your variable)**
 
+-   **The significance of your results e.g. where is highly significant and where is not?\
+    **
 
+-   **Whether your results correspond to reality.** \
+    For example
 
-
+    -   Is your "high surrounded by high" downtown? rich suburbs?
+    -   Is your "low surrounded by low" poorer areas?
+    -   Any outliers and can you work out WHY they are outliers\
 
 <br><br><br><br>
-
 
 ## D. Regression
 
 FOR WEEK 2
 
-
-
 # Submitting your Lab
 
-Remember to save your work throughout and to spell check your writing (next to the save button). Now, press the knit button again. If you have not made any mistakes in the code then R should create a html file in your lab3 folder, complete with a very recent time-stamp.
+Remember to save your work throughout and to spell check your writing (next to the save button).
+Now, press the knit button again.
+If you have not made any mistakes in the code then R should create a html file in your lab3 folder, complete with a very recent time-stamp.
 
 <br>
 
@@ -477,25 +459,25 @@ Remember to save your work throughout and to spell check your writing (next to t
 
 You can download each of your .RmD and html files by:
 
- - Clicking on the little box next to the Rmd in the Files tab, then going to the little blue cogwheel (might need to make your Rstudio full screen) and clicking export.<br>
+-   Clicking on the little box next to the Rmd in the Files tab, then going to the little blue cogwheel (might need to make your Rstudio full screen) and clicking export.<br>
 
 ```{r, Lab2FigDownload, echo=FALSE,fig.align='center',out.width="90%"}
 knitr::include_graphics('./index_images/im_T2_Download.png')
 ```
 
+-   Repeat the process exactly for the html file underneath it (e,g, just have the html clicked.)<br>
 
- - Repeat the process exactly for the html file underneath it (e,g, just have the html clicked.)<br>
- 
- - Now go to Canvas and submit BOTH your html and your .Rmd file in Lab 6.
-
+-   Now go to Canvas and submit BOTH your html and your .Rmd file in Lab 6.
 
 <br>
 
 ### Posit desktop
 
- - Go to your Lab 6 folder,  In that folder, double click on the html file. This will open it in your browser. CHECK THAT THIS IS WHAT YOU WANT TO SUBMIT <br>
+-   Go to your Lab 6 folder, In that folder, double click on the html file.
+    This will open it in your browser.
+    CHECK THAT THIS IS WHAT YOU WANT TO SUBMIT <br>
 
-- Now go to Canvas and submit BOTH your html and your .Rmd file in Lab 6.<br>
+-   Now go to Canvas and submit BOTH your html and your .Rmd file in Lab 6.<br>
 
 ```{r, echo=FALSE}
 knitr::include_graphics("./index_images/pg_364Lab1_Basics_2021_fig1.png")
@@ -512,7 +494,6 @@ knitr::include_graphics("./index_images/pg_364Lab1_Basics_2021_fig1.png")
 To come
 
 <br><br>
-
 
 ## Overall
 
