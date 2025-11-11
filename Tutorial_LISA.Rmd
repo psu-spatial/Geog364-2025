@@ -1,7 +1,8 @@
 ---
 output:
   html_document:
-    toc: false
+    toc: true
+    toc_depth: 1
     number_sections: false
     df_print: paged
     css: projectlab.css
