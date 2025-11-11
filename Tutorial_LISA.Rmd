@@ -7,9 +7,12 @@ output:
     df_print: paged
     css: projectlab.css
     highlight: pygments
+editor_options: 
+  markdown: 
+    wrap: 72
 ---
 
-
+```{=html}
 <style>
 p.comment {
 background-color: #DBDBDB;
@@ -30,15 +33,16 @@ h2.title {
 }
 
 </style>
+```
 
-
+```{=html}
 <style type="text/css">
 #TOC {
   font-size: 11px;
   font-family: Arial;
 }
 </style>
-
+```
 
 ```{r, include=FALSE}
 
@@ -127,12 +131,16 @@ IL.Census.sf <- get_acs(geography = "tract",
 
 ```
 
-
 # TUTORIAL Local Spatial Autocorrelation
 
-In this tutorial, I will to assess the relationship between the number of people who earn over $75000 dollars and population density in Chicago. We will practice two new techniques, LISA (local auto-regression) to see if each variable is auto-correlated with itself, then actual regression - to understand the relationship between the two.
+In this tutorial, I will to assess the relationship between the number
+of people who earn over \$75000 dollars and population density in
+Chicago. We will practice two new techniques, LISA (local
+auto-regression) to see if each variable is auto-correlated with itself,
+then actual regression - to understand the relationship between the two.
 
-WORK THROUGH THIS TUTORIAL, then the actual lab uses a different dataset.
+WORK THROUGH THIS TUTORIAL, then the actual lab uses a different
+dataset.
 
 <br>
 
@@ -140,13 +148,17 @@ WORK THROUGH THIS TUTORIAL, then the actual lab uses a different dataset.
 
 ## Libraries needed for this tutorial.
 
-Make sure all of these libraries are at the top of your lab script in a code chunk, and run the code chunk! If you run the code chunk and it says a package is missing, either click "install" if the little yellow bar appears at the top, or go to the Packages tab, and click Install to go to the package 'app store'.
+Make sure all of these libraries are at the top of your lab script in a
+code chunk, and run the code chunk! If you run the code chunk and it
+says a package is missing, either click "install" if the little yellow
+bar appears at the top, or go to the Packages tab, and click Install to
+go to the package 'app store'.
 
 ::: {#boxgreen}
-Remember to set the code chunk options to message=FALSE and warning=FALSE! <br>
-E.g. switch to Source mode and make the top of the code chunk to `{r,message=FALSE, warning=FALSE}`
+Remember to set the code chunk options to message=FALSE and
+warning=FALSE! <br> E.g. switch to Source mode and make the top of the
+code chunk to `{r,message=FALSE, warning=FALSE}`
 :::
-
 
 ```{r,message=FALSE, warning=FALSE}
 
@@ -181,17 +193,18 @@ library(dplyr)
 
 ```
 
-
 Run the code chunk a few times and check there are no errors.
 
 <br><br>
 
 ## Download the example data for Chicago.
 
-First, I downloaded American Community Survey data for Illinois at a [**census tract spatial scale**]{.ul}. A census tract is similar to a zip code, a much finer spatial scale than a county.  The way to do this is similar to Lab 5. 
+First, I downloaded American Community Survey data for Illinois at a
+[**census tract spatial scale**]{.underline}. A census tract is similar
+to a zip code, a much finer spatial scale than a county. The way to do
+this is similar to Lab 5.
 
 <br>
-
 
 <details>
 
@@ -200,7 +213,6 @@ First, I downloaded American Community Survey data for Illinois at a [**census t
 <br>
 
 We can load your data from the census and tidy up, before plotting
-
 
 ```{r, eval=FALSE}
 # THIS WILL NOT WORK IF YOU DIDN'T RUN YOUR API KEY CODE & RESTART R-STUDIO LAST LAB
@@ -217,15 +229,17 @@ IL.Census.sf <- get_acs(geography = "tract",
                 cache_table = TRUE)
 
 ```
+
 <br>
 
-We also need to change the map projection. As we're focusing on a single city, lets us a local UTM projection, 26916. To find one for your area, see
+We also need to change the map projection. As we're focusing on a single
+city, lets us a local UTM projection, 26916. To find one for your area,
+see
 
- - https://mangomap.com/robertyoung/maps/69585/what-utm-zone-am-i-in-
+-   <https://mangomap.com/robertyoung/maps/69585/what-utm-zone-am-i-in->
 
-There's also a great tutorial here on choosing the best one  https://source.opennews.org/articles/choosing-right-map-projection/
-
-
+There's also a great tutorial here on choosing the best one
+<https://source.opennews.org/articles/choosing-right-map-projection/>
 
 ```{r, eval=FALSE}
 # Change the map projection to Albers equal projection, 
@@ -237,15 +251,16 @@ IL.Census.sf <- IL.Census.sf %>%
 
 <br>
 
-You can see the data summarized here.  Each column ending in E means the *estimate* of the value in each census tract and the column ending in M means the *margin of error*. 
-
+You can see the data summarized here. Each column ending in E means the
+*estimate* of the value in each census tract and the column ending in M
+means the *margin of error*.
 
 ```{r}
 head(IL.Census.sf)
 ```
 
-For more advanced work we probably want to keep the error columns.  But here let's remove them.
-
+For more advanced work we probably want to keep the error columns. But
+here let's remove them.
 
 ```{r, eval=FALSE}
 # Remove and rename error columns 
@@ -258,18 +273,17 @@ IL.Census.sf <- IL.Census.sf %>%
     geometry )
 ```
 
-
 <br>
 
-Rather than looking at the total population, it makes sense to scale by the size of each tract, so that bigger tracts don't skew our results.  We want:
+Rather than looking at the total population, it makes sense to scale by
+the size of each tract, so that bigger tracts don't skew our results. We
+want:
 
-
- - the population density (e.g. total_pop / Area)<br>
- - the percentage of people earning over $75K (e.g. income.gt75 / total_pop)<br>
+-   the population density (e.g. total_pop / Area)<br>
+-   the percentage of people earning over \$75K (e.g. income.gt75 /
+    total_pop)<br>
 
 <br>
-
-
 
 ```{r, eval=FALSE}
 # Find the areas in each county & change the units from metres squared to km squared
@@ -284,41 +298,39 @@ IL.Census.sf$pop.density_km2  <- IL.Census.sf$total_pop   / IL.Census.sf$Area
 IL.Census.sf$percent.income.gt75  <- IL.Census.sf$income.gt75   / IL.Census.sf$total_pop
 ```
 
-Here is the summary of the data I downloaded with the new columns added in.  You can see that there are 3123 census tracts in Illinois and that the data is clearly marked, with 8 columns of data. 
+Here is the summary of the data I downloaded with the new columns added
+in. You can see that there are 3123 census tracts in Illinois and that
+the data is clearly marked, with 8 columns of data.
 
 ```{r, include=FALSE}
 IL.Census.sf <- IL.Census.tmp
 
 ```
 
-
 ```{r}
 head(IL.Census.sf)
 ```
-
 
 </details>
 
 ::: small-gap
 :::
 
-<br>
-<br>
-
+<br> <br>
 
 ## Data wrangling
 
-
 <br>
-
-
-
 
 ### Dealing with empty polygons
 
-One quirk of R is that it **hates* empty polygons so it's good to check for them.  IF YOU GET ERRORS PLOTTING, I BET THIS IS WHAT IS HAPPENING.
+One quirk of R is that it \*\*hates\* empty polygons so it's good to
+check for them. IF YOU GET ERRORS PLOTTING, I BET THIS IS WHAT IS
+HAPPENING.
 
-In our case, empty polygons means empty census tracts. These might be census tracts where no-one lives, or more likely, a quirk of the data collection process.  Let's take a look at them.
+In our case, empty polygons means empty census tracts. These might be
+census tracts where no-one lives, or more likely, a quirk of the data
+collection process. Let's take a look at them.
 
 <br>
 
@@ -335,7 +347,8 @@ filter(IL.Census.sf,
 
 <br>
 
-OK so it's tracts 9900 in Cook county and lake county Illinois.  Let's google that... and the results suddenly make sense!
+OK so it's tracts 9900 in Cook county and lake county Illinois. Let's
+google that... and the results suddenly make sense!
 
 <br>
 
@@ -345,7 +358,11 @@ knitr::include_graphics('./index_images/pg_364Lab7_Regression_2021_fig3.png')
 
 <br>
 
-It's the lake! I feel satisfied that removing these polygons won't mess up my study. So I'm going to go ahead and remove them and overwrite the results.  E.g. I apply the filter command to IL.Census.sf, asking it to only choose rows where which_tracts_empty is FALSE, then save the result to IL.Census.sf.
+It's the lake! I feel satisfied that removing these polygons won't mess
+up my study. So I'm going to go ahead and remove them and overwrite the
+results. E.g. I apply the filter command to IL.Census.sf, asking it to
+only choose rows where which_tracts_empty is FALSE, then save the result
+to IL.Census.sf.
 
 <br>
 
@@ -358,7 +375,7 @@ It's the lake! I feel satisfied that removing these polygons won't mess up my st
 
 <br>
 
-Now.. let's try again.  Yep, we have removed the empty fields.
+Now.. let's try again. Yep, we have removed the empty fields.
 
 <br>
 
@@ -371,8 +388,8 @@ filter(IL.Census.sf,
 
 ### Quick check
 
-
-I then had a quick look at the data in tmap to make sure it looked good, using the code from previous labs.
+I then had a quick look at the data in tmap to make sure it looked good,
+using the code from previous labs.
 
 <br>
 
@@ -418,10 +435,7 @@ suppressMessages(tmap_arrange(map1,map2))
 
 <br>
 
-
 and population density
-
-
 
 <br>
 
@@ -465,30 +479,33 @@ map4 <- tm_shape(IL.Census.sf, unit = "km") +
 suppressMessages(tmap_arrange(map3,map4))
 ```
 
-
-<br>
-<br>
+<br> <br>
 
 ### Cropping to Chicago
 
 <br>
 
-This map looks at all of Illinois.  But we want to look at the area just around Chicago. 
-Let's crop to the city's administrative boundaries.  We can download these using the **Tigris package**.
+This map looks at all of Illinois. But we want to look at the area just
+around Chicago. Let's crop to the city's administrative boundaries. We
+can download these using the **Tigris package**.
 
 <br>
 
-Tigris has *thousands* of boundary data-sets that you can explore.  For a tutorial, see here [https://crd150.github.io/lab4.html#tigris_package] and here [https://github.com/walkerke/tigris]
+Tigris has *thousands* of boundary data-sets that you can explore. For a
+tutorial, see here [<https://crd150.github.io/lab4.html#tigris_package>]
+and here [<https://github.com/walkerke/tigris>]
 
 <br>
 
-For now, lets download the Chicago metropolitan area data then select Chicago
+For now, lets download the Chicago metropolitan area data then select
+Chicago
 
+<div>
 
-::: {#boxgreen}
-FOR THIS CODE CHUNK, set results=FALSE as a codechunk option, or it will swamp your knit: <br> `{r, results=FALSE}`
-:::
+FOR THIS CODE CHUNK, set results=FALSE as a codechunk option, or it will
+swamp your knit: <br> `{r, results=FALSE}`
 
+</div>
 
 ```{r, results=FALSE}
 
@@ -505,7 +522,6 @@ Chicago.city.sf  <- Chicago.city.sf %>%
 
 <br>
 
-
 <br>
 
 and, just so you can see what I have done..
@@ -519,10 +535,10 @@ map.city
 
 ```
 
-<br>
-<br>
+<br> <br>
 
-We can now crop our census data to this specific area using the `ms_clip` function. 
+We can now crop our census data to this specific area using the
+`ms_clip` function.
 
 ```{r}
 # subset the Illinois census data with the Chicago city limits
@@ -532,7 +548,8 @@ Chicago.Census.sf <- ms_clip(target = IL.Census.sf,
                              remove_slivers = TRUE)
 ```
 
-Let's remake that map, remember to play with the style option if your color scale isn't useful
+Let's remake that map, remember to play with the style option if your
+color scale isn't useful
 
 <br>
 
@@ -584,16 +601,18 @@ map4 <- tm_shape(Chicago.Census.sf, unit = "km") +
 suppressMessages(tmap_arrange(map2,map4))
 ```
 
-<br>
-<br>
+<br> <br>
 
-# STEP 2 Global Autocorrelation 
+# STEP 2 Global Autocorrelation
 
-Here we are going to look BOTH at global Moran's I and its local equivalent, LISA.  Because it builds directly on your previous lab, I'm going to refer to the tutorial but hide my code.
+Here we are going to look BOTH at global Moran's I and its local
+equivalent, LISA. Because it builds directly on your previous lab, I'm
+going to refer to the tutorial but hide my code.
 
 ## Dealing with issues
 
-It turns out that subsetting to the city borders put our empty lake tracts back in! Let's remove and tidy
+It turns out that subsetting to the city borders put our empty lake
+tracts back in! Let's remove and tidy
 
 ```{r}
 Chicago.Census.sf <- Chicago.Census.sf %>%
@@ -602,12 +621,14 @@ Chicago.Census.sf <- Chicago.Census.sf %>%
                      st_make_valid()
 ```
 
-
 ## Spatial weights
 
-This tutorial shows you how to calculate a spatial weights matrix for your data. https://psu-spatial.github.io/Geog364-2025/Tutorial_SpatWeights.html.
+This tutorial shows you how to calculate a spatial weights matrix for
+your data.
+<https://psu-spatial.github.io/Geog364-2025/Tutorial_SpatWeights.html>.
 
-Remember to change the variable from ACS_country.geometry to whatever you are using. I am using Chicago.city.sf.
+Remember to change the variable from ACS_country.geometry to whatever
+you are using. I am using Chicago.city.sf.
 
 Using the tutorial, I calculated a QUEENS 1ST ORDER weights matrix
 
@@ -652,12 +673,14 @@ plot(neighbor.queens, st_coordinates(Chicago_county.centroid),
 
 ```
 
-
 ## Moran's I rerun
 
-I'm now going to see if one of my variables is auto-correlated - the percentage of people earning over $75K.
+I'm now going to see if one of my variables is auto-correlated - the
+percentage of people earning over \$75K.
 
-To do this, I used the code in <https://psu-spatial.github.io/Geog364-2025/Tutorial_Moran.html> adjusting for my location and my variable name (percent.income.gt75)
+To do this, I used the code in
+<https://psu-spatial.github.io/Geog364-2025/Tutorial_Moran.html>
+adjusting for my location and my variable name (percent.income.gt75)
 
 ```{r}
 names(Chicago.Census.sf)
@@ -665,14 +688,14 @@ names(Chicago.Census.sf)
 
 <br>
 
-But I get an error! (note this is old code USE THE CODE IN THE TUTORIAL)  It says I have missing values in "x" AKA in my percentage income column. 
+But I get an error! (note this is old code USE THE CODE IN THE TUTORIAL)
+It says I have missing values in "x" AKA in my percentage income column.
 
 ```{r, L7Fig5, echo=FALSE, fig.cap="*There are missing values in your column of choice*"}
 knitr::include_graphics('./index_images/pg_364Lab7_Regression_2021_fig5.png')
 ```
 
 <br>
-
 
 Let me check:
 
@@ -688,7 +711,10 @@ Chicago.Census.sf[is.na(Chicago.Census.sf$percent.income.gt75)==TRUE,]
 
 <br>
 
-It turns out there are OTHER census tracts which don't have data (or zero population). lets remove those and try again. I'm going to remove ones with zero population density.  Which means I need to recreate my spatial weights matrix...
+It turns out there are OTHER census tracts which don't have data (or
+zero population). lets remove those and try again. I'm going to remove
+ones with zero population density. Which means I need to recreate my
+spatial weights matrix...
 
 ```{r}
 # remove missing data
@@ -704,9 +730,9 @@ weights.queens <- st_weights(neighbor.queens)
 
 ```
 
-
-Now, my moran's plot works.  As we have a lot of data, I also adjusted the plotting to make the points smaller. This allows us to clearly see any outliers.
-
+Now, my moran's plot works. As we have a lot of data, I also adjusted
+the plotting to make the points smaller. This allows us to clearly see
+any outliers.
 
 ```{r, echo=FALSE}
 
@@ -725,13 +751,253 @@ moran.plot(Chicago.Census.sf$percent.income.gt75,
            zero.policy = T)
 ```
 
-
-It looks very clustered.. (which agrees with the map I made). Let's do a test.  I'll let you interpret it based on your lecture notes (and see the most recent discussion)
+It looks very clustered.. (which agrees with the map I made). Let's do a
+test. I'll let you interpret it based on your lecture notes (and see the
+most recent discussion)
 
 ```{r}
 moran.test(Chicago.Census.sf$percent.income.gt75, 
            weights.queens.sp ,
             zero.policy = T)    
 ```
+
+# STEP 3 Local Autocorrelation (LISA)
+
+Moran's I is just a global statistic, so it would be useful to know
+*where* the data is clustered or not and if that clustering is
+significant.
+
+## Calculating the lisa statistic
+
+We do this by calcualting Local moran's I. We will discuss in class, but
+essentially we calculate Moran's I for just each polygon with its
+neighbours
+
+```{r}
+
+LocalMoran <- local_moran(Chicago.Census.sf$percent.income.gt75, 
+                          neighbor.queens, 
+                          weights.queens,
+                          alternative = "two.sided")
+
+head(LocalMoran)
+```
+
+Here's what the results mean. They calculate significance based on the
+monte carlo approach we discussed in class:
+
+-   `ii` Local moran statistic e.g. Moran's I for each census tract (i)
+-   `eii` Expected value of local moran statistic;
+-   `var_ii` variance of local moran statistic;
+-   `z_ii` Z score of the local moran statistic;
+-   `p_ii` p-value of local moran statistic for that census tract
+-   `p_ii_sim` Sim p-value using our Monte Carlo approach for H1
+    alternative="two.sided"
+-   `p_folded_sim` The simulation folded [0, 0.5] range ranked p-value
+    (based on
+    <https://github.com/pysal/esda/blob/4a63e0b5df1e754b17b5f1205b8cadcbecc5e061/esda/crand.py#L211-L213>)
+-   `skewness` the output of e1071::skewness()
+-   `kurtosis` the output of e1071::kurtosis()
+-   `mean` the average quadrant of the moran's scattrplot for each
+    census tract (out of the monte carlo)
+-   `median` the median quadrant of the moran's scattrplot for each
+    census tract (out of the monte carlo)
+-   `pysal` the pysal average quadrant of the moran's scattrplot for
+    each census tract (out of the monte carlo)
+
+<br><br>
+
+We can simplify this given that we're in an undergrad class! We can also
+add it to our census data:
+
+```{r}
+
+Chicago.Census.sf$LocalMoran        <- LocalMoran$ii
+Chicago.Census.sf$LocalMoran_pvalue <- LocalMoran$p_folded_sim
+Chicago.Census.sf$Quadrant          <- factor(LocalMoran$pysal,
+                                                 levels= c("High-High","High-Low",
+                                                           "Low-High","Low-Low"))
+ 
+Chicago.Census.sf
+
+
+
+```
+
+We can now see how many points fell into each quadrant
+
+```{r}
+table(Chicago.Census.sf$Quadrant)
+```
+
+
+## Plotting
+
+We can now make our first LISA plot!
+
+
+```{r}
+#---------------------------------------------------
+# And make a map, remember you can switch to "plot" mode
+# if your computer struggles
+#---------------------------------------------------
+tmap_mode("view")
+
+mapLISA <- tm_shape(Chicago.Census.sf) +
+ 
+           tm_polygons(
+               fill = "Quadrant",
+               fill_alpha = 0.6,
+               lwd = 0,
+               id = "NAME",
+               col_alpha = 0.5,
+               fill.scale = tm_scale_categorical(
+                                       values = c("#ca0020",
+                                                  "#f4a582",
+                                                  "#92c5de",
+                                                  "#0571b0"))) +
+  tm_legend(text.size = 1) +
+  tm_title("LISA: % earning > $75K") +
+  tm_layout(frame = FALSE)
+
+# Compare against the original data
+map2 <- tm_shape(Chicago.Census.sf, unit = "km") +
+  tm_polygons(
+    fill = "percent.income.gt75",
+    lwd = 0,
+    fill.scale = tm_scale_intervals(
+      style = "quantile",
+      values = "brewer.yl_gn_bu",
+    )
+  ) +
+  tm_scalebar(breaks = c(0, 10, 20)) +
+  tm_title("Percentage of people making $75K per census tract", size = 0.75) +
+  tm_layout(
+    legend.outside = TRUE,
+    frame = FALSE
+  )
+
+
+mapLISA
+map2
+
+```
+
+## And adjust for significance
+
+There are three ways we could do this. 
+
+### simply plot significance
+
+First, we could plot the values next to the pvalues:
+
+
+```{r}
+#---------------------------------------------------
+# And make a map
+#---------------------------------------------------
+tmap_mode("view")
+
+mapLISA <- tm_shape(Chicago.Census.sf) +
+ 
+           tm_polygons(
+               fill = "Quadrant",
+               fill_alpha = 0.6,
+               lwd = 0,
+               id = "NAME",
+               col_alpha = 0.5,
+               fill.scale = tm_scale_categorical(
+                                       values = c("#ca0020",
+                                                  "#f4a582",
+                                                  "#92c5de",
+                                                  "#0571b0"))) +
+  tm_legend(text.size = 1) +
+  tm_title("LISA: % earning > $75K") +
+  tm_layout(frame = FALSE)
+
+
+# Compare against the p values
+mapPvalues <- tm_shape(Chicago.Census.sf, unit = "km") +
+   tm_polygons(
+    fill = "LocalMoran_pvalue",
+    lwd = 0,
+    fill.scale = tm_scale_intervals(
+      breaks=c(0,0.001,0.01,0.05,0.1,1),
+      values = rev(cols4all::c4a("brewer.greens")))) +
+  tm_title("P-value for each quadrant", size = 0.75) +
+  tm_layout(
+    legend.outside = TRUE,
+    frame = FALSE
+  )
+
+
+suppressMessages(tmap_arrange(mapLISA,mapPvalues))
+
+```
+
+
+### Remove colors
+
+The second is that we can set the values above some threshold to white. I chose a threshold significance of 0.05.
+
+
+
+```{r}
+# get the new values. TRUE if p < 0,05
+
+Chicago.Census.sf <- Chicago.Census.sf %>%
+  mutate(
+    p.LT.05 = LocalMoran_pvalue <= 0.05,
+    Quadrant_sig = as.character(Quadrant),
+    Quadrant_sig = if_else(LocalMoran_pvalue > 0.05, 
+                       "p>0.05", Quadrant_sig),
+    Quadrant_sig = factor(
+      Quadrant_sig,
+      levels = c("High-High", "High-Low", 
+                 "Low-High", "Low-Low", "p>0.05")
+    )
+  )
+
+# and make a  map
+
+
+#---------------------------------------------------
+tmap_mode("view")
+tm_shape(Chicago.Census.sf) +
+           tm_polygons(
+               fill = "Quadrant_sig",
+               lwd = 0.5,
+               id = "NAME",
+               fill_alpha = 0.4,
+               fill.scale = tm_scale_categorical(
+                                       values = c("#ca0020",
+                                                  "#f4a582",
+                                                  "#92c5de",
+                                                  "#0571b0",
+                                                  "white"))) +
+  tm_legend(text.size = 1) +
+  tm_title("LISA: % earning > $75K if p<0.05") +
+  tm_layout(frame = FALSE)
+
+
+
+
+```
+
+
+Here, we can see that there are many census tracts with lots of people making over $ 75K, surrounded by *neighbours* that make the same.  Equally there are many neighbourhoods in Chicago where there are few "high earning" residents.  So this shows that yes, there is absolutely clustering **overall** in Chicago in this variable, but this gives us some more insight into where...
+
+
+It also allows us to examine outliers.  For example, this low-high area
+
+```{r, L7Fig6, echo=FALSE}
+knitr::include_graphics('./index_images/pg_364Lab7_Regression_2021_fig6a.png')
+```
+
+
+The stark difference here makes me want to explore this further for process.  Maybe there is an industrial area here - maybe this is a legacy of Chicago's massive legacy of redlining and housing discrimination (https://www.bloomberg.com/news/articles/2020-09-30/mapping-the-disparities-of-chicago-s-unequal-pandemic).  Maybe there is a single luxury housing block next door.  But it is definitely interesting!  
+
+<br>
+<br>
 
 

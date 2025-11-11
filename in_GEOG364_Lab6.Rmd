@@ -413,8 +413,8 @@ If you get errors, choose a different city!
 
 3. Look at STEP 2 of the tutorial
 
-Run through **STEP 2** of the tutorial here <https://psu-spatial.github.io/Geog364-2025/Tutorial_LISA.html>
-You should stop when you made maps of the city. e.g. don't carry onto step 3.
+Run through **STEP 2** of the tutorial here <https://psu-spatial.github.io/Geog364-2025/Tutorial_LISA.html>.
+Don't carry onto Local Moran's I.
 
 <br>
 
@@ -432,14 +432,38 @@ Now, continue for your city, creating a spatial weights matrix of your choice an
 
 ## C. Autocorrelation LISA
 
-To come, refresh your page
 
-<br><br>
+3. Look at STEP 3 of the tutorial
+
+Run through the rest of **STEP 3** of the tutorial here <https://psu-spatial.github.io/Geog364-2025/Tutorial_LISA.html>
+.
+
+<br>
+
+
+4. Create your own.
+
+Now make some LISA plots for your city.  We will discuss what these mean during Wednesdays class. Based on that, see if you can interpret the results for your city, including
+
+a) Whether your results correspond to reality. Remember you can change your background map to identify where places are and do some googling! For example 
+
+  + Is your "high surrounded by high" downtown? rich suburbs? 
+  + Is your "low surrounded by low" poorer areas?
+  + Any outliers and can you work out WHY they are outliers
+  
+b) The significance of your results e.g. where is highly significant and where is not?
+
+
+
+
+
+
+<br><br><br><br>
 
 
 ## D. Regression
 
-<br><br>
+FOR WEEK 2
 
 
 
