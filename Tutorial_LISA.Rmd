@@ -586,6 +586,151 @@ suppressMessages(tmap_arrange(map2,map4))
 <br>
 <br>
 
+# STEP 2 Global Autocorrelation 
 
+Here we are going to look BOTH at global Moran's I and its local equivalent, LISA.  Because it builds directly on your previous lab, I'm going to refer to the tutorial but hide my code.
+
+## Dealing with issues
+
+It turns out that subsetting to the city borders put our empty lake tracts back in! Let's remove and tidy
+
+```{r}
+Chicago.Census.sf <- Chicago.Census.sf %>%
+                     st_transform(26916) %>%
+                     filter(!st_is_empty(geometry)) %>%
+                     st_make_valid()
+```
+
+
+## Spatial weights
+
+This tutorial shows you how to calculate a spatial weights matrix for your data. https://psu-spatial.github.io/Geog364-2025/Tutorial_SpatWeights.html.
+
+Remember to change the variable from ACS_country.geometry to whatever you are using. I am using Chicago.city.sf.
+
+Using the tutorial, I calculated a QUEENS 1ST ORDER weights matrix
+
+```{r,echo=FALSE, warning=FALSE, message=FALSE, plot.results=TRUE}
+
+# First get the geometry/coords 
+Chicago.city.geometry <- st_geometry(Chicago.Census.sf)
+
+# Then the central point in each polygon
+Chicago_county.centroid <- st_centroid(Chicago.city.geometry)
+
+# Finally, extract the Queens neigbours
+neighbor.queens <- st_contiguity(Chicago.city.geometry, queen=TRUE)
+
+# and get the spatial weights matrix
+weights.queens <- st_weights(neighbor.queens)
+
+
+
+
+
+```
+
+Because I had so many polygons, here's how I plotted them:
+
+```{r}
+
+
+# And plot
+par(mar=c(1,1,1,1))# big plot area
+
+plot(Chicago.city.geometry, 
+     border='darkcyan',
+     lwd=.5)
+
+plot(neighbor.queens, st_coordinates(Chicago_county.centroid), 
+     col=rgb(0,0,0,.4), # transparent black
+     lwd=.5,          # thin lines
+     pch=16, cex=.1, # tiny dots
+     add=TRUE)
+
+
+```
+
+
+## Moran's I rerun
+
+I'm now going to see if one of my variables is auto-correlated - the percentage of people earning over $75K.
+
+To do this, I used the code in <https://psu-spatial.github.io/Geog364-2025/Tutorial_Moran.html> adjusting for my location and my variable name (percent.income.gt75)
+
+```{r}
+names(Chicago.Census.sf)
+```
+
+<br>
+
+But I get an error! (note this is old code USE THE CODE IN THE TUTORIAL)  It says I have missing values in "x" AKA in my percentage income column. 
+
+```{r, L7Fig5, echo=FALSE, fig.cap="*There are missing values in your column of choice*"}
+knitr::include_graphics('./index_images/pg_364Lab7_Regression_2021_fig5.png')
+```
+
+<br>
+
+
+Let me check:
+
+```{r}
+summary(Chicago.Census.sf$percent.income.gt75)
+```
+
+Yes - three polygons didn't calculate properly. Let's take a look:
+
+```{r}
+Chicago.Census.sf[is.na(Chicago.Census.sf$percent.income.gt75)==TRUE,]
+```
+
+<br>
+
+It turns out there are OTHER census tracts which don't have data (or zero population). lets remove those and try again. I'm going to remove ones with zero population density.  Which means I need to recreate my spatial weights matrix...
+
+```{r}
+# remove missing data
+Chicago.Census.sf <- Chicago.Census.sf[Chicago.Census.sf$pop.density_km2 >  0 , ]
+
+# recalculate spatial weight
+
+Chicago.city.geometry <- st_geometry(Chicago.Census.sf)
+neighbor.queens <- st_contiguity(Chicago.city.geometry, queen=TRUE)
+weights.queens <- st_weights(neighbor.queens)
+
+
+
+```
+
+
+Now, my moran's plot works.  As we have a lot of data, I also adjusted the plotting to make the points smaller. This allows us to clearly see any outliers.
+
+
+```{r, echo=FALSE}
+
+# make weights
+weights.queens.sp <- spdep::nb2listw(neighbor.queens)
+
+# and plot , the first line adjusts the margins to make it neater.
+par(mar=c(5,6,1,1))   
+
+moran.plot(Chicago.Census.sf$percent.income.gt75, 
+           weights.queens.sp, 
+           xlab  = "Percent ppl making > 75K (USD) per tract",
+           ylab  = "Percent ppl making > 75K \n in neighbouring tracts (Queens 1st)",
+           labels=NULL,
+           cex=.8, col=rgb(0,0,0,.5),
+           zero.policy = T)
+```
+
+
+It looks very clustered.. (which agrees with the map I made). Let's do a test.  I'll let you interpret it based on your lecture notes (and see the most recent discussion)
+
+```{r}
+moran.test(Chicago.Census.sf$percent.income.gt75, 
+           weights.queens.sp ,
+            zero.policy = T)    
+```
 
 

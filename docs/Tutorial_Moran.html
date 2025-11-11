@@ -534,30 +534,19 @@ scatterplot</p>
 moran’s plot. But unfortunately the new sfdep package has not yet
 followed suit. so here’s a work-around</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co"># PUT THIS IN YOUR LIRBARY CODE CHUNK &amp; RUN/INSTALL</span></span>
-<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="fu">library</span>(spdep)</span></code></pre></div>
-<pre><code>## Loading required package: spData</code></pre>
-<pre><code>## To access larger datasets in this package, install the spDataLarge
-## package with: `install.packages(&#39;spDataLarge&#39;,
-## repos=&#39;https://nowosad.github.io/drat/&#39;, type=&#39;source&#39;)`</code></pre>
-<pre><code>## 
-## Attaching package: &#39;spData&#39;</code></pre>
-<pre><code>## The following object is masked _by_ &#39;.GlobalEnv&#39;:
-## 
-##     house</code></pre>
-<pre><code>## The following object is masked from &#39;package:openintro&#39;:
-## 
-##     house</code></pre>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="co"># calculate the sp version of weights </span></span>
-<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>weights.queens.sp <span class="ot">&lt;-</span> spdep<span class="sc">::</span><span class="fu">nb2listw</span>(neighbor.queens)</span>
-<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>  </span>
-<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a><span class="co"># and plot , the first line adjusts the margins to make it neater.</span></span>
-<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar=</span><span class="fu">c</span>(<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">1</span>,<span class="dv">1</span>))   </span>
-<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a><span class="fu">moran.plot</span>(ACS_county.sf<span class="sc">$</span>housevalue, </span>
-<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a>           weights.queens.sp, </span>
-<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a>           <span class="at">xlab  =</span> <span class="st">&quot;Average House Value per county (USD)&quot;</span>,</span>
-<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a>           <span class="at">ylab  =</span> <span class="st">&quot;Average house value of </span><span class="sc">\n</span><span class="st"> neighbouring counties (Queens 1st)&quot;</span>,</span>
-<span id="cb9-10"><a href="#cb9-10" tabindex="-1"></a>           <span class="at">labels=</span>ACS_county.sf<span class="sc">$</span>NAME,</span>
-<span id="cb9-11"><a href="#cb9-11" tabindex="-1"></a>            <span class="at">zero.policy =</span> T)</span></code></pre></div>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="fu">library</span>(spdep)</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="co"># calculate the sp version of weights </span></span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>weights.queens.sp <span class="ot">&lt;-</span> spdep<span class="sc">::</span><span class="fu">nb2listw</span>(neighbor.queens)</span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>  </span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a><span class="co"># and plot , the first line adjusts the margins to make it neater.</span></span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar=</span><span class="fu">c</span>(<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">1</span>,<span class="dv">1</span>))   </span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a><span class="fu">moran.plot</span>(ACS_county.sf<span class="sc">$</span>housevalue, </span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a>           weights.queens.sp, </span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a>           <span class="at">xlab  =</span> <span class="st">&quot;Average House Value per county (USD)&quot;</span>,</span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a>           <span class="at">ylab  =</span> <span class="st">&quot;Average house value of </span><span class="sc">\n</span><span class="st"> neighbouring counties (Queens 1st)&quot;</span>,</span>
+<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a>           <span class="at">labels=</span>ACS_county.sf<span class="sc">$</span>NAME,</span>
+<span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a>            <span class="at">zero.policy =</span> T)</span></code></pre></div>
 <p><img src="Tutorial_Moran_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 <p><br></p>
 <p>We then plot <em>HouseValue<sub>lag</sub></em> against
@@ -577,26 +566,26 @@ them to z-scores), which centers them on the mean and scales them by
 their standard deviation.</p>
 <p>The global_moran function outputs the global Moran’s I along with the
 average number of neighbours.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>MoranI_HouseValue <span class="ot">&lt;-</span> <span class="fu">global_moran</span>(ACS_county.sf<span class="sc">$</span>housevalue, </span>
-<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>                                  <span class="at">nb =</span> neighbor.queens,</span>
-<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a>                                  <span class="at">wt =</span> weights.queens)</span>
-<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a></span>
-<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a>MoranI_HouseValue</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>MoranI_HouseValue <span class="ot">&lt;-</span> <span class="fu">global_moran</span>(ACS_county.sf<span class="sc">$</span>housevalue, </span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>                                  <span class="at">nb =</span> neighbor.queens,</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>                                  <span class="at">wt =</span> weights.queens)</span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>MoranI_HouseValue</span></code></pre></div>
 <pre><code>## $I
 ## [1] 0.1241145
 ## 
 ## $K
 ## [1] 4.586472</code></pre>
 <p>In fact, lets add it as a title to the scatterplot.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="co"># and plot , the first line adjusts the margins to make it neater.</span></span>
-<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar=</span><span class="fu">c</span>(<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">2</span>,<span class="dv">1</span>))   </span>
-<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a><span class="fu">moran.plot</span>(ACS_county.sf<span class="sc">$</span>housevalue, </span>
-<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a>           weights.queens.sp, </span>
-<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a>           <span class="at">xlab  =</span> <span class="st">&quot;Average House Value per county (USD)&quot;</span>,</span>
-<span id="cb12-6"><a href="#cb12-6" tabindex="-1"></a>           <span class="at">ylab  =</span> <span class="st">&quot;Average house value of </span><span class="sc">\n</span><span class="st"> neighbouring counties (Queens 1st)&quot;</span>,</span>
-<span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a>           <span class="at">labels=</span>ACS_county.sf<span class="sc">$</span>NAME,</span>
-<span id="cb12-8"><a href="#cb12-8" tabindex="-1"></a>           <span class="at">zero.policy =</span> T,</span>
-<span id="cb12-9"><a href="#cb12-9" tabindex="-1"></a>           <span class="at">main=</span> <span class="fu">paste</span>(<span class="st">&quot;Global Moran&#39;s I:&quot;</span>,<span class="fu">round</span>(MoranI_HouseValue<span class="sc">$</span>I,<span class="dv">3</span>)))</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="co"># and plot , the first line adjusts the margins to make it neater.</span></span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar=</span><span class="fu">c</span>(<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">2</span>,<span class="dv">1</span>))   </span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a><span class="fu">moran.plot</span>(ACS_county.sf<span class="sc">$</span>housevalue, </span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>           weights.queens.sp, </span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>           <span class="at">xlab  =</span> <span class="st">&quot;Average House Value per county (USD)&quot;</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>           <span class="at">ylab  =</span> <span class="st">&quot;Average house value of </span><span class="sc">\n</span><span class="st"> neighbouring counties (Queens 1st)&quot;</span>,</span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>           <span class="at">labels=</span>ACS_county.sf<span class="sc">$</span>NAME,</span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a>           <span class="at">zero.policy =</span> T,</span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a>           <span class="at">main=</span> <span class="fu">paste</span>(<span class="st">&quot;Global Moran&#39;s I:&quot;</span>,<span class="fu">round</span>(MoranI_HouseValue<span class="sc">$</span>I,<span class="dv">3</span>)))</span></code></pre></div>
 <p><img src="Tutorial_Moran_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 </div>
 <div id="morans-hypothesis-test" class="section level2">
@@ -622,11 +611,11 @@ the null hypothesis of spatial randomness. This is done by
 while keeping the spatial structure (e.g., neighborhood relationships)
 fixed.</p>
 <p>Here’s the quick code to do this.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="fu">global_moran_perm</span>(ACS_county.sf<span class="sc">$</span>housevalue, </span>
-<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a>                   <span class="at">nb =</span> neighbor.queens,</span>
-<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a>                   <span class="at">wt =</span> weights.queens,</span>
-<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a>                   <span class="at">alternative=</span><span class="st">&quot;two.sided&quot;</span>, <span class="co">#Should be one of &quot;greater&quot;, &quot;less&quot;, or &quot;two.sided&quot;</span></span>
-<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a>                   <span class="at">nsim=</span> <span class="dv">1000</span>) </span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">global_moran_perm</span>(ACS_county.sf<span class="sc">$</span>housevalue, </span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>                   <span class="at">nb =</span> neighbor.queens,</span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>                   <span class="at">wt =</span> weights.queens,</span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>                   <span class="at">alternative=</span><span class="st">&quot;two.sided&quot;</span>, <span class="co">#Should be one of &quot;greater&quot;, &quot;less&quot;, or &quot;two.sided&quot;</span></span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>                   <span class="at">nsim=</span> <span class="dv">1000</span>) </span></code></pre></div>
 <pre><code>## 
 ##  Monte-Carlo simulation of Moran I
 ## 
@@ -634,9 +623,9 @@ fixed.</p>
 ## weights: listw  
 ## number of simulations + 1: 1001 
 ## 
-## statistic = 0.12411, observed rank = 913, p-value = 0.1758
+## statistic = 0.12411, observed rank = 896, p-value = 0.2098
 ## alternative hypothesis: two.sided</code></pre>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="dv">1</span><span class="sc">/</span><span class="fl">0.2098</span></span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="dv">1</span><span class="sc">/</span><span class="fl">0.2098</span></span></code></pre></div>
 <pre><code>## [1] 4.766444</code></pre>
 <p>So in this case,</p>
 <ul>

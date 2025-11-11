@@ -224,7 +224,7 @@ Using R, it's now very easy for us to calculate the Moran's I scatterplot
 The old spdep package has a very easy scatterplot function to make a moran's plot. But unfortunately the new sfdep package has not yet followed suit. so here's a work-around
 
 
-```{r}
+```{r,message=FALSE, warning=FALSE}
 
 # PUT THIS IN YOUR LIRBARY CODE CHUNK & RUN/INSTALL
 library(spdep)

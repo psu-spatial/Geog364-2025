@@ -455,6 +455,9 @@ two.</p>
 <p>WORK THROUGH THIS TUTORIAL, then the actual lab uses a different
 dataset.</p>
 <p><br></p>
+</div>
+<div id="step-1-getting-the-data" class="section level1">
+<h1>STEP 1 Getting the data</h1>
 <div id="libraries-needed-for-this-tutorial." class="section level2">
 <h2>Libraries needed for this tutorial.</h2>
 <p>Make sure all of these libraries are at the top of your lab script in
@@ -792,6 +795,116 @@ color scale isn’t useful</p>
 <p><img src="Tutorial_LISA_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 <p><br> <br></p>
 </div>
+</div>
+</div>
+<div id="step-2-autocorrelation" class="section level1">
+<h1>STEP 2 Autocorrelation</h1>
+<p>Here we are going to look BOTH at global Moran’s I and its local
+equivalent, LISA. Because it builds directly on your previous lab, I’m
+going to refer to the tutorial but hide my code.</p>
+<div id="dealing-with-issues" class="section level2">
+<h2>Dealing with issues</h2>
+<p>It turns out that subsetting to the city borders put our empty lake
+tracts back in! Let’s remove and tidy</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a>Chicago.Census.sf <span class="ot">&lt;-</span> Chicago.Census.sf <span class="sc">%&gt;%</span></span>
+<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a>                     <span class="fu">st_transform</span>(<span class="dv">26916</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb16-3"><a href="#cb16-3" tabindex="-1"></a>                     <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">st_is_empty</span>(geometry)) <span class="sc">%&gt;%</span></span>
+<span id="cb16-4"><a href="#cb16-4" tabindex="-1"></a>                     <span class="fu">st_make_valid</span>()</span></code></pre></div>
+</div>
+<div id="spatial-weights" class="section level2">
+<h2>Spatial weights</h2>
+<p>This tutorial shows you how to calculate a spatial weights matrix for
+your data. <a
+href="https://psu-spatial.github.io/Geog364-2025/Tutorial_SpatWeights.html"
+class="uri">https://psu-spatial.github.io/Geog364-2025/Tutorial_SpatWeights.html</a>.</p>
+<p>Remember to change the variable from ACS_country.geometry to whatever
+you are using. I am using Chicago.city.sf.</p>
+<p>Using the tutorial, I calculated a QUEENS 1ST ORDER weights
+matrix</p>
+<p>Because I had so many polygons, here’s how I plotted them:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="co"># And plot</span></span>
+<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>))<span class="co"># big plot area</span></span>
+<span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" tabindex="-1"></a><span class="fu">plot</span>(Chicago.city.geometry, </span>
+<span id="cb17-5"><a href="#cb17-5" tabindex="-1"></a>     <span class="at">border=</span><span class="st">&#39;darkcyan&#39;</span>,</span>
+<span id="cb17-6"><a href="#cb17-6" tabindex="-1"></a>     <span class="at">lwd=</span>.<span class="dv">5</span>)</span>
+<span id="cb17-7"><a href="#cb17-7" tabindex="-1"></a></span>
+<span id="cb17-8"><a href="#cb17-8" tabindex="-1"></a><span class="fu">plot</span>(neighbor.queens, <span class="fu">st_coordinates</span>(Chicago_county.centroid), </span>
+<span id="cb17-9"><a href="#cb17-9" tabindex="-1"></a>     <span class="at">col=</span><span class="fu">rgb</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,.<span class="dv">4</span>), <span class="co"># transparent black</span></span>
+<span id="cb17-10"><a href="#cb17-10" tabindex="-1"></a>     <span class="at">lwd=</span>.<span class="dv">5</span>,          <span class="co"># thin lines</span></span>
+<span id="cb17-11"><a href="#cb17-11" tabindex="-1"></a>     <span class="at">pch=</span><span class="dv">16</span>, <span class="at">cex=</span>.<span class="dv">1</span>, <span class="co"># tiny dots</span></span>
+<span id="cb17-12"><a href="#cb17-12" tabindex="-1"></a>     <span class="at">add=</span><span class="cn">TRUE</span>)</span></code></pre></div>
+<p><img src="Tutorial_LISA_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+</div>
+<div id="morans-i-rerun" class="section level2">
+<h2>Moran’s I rerun</h2>
+<p>I’m now going to see if one of my variables is auto-correlated - the
+percentage of people earning over $75K.</p>
+<p>To do this, I used the code in <a
+href="https://psu-spatial.github.io/Geog364-2025/Tutorial_Moran.html"
+class="uri">https://psu-spatial.github.io/Geog364-2025/Tutorial_Moran.html</a>
+adjusting for my location and my variable name (percent.income.gt75)</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="fu">names</span>(Chicago.Census.sf)</span></code></pre></div>
+<pre><code>## [1] &quot;GEOID&quot;               &quot;income.gt75&quot;         &quot;NAME&quot;               
+## [4] &quot;total_pop&quot;           &quot;Area&quot;                &quot;pop.density_km2&quot;    
+## [7] &quot;percent.income.gt75&quot; &quot;geometry&quot;</code></pre>
+<p><br></p>
+<p>But I get an error! (note this is old code USE THE CODE IN THE
+TUTORIAL) It says I have missing values in “x” AKA in my percentage
+income column.</p>
+<div class="figure">
+<img src="index_images/pg_364Lab7_Regression_2021_fig5.png" alt="*There are missing values in your column of choice*" width="974" />
+<p class="caption">
+<em>There are missing values in your column of choice</em>
+</p>
+</div>
+<p><br></p>
+<p>Let me check:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a><span class="fu">summary</span>(Chicago.Census.sf<span class="sc">$</span>percent.income.gt75)</span></code></pre></div>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA&#39;s 
+## 0.00000 0.04773 0.11132 0.12894 0.19147 0.54485       5</code></pre>
+<p>Yes - three polygons didn’t calculate properly. Let’s take a
+look:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a>Chicago.Census.sf[<span class="fu">is.na</span>(Chicago.Census.sf<span class="sc">$</span>percent.income.gt75)<span class="sc">==</span><span class="cn">TRUE</span>,]</span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["GEOID"],"name":[1],"type":["chr"],"align":["left"]},{"label":["income.gt75"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["NAME"],"name":[3],"type":["chr"],"align":["left"]},{"label":["total_pop"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["Area"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["pop.density_km2"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["percent.income.gt75"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["geometry"],"name":[8],"type":["s_POLYGO"],"align":["right"]}],"data":[{"1":"17097863006","2":"0","3":"Census Tract 8630.06, Lake County, Illinois","4":"0","5":"0.2074210","6":"0","7":"NA","8":"<s_POLYGO>","_rn_":"171"},{"1":"17031980100","2":"0","3":"Census Tract 9801, Cook County, Illinois","4":"0","5":"2.9821258","6":"0","7":"NA","8":"<s_POLYGO>","_rn_":"828"},{"1":"17197980000","2":"0","3":"Census Tract 9800, Will County, Illinois","4":"0","5":"74.2357113","6":"0","7":"NA","8":"<s_POLYGO>","_rn_":"1645"},{"1":"17031980000","2":"0","3":"Census Tract 9800, Cook County, Illinois","4":"0","5":"20.0414761","6":"0","7":"NA","8":"<s_POLYGO>","_rn_":"1899"},{"1":"17031381700","2":"0","3":"Census Tract 3817, Cook County, Illinois","4":"0","5":"0.1943134","6":"0","7":"NA","8":"<s_POLYGO>","_rn_":"1973"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p><br></p>
+<p>It turns out there are OTHER census tracts which don’t have data (or
+zero population). lets remove those and try again. I’m going to remove
+ones with zero population density. Which means I need to recreate my
+spatial weights matrix…</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" tabindex="-1"></a><span class="co"># remove missing data</span></span>
+<span id="cb23-2"><a href="#cb23-2" tabindex="-1"></a>Chicago.Census.sf <span class="ot">&lt;-</span> Chicago.Census.sf[Chicago.Census.sf<span class="sc">$</span>pop.density_km2 <span class="sc">&gt;</span>  <span class="dv">0</span> , ]</span>
+<span id="cb23-3"><a href="#cb23-3" tabindex="-1"></a></span>
+<span id="cb23-4"><a href="#cb23-4" tabindex="-1"></a><span class="co"># recalculate spatial weight</span></span>
+<span id="cb23-5"><a href="#cb23-5" tabindex="-1"></a></span>
+<span id="cb23-6"><a href="#cb23-6" tabindex="-1"></a>Chicago.city.geometry <span class="ot">&lt;-</span> <span class="fu">st_geometry</span>(Chicago.Census.sf)</span>
+<span id="cb23-7"><a href="#cb23-7" tabindex="-1"></a>neighbor.queens <span class="ot">&lt;-</span> <span class="fu">st_contiguity</span>(Chicago.city.geometry, <span class="at">queen=</span><span class="cn">TRUE</span>)</span>
+<span id="cb23-8"><a href="#cb23-8" tabindex="-1"></a>weights.queens <span class="ot">&lt;-</span> <span class="fu">st_weights</span>(neighbor.queens)</span></code></pre></div>
+<p>Now, my moran’s plot works. As we have a lot of data, I also adjusted
+the plotting to make the points smaller. This allows us to clearly see
+any outliers.</p>
+<p><img src="Tutorial_LISA_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
+<p>It looks very clustered.. (which agrees with the map I made). Let’s
+do a test. I’ll let you interpret it based on your lecture notes (and
+see the most recent discussion)</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a><span class="fu">moran.test</span>(Chicago.Census.sf<span class="sc">$</span>percent.income.gt75, </span>
+<span id="cb24-2"><a href="#cb24-2" tabindex="-1"></a>           weights.queens.sp ,</span>
+<span id="cb24-3"><a href="#cb24-3" tabindex="-1"></a>            <span class="at">zero.policy =</span> T)    </span></code></pre></div>
+<pre><code>## 
+##  Moran I test under randomisation
+## 
+## data:  Chicago.Census.sf$percent.income.gt75  
+## weights: weights.queens.sp    
+## 
+## Moran I statistic standard deviate = 59.684, p-value &lt; 2.2e-16
+## alternative hypothesis: greater
+## sample estimates:
+## Moran I statistic       Expectation          Variance 
+##      0.7497117818     -0.0004980080      0.0001579947</code></pre>
 </div>
 </div>
 

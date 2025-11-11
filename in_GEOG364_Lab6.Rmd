@@ -409,9 +409,39 @@ If you get errors, choose a different city!
 
 <br><br>
 
-# B. Autocorrelation
+## B. Global Autocorrelation
 
-REFRESH YOUR PAGE
+3. Look at STEP 2 of the tutorial
+
+Run through **STEP 2** of the tutorial here <https://psu-spatial.github.io/Geog364-2025/Tutorial_LISA.html>
+You should stop when you made maps of the city. e.g. don't carry onto step 3.
+
+<br>
+
+
+4. Create your own,
+
+Now, continue for your city, creating a spatial weights matrix of your choice and running a Moran's scatterplot and Moran's test.  
+ - Fully write out the hypothesis test for your city in the text
+ - Make sure to describe the pattern you see in the moran's scatterplot in the text and relate to your map.
+
+
+
+<br><br><br><br>
+
+
+## C. Autocorrelation LISA
+
+To come, refresh your page
+
+<br><br>
+
+
+## D. Regression
+
+<br><br>
+
+
 
 # Submitting your Lab
 
