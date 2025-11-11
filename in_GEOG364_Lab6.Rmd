@@ -387,23 +387,27 @@ You should not submit the tutorial file. Creating one simply lets you follow alo
 
 <br><br>
 
-# A. Getting the data
+
+## A. Getting the data
 
 
 1. Look at the tutorial
 
-Run through **STEP 1** of the tutorial. You should stop when you made maps of the city.
+Run through **STEP 1** of the tutorial here <https://psu-spatial.github.io/Geog364-2025/Tutorial_LISA.html>
+You should stop when you made maps of the city. e.g. don't carry onto step 2.
 
 <br>
 
 
-1. Create your own,
+2. Create your own,
 
 Now,  IN YOUR LAB SCRIPT, reproduce the tutorial for any largish city of your choice in the USA., 
-Get the code working and making the plots.  For each step, in your own words explain what you are doing for each piece of code and why you chose that city.
+Get the code working and making the plots.  For each step, in your own words explain what you are doing for each piece of code and why you chose your city.
+
+If you get errors, choose a different city!
 
 
-<br>
+<br><br>
 
 # B. Autocorrelation
 
