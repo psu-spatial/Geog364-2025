@@ -214,6 +214,9 @@ this is similar to Lab 5.
 
 We can load your data from the census and tidy up, before plotting
 
+FOR THIS CODE CHUNK, set results='hide' as a codechunk option, or it will swamp your knit:
+{r, results='hide'}
+
 ```{r, eval=FALSE}
 # THIS WILL NOT WORK IF YOU DIDN'T RUN YOUR API KEY CODE & RESTART R-STUDIO LAST LAB
 
@@ -233,7 +236,7 @@ IL.Census.sf <- get_acs(geography = "tract",
 <br>
 
 We also need to change the map projection. As we're focusing on a single
-city, lets us a local UTM projection, 26916. To find one for your area,
+city, lets us a local UTM projection, with EPSG code 26916. To find one for your area,
 see
 
 -   <https://mangomap.com/robertyoung/maps/69585/what-utm-zone-am-i-in->
@@ -502,8 +505,8 @@ Chicago
 
 <div>
 
-FOR THIS CODE CHUNK, set results=FALSE as a codechunk option, or it will
-swamp your knit: <br> `{r, results=FALSE}`
+FOR THIS CODE CHUNK, set results='hide' as a codechunk option, or it will
+swamp your knit: <br> `{r, results='hide'}`
 
 </div>
 
