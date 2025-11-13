@@ -1,0 +1,1437 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Lab 5: Autocorrelation</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<link rel="stylesheet" href="projectlab.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="in_GEOG364_FAQ.html">FAQs</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    YOUR LABS
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="in_GEOG364_Lab1.html">Lab 1: Basics</a>
+    </li>
+    <li>
+      <a href="in_GEOG364_Lab2.html">Lab 2: Data summary</a>
+    </li>
+    <li>
+      <a href="in_GEOG364_Lab3.html">Lab 3: Taiwan House</a>
+    </li>
+    <li>
+      <a href="in_GEOG364_Lab4.html">Lab 4: Spatial Wrangling</a>
+    </li>
+    <li>
+      <a href="in_GEOG364_Lab5.html">Lab 5: Moran's I</a>
+    </li>
+    <li>
+      <a href="in_GEOG364_Lab6.html">Lab 6: LISA and regression</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Advanced Tutorials
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Tutorial_CensusData.html">Getting Census Data</a>
+    </li>
+    <li>
+      <a href="Tutorial_SpatWeights.html">Spatial Weights Matrices</a>
+    </li>
+    <li>
+      <a href="Tutorial_Moran.html">Moran's I</a>
+    </li>
+    <li>
+      <a href="Tutorial_LISA.html">LISA</a>
+    </li>
+    <li>
+      <a href="Tutorial_Regression.html">Regression</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    TURTLES
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Turtle_tutorial.html">Tutorial</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Lab 5: Autocorrelation</h1>
+
+</div>
+
+
+<hr />
+<p><br />
+</p>
+<div id="welcome-to-lab-5" class="section level1">
+<h1>Welcome to Lab 5!</h1>
+<p><strong>Aim of the lab</strong></p>
+<p>In this guide you will learn how to:</p>
+<ul>
+<li>Access and use census data in R</li>
+<li>Run hypothesis tests</li>
+<li>Assess and visuralise autocorrelation</li>
+</ul>
+<p>This lab guide follows and supplements the material presented in the
+textbook <a
+href="https://mgimond.github.io/Spatial/spatial-autocorrelation-in-r.html">Spatial
+Autocorrelation in R</a>.</p>
+<p class="comment">
+<div id="boxgreen">
+<p><strong>This is a TWO WEEK LAB</strong> See <a
+href="https://psu.instructure.com/courses/2396422/assignments/17585714">here</a>
+for assignment guidelines. You must submit an <code>.Rmd</code> file and
+its associated <code>.html</code> file.</p>
+</div>
+<p><br />
+</p>
+<div id="boxedtext">
+<p><br />
+<strong>Getting help</strong><br />
+- Kiely (and often Dr G) will be present during your lab sessions. This
+is the easiest way to get help.<br />
+- Dr G has weekly office hours and genuinely enjoys helping with R, even
+if you feel stuck or overwhelmed.<br />
+- You may send a Canvas message to Kiely or Dr G (or if you are
+completely lost).<br />
+<br />
+</p>
+</div>
+<p><br />
+</p>
+<hr />
+<p><br />
+</p>
+</div>
+<div id="set-up.-dont-skip" class="section level1">
+<h1>Set-up. DON’T SKIP!</h1>
+<p><br />
+</p>
+<div id="create-a-project-get-the-data" class="section level3">
+<h3>Create a project &amp; get the data</h3>
+<p>There are two options here depending on whether you are using
+R-studio on the website (posit cloud) or your own computer (R-Desktop).
+If you are using a lab computer choose the R-Desktop route.</p>
+<div id="option-1.-posit-cloud-website-users" class="section level4">
+<h4>Option 1. Posit Cloud Website Users</h4>
+<details>
+<summary>
+Task 1. Create a project for Lab 5 (expand for instructions)
+</summary>
+<div class="collapsible-content">
+<iframe src="https://psu-spatial.github.io/Stat462-2025/T5_ProjectsPositCloud.html" style="width: 100%; height: 700px; border: none;">
+</iframe>
+</div>
+<p><br></p>
+</details>
+<div class="small-gap">
+
+</div>
+<details>
+<summary>
+Task 2. Install more packages (expand for instructions)
+</summary>
+<p><br></p>
+<p>Unfortunately on the website you need to install your packages each
+time.<br>Go to to the packages tab, click install to get to the
+app-store and download/install these packages:</p>
+<ul>
+<li><code>readxl</code></li>
+<li><code>viridis</code></li>
+<li><code>ggstatsplot</code></li>
+<li><code>terra</code></li>
+<li><code>tigris</code></li>
+<li><code>tidyverse</code></li>
+<li><code>dplyr</code></li>
+<li><code>tmap</code></li>
+<li><code>elevatr</code></li>
+<li><code>osmdata</code></li>
+<li><code>ggplot2</code></li>
+<li><code>ggthemes</code></li>
+<li><code>RColorBrewer</code></li>
+<li><code>plotly</code></li>
+<li><code>cols4all</code></li>
+<li><code>shinyjs</code></li>
+</ul>
+<p>We will also need a package called sf, which runs a lot of the
+spatial commands in R. Unfortunately, posit cloud sometimes has a few
+technical issues with sf, so you will need to run a special command.</p>
+<p>IN THE CONSOLE, run these two commands.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;remotes&quot;</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="at">repo =</span> <span class="st">&quot;r-spatial/sf&quot;</span>, <span class="at">ref =</span> <span class="st">&quot;93a25fd8e2f5c6af7c080f92141cb2b765a04a84&quot;</span>)</span></code></pre></div>
+<p>T6_Packages.html <br><em>Reminder: <a
+href="https://psu-spatial.github.io/Stat462-2025/T6_Packages.html">Tutorial:
+Packages cheatsheet</a></em>.</p>
+</details>
+</div>
+<div id="option-2.-r-desktop-users" class="section level4">
+<h4>Option 2. R-Desktop Users</h4>
+<details>
+<summary>
+Task 1. Create a project for Lab 5
+</summary>
+<p><br></p>
+<div class="collapsible-content">
+<iframe src="https://psu-spatial.github.io/Stat462-2025/T5_ProjectsRDesktop.html" style="width: 100%; height: 700px; border: none;">
+</iframe>
+</div>
+</details>
+<div class="small-gap">
+
+</div>
+<p><br></p>
+</div>
+</div>
+<div id="set-up-your-lab-5-report" class="section level3">
+<h3>Set-up your Lab 5 report</h3>
+<p>You are welcome to use/edit the template you made in previous labs.
+If you are unsure what I mean by that, follow these instructions.</p>
+<details>
+<summary>
+Task. Create your RMarkdown file - expand &amp; look at Tutorial 4B and
+4C
+</summary>
+<p><br></p>
+<div class="collapsible-content">
+<iframe src="https://hgreatrex.github.io/Geog364_2024/pg_Tut4_markdown.html#Tutorial_4B:_Creating_a_markdown_document" style="width: 100%; height: 700px; border: none;">
+</iframe>
+</div>
+</details>
+<div class="small-gap">
+
+</div>
+<details>
+<summary>
+Task. Edit your YAML code &amp; ADD A NEW THEME
+</summary>
+<p><br></p>
+<p>Lets use similar options to Lab 4. Remember YAML code is annoying to
+edit, because here, <em>spaces really do matter</em>. Everything has to
+be perfect or it won’t knit.</p>
+<ul>
+<li><p><strong>Select everything in my code chunk here and replace your
+YAML with this (remember the — on line 1 and at the
+end).</strong></p></li>
+<li><p>Now edit the author name to your own. If you wonder what
+Sys.Date() is, don’t touch it - it automatically gives you the current
+date.</p></li>
+<li><p>Now change your theme to your favourite one of these - you can
+see what it looks like by pressing knit. Note, DO NOT put quote marks
+around the theme name.</p>
+<ul>
+<li>bootstrap</li>
+<li>cerulean</li>
+<li>cosmo</li>
+<li>darkly</li>
+<li>flatly</li>
+<li>journal</li>
+<li>lumen</li>
+<li>paper</li>
+<li>readable</li>
+<li>sandstone</li>
+<li>simplex</li>
+<li>spacelab</li>
+<li>united</li>
+<li>yeti</li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co">#---------------------------------------------------------</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="co"># </span><span class="al">NOTE</span><span class="co">, Your theme does NOT have quote marks around it </span></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="co">#---------------------------------------------------------</span></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="sc">---</span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>title<span class="sc">:</span> <span class="st">&quot;GEOG-364 - Lab 5&quot;</span></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>author<span class="sc">:</span> <span class="st">&quot;hlg5155&quot;</span></span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>date<span class="sc">:</span> <span class="st">&quot;`r Sys.Date()`&quot;</span></span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>output<span class="sc">:</span></span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a>  html_document<span class="sc">:</span></span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a>    toc<span class="sc">:</span> true</span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a>    toc_float<span class="sc">:</span> yes</span>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a>    number_sections<span class="sc">:</span> yes</span>
+<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a>    theme<span class="sc">:</span> lumen</span>
+<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a>    df_print<span class="sc">:</span> paged</span>
+<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a><span class="sc">---</span></span></code></pre></div>
+</details>
+<div class="small-gap">
+
+</div>
+<details>
+<summary>
+Task. Delete the existing text and create/run your library code chunk
+</summary>
+<p><br></p>
+<ul>
+<li><p>Click on your lab script (the Rmd file) and delete all the
+‘welcome text’ after line 11.<br>Press enter a few times and make a new
+level-1 heading called <code>Set Up</code>.<br></p></li>
+<li><p>We should have all the packages we need installed, but we need to
+open them. Make a new code chunk containing this code.<br></p></li>
+</ul>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="fu">library</span>(terra)</span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a><span class="fu">library</span>(tmap)</span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a><span class="fu">library</span>(elevatr)</span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a><span class="fu">library</span>(osmdata)</span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a><span class="fu">library</span>(ggstatsplot)</span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a><span class="fu">library</span>(ggthemes)</span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a><span class="fu">library</span>(viridis)</span>
+<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a><span class="fu">library</span>(RColorBrewer)</span>
+<span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a><span class="fu">library</span>(plotly)</span>
+<span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a><span class="fu">library</span>(units)</span></code></pre></div>
+<p><br></p>
+<ul>
+<li><p>Press the green arrow on the right of the code chunk to run the
+code inside it. You will see a load of “loading text” telling your
+details about the packages you just loaded.<br><br> Press the green
+arrow AGAIN. The text should disappear unless there is an
+error.<br></p></li>
+<li><p>Note, remember to run this code chunk EVERY TIME your start
+R-Studio (in the same way you need to click on an app on your phone
+before you can use it). <br></p></li>
+</ul>
+<p>You might need additional libraries as you work through the lab. If
+so, add them in this code chunk AND REMEMBER TO RERUN. If you see a
+little yellow bar at the top asking you to install them,click yes!</p>
+<p><br></p>
+</details>
+<div class="small-gap">
+
+</div>
+<details>
+<summary>
+Task. Add warning=FALSE and message=FALSE to your library code chunk.
+</summary>
+<p><br></p>
+<ul>
+<li>Expand here for a tutorial.</li>
+</ul>
+<div class="collapsible-content">
+<iframe src="https://psu-spatial.github.io/Stat462-2025/T7_Markdown_4bCodeChunkOptions.html" style="width: 100%; height: 700px; border: none;">
+</iframe>
+</div>
+</details>
+<div class="small-gap">
+
+</div>
+</div>
+<div id="check-your-progress" class="section level3">
+<h3>Check your progress</h3>
+<p>Your lab script should now look similar this, but with your theme and
+YAML options of choice (you might have a few different libraries than in
+my screenshot). You should also be able to knit it successfully. If not,
+go back and do the previous sections!</p>
+<p><br></p>
+<p><img src="index_images/pg_364Lab2_Summary_2021_fig2.png" /></p>
+<p><br></p>
+<p><br></p>
+<p><br />
+</p>
+<hr />
+<p><br />
+</p>
+</div>
+</div>
+<div id="accessing-us-census-data" class="section level1">
+<h1>Accessing US-Census Data</h1>
+<p>The tutorial below will show you how to download and use data from
+the US census and American Community survey. Read the lab instructions
+first, then us the tutorial to help you do it.</p>
+<ol style="list-style-type: decimal">
+<li>Make a new section &amp; explain ACS</li>
+</ol>
+<p>Make a new section in your lab script called US-Census data</p>
+<p><br></p>
+<p>Using this page or google, read about the American Community Survey -
+<a href="https://www.census.gov/programs-surveys/acs/about.html"
+class="uri">https://www.census.gov/programs-surveys/acs/about.html</a></p>
+<p><em>Now, Explain what the US-Census American Community survey is and
+why it’s a useful dataset</em>. Make sure to include what the object of
+analysis is and its boundaries in time (e.g. does one survey represent
+all of US history?)</p>
+<p><br></p>
+<ol start="2" style="list-style-type: decimal">
+<li>Read through the tutorial below</li>
+</ol>
+<p>As you read - know that, the tutorial is focused on Maine and New
+Hampshire. YOU WILL BE FOCUSED ON IOWA. Looking at the list of
+variables, choose one or two additional variables that interest you. For
+example, past students have looked at water, poverty (access to
+sanitation), access to broadband, demographics and crime etc. <br></p>
+<details>
+<summary>
+Expand for tutorial - Census data
+</summary>
+<p><br></p>
+<div class="collapsible-content">
+<iframe src="https://psu-spatial.github.io/Geog364-2025/Tutorial_CensusData" style="width: 100%; height: 700px; border: none;">
+</iframe>
+</div>
+</details>
+<div class="small-gap">
+
+</div>
+<ol start="3" style="list-style-type: decimal">
+<li>Download census data using the tutorial. <br></li>
+</ol>
+<p>Use the tutorial code to download county level American Community
+Survey for <em>IOWA</em>, including:</p>
+<ul>
+<li>housevalue (“B25075_001”)</li>
+<li>total_pop (“B05012_001”)</li>
+<li>total_house (“B25001_001”)</li>
+<li>med.income (“B19013_001”)</li>
+<li>AND a few variables of your own (see previous step)</li>
+</ul>
+<p><br></p>
+<p><em>REMEMBER THAT YOU NEED TO GET YOUR API KEY FIRST FROM THE START
+OF THE TUTORIAL, AND IT WON’T WORK UNTIL YOU HAVE FULLY RESTARTED
+R-STUDIO.</em></p>
+<p><br></p>
+<ol start="4" style="list-style-type: decimal">
+<li>Make 3 maps from this data that show something interesting about
+Iowa.</li>
+</ol>
+<p>Write a few sentences under each one interpreting your results
+e.g. look at google maps, why are certain counties/high or low. <br>
+Bonus marks for something that’s genuinely interesting, rather than just
+two random variables you decided on. <br><br> If you want to continue to
+improve your tmap chloropleths. <a
+href="https://rpubs.com/erikaaldisa/choroplethmapping"
+class="uri">https://rpubs.com/erikaaldisa/choroplethmapping</a></p>
+<p><br></p>
+<ol start="5" style="list-style-type: decimal">
+<li>The Modifiable Areal Map Problem MAUP</li>
+</ol>
+<p>WE WILL COVER THIS ON WEDNESDAY Explain the modifiable areal map
+problem and both the shape and zone effects. Write any impacts of MAUP
+that you see in your analyses of Iowa and your reasoning.</p>
+<p><br></p>
+<ol start="6" style="list-style-type: decimal">
+<li>Chloropleths</li>
+</ol>
+<p>Using google, explain what a chloropleth map is and why MAUP is a
+problem.</p>
+<p><br></p>
+<ol start="7" style="list-style-type: decimal">
+<li>Use the best practice for chloropleths</li>
+</ol>
+<p>Look at the best practice for chloropleths <a
+href="https://blog.datawrapper.de/choroplethmaps/"
+class="uri">https://blog.datawrapper.de/choroplethmaps/</a> and make a
+new version of one of your plots with at least one improvement,
+explaining what you did. If you can’t get it working, you can get most
+of the marks for explaining what you WANTED to do.</p>
+<p><br />
+</p>
+<hr />
+<p><br />
+</p>
+</div>
+<div id="morans-i-autocorrelation" class="section level1">
+<h1>Moran’s I &amp; Autocorrelation</h1>
+<div id="autocorrelation-basics" class="section level2">
+<h2>Autocorrelation basics</h2>
+<p>Now we will focus on autocorrelation.</p>
+<ol start="8" style="list-style-type: decimal">
+<li>Make a new section</li>
+</ol>
+<p>Make a new section in your lab script called Autocorrelation. In this
+section, I will leave it up to you to make clear sub-headings to make it
+easy for grading.</p>
+<p><br></p>
+<ol start="9" style="list-style-type: decimal">
+<li>Explain in your report:</li>
+</ol>
+<p>(see Monday’s lecture and reading)</p>
+<ul>
+<li>What is spatial autocorrelation and why is it important?</li>
+<li>What is positive/negative/zero autocorrelation and what
+patterns/processes would you expect to see.</li>
+<li>For one of the maps you made above, state which map you chose and
+explain whether you think you see positive/negative/zero autocorrelation
+(and your reasoning)</li>
+<li>Why will total population look much more clustered than population
+density?</li>
+</ul>
+<p><br></p>
+</div>
+<div id="spatial-weights-matrices" class="section level2">
+<h2>Spatial weights matrices</h2>
+<p>To understand the autocorrelation, we first need to define
+neighbourhood.</p>
+<ol start="10" style="list-style-type: decimal">
+<li>Read through the tutorial below</li>
+</ol>
+<details>
+<summary>
+Expand for tutorial - Spatial weights
+</summary>
+<p><br></p>
+<div class="collapsible-content">
+<iframe src="https://psu-spatial.github.io/Geog364-2025/Tutorial_SpatWeights.html" style="width: 100%; height: 700px; border: none;">
+</iframe>
+</div>
+</details>
+<div class="small-gap">
+
+</div>
+<p><br></p>
+<ol start="11" style="list-style-type: decimal">
+<li>Calculate the spatial weights</li>
+</ol>
+<p>Now use the tutorial above to calculate and plot these neighbours and
+spatial weights matrix for your Iowa dataset. - QUEENS 1st order - ROOKS
+2nd order</p>
+<p><br></p>
+<ol start="13" style="list-style-type: decimal">
+<li>Explain what you did</li>
+</ol>
+<p>Below your code, briefly explain the difference between nearest
+neighbour, Rook’s, and Queen’s spatial weights matrices. Your answer
+should describe how each defines adjacency and what kinds of spatial
+relationships they capture.</p>
+<ol start="14" style="list-style-type: decimal">
+<li>Are the Hawkeyes neighbours?</li>
+</ol>
+<p>The Iowa Hawkeyes are based in Iowa City, Iowa (look up the county if
+needed). Your friend lives in Black Hawk County, Iowa. Using R code from
+the tutorial, determine whether Black Hawk County is a Rook’s 2nd-order
+neighbour of Iowa City’s county. Show your code and output.</p>
+<p><br />
+</p>
+</div>
+<div id="morans-scatterplots-and-morans-i" class="section level2">
+<h2>Moran’s Scatterplots and Moran’s I</h2>
+<p>Now we have all the ingredients we can create a moran’s I
+scatterplot</p>
+<ol start="15" style="list-style-type: decimal">
+<li>Read through the tutorial below ONLY up to the end of the
+scatterplot</li>
+</ol>
+<details>
+<summary>
+Expand for tutorial - Moran’s scatter
+</summary>
+<p><br></p>
+<div class="collapsible-content">
+<iframe src="https://psu-spatial.github.io/Geog364-2025/Tutorial_Moran.html" style="width: 100%; height: 700px; border: none;">
+</iframe>
+</div>
+</details>
+<div class="small-gap">
+
+</div>
+<p><br></p>
+<ol start="15" style="list-style-type: decimal">
+<li>Create some plots</li>
+</ol>
+<p>Use the code in the tutorial to create a Moran’s scatterplot for the
+<em>median income</em> in Iowa and your rook’s 1st order spatial weights
+matrix.</p>
+</div>
+<div id="morans-hypothesis-test" class="section level2">
+<h2>Moran’s hypothesis test</h2>
+<ol start="16" style="list-style-type: decimal">
+<li>Continue the tutorial</li>
+</ol>
+<details>
+<summary>
+Expand for tutorial - Moran’s scatter
+</summary>
+<p><br></p>
+<div class="collapsible-content">
+<iframe src="https://psu-spatial.github.io/Geog364-2025/Tutorial_Moran.html#Calculating_Morans_I" style="width: 100%; height: 700px; border: none;">
+</iframe>
+</div>
+</details>
+<div class="small-gap">
+
+</div>
+<p><br></p>
+<ol start="17" style="list-style-type: decimal">
+<li>Calculate Moran’s I</li>
+</ol>
+<p>Calculate Moran’s I for the <em>median income</em> in Iowa and your
+rook’s 1st order spatial weights matrix.</p>
+<p><br></p>
+<ol start="18" style="list-style-type: decimal">
+<li>Run a hypothesis test</li>
+</ol>
+<p>Calculate the results of Moran’s I hypothesis test for the <em>median
+income</em> in Iowa and your rook’s 1st order spatial weights
+matrix.</p>
+<p>Interpret the answer <em>fully</em> in the text using the tutorial
+and lecture notes to help. Assume that I consider the answer to be
+significant at a p-value threshold of 0.01.</p>
+<p><br></p>
+<ol start="19" style="list-style-type: decimal">
+<li>Explain your answer</li>
+</ol>
+<p>From your answer and the scatterplot, do you believe the field is
+positively negatively or zero(ly) autocorrelated? Explain your answer
+referring to the scatterplot.</p>
+<p>Create a quick map of the <em>median income</em> in Iowa (you have
+the code for this higher in the lab!) and comment on your result
+compared to the map.</p>
+</div>
+</div>
+<div id="advanced" class="section level1">
+<h1>Advanced</h1>
+<div id="boxgreen">
+<p>Congratulations! If you have made it here you already have a
+B.<br><br> For the next question, we will grade progressively depending
+on how far through you get. <br> As always, an A grade is reasonable,
+100% is hard.</p>
+</div>
+<p><br></p>
+<p>OK, so you have now worked through an entire assessment of Moran’s I.
+For a given dataset, we have</p>
+<ul>
+<li>Read in the data</li>
+<li>Made it spatial and assigned a map projection</li>
+<li>(used things like st_make_value to remove features that crash the
+moran code)</li>
+<li>Calculated neighbours and spatial weights matrix of our choice</li>
+<li>Calculated the Moran’s I scatterplot and hypothesis test.</li>
+</ul>
+<p>In the question below, I’m asking you to run the whole process for a
+new scenario. Remember you can copy your existing code into a single
+code chunk, like I did at the start of the tutorials.</p>
+<p><br><br></p>
+<ol start="20" style="list-style-type: decimal">
+<li>Try the full process (13 marks)</li>
+</ol>
+<div id="boxgreen">
+<p><strong>You already HAVE the code to do this</strong> You just need
+to copy/paste your code down here and edit for the new scenario.</p>
+<p>Or see the beginning of each tutorial for a summary of the code. To
+make your life easier, look at the top of the page and you’ll see the
+tutorials in order. You’ll also find things like the census code for
+broadband access.</p>
+</div>
+<p><br></p>
+<p>Create a new section called Advanced.</p>
+<p><br></p>
+<ul>
+<li><strong>For ‘broadband access’ for counties in Pennsylvania and 1st
+order queens - 10 MARKS</strong>
+<ul>
+<li>Download the data and wrangle</li>
+<li>Make a chloropleth map</li>
+<li>Calculate the moran’s I and show the moran’s scatterplot</li>
+<li>Run a hypothesis test &amp; interpret, assuming I consider the
+result significant at p=0.05</li>
+<li>Relate everything back to the pattern you see and the PROCESSES
+creating broadband access patterns.</li>
+</ul></li>
+</ul>
+<p><br></p>
+<ul>
+<li><strong>Repeat for West Virginia and compare your results. Comment
+on any differences you see - 3 MARKS</strong>.</li>
+</ul>
+<p><br></p>
+<ol start="21" style="list-style-type: decimal">
+<li><strong>SUPER-ADVANCED For the final 2 Marks</strong></li>
+</ol>
+<div id="boxgreen">
+<p>**You can easily get an A without attempting this.</p>
+</div>
+<p><br></p>
+<p>In class we talked about calculating Moran’s I at differnet lags and
+there is a nice tutorial here. <a
+href="https://mgimond.github.io/Spatial/spatial-autocorrelation-in-r.html#app8_6"
+class="uri">https://mgimond.github.io/Spatial/spatial-autocorrelation-in-r.html#app8_6</a></p>
+<p>Using the tutorial, see if you can calculate the lagged Moran’s I for
+broadband access in PA.</p>
+<p><br><br></p>
+</div>
+<div id="submitting-your-lab" class="section level1">
+<h1>Submitting your Lab</h1>
+<p>Remember to save your work throughout and to spell check your writing
+(next to the save button). Now, press the knit button again. If you have
+not made any mistakes in the code then R should create a html file in
+your lab3 folder, complete with a very recent time-stamp.</p>
+<p><br></p>
+<div id="if-you-are-on-posit-cloud" class="section level3">
+<h3>If you are on posit cloud:</h3>
+<p>You can download each of your .RmD and html files by:</p>
+<ul>
+<li><p>Clicking on the little box next to the Rmd in the Files tab, then
+going to the little blue cogwheel (might need to make your Rstudio full
+screen) and clicking export.<br></p></li>
+<li><p>Repeat the process exactly for the html file underneath it (e,g,
+just have the html clicked.)<br></p></li>
+<li><p>Now go to Canvas and submit BOTH your html and your .Rmd file in
+Lab 5.</p></li>
+</ul>
+<p><br></p>
+</div>
+<div id="posit-desktop" class="section level3">
+<h3>Posit desktop</h3>
+<ul>
+<li><p>Go to your Lab 5 folder, In that folder, double click on the html
+file. This will open it in your browser. CHECK THAT THIS IS WHAT YOU
+WANT TO SUBMIT <br></p></li>
+<li><p>Now go to Canvas and submit BOTH your html and your .Rmd file in
+Lab 5.<br></p></li>
+</ul>
+<p><br><br></p>
+<hr />
+<p><br />
+</p>
+</div>
+</div>
+<div id="check-this-before-you-submit-lab" class="section level1">
+<h1>CHECK THIS BEFORE YOU SUBMIT! (Lab)</h1>
+<p>People who use this section get better grades…</p>
+<p><br></p>
+<div id="grading-rubric" class="section level2">
+<h2>Grading rubric</h2>
+<ul>
+<li><strong>Submitting Rmd &amp; HTML (15 pts)</strong>
+<ul>
+<li>20: Both .Rmd and .html submitted</li>
+<li>10:Only one file submitted</li>
+</ul></li>
+</ul>
+<p><br></p>
+<ul>
+<li><strong>General style &amp; writing (20 pts)</strong>
+<ul>
+<li>10: Great style:<br />
+<em>You have written your answers below the relevant code chunk in full
+sentences in a way that is easy to find and grade. For example, you have
+written in full sentences, it is clear what your answers are referring
+to. You have used units where appropriate; no library-loading printouts;
+no code warnings; YAML works</em></li>
+<li>8: Minor issues:<br />
+<em>Occasional hard-to-find answers; library-loading text printed;
+missing table of contents</em></li>
+<li>6: Major issues:<br />
+*Hard to find answers; multiple code issues</li>
+</ul></li>
+</ul>
+<p><br><br></p>
+<ul>
+<li><p><strong>US-Census Data - 20 MARKS</strong></p>
+<ul>
+<li><p>Download the census data &amp; make/explain maps for Iowa
+[10]</p></li>
+<li><p>Your MAUP answers [10]</p></li>
+<li><p>Best practice [5]</p></li>
+</ul></li>
+</ul>
+<p><br><br></p>
+<ul>
+<li><p><strong>Spatial weights matrix - 10 MARKS</strong></p>
+<ul>
+<li><p>You got the code working [5 MARKS]</p></li>
+<li><p>Your answers / interpretation [5 MARKS]</p></li>
+</ul></li>
+</ul>
+<p><br><br></p>
+<ul>
+<li><p><strong>Moran’s I &amp; scatterplot - 10 MARKS</strong></p>
+<ul>
+<li><p>You got the code working [5 MARKS]</p></li>
+<li><p>Your answers / interpretation [5 MARKS]</p></li>
+</ul></li>
+</ul>
+<p><br><br></p>
+<ul>
+<li><p><strong>Morans Hypothesis test - 10 MARKS</strong></p>
+<ul>
+<li><p>You got the code working [5 MARKS]</p></li>
+<li><p>Your answers / interpretation [5 MARKS]</p></li>
+</ul></li>
+</ul>
+<p><br><br></p>
+<ul>
+<li><p><strong>Advanced - 13 MARKS</strong></p>
+<ul>
+<li><p>Sliding scale out of 10 for your code and interpretation of PA
+broadband [10]</p></li>
+<li><p>Sliding scale out of 3 for your code and interpretation of West
+Virginia broadband [3]</p></li>
+</ul></li>
+<li><p><strong>Super advanced - 2 MARKS</strong></p>
+<ul>
+<li><p>You made a good effort [1]</p></li>
+<li><p>Everything is working AND interpreted in the text [1]</p></li>
+</ul></li>
+</ul>
+<p><br><br></p>
+</div>
+<div id="overall" class="section level2">
+<h2>Overall</h2>
+<p>Overall, here is what your lab should correspond to:</p>
+<table class=" lightable-classic-2 table table-striped table-hover table-responsive" style="font-family: &quot;Arial Narrow&quot;, &quot;Source Sans Pro&quot;, sans-serif; margin-left: auto; margin-right: auto; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Grade
+</th>
+<th style="text-align:left;">
+% Mark
+</th>
+<th style="text-align:left;">
+Rubric
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+A*
+</td>
+<td style="text-align:left;">
+98-100
+</td>
+<td style="text-align:left;">
+Exceptional.  Not only was it near perfect, but the graders learned
+something.  THIS IS HARD TO GET.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+96+
+</td>
+<td style="text-align:left;">
+You went above and beyond
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+A
+</td>
+<td style="text-align:left;">
+93+:
+</td>
+<td style="text-align:left;">
+Everything asked for with high quality.   Class example
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+A-
+</td>
+<td style="text-align:left;">
+90+
+</td>
+<td style="text-align:left;">
+The odd minor mistake, All code done but not written up in full
+sentences etc. A little less care
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+B+
+</td>
+<td style="text-align:left;">
+87+
+</td>
+<td style="text-align:left;">
+More minor mistakes.  Things like missing units, getting the odd
+question wrong, no workings shown
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+B
+</td>
+<td style="text-align:left;">
+83+
+</td>
+<td style="text-align:left;">
+Solid work but the odd larger mistake or missing answer.  Completely
+misinterpreted something, that type of thing
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+B-
+</td>
+<td style="text-align:left;">
+80+
+</td>
+<td style="text-align:left;">
+Starting to miss entire/questions sections, or multiple larger mistakes.
+Still a solid attempt. 
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+C+
+</td>
+<td style="text-align:left;">
+77+
+</td>
+<td style="text-align:left;">
+You made a good effort and did some things well, but there were a lot of
+problems. (e.g. you wrote up the text well, but messed up the code)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+C
+</td>
+<td style="text-align:left;">
+70+
+</td>
+<td style="text-align:left;">
+It’s clear you tried and learned something.  Just attending labs will
+get you this much as we can help you get to this stage
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+D
+</td>
+<td style="text-align:left;">
+60+
+</td>
+<td style="text-align:left;">
+You attempt the lab and submit something. Not clear you put in much
+effort or you had real issues
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+F
+</td>
+<td style="text-align:left;">
+0+
+</td>
+<td style="text-align:left;">
+Didn’t submit, or incredibly limited attempt. 
+</td>
+</tr>
+</tbody>
+</table>
+<p>And.. finished!</p>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

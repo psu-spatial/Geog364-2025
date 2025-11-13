@@ -1,0 +1,1806 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Lab 4: Spatial Wrangling</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<link rel="stylesheet" href="projectlab.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="in_GEOG364_FAQ.html">FAQs</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    YOUR LABS
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="in_GEOG364_Lab1.html">Lab 1: Basics</a>
+    </li>
+    <li>
+      <a href="in_GEOG364_Lab2.html">Lab 2: Data summary</a>
+    </li>
+    <li>
+      <a href="in_GEOG364_Lab3.html">Lab 3: Taiwan House</a>
+    </li>
+    <li>
+      <a href="in_GEOG364_Lab4.html">Lab 4: Spatial Wrangling</a>
+    </li>
+    <li>
+      <a href="in_GEOG364_Lab5.html">Lab 5: Moran's I</a>
+    </li>
+    <li>
+      <a href="in_GEOG364_Lab6.html">Lab 6: LISA and regression</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Advanced Tutorials
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Tutorial_CensusData.html">Getting Census Data</a>
+    </li>
+    <li>
+      <a href="Tutorial_SpatWeights.html">Spatial Weights Matrices</a>
+    </li>
+    <li>
+      <a href="Tutorial_Moran.html">Moran's I</a>
+    </li>
+    <li>
+      <a href="Tutorial_LISA.html">LISA</a>
+    </li>
+    <li>
+      <a href="Tutorial_Regression.html">Regression</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    TURTLES
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Turtle_tutorial.html">Tutorial</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Lab 4: Spatial Wrangling</h1>
+
+</div>
+
+
+<hr />
+<p><br />
+</p>
+<div id="welcome-to-lab-4" class="section level1">
+<h1>Welcome to Lab 4!</h1>
+<p><strong>Aim of the lab</strong></p>
+<p>In this guide you will learn how to download, clean and manage data -
+a process known as Data Wrangling - in R. You will be working with data
+on California counties. The objectives of this guide are as follows</p>
+<ul>
+<li>Learn how to read data into R</li>
+<li>Learn about tidyverse</li>
+<li>Learn data wrangling functions</li>
+</ul>
+<p>This lab guide follows and supplements the material presented in
+Chapters 4 and 8-13 in the textbook <a
+href="http://r4ds.had.co.nz/index.html">R for Data Science</a>
+(RDS).</p>
+<p class="comment">
+<div id="boxgreen">
+<p><strong>This is a TWO WEEK LAB</strong> See <a
+href="https://psu.instructure.com/courses/2396422/assignments/17585714">here</a>
+for assignment guidelines. You must submit an <code>.Rmd</code> file and
+its associated <code>.html</code> file.</p>
+</div>
+<p><br />
+</p>
+<div id="boxedtext">
+<p><br />
+<strong>Getting help</strong><br />
+- Kiely (and often Dr G) will be present during your lab sessions. This
+is the easiest way to get help.<br />
+- There is a Piazza discussion board. Kiely will explain more in this
+week’s lab and will check it at least once a day.<br />
+- Dr G has weekly office hours and genuinely enjoys helping with R, even
+if you feel stuck or overwhelmed.<br />
+- If you have posted on Piazza and received no response after 24 hours,
+you may send a Canvas message to Kiely or Dr G (or if you are completely
+lost).<br />
+<br />
+</p>
+</div>
+<p><br />
+</p>
+<hr />
+<p><br />
+</p>
+</div>
+<div id="set-up.-dont-skip" class="section level1">
+<h1>Set-up. DON’T SKIP!</h1>
+<p><br />
+</p>
+<div id="create-a-project-get-the-data" class="section level3">
+<h3>Create a project &amp; get the data</h3>
+<p>There are two options here depending on whether you are using
+R-studio on the website (posit cloud) or your own computer (R-Desktop).
+If you are using a lab computer choose the R-Desktop route.</p>
+<div id="option-1.-posit-cloud-website-users" class="section level4">
+<h4>Option 1. Posit Cloud Website Users</h4>
+<details>
+<summary>
+Task 1. Get the data
+</summary>
+<p><br> All the data is on the Lab 4 canvas page. But here’s a shortcut.
+Click each link below to download the data.</p>
+<ul>
+<li>CLICK THIS LINK for the medical data: <a
+href="https://psu.instructure.com/courses/2396422/files/182917064/download?download_frd=1">Lab04_Medical_data.xlsx</a></li>
+<li>CLICK THIS LINK for mystery data 1: <a
+href="https://psu.instructure.com/courses/2396422/files/182920273/download?download_frd=1">Lab04_MysteryData1.gpkg</a></li>
+<li>CLICK THIS LINK for mystery data 2: <a
+href="https://psu.instructure.com/courses/2396422/files/168452715/download?download_frd=1">Lab04_MysteryData2.gpkg</a></li>
+</ul>
+</details>
+</details>
+<div class="small-gap">
+
+</div>
+<details>
+<summary>
+Task 2. Create a project for Lab 4 (expand for instructions)
+</summary>
+<div class="collapsible-content">
+<iframe src="https://psu-spatial.github.io/Stat462-2025/T5_ProjectsPositCloud.html" style="width: 100%; height: 700px; border: none;">
+</iframe>
+</div>
+<p><br></p>
+</details>
+<div class="small-gap">
+
+</div>
+<details>
+<summary>
+Task 3. Upload your dataset to the website. (expand for reminder)
+</summary>
+<p><img src="index_images/im_T2_Upload.png" /></p>
+</details>
+<div class="small-gap">
+
+</div>
+<details>
+<summary>
+Task 4. Install more packages (expand for instructions)
+</summary>
+<p><br></p>
+<p>Unfortunately on the website you need to install your packages each
+time.<br>Go to to the packages tab, click install to get to the
+app-store and download/install these packages:</p>
+<ul>
+<li><code>readxl</code></li>
+<li><code>viridis</code></li>
+<li><code>ggstatsplot</code></li>
+<li><code>terra</code></li>
+<li><code>tigris</code></li>
+<li><code>tidyverse</code></li>
+<li><code>dplyr</code></li>
+<li><code>tmap</code></li>
+<li><code>elevatr</code></li>
+<li><code>osmdata</code></li>
+<li><code>ggplot2</code></li>
+<li><code>ggthemes</code></li>
+<li><code>RColorBrewer</code></li>
+<li><code>plotly</code></li>
+<li><code>cols4all</code></li>
+<li><code>shinyjs</code></li>
+</ul>
+<p>We will also need a package called sf, which runs a lot of the
+spatial commands in R. Unfortunately, posit cloud sometimes has a few
+technical issues with sf, so you will need to run a special command.</p>
+<p>IN THE CONSOLE, run these two commands.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;remotes&quot;</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="at">repo =</span> <span class="st">&quot;r-spatial/sf&quot;</span>, <span class="at">ref =</span> <span class="st">&quot;93a25fd8e2f5c6af7c080f92141cb2b765a04a84&quot;</span>)</span></code></pre></div>
+<p>T6_Packages.html <br><em>Reminder: <a
+href="https://psu-spatial.github.io/Stat462-2025/T6_Packages.html">Tutorial:
+Packages cheatsheet</a></em>.</p>
+</details>
+</div>
+<div id="option-2.-r-desktop-users" class="section level4">
+<h4>Option 2. R-Desktop Users</h4>
+<details>
+<summary>
+Task 1. Create a project for Lab 4
+</summary>
+<p><br></p>
+<div class="collapsible-content">
+<iframe src="https://psu-spatial.github.io/Stat462-2025/T5_ProjectsRDesktop.html" style="width: 100%; height: 700px; border: none;">
+</iframe>
+</div>
+</details>
+<div class="small-gap">
+
+</div>
+<details>
+<summary>
+Task 2. Get the data &amp; <strong>put it in your Lab 4 folder</strong>
+</summary>
+<p><br></p>
+<p>All the data is on the Lab 4 canvas page. But here’s a shortcut.
+Click each link below to download the data and put it directly into your
+Lab 4 folder.</p>
+<ul>
+<li>CLICK THIS LINK for the medical data: <a
+href="https://psu.instructure.com/courses/2396422/files/182917064/download?download_frd=1">Lab04_Medical_data.xlsx</a></li>
+</ul>
+</details>
+<ul>
+<li>CLICK THIS LINK for mystery data 1: <a
+href="https://psu.instructure.com/courses/2396422/files/182920273/download?download_frd=1">Lab04_MysteryData1.gpkg</a>
+</details></li>
+<li>CLICK THIS LINK for mystery data 2: <a
+href="https://psu.instructure.com/courses/2328607/files/168452715/download?download_frd=1">Lab04_MysteryData2.gpkg</a>
+</details></li>
+</ul>
+<div class="small-gap">
+
+</div>
+<details>
+<summary>
+Task 3. Install some packages
+</summary>
+<p><br></p>
+<p>We need to install some more packages.<br>Go to to the packages tab,
+click install to get to the app-store and download/install these
+packages. If your computer says its missing a package later on, install
+anything it suggests.</p>
+<ul>
+<li><code>elevatr</code></li>
+<li><code>osmdata</code></li>
+<li><code>cols4all</code></li>
+<li><code>shinyjs</code></li>
+</ul>
+<p>Remember DO NOT put <code>install.packages()</code> into your
+lab-script - copy and paste it into thee console.</p>
+<p><br><em>Reminder: <a
+href="https://hgreatrex.github.io/Geog364_2024/pg_Tut3_basics.html#Tutorial_3G:_Packages">Tutorial:
+Packages cheatsheet</a></em>.</p>
+</details>
+<p><br></p>
+</div>
+</div>
+<div id="set-up-your-lab-4-report" class="section level3">
+<h3>Set-up your Lab 4 report</h3>
+<p>You are welcome to use/edit the template you made in Lab 4. If you
+are unsure what I mean by that, follow these instructions.</p>
+<details>
+<summary>
+Task. Create your RMarkdown file - expand &amp; look at Tutorial 4B and
+4C
+</summary>
+<p><br></p>
+<div class="collapsible-content">
+<iframe src="https://hgreatrex.github.io/Geog364_2024/pg_Tut4_markdown.html#Tutorial_4B:_Creating_a_markdown_document" style="width: 100%; height: 700px; border: none;">
+</iframe>
+</div>
+</details>
+<div class="small-gap">
+
+</div>
+<details>
+<summary>
+Task. Edit your YAML code
+</summary>
+<p><br></p>
+<p>Lets use similar options to Lab 4, although you could try a different
+theme. Remember YAML code is annoying to edit, because here, <em>spaces
+really do matter</em>. Everything has to be perfect or it won’t
+knit.</p>
+<p><strong>Select everything in my code chunk here and replace your YAML
+with this (remember the — on line 1 and at the end).</strong></p>
+<p>Now edit the author name to your own. If you wonder what Sys.Date()
+is, don’t touch it - it automatically gives you the current date.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="sc">---</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>title<span class="sc">:</span> <span class="st">&quot;GEOG-364 - Lab 4&quot;</span></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>author<span class="sc">:</span> <span class="st">&quot;hlg5155&quot;</span></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>date<span class="sc">:</span> <span class="st">&quot;`r Sys.Date()`&quot;</span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>output<span class="sc">:</span></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>  html_document<span class="sc">:</span></span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>    toc<span class="sc">:</span> true</span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>    toc_float<span class="sc">:</span> yes</span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a>    number_sections<span class="sc">:</span> yes</span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a>    theme<span class="sc">:</span> lumen</span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a>    df_print<span class="sc">:</span> paged</span>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a><span class="sc">---</span></span></code></pre></div>
+</details>
+<div class="small-gap">
+
+</div>
+<details>
+<summary>
+Task. Change the theme and knit
+</summary>
+<p><br></p>
+<p>In the YAML code, change the theme to any one of your choice that
+isn’t not lumen (see here to view available themes - <a
+href="https://bootswatch.com/"
+class="uri">https://bootswatch.com/</a>.). <br></p>
+<p><strong>Some might not work</strong>, but these are likely to:
+“default”, “bootstrap”, “cerulean”, “cosmo”, “darkly”, “flatly”,
+“journal”, “lumen”, “paper”, “readable”, “sandstone”, “simplex”,
+“spacelab”, “united”, “yeti”.</p>
+</details>
+<div class="small-gap">
+
+</div>
+<details>
+<summary>
+Task. Clean the file and create/run your library code chunk
+</summary>
+<p><br></p>
+<ul>
+<li><p>Click on your lab script (the Rmd file) and delete all the
+‘welcome text’ after line 11.<br>Press enter a few times and make a new
+level-1 heading called <code>Set Up</code>.<br></p></li>
+<li><p>We should have all the packages we need installed, but we need to
+open them. Make a new code chunk containing this code.<br></p></li>
+</ul>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="fu">library</span>(terra)</span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a><span class="fu">library</span>(tmap)</span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a><span class="fu">library</span>(ggthemes)</span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a><span class="fu">library</span>(viridis)</span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a><span class="fu">library</span>(RColorBrewer)</span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a><span class="fu">library</span>(plotly)</span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a><span class="fu">library</span>(spatstat)</span>
+<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a><span class="fu">library</span>(sfdep)</span></code></pre></div>
+<p><br></p>
+<ul>
+<li><p>Press the green arrow on the right of the code chunk to run the
+code inside it. You will see a load of “loading text” telling your
+details about the packages you just loaded.<br><br> Press the green
+arrow AGAIN. The text should disappear unless there is an
+error.<br></p></li>
+<li><p>Note, remember to run this code chunk EVERY TIME your start
+R-Studio (in the same way you need to click on an app on your phone
+before you can use it). <br></p></li>
+</ul>
+<p><br></p>
+</details>
+<div class="small-gap">
+
+</div>
+<details>
+<summary>
+Task. Add warning=FALSE and message=FALSE to your library code chunk.
+</summary>
+<p><br></p>
+<ul>
+<li>Expand here for a tutorial.</li>
+</ul>
+<div class="collapsible-content">
+<iframe src="https://psu-spatial.github.io/Stat462-2025/T7_Markdown_4bCodeChunkOptions.html" style="width: 100%; height: 700px; border: none;">
+</iframe>
+</div>
+</details>
+<div class="small-gap">
+
+</div>
+</div>
+<div id="check-your-progress" class="section level3">
+<h3>Check your progress</h3>
+<p>Your lab script should now look similar this, but with your theme and
+YAML options of choice (you might have a few different libraries than in
+my screenshot). You should also be able to knit it successfully. If not,
+go back and do the previous sections!</p>
+<p><br></p>
+<p><img src="index_images/pg_364Lab2_Summary_2021_fig2.png" /></p>
+<p><br></p>
+<p><br />
+</p>
+<hr />
+<p><br />
+</p>
+</div>
+</div>
+<div id="spatial-domain" class="section level1">
+<h1>Spatial Domain</h1>
+<div id="introduction-read-this" class="section level2">
+<h2>Introduction (READ THIS!)</h2>
+<p>Your spatial domain describes both the environment or area within
+which your data exists and defines the spatial boundaries of your
+analysis. If this domain is misrepresented (either by including
+irrelevant areas, or excluding critical regions) it can distort the
+results and lead to incorrect inferences about spatial patterns.</p>
+<p>There is no perfect domain for three reasons. Expand each button
+below to find out more details.</p>
+<details>
+<summary>
+<strong>1. It depends on your needs</strong>
+</summary>
+<p><br></p>
+<p>In part your choice of domain is going to depend on WHY you are
+looking at the data. As we have seen in class, patterns such as
+clustering are scale dependent - and so are the processes that cause
+them. So you might choose a certain domain depending on your needs.</p>
+<p>For example, consider the figure below, where I have plotted the same
+data at two different scales:</p>
+<ul>
+<li><p>For example, a CDC representative for Pennsylvania might be
+interested in considering the entire area as their ‘domain’ if they want
+to understand the progression of a disease outbreak. At the moment it’s
+clearly clustered in State College - useful information that can lead
+directly to action.</p></li>
+<li><p>They might ALSO be interested in analyzing the data across a
+smaller domain to see if they can identify locations where the disease
+is being spread (say one hall-of-residence). In this case, it’s clear we
+don’t see a single easy cluster of cases. In fact they seem to be rather
+uniformly spread out (maybe the locational fallacy is at play?)</p></li>
+</ul>
+<p><img src="index_images/pg_Lab4_Domain1.png"
+style="width:100.0%" /></p>
+<p><br><br></p>
+</details>
+<div class="small-gap">
+
+</div>
+<details>
+<summary>
+<strong>Your data must have an equal chance of appearing anywhere in
+your domain, or all your statistical tests won’t work</strong>
+</summary>
+<p><br></p>
+<p>Your sample is must be representative of your population, so ALL THE
+STATISTICS TESTS assume that there is an equal chance that any location
+within your domain could contain data.</p>
+<p>If you make your domain too big, your data will appear to be
+clustered, but in fact it might mean you simply didn’t collect data in
+part of the domain. For example, if you were asked to assess if the dots
+in case A and B below were arranged uniformly or were clustered
+together, you would have very different outcomes, despite the dots
+themselves being identical.</p>
+<p><img src="index_images/pg_Lab4_Domain2.png"
+style="width:100.0%" /></p>
+<p><br><br></p>
+</details>
+<div class="small-gap">
+
+</div>
+<details>
+<summary>
+<strong>Its CRUCIAL to consider the “non-uniformity of space</strong>
+</summary>
+<p><br></p>
+<p>As we discussed above, there should be an equal chance of seeing your
+data anywhere in your domain. BUT.. Unlike traditional statistics, where
+sampling is assumed to be random and uniform, spatial data is more
+nuanced. Landscape features, political borders, and human activity vary
+greatly across space and they can all impact the structure and
+interpretation of your data.</p>
+<p>This effect is called the <strong>‘non uniformity of space’</strong>
+– when we know more information about the background map than we can see
+in our actual data.</p>
+<p>For example:</p>
+<ul>
+<li><p>Is an area with low population density in a city linked to ‘a
+lack of data collection’, ‘a lake/park’ or some sociopolitical reason?
+Just looking at population density won’t tell you the answer, we also
+need to look at the background map.</p></li>
+<li><p>Equally, data might look clustered, but in fact there are just
+areas where it’s not possible to have points. For example, without the
+nuance of the background map you might get very different conclusions
+from an analysis of bike parking in Helsinki:</p></li>
+</ul>
+<p><img src="index_images/pg_Lab4_Domain3NonUnif.png"
+style="width:100.0%" /></p>
+<p><br></p>
+<p><strong>So consider the non uniformity of space when designing your
+domain</strong></p>
+<p>Your domain doesn’t have to be square! So we are balancing the need
+for our domain to only contain landscapes that have an ‘equal chance’ of
+seeing our data (e.g. we can’t get bike parking in the ocean’, vs the
+complexity of making your domain so complex that you can’t get anything
+done. This also links to the spatial fallacy of “fuzzy borders”</p>
+<p><br><br></p>
+</details>
+<p><br></p>
+</div>
+<div id="challenge-a.-data-detective" class="section level2">
+<h2>Challenge A. Data detective</h2>
+<p><br></p>
+<p>I recently found two ‘mystery files’ on my computer that I had
+forgotten to name correctly.</p>
+<p>I know they must be from two out of these four experiments:</p>
+<ul>
+<li><p><strong>COVID-19 Clusters in Central Pennsylvania</strong>. <br>
+The local government has asked for help identifying clusters of COVID-19
+cases across central PA. The aim is to prioritize mobile testing units
+and health messaging in affected towns.</p></li>
+<li><p><strong>Mediterranean Vineyard Clusters</strong>. <br> An
+international agricultural group is funding a study of vineyard
+clustering in two Mediterranean islands, aiming to evaluate whether
+specific micro-climates or land use policies are influencing planting
+decisions.</p></li>
+<li><p><strong>Smooth-Hound Shark Hot-spots</strong>. <br> You are
+working with the regional fishing board to identify hot-spots for
+Smooth-Hound Shark activity. The goal is to define seasonal no-fishing
+zones to support sustainable stock management. The data represents
+tagged shark locations in the last month.</p></li>
+<li><p><strong>Polar Bear Cluster Study in the Arctic</strong>. <br> PSU
+ecologists are investigating polar bear movement patterns across the
+Arctic. Using GPS collar data, they are analyzing seasonal hot-spots for
+foraging and denning, particularly in response to changing sea ice
+patterns.</p></li>
+</ul>
+<p><br></p>
+<ol style="list-style-type: decimal">
+<li>Check your setup</li>
+</ol>
+<ul>
+<li>If you haven’t already, GO AND DO THE SET-UP SECTION. You should now
+have your project running, your Lab 4 report open, and your library code
+chunk run.</li>
+</ul>
+<p><br></p>
+<ol start="2" style="list-style-type: decimal">
+<li>Read in the data</li>
+</ol>
+<ul>
+<li>Create a heading called <strong>Mystery Data</strong>.</li>
+<li>Create a code chunk and use the <code>st_read()</code> command to
+read each dataset into R.</li>
+</ul>
+<details>
+<summary>
+Expand for a tutorial on st_read()
+</summary>
+<p><br></p>
+<div class="collapsible-content">
+<iframe src="https://psu-spatial.github.io/Stat462-2025/in_T07_ReadingInData.html#16_Loading_spatial_data_with_st_read" style="width: 100%; height: 700px; border: none;">
+</iframe>
+</div>
+</details>
+<div class="small-gap">
+
+</div>
+<p><br></p>
+<ol start="3" style="list-style-type: decimal">
+<li>Map the data</li>
+</ol>
+<ul>
+<li>In your lab report, explore and map the data. Remember that there
+are mapping tutorials in Lab 3, or in your Lab 3 report! You can also
+check this online guide: <a
+href="https://r-tmap.github.io/tmap-book/layers.html">https://r-tmap.github.io/tmap-book/layers.html</a></li>
+</ul>
+<p><br></p>
+<ol start="4" style="list-style-type: decimal">
+<li>Match the data to the experiment</li>
+</ol>
+<ul>
+<li>Using your maps, work out which experiment each dataset matches (see
+the exercise intro).</li>
+<li>Explain your reasoning in your report, providing common-sense
+evidence to support your explanation of the non-uniformity of space.
+<em>Hint: this isn’t meant to be a trick – it should be fairly
+straightforward.</em> <em>Hint 2: if you’re stuck, remember you can
+enter interactive mode with <code>tm_mode("view")</code>.</em></li>
+</ul>
+<p><br></p>
+<ol start="5" style="list-style-type: decimal">
+<li>Choose an appropriate spatial domain</li>
+</ol>
+<ul>
+<li>For <strong>each</strong> of your two chosen scenarios, describe
+what you think would be a good spatial domain (study area) given the aim
+of the research project.</li>
+<li>Consider both the geography and the research question: What area
+makes sense to include? What might be too broad or too narrow? Does the
+non uniformity of space, locational fallacy or edge effects impact your
+choice.</li>
+<li>Then describe in words whether the points in your dataset seem
+<strong>clustered</strong>, <strong>dispersed</strong>, or
+<strong>uniformly</strong> distributed.</li>
+<li>Explain your reasoning in your own words.</li>
+</ul>
+<p><br><br></p>
+</div>
+</div>
+<div id="understanding-distance" class="section level1">
+<h1>Understanding Distance</h1>
+<p>In this section, we’ll explore different ways to assess distance and
+proximity using OpenStreetMap (OSM) data. We’ll focus on fire station
+locations in Chicago and learn how to map them, extract relevant
+features, calculate distances, and define neighborhoods.</p>
+<p><br></p>
+<div id="chicago-fire-set-up" class="section level2">
+<h2>Chicago fire set-up</h2>
+<ol start="6" style="list-style-type: decimal">
+<li>Get the data</li>
+</ol>
+<details>
+<summary>
+<strong>Expand and complete!</strong>
+</summary>
+<p><br></p>
+<ul>
+<li>This code will load the locations of all the Fire-Stations in
+Chicago into R. Copy carefully into your report and run.</li>
+</ul>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co"># Get a RECTANGULAR bounding box for Chicago</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>bbox_city_rectangle <span class="ot">&lt;-</span> <span class="fu">getbb</span>(<span class="st">&quot;Chicago, USA&quot;</span>) </span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="co"># Now query OpenStreetMap </span></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>fire_stationdata <span class="ot">&lt;-</span> <span class="fu">opq</span>(<span class="at">bbox =</span> bbox_city_rectangle) <span class="sc">%&gt;%</span></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>     <span class="fu">add_osm_feature</span>(<span class="at">key =</span> <span class="st">&quot;amenity&quot;</span>, <span class="at">value =</span> <span class="st">&quot;fire_station&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>     <span class="fu">osmdata_sf</span>()</span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a><span class="co"># Look at the data</span></span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a>fire_stationdata</span></code></pre></div>
+<p><br></p>
+<ul>
+<li><p>You should see a list of the data you have just downloaded. This
+command returns EVERYTHING related to fire stations in the area and you
+can see that there is space for every type of vector data, in our case
+1586 points and 165 polygons. From a quick glance, I think the polygons
+refer to fire station buildings and the points are ANYTHING fire-service
+related.</p></li>
+<li><p>Click here to understand what you just did: <a
+href="https://www.youtube.com/watch?v=kcpiH6dDWLE"
+class="uri">https://www.youtube.com/watch?v=kcpiH6dDWLE</a></p></li>
+<li><p>To read more about how OSM stores fire-station data, see here -
+<a
+href="https://wiki.openstreetmap.org/wiki/Emergency_facilities_and_amenities"
+class="uri">https://wiki.openstreetmap.org/wiki/Emergency_facilities_and_amenities</a></p></li>
+</ul>
+<br><br>
+</details>
+<div class="small-gap">
+
+</div>
+</div>
+<div id="make-a-map" class="section level2">
+<h2>Make a map</h2>
+<ol start="7" style="list-style-type: decimal">
+<li>Extract polygons &amp; map</li>
+</ol>
+<details>
+<summary>
+<strong>Expand and complete!</strong>
+</summary>
+<p><br></p>
+<ul>
+<li>The point data is often messy (people adding fire-hoses etc). So we
+are going to focus on the polygon fire station buildings.</li>
+<li>Add this command into your lab script and run. This will turn
+fire-stations into the type of spatial file you are used to.</li>
+</ul>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>fire_station_buildings <span class="ot">&lt;-</span> fire_stationdata<span class="sc">$</span>osm_polygons</span></code></pre></div>
+<ul>
+<li>Now, Make a map of the fire stations in Chicago, remembering if you
+are using tmap that you are using tm_polygons() NOT tm_dots().</li>
+</ul>
+<br><br>
+</details>
+<div class="small-gap">
+
+</div>
+<ol start="8" style="list-style-type: decimal">
+<li>Find centroids &amp; map</li>
+</ol>
+<details>
+<summary>
+<strong>Expand and complete!</strong>
+</summary>
+<p><br></p>
+<ul>
+<li><p>It’s clear our polygons are VERY small compared to the overall
+area. And in terms of the topic, I don’t really care how big the fire
+station buildings are, just that they exist. So let’s choose the MEAN
+CENTRE and convert it into points.<br />
+<br />
+As we discussed in class, there are a few ways to do this. Given that we
+don’t really care about the shape of our buildings, lets use
+st_centroid, which will find the “center of mass” of each building.</p>
+<p><br />
+<img src="index_images/pg_lab4_MeanCentre.png" /></p></li>
+<li><p>Add this command into your lab script and run. This will convert
+the fire station data into points. It might give you a warning about
+geometries, ignore it!</p></li>
+</ul>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>fire_stations <span class="ot">&lt;-</span> <span class="fu">st_centroid</span>(fire_station_buildings)</span></code></pre></div>
+<p><br><br></p>
+<ul>
+<li>In your report, Make a map of the fire station locations (points
+e.g. tm_dots) - it will be easier to make out a pattern. Describe the
+features of the pattern you see and what you think might be causing
+it.</li>
+</ul>
+<p>You should see something like this:</p>
+<img src="index_images/pg_lab4_firestations.png" style="width:90.0%" />
+<br><br>
+</details>
+<p><br><br></p>
+</div>
+<div id="closest-stations" class="section level2">
+<h2>Closest stations</h2>
+<ol start="9" style="list-style-type: decimal">
+<li>Closest stations challenge</li>
+</ol>
+<p>Now we have the fire station locations, we want to consider
+“neighborhood”. Which fire-stations are <em>closest</em> to one another
+and what does “closest” even mean?</p>
+<p>This is a genuine issue faced by emergency authorities. For example,
+it is needed when considering which stations deserve new vehicles, or
+where to put new stations.</p>
+<p>Have a look at this report, which explores the issue for Columbus
+Ohio - and which gets to use several billion pieces of data.. <a
+href="https://storymaps.arcgis.com/stories/0037b3eb93904ed6aa00cbba424af0da"
+class="uri">https://storymaps.arcgis.com/stories/0037b3eb93904ed6aa00cbba424af0da</a>.
+It was completed by one of our MGIS alumni, Rob Ford.</p>
+<p><br></p>
+<ol start="10" style="list-style-type: decimal">
+<li>Measuring distance</li>
+</ol>
+<p>In your report, come up with AT LEAST three different ways that you
+could measure the ‘closeness’ or ‘distance’ between fire-stations. Use
+the reading above to justify your answers. We will also talk about this
+in class.</p>
+</div>
+<div id="check-in" class="section level2">
+<h2>Check-in</h2>
+<p>Your report &amp; R-Studio should look something like the screenshot
+below (it might not be <em>identical</em> but it should be similar).</p>
+<p><img src="index_images/pg_lab4_week2.png" style="width:100.0%" /></p>
+<p><br></p>
+</div>
+<div id="subsetting-data" class="section level2">
+<h2>Subsetting data</h2>
+<p><br></p>
+<table>
+<colgroup>
+<col width="37%" />
+<col width="62%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><br><br> <em>Chicago has a set internal neighborhoods, arranged
+informally into “sides” e.g. “Northside”, “SouthSide”… These
+neighborhood are not federally recognized, but they are used by the city
+and by local people. So.. we can access this data via downloading it
+from Chicago’s City Data Portal.</em> <br><br>Let’s subset to a smaller
+dataset, because I know that the people on POSIT-Cloud have been
+struggling. Specifically, we are going to focus on South East
+Chicago.</td>
+<td><a
+href="https://commons.wikimedia.org/wiki/File:Chicago_community_areas_map.svg"><img
+src="index_images/pg_lab4_ChicagoSides.png" width="800"
+alt="Chicago’s neighbourhoods" /></a></td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<ol start="13" style="list-style-type: decimal">
+<li>Get the boundary data &amp; read into R</li>
+</ol>
+<details>
+<summary>
+<strong>Expand for instructions</strong>
+</summary>
+<p><br><br></p>
+<ul>
+<li><p>Go to this website. <a
+href="https://data.cityofchicago.org/Facilities-Geographic-Boundaries/Boundaries-Community-Areas-current-/cauq-8yn6"
+class="uri">https://data.cityofchicago.org/Facilities-Geographic-Boundaries/Boundaries-Community-Areas-current-/cauq-8yn6</a></p></li>
+<li><p>On the top right, click Export, then choose the GeoJSON format.
+Move/upload the file into your project folder.</p></li>
+</ul>
+<p><img src="index_images/pg_lab4_ChicagoData.png"
+style="width:80.0%" /></p>
+<p><br><br></p>
+<ul>
+<li>In your lab report, read the data into R using the
+<code>st_read()</code> command - e.g. copy/paste the code-chunk
+below:</li>
+</ul>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>CommunityAreas <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">&quot;Boundaries - Community Areas (current).geojson&quot;</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>CommunityAreas</span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a><span class="co"># make a quick map</span></span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a><span class="fu">qtm</span>(CommunityAreas)</span></code></pre></div>
+<ul>
+<li>Your map should look like Chicago boundaries.</li>
+</ul>
+<br><br>
+</details>
+<div class="small-gap">
+
+</div>
+<ol start="14" style="list-style-type: decimal">
+<li>Select our area of interest.</li>
+</ol>
+<details>
+<summary>
+<strong>Expand for instructions</strong>
+</summary>
+<p><br></p>
+<ul>
+<li><p>We are going to focus on the following community areas in the far
+South East of the city:</p>
+<ul>
+<li>“ROSELAND”</li>
+<li>“PULLMAN”</li>
+<li>“SOUTH DEERING”</li>
+<li>“EAST SIDE”</li>
+<li>“WEST PULLMAN”</li>
+<li>“RIVERDALE”</li>
+<li>“HEGEWISCH”</li>
+</ul></li>
+</ul>
+<p><br></p>
+<ul>
+<li>In your lab report, make a new code chunk and copy this code across
+to filter to these communities. If you get a weird error, try re-typing
+the quote marks.</li>
+</ul>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>CommunityAreas_SE <span class="ot">&lt;-</span> CommunityAreas  <span class="sc">%&gt;%</span></span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>   <span class="fu">filter</span>(community <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;ROSELAND&quot;</span>,</span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>                           <span class="st">&quot;PULLMAN&quot;</span>,</span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>                           <span class="st">&quot;SOUTH DEERING&quot;</span>,</span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>                           <span class="st">&quot;EAST SIDE&quot;</span>,</span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a>                           <span class="st">&quot;WEST PULLMAN&quot;</span>,</span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a>                           <span class="st">&quot;RIVERDALE&quot;</span>,</span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a>                           <span class="st">&quot;HEGEWISCH&quot;</span>))</span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a><span class="co"># make a quick map</span></span>
+<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a><span class="fu">qtm</span>(CommunityAreas_SE)</span></code></pre></div>
+<br><br>
+</details>
+<div class="small-gap">
+
+</div>
+<ol start="15" style="list-style-type: decimal">
+<li>Subset the fire-stations to this area.</li>
+</ol>
+<details>
+<summary>
+<strong>Expand for instructions</strong>
+</summary>
+<p><br></p>
+<ul>
+<li><p>Finally, we’re going to use the <code>st_intersection()</code>
+command to select only the fire stations within our chosen
+communities.</p></li>
+<li><p>In your lab report, make a new code chunk and copy/run this code
+to filter to these communities.</p></li>
+</ul>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="co"># Subset the fire stations</span></span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a> fire_station_local <span class="ot">&lt;-</span> <span class="fu">st_intersection</span>(fire_stations, </span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>                                       CommunityAreas_SE)</span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a><span class="co"># Make a quick plot</span></span>
+<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a> <span class="fu">tm_shape</span>(CommunityAreas_SE) <span class="sc">+</span></span>
+<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a>   <span class="fu">tm_borders</span>() <span class="sc">+</span></span>
+<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a>   <span class="fu">tm_shape</span>(fire_station_local) <span class="sc">+</span></span>
+<span id="cb9-10"><a href="#cb9-10" tabindex="-1"></a>   <span class="fu">tm_dots</span>(<span class="at">col =</span> <span class="st">&quot;red&quot;</span>, <span class="at">size =</span> <span class="fl">0.5</span>)<span class="sc">+</span></span>
+<span id="cb9-11"><a href="#cb9-11" tabindex="-1"></a>   <span class="fu">tmap_mode</span>(<span class="st">&quot;view&quot;</span>)</span></code></pre></div>
+<br><br>
+</details>
+<div class="small-gap">
+
+</div>
+<ol start="16" style="list-style-type: decimal">
+<li>Questions</li>
+</ol>
+<details>
+<summary>
+<strong>Expand for instructions</strong>
+</summary>
+<p><br></p>
+<p>I want to check your understanding of what we have just done. So
+after the code, please answer the following questions in your lab
+report. Remember you can look at the data by clicking its name in the
+environment tab, or by using summary(), head(), table() etc.</p>
+<ol style="list-style-type: decimal">
+<li>How many fire stations are inside CommunityAreas_SE? <br><br></li>
+<li>How many unique zip-codes/post-codes are there in the
+fire_station_local data? <br> <em>(hint, table command. <br>hint2. there
+is a useful column inside fire_station_local called addr.postcode)</em>
+<br><br></li>
+<li>Are there any fire-stations in Riverdale? If so, how many? <br>
+<em>(hint, look at the community column in fire_station_local
+data…)</em></li>
+</ol>
+<br><br>
+</details>
+<p><br><br></p>
+</div>
+<div id="measuring-distance" class="section level2">
+<h2>Measuring distance</h2>
+<p>As discussed in class, there are several ways we can measure distance
+using R-Studio. Here, we are going to explore Cartesian distance
+(e.g. “as the crow flies” or straight line distance) and driving
+distance using Open Street map.</p>
+<p><br></p>
+<ol start="17" style="list-style-type: decimal">
+<li>Calculating distance code</li>
+</ol>
+<details>
+<summary>
+<strong>Expand for instructions</strong>
+</summary>
+<p><br></p>
+<p>The code below will calculate the straight-line and driving distance
+between two locations in our dataset.</p>
+<ul>
+<li><p>We can calculate the straight-line distance between two objects
+using the st_distance() command. This defaults to calculating distances
+in meters, so I often change it to km.</p></li>
+<li><p>We can calculate driving distances (and routes) between two
+objects using the osrmRoute() command. You can also choose walking or
+cycling.</p></li>
+</ul>
+<p><br></p>
+<p><strong>YOU NEED A NEW PACKAGE! <br> GO TO THE PACKAGES TAB
+INSTALL/DOWNLOAD THE <code>osrm</code> package. <br>THEN SCROLL UP TO
+YOUR LIBRARY CODE CHUNK IN YOUR REPORT. ADD <code>library(osrm)</code>
+AND RUN THE CODE CHUNK. THEN SCROLL BACK DOWN TO THE END OF YOUR
+REPORT</strong></p>
+<ul>
+<li>Copy these code chunks into your report, understand what they are
+doing and run them. You should see that the Cartesian distance is
+~2.19km and the driving distance ~3.04km, alongside a map.</li>
+</ul>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="co"># Choose which locations you want to look at the distance between</span></span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a><span class="co"># In our case, we are choosing objects/rows from our fire station data.</span></span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a><span class="co"># They could be row numbers you type manually or some sort of filter</span></span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a><span class="co"># I am showing you both examples</span></span>
+<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a> </span>
+<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a>location1 <span class="ot">&lt;-</span> fire_station_local[<span class="dv">1</span>,]</span>
+<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a>location2 <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(fire_station_local,osm_id <span class="sc">==</span> <span class="st">&quot;210429692&quot;</span>)</span></code></pre></div>
+<p><br></p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="co"># Calculate the straight line distance</span></span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a>Distance_Cartesian_m  <span class="ot">&lt;-</span> <span class="fu">st_distance</span>(location1,location2)</span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a>Distance_Cartesian_km <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(Distance_Cartesian_m<span class="sc">/</span><span class="dv">1000</span>)</span>
+<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a>Distance_Cartesian_km</span></code></pre></div>
+<p><br></p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="co"># And driving distance </span></span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a>Distance_Driving <span class="ot">&lt;-</span> <span class="fu">osrmRoute</span>(<span class="at">src =</span> location1,<span class="at">dst =</span> location2,</span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a>                              <span class="at">overview =</span> <span class="st">&quot;full&quot;</span>,<span class="at">osrm.profile=</span><span class="st">&quot;car&quot;</span>)</span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a>Distance_Driving</span></code></pre></div>
+<p><br></p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="co"># To plot the straight line distance we need to manually</span></span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a><span class="co"># create a straight line between our locations</span></span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a>line_between <span class="ot">&lt;-</span> <span class="fu">st_cast</span>(<span class="fu">st_union</span>(location1, location2), <span class="st">&quot;LINESTRING&quot;</span>)</span>
+<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a><span class="co"># Step 4: Plot both lines and annotate them</span></span>
+<span id="cb13-6"><a href="#cb13-6" tabindex="-1"></a><span class="fu">tm_shape</span>(line_between) <span class="sc">+</span></span>
+<span id="cb13-7"><a href="#cb13-7" tabindex="-1"></a>   <span class="fu">tm_lines</span>(<span class="at">col =</span> <span class="st">&quot;red&quot;</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">title.col =</span> <span class="st">&quot;Euclidean Line&quot;</span>) <span class="sc">+</span></span>
+<span id="cb13-8"><a href="#cb13-8" tabindex="-1"></a>   <span class="fu">tm_shape</span>(Distance_Driving) <span class="sc">+</span></span>
+<span id="cb13-9"><a href="#cb13-9" tabindex="-1"></a>   <span class="fu">tm_lines</span>(<span class="at">col =</span> <span class="st">&quot;blue&quot;</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">title.col =</span> <span class="st">&quot;Driving Line&quot;</span>) <span class="sc">+</span></span>
+<span id="cb13-10"><a href="#cb13-10" tabindex="-1"></a>   <span class="fu">tm_shape</span>(fire_station_local) <span class="sc">+</span></span>
+<span id="cb13-11"><a href="#cb13-11" tabindex="-1"></a>   <span class="fu">tm_dots</span>() <span class="sc">+</span> <span class="fu">tm_legend</span>()<span class="sc">+</span></span>
+<span id="cb13-12"><a href="#cb13-12" tabindex="-1"></a>   <span class="fu">tmap_mode</span>(<span class="st">&quot;view&quot;</span>)</span></code></pre></div>
+<br><br>
+</details>
+<p><br></p>
+<ol start="18" style="list-style-type: decimal">
+<li>Challenge</li>
+</ol>
+<details>
+<summary>
+<strong>Expand for instructions</strong>
+</summary>
+<p><br></p>
+<ul>
+<li><p>Choose two fire-stations that are “close” in terms of
+straight-line distance, but “far apart” in terms of driving
+distance.</p></li>
+<li><p>Hint, try running
+<code>qtm(fire_station_local) + tm_text("osm_id")</code> to help you
+work out which station is which.</p></li>
+<li><p>In your report, edit the code (above) that you just ran to
+calculate the distance between your chosen stations. Run the code and
+make a map of the two distances. <br> <em>Hint You ONLY need to edit the
+row numbers in the first code chunk then run</em></p></li>
+<li><p>Justify why you chose those two stations in your lab report. (You
+don’t have to be right, you just have to have some reasoning why you
+chose those two points).</p></li>
+</ul>
+<p><br />
+</p>
+<hr />
+<p><br />
+</p>
+</div>
+</div>
+<div id="submitting-your-lab" class="section level1">
+<h1>Submitting your Lab</h1>
+<p>Remember to save your work throughout and to spell check your writing
+(next to the save button). Now, press the knit button again. If you have
+not made any mistakes in the code then R should create a html file in
+your lab3 folder, complete with a very recent time-stamp.</p>
+<p><br></p>
+<div id="if-you-are-on-posit-cloud" class="section level3">
+<h3>If you are on posit cloud:</h3>
+<p>You can download each of your .RmD and html files by:</p>
+<ul>
+<li><p>Clicking on the little box next to the Rmd in the Files tab, then
+going to the little blue cogwheel (might need to make your Rstudio full
+screen) and clicking export.<br></p></li>
+<li><p>Repeat the process exactly for the html file underneath it (e,g,
+just have the html clicked.)<br></p></li>
+<li><p>Now go to Canvas and submit BOTH your html and your .Rmd file in
+Lab 4.</p></li>
+</ul>
+<p><br></p>
+</div>
+<div id="posit-desktop" class="section level3">
+<h3>Posit desktop</h3>
+<ul>
+<li><p>Go to your Lab 4 folder, In that folder, double click on the html
+file. This will open it in your browser. CHECK THAT THIS IS WHAT YOU
+WANT TO SUBMIT <br></p></li>
+<li><p>Now go to Canvas and submit BOTH your html and your .Rmd file in
+Lab 4.<br></p></li>
+</ul>
+<p><br></p>
+<hr />
+<p><br />
+</p>
+</div>
+</div>
+<div id="grading-rubric" class="section level1">
+<h1>Grading rubric</h1>
+<ul>
+<li><strong>Submitting Rmd &amp; HTML (20 pts)</strong>
+<ul>
+<li>20: Both .Rmd and .html submitted</li>
+<li>10:Only one file submitted</li>
+</ul></li>
+</ul>
+<p><br></p>
+<ul>
+<li><strong>General style (10 pts)</strong>
+<ul>
+<li>10: Great style:<br />
+<em>Easy to find answers; no library-loading printouts; no code
+warnings; YAML works</em></li>
+<li>8: Minor issues:<br />
+<em>Occasional hard-to-find answers; library-loading text printed;
+missing table of contents</em></li>
+<li>6: Major issues:<br />
+*Hard to find answers; multiple code issues</li>
+</ul></li>
+</ul>
+<p><br></p>
+<ul>
+<li><strong>General writing (10 pts)</strong>
+<ul>
+<li>10: Great writing:<br />
+<em>Full sentences, you have written up what your code does in the
+report. You have used units where appropriate.</em></li>
+<li>8: Minor issues:<br />
+<em>To complete</em></li>
+<li>6: Major issues:<br />
+<em>To complete</em></li>
+</ul></li>
+</ul>
+<p><br></p>
+<ul>
+<li><strong>Data Detective (20 pts). Sliding scale</strong>
+<ul>
+<li>20: Exceptional<br />
+<em>Code works. It’s clear you understand and can communicate domain
+&amp; fallacies. You chose the right experiments and your domain choice
+links with the scenario. I could use this as a detailed worked
+answer.</em></li>
+<li>16: Great work:<br />
+<em>Code works, it’s clear you understand and can communicate domain.
+You chose the right experiments and your domain choice links with the
+scenario. Slightly less nuance or less clear communication</em></li>
+<li>12: Reasonable attempt:<br />
+<em>Code works and some attempt at explaining the ideas. Lots missing.
+It’s clear how you worked out which scenario linked with each
+map.</em></li>
+<li>10: Minor attempt<br />
+<em>Code works and some attempt at explaining the ideas. Lots
+missing.</em></li>
+<li>5: Any attempt</li>
+</ul></li>
+</ul>
+<p><br></p>
+<ul>
+<li><strong>OSM Setup, Mapping &amp; Subsetting (20 pts). Sliding
+scale</strong>
+<ul>
+<li><strong>20:</strong> Exceptional: <br> <em>All steps correct, clean,
+and well-explained with accurate maps, code, answers.</em></li>
+<li><strong>15:</strong> Reasonable attempt: <br> <em>Data loaded and
+mapped but with partial errors or unclear interpretation.</em></li>
+<li>10: Minor attempt<br />
+<em>Code works and some attempt at explaining the ideas. Lots
+missing.</em></li>
+<li>5: Any attempt</li>
+</ul></li>
+</ul>
+<p><br></p>
+<ul>
+<li><strong>Measuring &amp; Justifying Distance (20 pts) Sliding
+scale</strong>
+<ul>
+<li><strong>20:</strong> Exceptional: <br> <em>All steps correct, clean,
+and well-explained with accurate maps, code, answers.</em></li>
+<li><strong>15:</strong> Reasonable attempt: <br> <em>Data loaded and
+mapped but with partial errors or unclear interpretation.</em></li>
+<li>10: Minor attempt<br />
+<em>Code works and some attempt at explaining the ideas. Lots
+missing.</em></li>
+<li>5: Any attempt</li>
+</ul></li>
+</ul>
+<div id="overall" class="section level2">
+<h2>Overall</h2>
+<p>Overall, here is what your lab should correspond to:</p>
+<table class=" lightable-classic-2 table table-striped table-hover table-responsive" style="font-family: &quot;Arial Narrow&quot;, &quot;Source Sans Pro&quot;, sans-serif; margin-left: auto; margin-right: auto; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Grade
+</th>
+<th style="text-align:left;">
+% Mark
+</th>
+<th style="text-align:left;">
+Rubric
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+A*
+</td>
+<td style="text-align:left;">
+98-100
+</td>
+<td style="text-align:left;">
+Exceptional.  Not only was it near perfect, but the graders learned
+something.  THIS IS HARD TO GET.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+96+
+</td>
+<td style="text-align:left;">
+You went above and beyond
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+A
+</td>
+<td style="text-align:left;">
+93+:
+</td>
+<td style="text-align:left;">
+Everything asked for with high quality.   Class example
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+A-
+</td>
+<td style="text-align:left;">
+90+
+</td>
+<td style="text-align:left;">
+The odd minor mistake, All code done but not written up in full
+sentences etc. A little less care
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+B+
+</td>
+<td style="text-align:left;">
+87+
+</td>
+<td style="text-align:left;">
+More minor mistakes.  Things like missing units, getting the odd
+question wrong, no workings shown
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+B
+</td>
+<td style="text-align:left;">
+83+
+</td>
+<td style="text-align:left;">
+Solid work but the odd larger mistake or missing answer.  Completely
+misinterpreted something, that type of thing
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+B-
+</td>
+<td style="text-align:left;">
+80+
+</td>
+<td style="text-align:left;">
+Starting to miss entire/questions sections, or multiple larger mistakes.
+Still a solid attempt. 
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+C+
+</td>
+<td style="text-align:left;">
+77+
+</td>
+<td style="text-align:left;">
+You made a good effort and did some things well, but there were a lot of
+problems. (e.g. you wrote up the text well, but messed up the code)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+C
+</td>
+<td style="text-align:left;">
+70+
+</td>
+<td style="text-align:left;">
+It’s clear you tried and learned something.  Just attending labs will
+get you this much as we can help you get to this stage
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+D
+</td>
+<td style="text-align:left;">
+60+
+</td>
+<td style="text-align:left;">
+You attempt the lab and submit something. Not clear you put in much
+effort or you had real issues
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+F
+</td>
+<td style="text-align:left;">
+0+
+</td>
+<td style="text-align:left;">
+Didn’t submit, or incredibly limited attempt. 
+</td>
+</tr>
+</tbody>
+</table>
+<p>And.. finished!</p>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
