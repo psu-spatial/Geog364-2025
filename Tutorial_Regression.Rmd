@@ -391,7 +391,7 @@ and we're up to date!
 
 \\
 
-## Regression Basics
+# STEP 1 Regression Basics
 
 If none of the summary below makes sense, this is a great overview
 
@@ -678,6 +678,8 @@ corrplot(cor_vector, method = "number",
 
 ```
 
-REFRESH THE PAGE TO CONTINUE
 
+# STEP 2 REGRESSION MODEL
+
+REFRESH THE PAGE FOR STEP 2
 
