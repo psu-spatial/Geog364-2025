@@ -880,6 +880,7 @@ For example</p>
 <h2>D. Update your data</h2>
 <p>To make your regression example more interesting, let’s update your
 data input.</p>
+<p><br></p>
 <ol start="8" style="list-style-type: decimal">
 <li>Update data</li>
 </ol>
@@ -974,6 +975,22 @@ densities</li>
 <span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a>    <span class="at">housepercent.owneroccupied =</span> housetotal.owneroccupied <span class="sc">/</span> total_house,</span>
 <span id="cb9-10"><a href="#cb9-10" tabindex="-1"></a>    <span class="at">housepercent.broadband     =</span> housetotal.broadband     <span class="sc">/</span> total_house  )</span></code></pre></div>
 <p><br><br></p>
+<div id="boxedtext">
+<p><strong>WHY DID I ASK YOU TO DO THIS?</strong> <br><br></p>
+<p>The reason I’m asking you to update your code rather than re-download
+fresh data is that this mirrors how real data analysis works. When
+something in your project changes—especially your input data—it’s
+important to adjust your existing script and run it cleanly from the
+top. This ensures that your workflow is reproducible and that every
+result in your lab comes from the same code, with no hidden steps or
+leftover objects from earlier runs. It also prevents accidental copies
+of the data, mismatched versions, or silent mistakes that can happen
+when you download things manually. <br><br></p>
+<p>This habit will matter more and more as your projects get larger: a
+careful, repeatable workflow is one of the most valuable skills you can
+build in R.</p>
+</div>
+<p><br><br></p>
 </div>
 <div id="e.-finding-a-predictor" class="section level2">
 <h2>E. Finding a predictor</h2>
@@ -1000,17 +1017,44 @@ you removed any outliers.</p></li>
 </ul>
 <p>If you get errors, tell Kiely immediately! (or try a different
 variable)</p>
-<p><br><br><br><br></p>
+<p><br><br></p>
 </div>
 <div id="f.-regression-model" class="section level2">
 <h2>F. Regression model</h2>
-<p>REFRESH PAGE FOR MORE (genuinely sorry)</p>
+<ol start="12" style="list-style-type: decimal">
+<li>Look at the tutorial</li>
+</ol>
+<p>Run through <strong>STEP 2</strong> of the tutorial here <a
+href="https://psu-spatial.github.io/Geog364-2025/Tutorial_Regression.html"
+class="uri">https://psu-spatial.github.io/Geog364-2025/Tutorial_Regression.html</a>
+You should stop when you made maps of the city. e.g. don’t carry onto
+step 3.</p>
+<p><br></p>
+<ol start="13" style="list-style-type: decimal">
+<li>Create your own,</li>
+</ol>
+<p>Now, IN YOUR LAB SCRIPT, choose the predictor that best predicts your
+response variable</p>
+<ul>
+<li><p>Run a regression model using lm</p></li>
+<li><p>Write out the equation using latex, interpret the slope and
+intercept in the text</p></li>
+<li><p>Add a new scatterplot including the line of best fit (no error
+bars e.g. use the tutorial version)</p></li>
+</ul>
+<p><br><br><br><br></p>
+</div>
+<div id="g.-spatial-residuals" class="section level2">
+<h2>G. Spatial Residuals</h2>
+<p>REFRESH YOUR PAGE (sorry)</p>
 <p><br><br></p>
-<p>G. Spatial Residuals</p>
+</div>
+<div id="h.-improve-your-model" class="section level2">
+<h2>H. Improve your model</h2>
 <p><br><br></p>
-<p>H. Improve your model</p>
-<p><br><br></p>
-<p>I. Summary</p>
+</div>
+<div id="i.-lab-summary" class="section level2">
+<h2>I. Lab Summary</h2>
 <p><br><br><br><br></p>
 </div>
 </div>

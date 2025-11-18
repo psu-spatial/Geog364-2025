@@ -439,7 +439,7 @@ object.](index_images/pg_364Lab7_TutRegression_BasicCartoon.png)
 
 <br><br>
 
-## Example 1 - Simple Linear Regression
+## Simple Linear Regression Example - Model Setup
 
 
 Building on the LISA tutorial, suppose we want to understand what influences the
@@ -480,14 +480,8 @@ Relationships measured at the group level do not automatically apply to individu
 
 <br><br>
 
-## Choosing a predictor variable
 
-   
-Lets say I didnt care specically about population density. We want to understand what variables influence our response variable.  
-
-<br><br>
-
-### Tidy your data
+## Tidy your data
 
 This will stop you going insane. 
 
@@ -514,7 +508,14 @@ Chicago.Census.sf  <- Chicago.Census.sf  %>%
 
 ```
 
-<br>
+<br><br>
+
+
+## Choosing a predictor variable
+
+   
+Lets say I didnt care specically about population density. We want to understand what variables influence our response variable.  
+
 
 We have many potential predictor columns! One quick check is to look at the *correlation coefficient*. 
 
@@ -549,7 +550,7 @@ This plot shows the correlation coefficient between the percent.income > 75K and
 <br><br>
 
 
-### Initial Scatterplot
+### Initial Scatterplots
 
 First, let's have a look at the scatterplot. We can make a basic
 scatterplot using the plot command. But just as easily, we can make an
@@ -587,7 +588,7 @@ We have a problem!  This is why it's good to plot the data!!
 
 <br><br>
 
-#### Deal with the outlier (you might not need this)
+### Deal with the outlier (you might not need this)
 
 Our results are dominated by one *huge* outlier.. Click on it and you
 will see that it's census tract 307.02! (mouse over it). The easiest way
@@ -640,8 +641,6 @@ Chicago.Census.sf <- Chicago.Census.sf[Chicago.Census.sf$pop.density_km2  < 1500
 ```
 
 <br><br>
-
-#### Replot
 
 This gives some improvement, but not much!
 
@@ -714,11 +713,122 @@ ggplotly(p)
 
 <br>
 
-I keep plotting the data and predictors until I am happy.
+I keep plotting the data and predictors until I am happy, remembering to provide evidence in the text for my choices. 
 
 <br><br>
 
-# STEP 2 REGRESSION MODEL
+# STEP 2 REGRESSION MODELLING
 
-REFRESH THE PAGE FOR STEP 2
+
+## Model 1
+
+Here is my final choice of variables for model 1. 
+
+-   **Object of analysis**: A single census tract
+
+-   **'Strict' population:** All census tracts within Chicago city
+    limits during the year 2020.
+
+-   **Response variable, y (the thing we are trying to predict) :**
+    Percentage of people earning more than \$75000 in each census tract.
+
+-   **Predictor variable, x : percent.BAdegree**
+    Percentage of people with a degree in each census tract.
+    
+
+### Fit the model
+
+We can fit a line of best fit /  linear model using the `lm` command. Inside the command type 
+
+-   y \~ x where y and x are the COLUMN NAMES of your response and predictor variables. The ~ means "can be explained by" e.g. percent.income.gt75 can be explained by percent.BAdegree. <br>
+-   For data, add the name of your dataset.
+-   `na.exclude` means ignore any missing values.
+
+
+```{r,echo=FALSE}
+
+# lm( y ~ x, data=tablename, na.action="na.exclude")
+
+fit1.lm <- lm(percent.income.gt75 ~ percent.BAdegree, 
+              data = Chicago.Census.sf,
+              na.action="na.exclude")
+
+```
+
+<br>
+
+### Model summary
+
+If you type summary(modelname) then you'll see a load of statistics. Don't worry about most of them, but you can see here how to find the slope and intercept.
+
+
+![](index_images/pg_364Lab7_Regression_2021_fig8.png)
+
+
+
+### Write out the equation
+
+You can use these numbers to write out your model equation.  R understands latex equations using double dollar signs.  So IN THE TEXT PART OF YOUR REPORT, try this but adjust the numbers for your model
+
+![](index_images/pg_364Lab7_Regression_2025_eqn1.png)
+
+
+![](index_images/pg_364Lab7_Regression_2025_eqn2.png)
+
+or
+
+![](index_images/pg_364Lab7_Regression_2025_eqn3.png)
+
+
+Where both are unitless percentages.
+
+<br><br>
+
+### Interpret the equation
+
+So in my case, 
+
+ - Intercept For census tracts where ZERO ppl have a degree, we expect only about 0.00054% of people to make over $75K.  (these census tracts exist, see the plot)
+ 
+  - Slope/gradient. For each percentage increase in people with a degree, we expect the percentage of people making over $75K to increase by 0.47%.  
+  
+<br><br>
+
+### Update the plot
+
+```{r}
+# Make an interactive plot
+p <- Chicago.Census.sf %>% 
+  ggplot(aes(
+    x = percent.BAdegree, 
+    y = percent.income.gt75
+  )) +
+  geom_point(aes(label = NAME), size = 1, alpha = 0.5) +
+  geom_smooth(method = lm, se = FALSE) + # NEW LINE OF BEST FIT
+  labs(
+    x = "% households per tract with degree",
+    y = "% households per tract with income > $75k USD"
+  ) +
+  theme_bw(base_size = 10)
+
+ggplotly(p)
+
+```
+  
+ 
+  
+<br><br>
+
+
+## STEP 3. Mapping model 1
+
+TO COME REFRESH THE PAGE
+
+
+<br><br>
+
+
+
+
+
 

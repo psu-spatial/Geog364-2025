@@ -452,6 +452,9 @@ Remember you can change your background map to identify where places are and do 
 
 To make your regression example more interesting, let's update your data input.
 
+<br>
+
+
 8. Update data
 
 -   Scroll to the top of your lab report, where you download the census data. E.g. it will look something like this but for your city
@@ -566,6 +569,17 @@ IL.Census.sf <- IL.Census.sf %>%
 
 <br><br>
 
+::: {#boxedtext}
+**WHY DID I ASK YOU TO DO THIS?** <br><br>
+
+The reason I’m asking you to update your code rather than re-download fresh data is that this mirrors how real data analysis works. When something in your project changes—especially your input data—it’s important to adjust your existing script and run it cleanly from the top. This ensures that your workflow is reproducible and that every result in your lab comes from the same code, with no hidden steps or leftover objects from earlier runs. It also prevents accidental copies of the data, mismatched versions, or silent mistakes that can happen when you download things manually. <br><br>
+
+This habit will matter more and more as your projects get larger: a careful, repeatable workflow is one of the most valuable skills you can build in R.
+::: 
+
+
+<br><br>
+
 
 ## E. Finding a predictor
 
@@ -588,29 +602,50 @@ Now, IN YOUR LAB SCRIPT, get it working for your city.
 
 If you get errors, tell Kiely immediately! (or try a different variable)
 
-<br><br><br><br>
+<br><br>
 
 
 
 ## F. Regression model
 
-REFRESH PAGE FOR MORE (genuinely sorry)
+
+12.  Look at the tutorial
+
+Run through **STEP 2** of the tutorial here <https://psu-spatial.github.io/Geog364-2025/Tutorial_Regression.html> You should stop when you made maps of the city.
+e.g. don't carry onto step 3.
+
+<br>
+
+13.  Create your own,
+
+Now, IN YOUR LAB SCRIPT, choose the predictor that best predicts your response variable 
+
+-   Run a regression model using lm
+
+-   Write out the equation using latex, interpret the slope and intercept in the text
+
+-   Add a new scatterplot including the line of best fit (no error bars e.g. use the tutorial version)
+
+
+<br><br><br><br>
+
+
+
+## G. Spatial Residuals
+
+
+
+REFRESH YOUR PAGE (sorry)
 
 <br><br>
 
 
-G. Spatial Residuals
+## H. Improve your model
 
 
 <br><br>
 
-
-H. Improve your model
-
-
-<br><br>
-
-I. Summary
+## I. Lab Summary
 
 
 <br><br><br><br>
