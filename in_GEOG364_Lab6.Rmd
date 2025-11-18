@@ -346,7 +346,7 @@ If not, go back and do the previous sections!
 
 ------------------------------------------------------------------------
 
-# THIS LAB
+# WEEK 1
 
 This week we will try a new approach.
 I will work through a tutorial on local autocorrelation using one dataset.
@@ -444,11 +444,11 @@ Remember you can change your background map to identify where places are and do 
     -   Is your "low surrounded by low" poorer areas?
     -   Any outliers and can you work out WHY they are outliers\
 
-<br><br><br><br>
+<br><br>
 
 # WEEK 2
 
-D. Update your data
+## D. Update your data
 
 To make your regression example more interesting, let's update your data input.
 
@@ -469,6 +469,7 @@ IL.Census.sf <- get_acs(geography = "tract",
                 cache_table = TRUE)
 
 ```
+
 
 -  Edit your code to add in these additional variables and re-run (I just copied in the missing lines leaving the rest identical)
 
@@ -565,16 +566,17 @@ IL.Census.sf <- IL.Census.sf %>%
 
 <br><br>
 
-E. Finding a predictor
 
-1.  Look at the tutorial
+## E. Finding a predictor
+
+9.  Look at the tutorial
 
 Run through **STEP 1** of the tutorial here <https://psu-spatial.github.io/Geog364-2025/Tutorial_Regression.html> You should stop when you made maps of the city.
 e.g. don't carry onto step 2.
 
 <br>
 
-2.  Create your own,
+10.  Create your own,
 
 Now, IN YOUR LAB SCRIPT, get it working for your city. 
 
@@ -584,16 +586,34 @@ Now, IN YOUR LAB SCRIPT, get it working for your city.
 
 -  Remember to write up your object, population etc and tell me if you removed any outliers.
 
-If you get errors, tell kiely immediately! (or try a different variable)
+If you get errors, tell Kiely immediately! (or try a different variable)
+
+<br><br><br><br>
+
+
+
+## F. Regression model
+
+REFRESH PAGE FOR MORE (genuinely sorry)
 
 <br><br>
 
 
-F. Regression model
-
-REFRESH PAGE
+G. Spatial Residuals
 
 
+<br><br>
+
+
+H. Improve your model
+
+
+<br><br>
+
+I. Summary
+
+
+<br><br><br><br>
 
 
 # Submitting your Lab
@@ -602,7 +622,7 @@ Remember to save your work throughout and to spell check your writing (next to t
 Now, press the knit button again.
 If you have not made any mistakes in the code then R should create a html file in your lab3 folder, complete with a very recent time-stamp.
 
-<br>
+<br><br>
 
 ### If you are on posit cloud:
 

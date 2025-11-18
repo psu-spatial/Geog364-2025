@@ -387,17 +387,18 @@ and we're up to date!
 ::: small-gap
 :::
 
-<br> <br>
 
-\\
+<br><br>
 
 # STEP 1 Regression Basics
+
+## Theory Refresh (don't skip!)
 
 If none of the summary below makes sense, this is a great overview
 
 -   <https://towardsdatascience.com/linear-regression-explained-1b36f97b7572/>
 
-\\
+<br><
 
 Regression helps us understand how one variable changes in relation to
 another. A simple regression line shows the general trend between two
@@ -408,7 +409,7 @@ $$
 \hat{y} = b_0 + b_1 x
 $$
 
-\\
+<br>
 
 Here,
 
@@ -416,8 +417,7 @@ Here,
     any given value of our *predictor variable, x*. The little hat on
     top means "predicted/estimated"
 
--   $b_0$ is the intercept - the value of the line when it crosses ZERO
-    x.
+-   $b_0$ is the intercept - the value of the line when it crosses x=0.
 
 -   $b_1$ refers to the slope or gradient of the line. e.g. how much
     does y increase for a given x.
@@ -431,12 +431,13 @@ $$
 y_i = \hat{y_i} + \varepsilon_i
 $$
 
-\\
+<br>
 
 ![Basic regression example. Each dot is an individual
 object.](index_images/pg_364Lab7_TutRegression_BasicCartoon.png)
 
-\\ \\
+
+<br><br>
 
 ## Example 1 - Simple Linear Regression
 
@@ -457,7 +458,7 @@ Chicago.
 -   **Response variable, y (the thing we are trying to predict) :**
     Percentage of people earning more than \$75000 in each census tract.
 
-\\ \\
+<br><br>
 
 ### The ecological Fallacy
 
@@ -477,16 +478,20 @@ The key point:
 Relationships measured at the group level do not automatically apply to individuals.
 
 
-
+<br><br>
 
 ## Choosing a predictor variable
 
-    
-### Exploring potential predictors
-
+   
 Lets say I didnt care specically about population density. We want to understand what variables influence our response variable.  
 
-First, let's tidy our table to get rid of any columns we don't need. I'm removing most of the "total" columns because they will be dependent on census tract size. I'm also putting my response variable at the start so I don't go insane.
+<br><br>
+
+### Tidy your data
+
+This will stop you going insane. 
+
+First, let's tidy our table to get rid of any columns we DEFINITELY don't need. I'm removing most of the "total" columns because they will be dependent on census tract size. I'm also putting my response variable at the start so I don't go insane.
 
 
 ```{r}
@@ -508,6 +513,8 @@ Chicago.Census.sf  <- Chicago.Census.sf  %>%
       housepercent.owneroccupied)
 
 ```
+
+<br>
 
 We have many potential predictor columns! One quick check is to look at the *correlation coefficient*. 
 
@@ -539,7 +546,7 @@ corrplot(cor_vector, method = "number",
 This plot shows the correlation coefficient between the percent.income > 75K and every other variable and gives us an initial feel for which variables predict our response.  
    
 
-\\ \\
+<br><br>
 
 
 ### Initial Scatterplot
@@ -551,6 +558,8 @@ interactive plot using ggplot and plotly.
 If you want some tutorials on customising these plots see here
 
 -   <http://www.sthda.com/english/wiki/ggplot2-colors-how-to-change-colors-automatically-and-manually>
+
+<br>
 
 For example here is the scatterplot for population density.
 
@@ -573,14 +582,16 @@ p <- Chicago.Census.sf %>%
 ggplotly(p)
 ```
 
-This is why it's good to plot the data!!
+We have a problem!  This is why it's good to plot the data!!
 
 
-#### Deal with the outlier
+<br><br>
+
+#### Deal with the outlier (you might not need this)
 
 Our results are dominated by one *huge* outlier.. Click on it and you
 will see that it's census tract 307.02! (mouse over it). The easiest way
-I could think to look at it was to just look at any row where the
+I could think to find it was to just look at any row where the
 population density was over 150000 ppl per km2.
 
 ```{r}
@@ -628,7 +639,7 @@ So I shall remove it
 Chicago.Census.sf <- Chicago.Census.sf[Chicago.Census.sf$pop.density_km2  < 150000,] 
 ```
 
-<br>
+<br><br>
 
 #### Replot
 
@@ -678,6 +689,34 @@ corrplot(cor_vector, method = "number",
 
 ```
 
+So in this case, removing that one outlier did change some values but not by much. Things like the percentage of people in the census tract with a bachelors degree were MUCH more influential
+
+
+```{r}
+# Make an interactive plot
+p <- Chicago.Census.sf %>% 
+  ggplot(aes(
+    x = percent.BAdegree, 
+    y = percent.income.gt75, 
+    label = NAME
+  )) +
+  geom_point(size = 1, alpha = 0.5) +
+  labs(
+    x = "% households per tract with degree",
+    y = "% households per tract with income > $75k USD"
+  ) +
+  theme_bw(base_size = 10)
+
+ggplotly(p)
+
+```
+
+
+<br>
+
+I keep plotting the data and predictors until I am happy.
+
+<br><br>
 
 # STEP 2 REGRESSION MODEL
 
