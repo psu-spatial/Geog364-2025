@@ -915,9 +915,189 @@ about the same in the green areas.
 
 ## STEP 4 Spatial autocorrelation in residuals
 
-TO COME REFRESH THE PAGE
+One of the 4 assumptions around regression is that your data should be
+independent.
+
+If that is true then our *residuals* (what is left over) should not have
+any influence or knowledge of each other - so their pattern in space should look like complete spatial randomness. The map above looks reasonable, but what if our color scale is skewing things.
+
+Let's look for any extreme residuals by converting to standard deviations/z-scores. 
+
+```{r}
+# Add in standardised residuals
+Chicago.Census.sf$fit1_resid_ZScore <- scale(Chicago.Census.sf$fit1_residual)[,1]
+
+
+tm_shape(Chicago.Census.sf, unit = "km") +
+  tm_polygons(
+    fill = "fit1_resid_ZScore",
+    lwd = 0,
+    fill.scale = tm_scale_intervals(values = "brewer.rd_bu",
+                                    midpoint=0, style="fixed",
+                                    breaks = c(-14,-3,-1,1,3,14))) +
+  tm_shape(st_geometry(Chicago.city.sf), unit = "km") +
+  tm_borders()+
+  tm_title("Fit1 Residuals - units = standard deviations from 0", size = 0.7) +
+  tm_layout(
+    legend.outside = TRUE,
+    legend.title.size = 0.8,
+    frame = FALSE )
+
+
+
+```
+
+A good model should have very few residuals that are more than 2 standard deviations from zero and no patterns. I can only see a few residuals > 2, but  I DEFINITELY think I see a spatial pattern in these residuals...
+
+To see if we are "seeing pictures in clouds" or there really is a
+spatial pattern, we can look at a Moran's scatterplot with a queen's
+spatial matrix.
+
+<br>
+
+### Get spatial weights (you should already have these)
+
+Now you should already have neighbours and spatial weights matrices calculated from earlier in the lab. Look in your environment tab for something like "neighbor.queens". If so, you don't need this code and can move to the Moran's plots.
+
+Just in case, here's the code.
+
+```{r}
+# remove missing data
+Chicago.Census.sf <- Chicago.Census.sf %>%
+                     st_transform(26916) %>%
+                     filter(!st_is_empty(geometry)) %>%
+                     filter(pop.density_km2 >  0) %>%
+                     st_make_valid()
+
+# Get the geometry/coords  and queens neighbours
+Chicago.tract.geometry <- st_geometry(Chicago.Census.sf)
+neighbor.queens   <- st_contiguity(Chicago.tract.geometry, queen=TRUE)
+weights.queens    <- st_weights(neighbor.queens)
+# calculate the sp version of weights 
+weights.queens.sp <- spdep::nb2listw(neighbor.queens)
+  
+
+
+```
 
 <br><br>
 
+### Calculate Moran's I and LISA
+
+First, lets have a look at the Moran's scatterplot.
+
+```{r}
+
+# and plot , the first line adjusts the margins to make it neater.
+par(mar=c(5,6,1,1))   
+moran.plot(Chicago.Census.sf$fit1_residual, 
+           weights.queens.sp, 
+           xlab  = "Model 1 residuals",
+           ylab  = "Neighbors mean residual (Queens 1st)",
+           labels=NULL,
+           cex=.8, col=rgb(0,0,0,.5),
+           zero.policy = T)
+
+```
+
+<br><br>
+
+This looks like the residuals are meaningfuly clustered - e.g. a strong positive slope. To check, lets run a hypothesis test:
+
+```{r}
+moran.test(Chicago.Census.sf$fit1_residual, 
+           weights.queens.sp ,
+           alternative="two.sided",
+            zero.policy = T)  
+```
+
+
+-   H0: The residuals are spatially independent and show complete spatial randomness (e.g. the pattern may as well have been caused by an IRP) I=0.
+
+-   H1: Global Moran's I for the residuals is unusually High OR low compared to what we expect from spatial randomness (I != 0)
+
+-   Expected Moran's I if H0 is true = -0.0004
+-   Actual observed Moran's I = 0.493
+-   Probability of seeing this if H0 was true = Tiny (less than 2.2x10-16)
+
+From this I feel there is enough evidence to reject H0 and say that we think that the pattern is not spatially independent.
+
+<br><br>
+
+
+We can also dig in further using LISA.  I think in here all you need to check/change is the name of Chicago.Census.sf, the name of the fit1_residual column and your neighbours variables.  Oh and the plot title, but the rest should just run.
+
+```{r}
+
+## Calculate Local moran's I
+LocalMoran <- local_moran(Chicago.Census.sf$fit1_residual, 
+                          neighbor.queens, 
+                          weights.queens,
+                          alternative = "two.sided")
+
+Chicago.Census.sf$LISA_Resid        <- LocalMoran$ii
+Chicago.Census.sf$LISA_Resid_pvalue <- LocalMoran$p_folded_sim
+Chicago.Census.sf$LISA_Resid_Quadrant <- factor(LocalMoran$pysal,
+                                                 levels= c("High-High","High-Low",
+                                                           "Low-High","Low-Low"))
+
+
+Chicago.Census.sf <- Chicago.Census.sf %>%
+  mutate(
+    LISA_Resid_p.LT.05 = LISA_Resid_pvalue <= 0.05,
+    LISA_Resid_Quadrant_sig = as.character(LISA_Resid_Quadrant),
+    LISA_Resid_Quadrant_sig = if_else(LISA_Resid_pvalue > 0.05, 
+                                      "p>0.05", 
+                                      LISA_Resid_Quadrant_sig),
+    LISA_Resid_Quadrant_sig = factor(
+      LISA_Resid_Quadrant_sig,
+      levels = c("High-High", "High-Low", 
+                 "Low-High", "Low-Low", "p>0.05")
+    )
+  )
+
+
+
+
+#---------------------------------------------------
+tmap_mode("view")
+tm_shape(Chicago.Census.sf) +
+           tm_polygons(
+               fill = "LISA_Resid_Quadrant_sig",
+               lwd = 0.5,
+               id = "NAME",
+               fill_alpha = 0.4,
+               fill.scale = tm_scale_categorical(
+                                       values = c("#ca0020",
+                                                  "#f4a582",
+                                                  "#92c5de",
+                                                  "#0571b0",
+                                                  "white"))) +
+  tm_legend(text.size = 1) +
+  tm_title("LISA: Model residual. (p<0.05)") +
+  tm_layout(frame = FALSE)
+
+
+
+# Compare
+```
+<br><br>
+
+### And interpret
+
+-   So in this case "Low" means the model underestimated the true number of ppl making more than $75K - there are more rich people than we expect given the education levels
+
+-   And "high" (red areas) means the model _overestimated_ the true number of ppl making more than $75K.  There are less than we expect given the education levels
+
+<br><br>
+
+I will let you interpret this, but some hints as you zoom around the map.
+
+-   Why do you think the outer census tracts are mostly red?
+-   Why do you think most of the census tracts north of chicago city centre are blue (uptown)
+-   Why might I expect High-High or High-Low around universities?
+
+
+Overall this is a reasonable model. In future labs and classes we will try to improve it.
 
 

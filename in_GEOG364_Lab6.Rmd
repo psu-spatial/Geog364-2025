@@ -611,8 +611,8 @@ If you get errors, tell Kiely immediately! (or try a different variable)
 
 12.  Look at the tutorial
 
-Run through **STEP 2** of the tutorial here <https://psu-spatial.github.io/Geog364-2025/Tutorial_Regression.html> You should stop when you made maps of the city.
-e.g. don't carry onto step 3.
+Run through **STEP 2** of the tutorial here <https://psu-spatial.github.io/Geog364-2025/Tutorial_Regression.html> 
+Don't carry onto step 3.
 
 <br>
 
@@ -636,8 +636,8 @@ Now, IN YOUR LAB SCRIPT, choose the predictor that best predicts your response v
 
 14.  Look at the tutorial
 
-Run through **STEP 3** of the tutorial here <https://psu-spatial.github.io/Geog364-2025/Tutorial_Regression.html> You should stop when you made maps of the city.
-e.g. don't carry onto step 4.
+Run through **STEP 3** of the tutorial here <https://psu-spatial.github.io/Geog364-2025/Tutorial_Regression.html> 
+Don't carry onto step 4.
 
 <br>
 
@@ -651,20 +651,65 @@ Now, IN YOUR LAB SCRIPT,
 
 
 
-<br><br><br><br>
+<br><br>
 
 
 ## H. Spatial residuals
 
-TO COME (sorry)
+15.  Look at the tutorial
+
+Run through **STEP 4** of the tutorial here <https://psu-spatial.github.io/Geog364-2025/Tutorial_Regression.html>
+
+<br>
+
+16.  Create your own for your city
+
+Now, IN YOUR LAB SCRIPT, 
+
+-   Make a Moran's Scatterplot of your residuals and interpret what you see in the text
+
+-   Run a full two sided moran's hypothesis test on your residuals and write out everything in the text
+
+-  Run a LISA analysis on your residuals and interpret in the text.
 
 
 <br><br>
 
+
+
 ## I. Lab Summary
 
+<br>
 
-<br><br><br><br>
+17. Reflection
+
+Finally, imagine you are helping with some some analysis for your chosen city's council. Explain in clear language what you have found for:
+
+-   The autocorrelation & patterns in population density
+
+-   The spatial pattern of people making more than $75K and links to the underlying processes for your particular city/geography. 
+
+-   What variables show promise in predicting the number of people making more than $75K
+
+-   Whether your model meets the requirement of spatial independence and if there are any spatial patterns that are particularly interesting in the residuals.
+
+
+-   Finally, if you could add a SECOND variable to account for some of the remaining spatial variability, what would you choose (either in the list you downloaded or more widely).
+
+
+18. Tidy up your report
+
+Now go back and tidy up your report. 
+
+-   Add headings, subheadings etc so it's easy for us to find all your answers. 
+
+-   Check everything has units included
+
+-   Make sure your code isn't printing out loads and loads of spurious numbers/text, You don't have to include every line of code you wrote.
+
+-   Make sure everything in your lab is linked to YOUR city. Any tutorial/Chicago examples should be separate (and you don't need to submit thm)
+
+<br><br>
 
 
 # Submitting your Lab

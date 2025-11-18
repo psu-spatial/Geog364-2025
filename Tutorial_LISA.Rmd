@@ -618,6 +618,10 @@ It turns out that subsetting to the city borders put our empty lake
 tracts back in! Let's remove and tidy
 
 ```{r}
+
+# remove missing data
+Chicago.Census.sf <- Chicago.Census.sf[Chicago.Census.sf$pop.density_km2 >  0 , ]
+
 Chicago.Census.sf <- Chicago.Census.sf %>%
                      st_transform(26916) %>%
                      filter(!st_is_empty(geometry)) %>%
