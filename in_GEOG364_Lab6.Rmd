@@ -400,34 +400,37 @@ Don't carry onto Local Moran's I.
 
 4.  Create your own,
 
-Now, continue for your city, creating a spatial weights matrix of your choice and running a Moran's scatterplot and Moran's test.
+Now, continue for your city: 
 
--   Fully write out the hypothesis test for your city in the text
+-   Creating a single spatial weights matrix *of your choice* (e.g. you could use EITHER queens/rooks/nearest neighbour or anything else)
 
--   Make sure to describe the pattern you see in the moran's scatterplot in the text and relate to your map.
+-   Then run a Moran's scatterplot and Moran's test. <br>
 
-<br><br><br><br>
+-   In the text, fully write out the hypothesis test for your city (you can choose the alternative hypothesis)
+
+-   In the text, describe the pattern you see in the moran's scatterplot and relate to your map.
+
+<br><br>
 
 ## C. Autocorrelation LISA
 
-3.  Look at STEP 3 of the tutorial
+5.  Look at STEP 3 of the tutorial
 
 Run through the rest of **STEP 3** of the tutorial here <https://psu-spatial.github.io/Geog364-2025/Tutorial_LISA.html> .
 
 <br>
 
-4.  Create your own.
+6.  Create your own.
 
 Now make some LISA plots for your city.
 We will discuss what these mean during Wednesdays class.
 
 <br>
 
-5.  Interpret your results in the text.
+7.  Interpret your results in the text.
 
 Based on that, see if you can interpret the results for your city in your lab report.
-Remember you can change your background map to identify where places are and do some googling!
-Your answer should talk about
+Remember you can change your background map to identify where places are and do some googling! Your answer should talk about
 
 -   **What your results mean (e.g. what are the colors and how do they correspond to your variable)**
 

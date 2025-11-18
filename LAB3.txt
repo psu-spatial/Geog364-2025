@@ -1,0 +1,112 @@
+
+
+
+Style
+ - No library etc
+ - Answers in full sentences
+ - Units
+ - Weird variable names
+ - variables as bullet point list
+ 
+ 
+Describe to your friend
+ Tone - Written to your friend, explaining jargon etc
+ object of analysis is a property/house
+ 
+  - X1 transaction date	Feature	Continuous	for example, 2013.250=2013 March, 2013.500=2013 June, etc.		no
+  - X2 house age	Feature	Continuous		year	no
+  - X3 distance to the nearest MRT station	Feature	Continuous		meter	no
+  - X4 number of convenience stores	Feature	Integer	number of convenience stores in the living circle on foot	integer	no
+  - X5 latitude	Feature	Continuous	geographic coordinate, latitude	degree	no
+  - X6 longitude	Feature	Continuous	geographic coordinate, longitude	degree	no
+  - Y house price of unit area	THIS IS IMPORTANT
+
+    Target	Continuous	10000 New Taiwan Dollar/Ping, where Ping is a local unit, 1 Ping = 3.3 meter squared	10000 New Taiwan Dollar/Ping
+ 
+ 
+POPULATION = SPACE AND TIME  
+    Strict population:  Sindian Dist., New Taipei
+    LOOK FOR YEARS - (from paper). BONUS MARK if they cite paper
+    
+    Inferable population  
+    This area -   Sindian Dist., New Taipei
+    Be careful about timing,  some details happy today
+    Actual prices < 2015
+ 
+ Histogram
+ 
+ Summary stats
+ AND explained a few to their friend in friend language
+ 
+ 
+ 
+DATA LIMITATION
+Don't have house price
+Don't have house size
+Old data (pre-COVID)
+Might be an interesting map and some indidication of expensive areas, or whether things like distance to station
+Data came from an economic research paper , might not be comprehensive
+Missing variables
+Are these all the houses on sale in that period?
+
+---------------------------
+
+Data representation
+ - Vector data. yeah, reasonable
+ - Locational fallacy
+ 
+ Locational fallacy 
+ The observed spatial location of your objects does not match the real spatial process you are trying to study e.g. animals moving around but we map them at a fixed location, OR your objects data cannot meaningfully be located (e.g., cyber-crime, drifting objects, fraud), and yet we map them as if they have true positions..  
+So, houses don't move, so... no.
+ 
+
+=================================
+
+MEH...... 
+Elevation data
+Have some answers
+What does the get_elev_raster command do?  (gets raster data)
+What does z = 14 mean? (zoom level)
+What does crop=“locations” mean (Crop to the box around the point locations)
+In the summary, how many grid-cells are there? (you'll see a number)
+What units are the extent/projection in? (you'll see a number)
+
+Get the railway data
+Why is open streetmap cool.
+
+
+
+SHOW ME SOMETHING NEW
+**CHALLENGE: Copy my code above into a new code chunk then edit, to download ANYTHING else from Open Street Map and add it to your maps below.
+You get 2 marks for any attempt here, or even explaining what you tried to do if it didn’t work.
+You get 3 points for relevant line data
+You get 4 points for relevant point/polygon data
+"If you didn't plot, how can i know this worked?"
+
+
+
+ 
+End of week 1 final map
+It should be:
+Useful for your friend to see the distance to the station for each house.
+Contain some useful background map to help you assess the pattern/process
+Colorblind friendly
+Have your own personal stamp on it!
+ 
+=================================
+
+CHANGE THE PRICE DATA
+They understand the price unit issue (e.g. NTW D per ping) and can explain it
+They realize they don't have the prices, but could compare across neighbourhoods
+They manage to convert them 
+and can put in context of another city
+
+
+ 
+=================================
+REFLECTIONS
+They have some
+aimed at friend
+They actually talk about the map, e.g. houses seem more expensieve per sq foot downtowm. that makes sense. not sure if they are mansions etc in the hills eg. lower sq foot price but bigger size???
+
+
