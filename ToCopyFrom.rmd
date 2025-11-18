@@ -4,530 +4,92 @@ editor_options:
     wrap: 72
 ---
 
-# Regression
+### Mapping the results
 
-In this tutorial, we are going to look at THREE versions of a model to
-assess whether people who make over \$75000 are more likely to live in
-places with higher population density e.g. "downtown". We are also going
-to look to see if the residuals (what is left over) from our model has
-spatial autocorrelation (bad).
+#### Add model output to our data
 
-### Getting the data
-
-This tutorial builds on the example from the LISA tutorial. So IF YOU
-ARE DOING LAB 6 YOU HAVE ALREADY DONE THIS AND MOVE ONTO "BASICS"
-
-<br>
-
-<details>
-
-<summary>**Code to load the example data**</summary>
-
-<br>
-
-We can load your data from the census and tidy up, before plotting
-
-FOR THIS CODE CHUNK, set results='hide' as a code-chunk option, or it
-will swamp your knit: {r, results='hide'}
-
-```{r, eval=FALSE, results="hide", message=FALSE,warning-FALSE}
-# THIS WILL NOT WORK IF YOU DIDN'T RUN YOUR API KEY CODE & RESTART R-STUDIO LAST LAB
-
-
-# Download Illinois ACS data at census tract level for my chosen variables, using tidycensus
-IL.Census.sf <- get_acs(
-   geography = "tract",
-   year = 2017,
-   variables = c(
-      total_pop        = "B05012_001", # total population
-      total_house      = "B25001_001", #total housing units
-      income.gt75      = "B06010_011",# number of people making > 75000 USD
-      med.income       = "B19013_001", #median income
-      total.foreignppl = "B05012_003", #number of foreign born people
-      total.BAdegree   = "B15012_001" , #total with at least a bachelors degree
-      total.workhome   = "B08101_049", #number who work from home#total housing units
-      house.mean_age   = "B25035_001", #average house age
-      house.mean_beds  = "B25041_001", #total homes number of beds in the house
-      housetotal.owneroccupied = "B25003_002", #total homes owner occupied
-      housetotal.broadband  = "B28002_004", #total homes with broadband access
-      housetotal.noplumbing = "B25047_003"), #total homes without plumbing
-   state = "IL",
-   survey = "acs5",
-   geometry = TRUE,
-   output = "wide",
-   cache_table = TRUE)
-```
-
-<br>
-
-We also need to change the map projection. As we're focusing on a single
-city, lets use a local UTM projection, which has EPSG code 26916.
-
-To find one for your area, FIRST find your city's UTM zone, then google which EPSG code you need for it. (the EPSG code is the shortcut number to tell R what projection we are using) 
-
--   <https://mangomap.com/robertyoung/maps/69585/what-utm-zone-am-i-in->
--   There's also a great tutorial here on choosing the best map projection
-<https://source.opennews.org/articles/choosing-right-map-projection/>
-
-```{r, eval=FALSE}
-# Change the map projection to Albers equal projection, 
-# then remove empty polygons (lakes etc) and fix any broken geometry
-IL.Census.sf <- IL.Census.sf %>%
-                st_transform(26916) %>%
-                st_make_valid()
-```
-
-<br>
-
-You can see the data summarized here. Each column ending in E means the
-*estimate* of the value in each census tract and the column ending in M
-means the *margin of error*.
+So we have a model! The scatterplot looks pretty good, but given that
+each object is an individual census tract, we can also make some maps.
+The easiest way to do this is to add the model forecast values to our
+data.frame.
 
 ```{r}
-head(IL.Census.sf)
+Chicago.Census.sf$fit1_predict  <-  predict(fit1.lm)
+Chicago.Census.sf$fit1_residual <-  residuals(fit1.lm)
 ```
 
-For more advanced work we probably want to keep the error columns. But
-here let's remove them.
-
-```{r, eval=FALSE}
-# Remove and rename error columns 
-IL.Census.sf <- IL.Census.sf %>%
-   dplyr::select(
-      GEOID, 
-      NAME,
-      total_pop        = total_popE, 
-      total_house      = total_houseE,
-      income.gt75      = income.gt75E,
-      med.income       = med.incomeE, 
-      total.foreignppl = total.foreignpplE,
-      total.BAdegree   = total.BAdegreeE,             
-      total.workhome   = total.workhomeE,
-      house.mean_age   = house.mean_ageE,
-      house.mean_beds  = house.mean_bedsE,
-      housetotal.owneroccupied = housetotal.owneroccupiedE,
-      housetotal.broadband     = housetotal.broadbandE,
-      housetotal.noplumbing    = housetotal.noplumbingE,
-      geometry )
-```
-
-<br>
-
-Rather than looking at the total population, it makes sense to scale by
-the size of each tract, so that bigger tracts don't skew our results. We
-want:
-
--   the population density (e.g. total_pop / Area)<br>
--   the percentage of people earning over \$75K (e.g. income.gt75 /
-    total_pop)<br>
-
-<br>
-
-```{r, eval=FALSE}
-
-# Find the areas in each county & change the units from metres squared to km squared
-IL.Census.sf$Area  <- st_area(IL.Census.sf)
-IL.Census.sf$Area  <- as.numeric(set_units(IL.Census.sf$Area,"km^2"))
-
-
-# Now work out percentage ppl and homes rather than totals
-
-IL.Census.sf <- IL.Census.sf %>% 
-  mutate(
-    pop.density_km2    = total_pop   / Area,
-    house.density_km2  = total_house / Area,
-    percent.income.gt75 = income.gt75 / total_pop,
-    percent.foreignppl = total.foreignppl / total_pop,
-    percent.BAdegree   = total.BAdegree   / total_pop,
-    percent.workhome   = total.workhome   / total_pop,
-    housepercent.owneroccupied = housetotal.owneroccupied / total_house,
-    housepercent.broadband     = housetotal.broadband     / total_house,
-    housepercent.noplumbing    = housetotal.noplumbing    / total_house
-  )
-
-
-# Finally select the final columns we want
-IL.Census.sf <- IL.Census.sf %>%
-   dplyr::select(
-      GEOID, NAME, Area, 
-      total_pop, pop.density_km2, 
-      total_house, house.density_km2,
-      income.gt75, percent.income.gt75,
-      med.income, house.mean_age, 
-      percent.foreignppl, percent.BAdegree, 
-      percent.workhome, housepercent.broadband,
-      housepercent.owneroccupied, housepercent.noplumbing)
-      
-
-```
-
-<br>
-
-```{r, include=FALSE}
-IL.Census.sf <- IL.Census.tmp
-
-```
-
-Now let's crop to the Chicago metropolitan area
-
-```{r, results="hide", message=FALSE, warning=FALSE}
-
-# Get the Chicago city limits
-cb.sf            <- core_based_statistical_areas(cb = TRUE, year=2017)
-Chicago.city.sf  <- filter(cb.sf, grepl("Chicago", NAME))
-
-
-# and set the projection to be identical to the census data
-Chicago.city.sf  <- Chicago.city.sf %>%
-                    st_transform(26916) %>%
-                    st_make_valid()
-
-
-# subset the Illinois census data with the Chicago city limits
-Chicago.Census.sf <- ms_clip(target = IL.Census.sf, 
-                             clip = Chicago.city.sf, 
-                             remove_slivers = TRUE)
-
-```
-
-<br>
-
-Now let's remove any empty fields
-
-```{r}
-# remove missing data and/or census tracts with no ppl in
-Chicago.Census.sf <- Chicago.Census.sf %>% 
-                     filter(pop.density_km2 > 0) %>% 
-                     filter(!st_is_empty(geometry)) %>% 
-                     st_make_valid()
-
-
-
-
-
-```
-
-and we're up to date!
-
-</details>
-
-::: small-gap
-:::
-
-<br> <br>
-
-\\
-
-## Regression
-
-If none of the summary below makes sense, this is a great overview
-
--   <https://towardsdatascience.com/linear-regression-explained-1b36f97b7572/>
-
-\\
-
-Regression helps us understand how one variable changes in relation to
-another. A simple regression line shows the general trend between two
-variables (the "line of best fit"), and gives us a way to describe that
-trend using an equation:
-
-$$
-\hat{y} = b_0 + b_1 x
-$$
-
-\\
-
-Here,
-
--   $\hat{y}$ is the predicted value of our *response variable, y* for
-    any given value of our *predictor variable, x*. The little hat on
-    top means "predicted/estimated"
-
--   $b_0$ is the intercept - the value of the line when it crosses ZERO
-    x.
-
--   $b_1$ refers to the slope or gradient of the line. e.g. how much
-    does y increase for a given x.
-
-Finally, we know that value of y for every object in our study isn't
-going to end up *exactly* on the line. So the value of y for an
-individual object (called i) can be written as the predicted value plus
-the [residual]{.underline} (the amount left over), $\varepsilon_i$ :
-
-$$
-y_i = \hat{y_i} + \varepsilon_i
-$$
-
-\\
-
-![Basic regression example. Each dot is an individual
-object.](index_images/pg_364Lab7_TutRegression_BasicCartoon.png)
-
-\\ \\
-
-## Example 1 - Simple Linear Regression
-
-Building on the LISA tutorial, suppose we want to understand whether the
-percentage of people earning more than \$75,000 in each census tract in
-Chicago is influenced by the area's population density.
-
--   **Object of analysis**: A single census tract
-
--   **'Strict' population:** All census tracts within Chicago city
-    limits during the year 2020.
-
--   **'Inferrable' population**: Depends on context, but probably
-    anywhere in a US metropolitan area in the last decade or so?
-
--   **Response variable, y (the thing we are trying to predict) :**
-    Percentage of people earning more than \$75000 in each census tract.
-
--   **Predictor variable, x :** Population density of each census tract
-    (number of people per km^2^).
-
-\\ \\
-
-[***Note***]{.underline} *- I really want to explore whether people who
-make over \$75000 are more likely to live in places with higher
-population density (say "downtown").*
-
-*But we don't have data for individual people!*
-
-*ALL WE CAN TEST IS: Do census tracts which contain a higher population
-density ALSO contain a higher percentage of people who make \> \$75000..
-Mixing these up is called the ecological fallacy*.
-
-\\ \\
-
-```{r}
-
-# Filter to a new data frame with only numeric columns
-house.numeric.columns <- Chicago.Census.sf[ , sapply(Chicago.Census.sf,is.numeric)]
-house.numeric.columns <- na.omit(st_drop_geometry(house.numeric.columns))
-
-
-cor_vector <- cor(house.numeric.columns)["percent.income.gt75", , drop = FALSE]
-
-corrplot(cor_vector, method = "number",
-         addshade="all", cl.pos="n",
-         is.corr = TRUE, number.cex =.7)
-
-corrplot(cor(house.numeric.columns),method="ellipse",type="lower")
-
-
-```
-
-### Initial Scatterplot
-
-First, let's have a look at the scatterplot. We can make a basic
-scatterplot using the plot command. But just as easily, we can make an
-interactive plot using ggplot and plotly.
-
-If you want some tutorials on customising these plots see here
-
--   <http://www.sthda.com/english/wiki/ggplot2-colors-how-to-change-colors-automatically-and-manually>
-
-```{r}
-
-p <- Chicago.Census.sf %>% 
-  ggplot(aes(
-    x = pop.density_km2, 
-    y = percent.income.gt75, 
-    label = NAME
-  )) +
-  geom_point(size = 1, alpha = 0.5) +
-  labs(
-    x = "Census tract population density (per km²)",
-    y = "% households per tract with income > $75k USD"
-  ) +
-  theme_bw(base_size = 10)
-
-ggplotly(p)
-```
-
-<br>
-
-#### Deal with the outlier
-
-Our results are dominated by one *huge* outlier.. Click on it and you
-will see that it's census tract 307.02! (mouse over it). The easiest way
-I could think to look at it was to just look at any row where the
-population density was over 150000 ppl per km2.
-
-```{r}
-Chicago.Census.sf[Chicago.Census.sf$pop.density_km2 > 150000,]
-```
-
-<br>
-
-OK so the issue is with Census Tract 307.02 in Cook County.
-
-I then googled this census tract name, which took me here
-<https://censusreporter.org/profiles/14000US17031030702-census-tract-30702-cook-il/>
-
-It looks like some apartments?? So I googled the location and looked at
-streetview to find this:
-
-[![*The entire census tract is one very tall set of apartment
-blocks!*](index_images/pg_364Lab7_Regression_2021_fig7.png)](https://maps.app.goo.gl/8La5EVVRjMskJmZ88)
-
-<br>
-
-The entire census tract is one set of high-rise apartments, so *of
-course* this census tract has a ridiculously high population density,
-there are thousands of people living in a tiny area.
-
-In that case, the next question is what do we do? We could:
-
--   Remove it and say it's "bad data".
-
--   Remove it and treat it as a special case
-
--   Leave it in.
-
-The first option is inappropriate because there's nothing wrong with the
-data. However, I think it would be reasonable to remove this census
-tract and study it separately as a special case. My reasoning is because
-it's unlikely the data is independent. It's only one or two buildings,
-and they're likely to be full of apartments that are all likely to be
-tailored to the same financial demographic of people.
-
-So I shall remove it
-
-```{r}
-# I want to keep everything LESS than 150000
-Chicago.Census.sf <- Chicago.Census.sf[Chicago.Census.sf$pop.density_km2  < 150000,] 
-```
-
-<br>
-
-#### Deal with units
-
-The second minor issue is that
-
-TO COMPLETE
-
-#### Replot
-
-This gives some improvement, but not much!
-
-```{r}
-# Make an interactive plot
-p <- Chicago.Census.sf %>% 
-  ggplot(aes(
-    x = pop.density_km2, 
-    y = percent.income.gt75, 
-    label = NAME
-  )) +
-  geom_point(size = 1, alpha = 0.5) +
-  labs(
-    x = "Census tract population density (per km²)",
-    y = "% households per tract with income > $75k USD"
-  ) +
-  theme_bw(base_size = 10)
-
-ggplotly(p)
-
-```
-
-OK, we can see that there is *possibly* a positive relationship between
-the two, but a lot of spread.
-
-<br>
-
-### Fitting a simple linear regression model 
-
-Now let's make a linear fit using the OLS package. To do this, use the
-lm command, then y \~ x where y and x are the column names of your
-response and predictor variables. na.exclude means ignore any missing
-values.
-
-![](index_images/pg_364Lab7_Regression_2021_fig8.png)
-
-```{r,echo=FALSE}
-
-# lm( y ~ x, data=tablename)
-
-fit1.lm <- lm(percent.income.gt75 ~ pop.density_km2, 
-              data = Chicago.Census.sf,
-              na.action="na.exclude")
-
-
-```
-
-We can use this output to write out the regression equation using latex
-maths symbols.
-
-TO COMPLETE
-
-So from the above, our model is now:<br>
-
-```{r, L7Eqn1, echo=FALSE}
-knitr::include_graphics('./index_images/pg_364Lab7_Regression_2021_eqn1.png')
-```
-
-### Checking if our model is any good.
-
-Let's look at the summary:
-
-<br>
-
-```{r}
-summary(fit1.lm)
-
-```
-
-Our model is now: percentage.workfromhome = 0.008+ 0.127xper.income.gt75
-
-We can add a fit using abline (or check out R graph gallery):
-
-```{r}
-plot(Chicago.Census.sf$per.income.gt75E  ~ Chicago.Census.sf$pop.densityE,pch=16,cex=.5,col="blue")
-abline(fit1.lm)
-```
-
-<br>
+<br><br>
 
 ### Mapping the results
 
-So we have a model! Let's look at the results spatially. I'm switching
-tmap mode to plot to save computer power, just switch it back to view
-for interactive maps.
+So we have a model! The scatterplot looks pretty good, but given that
+each object is an individual census tract, we can also make some maps.
+
+These maps can show the actual values of x and y, the *predicted* values
+of x and y and the difference between them (the residuals).
+
+For these maps, I'm switching tmap mode to plot to save computer power,
+but switch it back to view any time to see the interactive maps.
 
 ```{r}
 tmap_mode("plot")
 ```
 
 ```{r}
-map_actual<- tm_shape(Chicago.Census.sf, unit = "mi") + 
-  tm_polygons(col = "per.income.gt75E", style = "quantile",
-              palette = "-Spectral", border.alpha = 0, 
-              title = "ACTUAL: %ppl making > $75K")+
-  tm_shape(Chicago.city.sf) +
-  tm_borders()+
-  tm_layout(legend.outside = TRUE)
 
-map_actual
+
+map_actual_y <- tm_shape(Chicago.Census.sf, unit = "km") +
+  tm_polygons(
+    fill = "percent.income.gt75",
+    lwd = 0,
+    fill.scale = tm_scale_intervals(values = "viridis",style="jenks")) +
+  tm_shape(st_geometry(Chicago.city.sf), unit = "km") +
+  tm_borders()+
+  tm_title("ACTUAL % ppl per tract making > $75K", size = 0.95) +
+  tm_layout(
+    legend.outside = TRUE,
+    frame = FALSE
+  )
+
+map_predicted_y <- tm_shape(Chicago.Census.sf, unit = "km") +
+  tm_polygons(
+    fill = "fit1_predict",
+    lwd = 0,
+    fill.scale = tm_scale_intervals(values = "viridis",style="jenks")) +
+  tm_shape(st_geometry(Chicago.city.sf), unit = "km") +
+  tm_borders()+
+  tm_title("MODEL1 prediction: % ppl per tract making > $75K", size = 0.95) +
+  tm_layout(
+    legend.outside = TRUE,
+    frame = FALSE
+  )
+
+map_residuals <- tm_shape(Chicago.Census.sf, unit = "km") +
+  tm_polygons(
+    fill = "fit1_residual",
+    lwd = 0,
+    fill.scale = tm_scale_intervals(values = "brewer.prgn",midpoint=0)) +
+  tm_shape(st_geometry(Chicago.city.sf), unit = "km") +
+  tm_borders()+
+  tm_title("MODEL1 RESIDUALS (difference between actual and prediction)", size = 0.95) +
+  tm_layout(
+    legend.outside = TRUE,
+    frame = FALSE
+  )
+
+
+suppressMessages(tmap_arrange(map_actual_y,map_predicted_y,map_residuals))
+
 ```
 
-```{r}
-Chicago.Census.sf$Fit1.lm.Prediction <- predict(fit1.lm)
+<br>
 
-# subset the Illinois census data with the Chicago city limits
-maplm1 <- tm_shape(Chicago.Census.sf, unit = "mi") + 
-  tm_polygons(col = "Fit1.lm.Prediction", style = "quantile",
-              palette = "-Spectral", border.alpha = 0, 
-              title = "MODEL1 prediction: %ppl making > $75K")+
-  tm_shape(Chicago.city.sf) +
-  tm_borders()+
-  tm_layout(legend.outside = TRUE) 
+So here we can see that the model is doing a reasonable job - the
+residuals are within 0.2 to +0.2 (e.g. we're overestimating the % people
+making \>\$75K in the purple areas by around 0.2% and underestimating by
+about the same in the green areas.
 
-maplm1
-```
-
-There is some indication of pattern, but it's not great.
-
-<br> <br>
+<br><br>
 
 #### Looking for Spatial autocorrelation in residuals
 

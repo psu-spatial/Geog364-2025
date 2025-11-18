@@ -631,16 +631,32 @@ Now, IN YOUR LAB SCRIPT, choose the predictor that best predicts your response v
 
 
 
-## G. Spatial Residuals
+## G. Mapping results
+
+
+14.  Look at the tutorial
+
+Run through **STEP 3** of the tutorial here <https://psu-spatial.github.io/Geog364-2025/Tutorial_Regression.html> You should stop when you made maps of the city.
+e.g. don't carry onto step 4.
+
+<br>
+
+15.  Create your own,
+
+Now, IN YOUR LAB SCRIPT, 
+
+-   Make a maps of your response variable, predicted response and residuals. Make the style your own. 
+
+-   Discuss what you see in the text & interpret how good the model is in your opinion. 
 
 
 
-REFRESH YOUR PAGE (sorry)
-
-<br><br>
+<br><br><br><br>
 
 
-## H. Improve your model
+## H. Spatial residuals
+
+TO COME (sorry)
 
 
 <br><br>

@@ -822,13 +822,102 @@ ggplotly(p)
 
 ## STEP 3. Mapping model 1
 
-TO COME REFRESH THE PAGE
+
+### Mapping the results
+
+#### Add model output to our data
+
+So we have a model! The scatterplot looks pretty good, but given that
+each object is an individual census tract, we can also make some maps.
+The easiest way to do this is to add the model forecast values to our
+data.frame.
+
+```{r}
+Chicago.Census.sf$fit1_predict  <-  predict(fit1.lm)
+Chicago.Census.sf$fit1_residual <-  residuals(fit1.lm)
+```
+
+<br><br>
+
+### Mapping the results
+
+So we have a model! The scatterplot looks pretty good, but given that
+each object is an individual census tract, we can also make some maps.
+
+These maps can show the actual values of x and y, the *predicted* values
+of x and y and the difference between them (the residuals).
+
+For these maps, I'm switching tmap mode to plot to save computer power,
+but switch it back to view any time to see the interactive maps.
+
+```{r}
+tmap_mode("plot")
+```
+
+```{r}
+
+
+map_actual_y <- tm_shape(Chicago.Census.sf, unit = "km") +
+  tm_polygons(
+    fill = "percent.income.gt75",
+    lwd = 0,
+    fill.scale = tm_scale_intervals(values = "viridis",style="jenks")) +
+  tm_shape(st_geometry(Chicago.city.sf), unit = "km") +
+  tm_borders()+
+  tm_title("ACTUAL % ppl per tract making > $75K", size = 0.95) +
+  tm_layout(
+    legend.outside = TRUE,
+    frame = FALSE
+  )
+
+map_predicted_y <- tm_shape(Chicago.Census.sf, unit = "km") +
+  tm_polygons(
+    fill = "fit1_predict",
+    lwd = 0,
+    fill.scale = tm_scale_intervals(values = "viridis",style="jenks")) +
+  tm_shape(st_geometry(Chicago.city.sf), unit = "km") +
+  tm_borders()+
+  tm_title("MODEL1 prediction: % ppl per tract making > $75K", size = 0.95) +
+  tm_layout(
+    legend.outside = TRUE,
+    frame = FALSE
+  )
+
+map_residuals <- tm_shape(Chicago.Census.sf, unit = "km") +
+  tm_polygons(
+    fill = "fit1_residual",
+    lwd = 0,
+    fill.scale = tm_scale_intervals(values = "brewer.prgn",midpoint=0)) +
+  tm_shape(st_geometry(Chicago.city.sf), unit = "km") +
+  tm_borders()+
+  tm_title("MODEL1 RESIDUALS (difference between actual and prediction)", size = 0.95) +
+  tm_layout(
+    legend.outside = TRUE,
+    frame = FALSE
+  )
+
+
+suppressMessages(tmap_arrange(map_actual_y,map_predicted_y,map_residuals))
+
+```
+
+<br>
+
+So here we can see that the model is doing a reasonable job - the
+residuals are within 0.2 to +0.2 (e.g. we're overestimating the % people
+making \>\$75K in the purple areas by around 0.2% and underestimating by
+about the same in the green areas.
 
 
 <br><br>
 
 
 
+## STEP 4 Spatial autocorrelation in residuals
+
+TO COME REFRESH THE PAGE
+
+<br><br>
 
 
 
