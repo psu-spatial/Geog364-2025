@@ -759,16 +759,16 @@ fit1.lm <- lm(percent.income.gt75 ~ percent.BAdegree,
 
 ### Model summary
 
-If you type summary(modelname) then you'll see a load of statistics. Don't worry about most of them, but you can see here how to find the slope and intercept.
+If you type summary(modelname), where modelname is the name YOU chose for your model, then you'll see a load of statistics. Don't worry about most of them, but you can see here how to find the slope and intercept.
 
 
 ![](index_images/pg_364Lab7_Regression_2021_fig8.png)
 
-
+<br>
 
 ### Write out the equation
 
-You can use these numbers to write out your model equation.  R understands latex equations using double dollar signs.  So IN THE TEXT PART OF YOUR REPORT, try this but adjust the numbers for your model
+You can use these numbers to write out your model equation.  R understands latex equations using double dollar signs.  So IN THE TEXT PART OF YOUR REPORT, try these but adjust the numbers for your model and explain what your symbols mean. I'm purposefully not writing what they are here (see the Theory Refresh section above!).
 
 ![](index_images/pg_364Lab7_Regression_2025_eqn1.png)
 
@@ -777,7 +777,7 @@ You can use these numbers to write out your model equation.  R understands latex
 
 or
 
-![](index_images/pg_364Lab7_Regression_2025_eqn3.png)
+![](index_images/pg_364Lab7_Regression_2021_eqn3.png)
 
 
 Where both are unitless percentages.
