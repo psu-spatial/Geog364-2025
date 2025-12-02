@@ -19,7 +19,9 @@ navbar:
         - text: "Lab 5: Moran's I"
           href: in_GEOG364_Lab5.html          
         - text: "Lab 6: LISA and regression"
-          href: in_GEOG364_Lab6.html           
+          href: in_GEOG364_Lab6.html     
+        - text: "Lab 7: Point Pattern"
+          href: in_GEOG364_Lab7.html               
     - text: "Advanced Tutorials"
       menu:  
         - text: "Getting Census Data"
