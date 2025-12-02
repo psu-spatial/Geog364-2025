@@ -829,7 +829,8 @@ online resources. <br></p>
 <p>You will learn how to prepare your data so that it can be used
 effectively for spatial analyses by converting it into the appropriate
 format used by spatstat. This initial exercise will give you a
-conceptual foundation before we start manipulating data. <br><br></p>
+conceptual foundation before we start manipulating data.</p>
+<p><br><br></p>
 </div>
 <div id="tasks" class="section level3">
 <h3>Tasks</h3>
@@ -853,7 +854,7 @@ package that seem especially useful or interesting.<br></p></li>
 </div>
 </div>
 <div id="b.-set-up-your-case-study." class="section level2">
-<h2>B. Set up your case study.</h2>
+<h2><strong>B. Set up your case study.</strong></h2>
 <p>This lab focuses on understanding the spatial patterns of McDonald’s
 restaurants and high schools across Upstate New York. First we need to
 get the data<br></p>
@@ -897,8 +898,7 @@ doesn’t make a map, install and load library(spatstat)</strong></p>
 <p><br><br></p>
 </div>
 <div id="c.-data-exploration" class="section level2">
-<h2>C. Data Exploration</h2>
-<p><br></p>
+<h2><strong>C. Data Exploration</strong></h2>
 <ol start="3" style="list-style-type: decimal">
 <li>Mapping your data</li>
 </ol>
@@ -912,6 +912,7 @@ locations using tmap in view mode:</p>
 <span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>  <span class="fu">tm_dots</span>(<span class="at">size =</span> <span class="fl">0.5</span>, <span class="at">fill_alpha =</span> <span class="fl">0.5</span>, <span class="at">fill =</span> <span class="st">&quot;blue&quot;</span>) <span class="sc">+</span></span>
 <span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>  <span class="fu">tm_basemap</span>(<span class="st">&quot;OpenStreetMap&quot;</span>) <span class="sc">+</span></span>
 <span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>  <span class="fu">tm_credits</span>(<span class="st">&quot;High Schools in New York&quot;</span>)</span></code></pre></div>
+<p><br></p>
 <ul>
 <li>Get this map working in your report, then create a similar map for
 the McDonald’s dataset. You are encouraged to adjust the style:
@@ -975,15 +976,14 @@ projection is, why I chose it and what units it is in.</li>
 </div>
 <div id="d.convert-the-data-into-spatstat-format"
 class="section level2">
-<h2>D.Convert the data into ‘spatstat’ format</h2>
-<p><br><br></p>
+<h2><strong>D.Convert the data into ‘spatstat’ format</strong></h2>
 <div id="converting-data-to-the-ppp-format" class="section level3">
 <h3>Converting data to the ppp format</h3>
 <p>All of the point pattern tools used in this section come from the
 spatstat package. These commands work with points stored in ppp objects
 rather than the sf objects you have used so far. Once we move into
 spatstat, packages such as tmap will no longer work as expected.</p>
-<p><br><br></p>
+<p><br></p>
 <ol start="6" style="list-style-type: decimal">
 <li>Creating a window for the study area</li>
 </ol>
@@ -1076,7 +1076,7 @@ km.</li>
 </div>
 </div>
 <div id="e-modelling-first-order-effects" class="section level2">
-<h2>E Modelling first order effects</h2>
+<h2><strong>E Modelling first order effects</strong></h2>
 <p>In spatial point pattern analysis, first-order effects refer to
 variations in the intensity of points across a study area due to
 external factors. These effects describe how the likelihood of observing
@@ -1093,6 +1093,7 @@ made by different processes.</strong></p>
 <p><a
 href="https://mgimond.github.io/Spatial/chp14_0.html#understanding-intensity-and-density-in-point-patterns"
 class="uri">https://mgimond.github.io/Spatial/chp14_0.html#understanding-intensity-and-density-in-point-patterns</a></p>
+<p><br><br></p>
 <ol start="10" style="list-style-type: decimal">
 <li>Explain the background</li>
 </ol>
@@ -1148,17 +1149,99 @@ data. Is it greater or lesser than the schools intensity.</p></li>
 this result?</p></li>
 </ul>
 <p><br><br></p>
+</div>
+<div id="local-density-kernel-smoothing" class="section level3">
+<h3>Local density: Kernel Smoothing</h3>
+<p>A second way to explore first-order properties is to examine how
+density varies <strong>locally</strong> across the study area. One
+common approach is <strong>kernel density estimation (KDE)</strong>,
+which produces a continuous surface showing where points are more or
+less concentrated.</p>
+<p>The basic idea is straightforward: imagine sliding a circular window
+across the map and counting how many points fall inside that window at
+each location. The result is a smoothed surface, which we can use as our
+best guess of the true underlying intensity.</p>
+<p><img src="index_images/pg_Lab6_Kernelexplanation.png" /></p>
+<p><br></p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="st">&quot;index_images/pg_Lab6_KernelBandwidthEsri2.png&quot;</span>)</span></code></pre></div>
+<p><br><br></p>
+<ol start="12" style="list-style-type: decimal">
+<li>Kernel density using the default bandwidth</li>
+</ol>
+<ul>
+<li><p>Use the code below to calculate a kernel density surface for the
+schools data using the default bandwidth. Once it works, copy and adapt
+the code to create a second version for the McDonald’s dataset.
+<br></p></li>
+<li><p>Compare the Schools and McDonald’s maps in your own words. What
+similarities and differences do you see? <br></p></li>
+</ul>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a>SchoolDensity1 <span class="ot">&lt;-</span> <span class="fu">density</span>(School.ppp)   <span class="co"># Default bandwidth</span></span>
+<span id="cb20-2"><a href="#cb20-2" tabindex="-1"></a><span class="fu">plot</span>(SchoolDensity1, <span class="at">main =</span> <span class="cn">NULL</span>, <span class="at">las =</span> <span class="dv">1</span>)</span>
+<span id="cb20-3"><a href="#cb20-3" tabindex="-1"></a><span class="fu">contour</span>(SchoolDensity1, <span class="at">add =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<p><br><br></p>
+<div id="kde-adjusting-the-bandwidth" class="section level4">
+<h4>KDE adjusting the bandwidth</h4>
+<p>Within KDE, you can decide how big you want your smoothing window to
+be. The width of this window is controlled by the
+<strong>bandwidth</strong>, which determines how coarse or fine the
+surface will appear.</p>
+<p><br></p>
+<p><img src="index_images/pg_Lab6_KernelBandwidthEsri.png"
+style="width:90.0%" /></p>
+<p><br></p>
+<p>Different bandwidths tell us different stories about the data. In the
+example above, the large bandwidth on the left highlights the parts of
+the city most prone to late-night road accidents but blurs local detail.
+The small bandwidth on the right reveals specific streets but makes it
+harder to see the overall pattern.</p>
+<p><strong>There is no single “correct” bandwidth.</strong> Changing it
+often reveals different aspects of the underlying process. So we mostly
+use KDE for EXPLORATORY analysis.</p>
+<p>Click here to read more and see some examples in R. <a
+href="https://mgimond.github.io/Spatial/point-pattern-analysis-in-r.html#kernel-density-raster"
+class="uri">https://mgimond.github.io/Spatial/point-pattern-analysis-in-r.html#kernel-density-raster</a></p>
+<p><br><br></p>
+<ol start="13" style="list-style-type: decimal">
+<li>Assess how the bandwidth impacts your results.</li>
+</ol>
+<ul>
+<li>Edit your existing KDE code to include the sigma option (as shown
+below). For example, if your units are kilometres, sigma = 50 means you
+are smoothing over a radius of about 50 km, while sigma = 5 focuses on
+patterns at around 5 km. <br></li>
+</ul>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a>SchoolDensity <span class="ot">&lt;-</span> <span class="fu">density</span>(School.ppp, <span class="at">sigma=</span><span class="dv">5</span>) </span>
+<span id="cb21-2"><a href="#cb21-2" tabindex="-1"></a><span class="fu">plot</span>(SchoolDensity, <span class="at">main=</span><span class="cn">NULL</span>, <span class="at">las=</span><span class="dv">1</span>)</span>
+<span id="cb21-3"><a href="#cb21-3" tabindex="-1"></a><span class="fu">contour</span>(SchoolDensity, <span class="at">add=</span><span class="cn">TRUE</span>)</span></code></pre></div>
+<ul>
+<li><p>Run the same code several times for both the Schools and
+McDonald’s data, varying sigma from a very small value (e.g. 1 km) to a
+very large one (e.g. 1000 km). As you change sigma, think about the
+real-world processes that might be driving the patterns you see.
+<br></p></li>
+<li><p>For your report, choose a final bandwidth for each dataset
+(Schools and McDonald’s) that helps you say something interesting about
+the pattern in relation to New York’s geography or environment. Include
+the corresponding maps and briefly explain your reasoning below each
+map.</p></li>
+<li><p>A* bonus question: Explain how the bandwidth issue links with
+MAUP’s scale effect.</p></li>
+</ul>
+<p><br><br></p>
+</div>
+<div id="week-1-complete" class="section level4">
+<h4>WEEK 1 COMPLETE</h4>
 <hr />
+</div>
 </div>
 </div>
 </div>
 <div id="week-2" class="section level1">
 <h1>WEEK 2</h1>
-<div id="f-distance-based-analysis" class="section level2">
-<h2>F Distance based analysis</h2>
+<p>To come</p>
 <p>br&gt;<br></p>
 <hr />
-</div>
 </div>
 <div id="submitting-your-lab" class="section level1">
 <h1>Submitting your Lab</h1>

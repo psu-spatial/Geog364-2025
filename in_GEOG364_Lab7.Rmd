@@ -397,7 +397,9 @@ Your report should make it easy for the reader to locate each answer and underst
 
 In this lab you will begin working with the R package spatstat, which is specifically designed for spatial point-pattern analysis. Although its interface can feel somewhat old fashioned and it hates sf/terra, it remains one of the most comprehensive environments for working with spatial point processes. The package is supported by a large body of documentation, including a dedicated textbook and an active set of online resources. <br>
 
-You will learn how to prepare your data so that it can be used effectively for spatial analyses by converting it into the appropriate format used by spatstat. This initial exercise will give you a conceptual foundation before we start manipulating data. <br><br>
+You will learn how to prepare your data so that it can be used effectively for spatial analyses by converting it into the appropriate format used by spatstat. This initial exercise will give you a conceptual foundation before we start manipulating data. 
+
+<br><br>
 
 ### Tasks
 
@@ -411,7 +413,7 @@ You will learn how to prepare your data so that it can be used effectively for s
 
 <br><br>
 
-## B. Set up your case study.
+## **B. Set up your case study.**
 
 This lab focuses on understanding the spatial patterns of McDonald’s restaurants and high schools across Upstate New York. First we need to get the data<br>
 
@@ -498,9 +500,7 @@ median_income <- oldmedincome
 
 
 
-## C. Data Exploration
-
-<br>
+## **C. Data Exploration**
 
 3.  Mapping your data
 
@@ -515,6 +515,8 @@ tm_shape(Schools) +
   tm_credits("High Schools in New York")
 
 ```
+
+<br>
 
 -   Get this map working in your report, then create a similar map for the McDonald’s dataset. You are encouraged to adjust the style: experiment with point size, colour, basemaps, or additional layers such as the New York State boundary (`stateborder.utm`). For basemap ideas, see the preview gallery at <https://leaflet-extras.github.io/leaflet-providers/preview/>.
 
@@ -559,17 +561,13 @@ st_crs(Schools)
 
 
 
-## D.Convert the data into 'spatstat' format
-
-<br><br>
-
-
+## **D.Convert the data into 'spatstat' format**
 
 ### Converting data to the ppp format
 
 All of the point pattern tools used in this section come from the spatstat package. These commands work with points stored in ppp objects rather than the sf objects you have used so far. Once we move into spatstat, packages such as tmap will no longer work as expected.
 
-<br><br>
+<br>
 
 6. Creating a window for the study area
 
@@ -660,7 +658,7 @@ pop_density   <- spatstat.geom::rescale(pop_density, 1000, "km")
 <br><br>
 
 
-## E Modelling first order effects
+## **E Modelling first order effects**
 
 In spatial point pattern analysis, first-order effects refer to variations in the intensity of points across a study area due to external factors. These effects describe how the likelihood of observing a point changes from one location to another, independent of the presence or absence of other points. For example, oak trees may be more densely distributed in areas with favorable soil conditions, or retail stores may cluster in regions with higher population density. In both cases, the spatial variation is driven by underlying environmental or socioeconomic covariates rather than interactions between the points themselves.
 
@@ -668,6 +666,8 @@ In spatial point pattern analysis, first-order effects refer to variations in th
 
 
 https://mgimond.github.io/Spatial/chp14_0.html#understanding-intensity-and-density-in-point-patterns
+
+<br><br>
 
 10. Explain the background
 
@@ -715,11 +715,86 @@ So this code suggests that in New York State, there are 0.0072 schools per squar
 
 <br><br>
 
+### Local density: Kernel Smoothing
+
+A second way to explore first-order properties is to examine how density varies **locally** across the study area. One common approach is **kernel density estimation (KDE)**, which produces a continuous surface showing where points are more or less concentrated.
+
+The basic idea is straightforward: imagine sliding a circular window across the map and counting how many points fall inside that window at each location. The result is a smoothed surface, which we can use as our best guess of the true underlying intensity. 
+
+![](index_images/pg_Lab6_Kernelexplanation.png)
+
+<br>
+
+```{r, out.width="100%", fig.cap="Illustration of a moving kernel window used to estimate local density."}
+knitr::include_graphics("index_images/pg_Lab6_KernelBandwidthEsri2.png")
+```
+
+
+<br><br>
+
+12. Kernel density using the default bandwidth
+
+-   Use the code below to calculate a kernel density surface for the schools data using the default bandwidth. Once it works, copy and adapt the code to create a second version for the McDonald’s dataset. <br>
+
+-   Compare the Schools and McDonald’s maps in your own words. What similarities and differences do you see?  <br> 
+
+```{r, results="hide"}
+SchoolDensity1 <- density(School.ppp)   # Default bandwidth
+plot(SchoolDensity1, main = NULL, las = 1)
+contour(SchoolDensity1, add = TRUE)
+```
+
+<br><br>
+
+####  KDE adjusting the bandwidth
+
+Within KDE, you can decide how big you want your smoothing window to be. The width of this window is controlled by the **bandwidth**, which determines how coarse or fine the surface will appear. 
+
+<br>
+
+![](index_images/pg_Lab6_KernelBandwidthEsri.png){width="90%"}
+
+<br>
+
+Different bandwidths tell us different stories about the data. In the example above, the large bandwidth on the left highlights the parts of the city most prone to late-night road accidents but blurs local detail. The small bandwidth on the right reveals specific streets but makes it harder to see the overall pattern.
+
+**There is no single “correct” bandwidth.** Changing it often reveals different aspects of the underlying process. So we mostly use KDE for EXPLORATORY analysis.  
+
+Click here to read more and see some examples in R.
+https://mgimond.github.io/Spatial/point-pattern-analysis-in-r.html#kernel-density-raster
+
+<br><br>
+
+13. Assess how the bandwidth impacts your results.
+
+-   Edit your existing KDE code to include the sigma option (as shown below). For example, if your units are kilometres, sigma = 50 means you are smoothing over a radius of about 50 km, while sigma = 5 focuses on patterns at around 5 km. <br>
+
+
+```{r, results="hide"}
+SchoolDensity <- density(School.ppp, sigma=5) 
+plot(SchoolDensity, main=NULL, las=1)
+contour(SchoolDensity, add=TRUE)
+```
+
+-   Run the same code several times for both the Schools and McDonald’s data, varying sigma from a very small value (e.g. 1 km) to a very large one (e.g. 1000 km). As you change sigma, think about the real-world processes that might be driving the patterns you see. <br>
+
+-   For your report, choose a final bandwidth for each dataset (Schools and McDonald’s) that helps you say something interesting about the pattern in relation to New York’s geography or environment.
+Include the corresponding maps and briefly explain your reasoning below each map.
+
+-   A* bonus question: Explain how the bandwidth issue links with MAUP's scale effect.
+
+
+<br><br>
+
+#### WEEK 1 COMPLETE
+
+
 ------------------------------------------------------------------------
 
 # WEEK 2 
 
-## F Distance based analysis
+To come
+
 
 
 
