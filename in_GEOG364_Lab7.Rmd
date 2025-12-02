@@ -610,7 +610,7 @@ School.ppp
 
 8. Make your data a ppp (point pattern object)
 
--   To make a good looking map in spatstat, we need to play with the plot margins. You can see how I did that here for the schools data;
+-   To make a good looking map in spatstat, we need to play with the plot margins. You can see how I did that here for the schools data. Get this working in your code and also make a map of the McDonalds data.
 
 
 ```{r}
@@ -633,7 +633,26 @@ plot(School.ppp,
 par(oldpar)
 ```
 
- -   Get this working in your code and also make a map of the McDonalds data.
+<br><br>
+
+
+9. Convert units to kn.
+
+All of our objects are currently measured in metres. Because we are working at the scale of an entire state, reporting results in metres is unwieldy. We will therefore convert every dataset to kilometres.
+
+-   Run the code below in your report for schools. **If you encounter errors, tell Kiely or Dr G.** If it really doesn't work, skip the conversion, re-run your code from the start, and continue the lab using metres. <br>
+
+```{r}
+# First reload the spatstat geom package.  You don't need to move it to the top as I want to force it to be the final package loaded
+library(spatstat.geom)
+
+School.ppp    <- spatstat.geom::rescale(School.ppp, 1000, "km")
+median_income <- spatstat.geom::rescale(median_income, 1000, "km")
+pop_density   <- spatstat.geom::rescale(pop_density, 1000, "km")
+
+```
+
+ - If that worked, also convert the units of your McDonalds data to km.
  
  
 
@@ -641,9 +660,58 @@ par(oldpar)
 <br><br>
 
 
-## E Density based analysis
+## E Modelling first order effects
 
-Refresh your page!
+In spatial point pattern analysis, first-order effects refer to variations in the intensity of points across a study area due to external factors. These effects describe how the likelihood of observing a point changes from one location to another, independent of the presence or absence of other points. For example, oak trees may be more densely distributed in areas with favorable soil conditions, or retail stores may cluster in regions with higher population density. In both cases, the spatial variation is driven by underlying environmental or socioeconomic covariates rather than interactions between the points themselves.
+
+**To explore first order effects, we look at the density of points across our study area and see how that compares to point patterns made by different processes.**
+
+
+https://mgimond.github.io/Spatial/chp14_0.html#understanding-intensity-and-density-in-point-patterns
+
+10. Explain the background
+
+-   Make a new level one heading called First order effects. 
+
+-   One piece of jargon to understand is the difference between intensity and density. In your report, using this tutorial, https://mgimond.github.io/Spatial/chp14_0.html#understanding-intensity-and-density-in-point-patterns , explain the difference in your own words.
+
+
+<br><br>
+
+
+### Global Density
+
+
+A simple summary of a point pattern's intensity is its global density: the number of points per unit area. For example, we might report penguins per square mile or flowers per square foot. The formula is simple: *global density = number of points / area of the study region*.
+
+But we are assuming that the pattern is homogeneous, e.g. you don't have clusters or hotspots of points that vary across your study domain.  Here is how to compute this quantity and write it up for the schools dataset:
+
+```{r}
+# Number of points
+num_points <- npoints(School.ppp)
+num_points
+
+# Area of the study region
+study_area <- area.owin(Window(School.ppp))
+study_area
+
+# Global density
+global_density <- num_points / study_area
+global_density
+
+```
+
+So this code suggests that in New York State, there are 0.0072 schools per square km. E.g. if the schools were evenly distributed in a grid-like pattern, the average distance between schools would be around 12 kilometers in any direction.
+
+**How did I get this?:**  1/0.0072 ~ 139, this means if schools were evenly distributed in a grid like pattern then there would be roughly one school every 139 square kilometers. Taking the square root of 139 gives about 11.79, so if the schools were evenly distributed in a grid-like pattern, the average distance between schools would be approximately 12 kilometers in each direction.
+
+
+11. Repeat for McDonalds
+
+-   Calculate and interpret the global density for the McDonalds data. Is it greater or lesser than the schools intensity. 
+
+-   (A* bonus question): How does the non-uniformity of space impact this result?
+
 
 <br><br>
 

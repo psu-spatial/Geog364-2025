@@ -1029,7 +1029,9 @@ working in your report and also make one for McDonalds</li>
 </ol>
 <ul>
 <li>To make a good looking map in spatstat, we need to play with the
-plot margins. You can see how I did that here for the schools data;</li>
+plot margins. You can see how I did that here for the schools data. Get
+this working in your code and also make a map of the McDonalds
+data.</li>
 </ul>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="co"># Save current plot settings</span></span>
 <span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>oldpar <span class="ot">&lt;-</span> <span class="fu">par</span>(<span class="at">no.readonly =</span> <span class="cn">TRUE</span>)</span>
@@ -1047,18 +1049,107 @@ plot margins. You can see how I did that here for the schools data;</li>
 <span id="cb10-14"><a href="#cb10-14" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">&quot;Point pattern of NY schools data&quot;</span>)</span></code></pre></div>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="co"># Restore previous plot settings</span></span>
 <span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a><span class="fu">par</span>(oldpar)</span></code></pre></div>
+<p><br><br></p>
+<ol start="9" style="list-style-type: decimal">
+<li>Convert units to kn.</li>
+</ol>
+<p>All of our objects are currently measured in metres. Because we are
+working at the scale of an entire state, reporting results in metres is
+unwieldy. We will therefore convert every dataset to kilometres.</p>
 <ul>
-<li>Get this working in your code and also make a map of the McDonalds
-data.</li>
+<li>Run the code below in your report for schools. <strong>If you
+encounter errors, tell Kiely or Dr G.</strong> If it really doesn’t
+work, skip the conversion, re-run your code from the start, and continue
+the lab using metres. <br></li>
+</ul>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="co"># First reload the spatstat geom package.  You don&#39;t need to move it to the top as I want to force it to be the final package loaded</span></span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a><span class="fu">library</span>(spatstat.geom)</span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a>School.ppp    <span class="ot">&lt;-</span> spatstat.geom<span class="sc">::</span><span class="fu">rescale</span>(School.ppp, <span class="dv">1000</span>, <span class="st">&quot;km&quot;</span>)</span>
+<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a>median_income <span class="ot">&lt;-</span> spatstat.geom<span class="sc">::</span><span class="fu">rescale</span>(median_income, <span class="dv">1000</span>, <span class="st">&quot;km&quot;</span>)</span>
+<span id="cb12-6"><a href="#cb12-6" tabindex="-1"></a>pop_density   <span class="ot">&lt;-</span> spatstat.geom<span class="sc">::</span><span class="fu">rescale</span>(pop_density, <span class="dv">1000</span>, <span class="st">&quot;km&quot;</span>)</span></code></pre></div>
+<ul>
+<li>If that worked, also convert the units of your McDonalds data to
+km.</li>
 </ul>
 <p><br><br></p>
 </div>
 </div>
-<div id="e-density-based-analysis" class="section level2">
-<h2>E Density based analysis</h2>
-<p>Refresh your page!</p>
+<div id="e-modelling-first-order-effects" class="section level2">
+<h2>E Modelling first order effects</h2>
+<p>In spatial point pattern analysis, first-order effects refer to
+variations in the intensity of points across a study area due to
+external factors. These effects describe how the likelihood of observing
+a point changes from one location to another, independent of the
+presence or absence of other points. For example, oak trees may be more
+densely distributed in areas with favorable soil conditions, or retail
+stores may cluster in regions with higher population density. In both
+cases, the spatial variation is driven by underlying environmental or
+socioeconomic covariates rather than interactions between the points
+themselves.</p>
+<p><strong>To explore first order effects, we look at the density of
+points across our study area and see how that compares to point patterns
+made by different processes.</strong></p>
+<p><a
+href="https://mgimond.github.io/Spatial/chp14_0.html#understanding-intensity-and-density-in-point-patterns"
+class="uri">https://mgimond.github.io/Spatial/chp14_0.html#understanding-intensity-and-density-in-point-patterns</a></p>
+<ol start="10" style="list-style-type: decimal">
+<li>Explain the background</li>
+</ol>
+<ul>
+<li><p>Make a new level one heading called First order effects.</p></li>
+<li><p>One piece of jargon to understand is the difference between
+intensity and density. In your report, using this tutorial, <a
+href="https://mgimond.github.io/Spatial/chp14_0.html#understanding-intensity-and-density-in-point-patterns"
+class="uri">https://mgimond.github.io/Spatial/chp14_0.html#understanding-intensity-and-density-in-point-patterns</a>
+, explain the difference in your own words.</p></li>
+</ul>
+<p><br><br></p>
+<div id="global-density" class="section level3">
+<h3>Global Density</h3>
+<p>A simple summary of a point pattern’s intensity is its global
+density: the number of points per unit area. For example, we might
+report penguins per square mile or flowers per square foot. The formula
+is simple: <em>global density = number of points / area of the study
+region</em>.</p>
+<p>But we are assuming that the pattern is homogeneous, e.g. you don’t
+have clusters or hotspots of points that vary across your study domain.
+Here is how to compute this quantity and write it up for the schools
+dataset:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="co"># Number of points</span></span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a>num_points <span class="ot">&lt;-</span> <span class="fu">npoints</span>(School.ppp)</span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a>num_points</span></code></pre></div>
+<pre><code>## [1] 404</code></pre>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="co"># Area of the study region</span></span>
+<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a>study_area <span class="ot">&lt;-</span> <span class="fu">area.owin</span>(<span class="fu">Window</span>(School.ppp))</span>
+<span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a>study_area</span></code></pre></div>
+<pre><code>## [1] 114728.4</code></pre>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="co"># Global density</span></span>
+<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a>global_density <span class="ot">&lt;-</span> num_points <span class="sc">/</span> study_area</span>
+<span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a>global_density</span></code></pre></div>
+<pre><code>## [1] 0.00352136</code></pre>
+<p>So this code suggests that in New York State, there are 0.0072
+schools per square km. E.g. if the schools were evenly distributed in a
+grid-like pattern, the average distance between schools would be around
+12 kilometers in any direction.</p>
+<p><strong>How did I get this?:</strong> 1/0.0072 ~ 139, this means if
+schools were evenly distributed in a grid like pattern then there would
+be roughly one school every 139 square kilometers. Taking the square
+root of 139 gives about 11.79, so if the schools were evenly distributed
+in a grid-like pattern, the average distance between schools would be
+approximately 12 kilometers in each direction.</p>
+<ol start="11" style="list-style-type: decimal">
+<li>Repeat for McDonalds</li>
+</ol>
+<ul>
+<li><p>Calculate and interpret the global density for the McDonalds
+data. Is it greater or lesser than the schools intensity.</p></li>
+<li><p>(A* bonus question): How does the non-uniformity of space impact
+this result?</p></li>
+</ul>
 <p><br><br></p>
 <hr />
+</div>
 </div>
 </div>
 <div id="week-2" class="section level1">

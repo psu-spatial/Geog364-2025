@@ -367,6 +367,9 @@ $(document).ready(function () {
     <li>
       <a href="in_GEOG364_Lab6.html">Lab 6: LISA and regression</a>
     </li>
+    <li>
+      <a href="in_GEOG364_Lab7.html">Lab 7: Point Pattern</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -476,7 +479,7 @@ plotting</p>
 <span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a><span class="co"># OPTIONAL. For more advanced work, you probably want to keep the error columns</span></span>
 <span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a><span class="co"># If you don&#39;t run it, remember all your columns have an E on the end of the name </span></span>
 <span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a>ACS_county.sf <span class="ot">&lt;-</span> ACS_county.sf <span class="sc">%&gt;%</span></span>
-<span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a>  <span class="fu">select</span>(</span>
+<span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(</span>
 <span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a>    GEOID, </span>
 <span id="cb2-19"><a href="#cb2-19" tabindex="-1"></a>    NAME,</span>
 <span id="cb2-20"><a href="#cb2-20" tabindex="-1"></a>    <span class="at">housevalue   =</span> housevalueE, </span>
@@ -626,7 +629,7 @@ fixed.</p>
 ## weights: listw  
 ## number of simulations + 1: 1001 
 ## 
-## statistic = 0.12411, observed rank = 899, p-value = 0.2038
+## statistic = 0.12411, observed rank = 890, p-value = 0.2218
 ## alternative hypothesis: two.sided</code></pre>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="dv">1</span><span class="sc">/</span><span class="fl">0.2098</span></span></code></pre></div>
 <pre><code>## [1] 4.766444</code></pre>

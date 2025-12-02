@@ -45,7 +45,7 @@ ACS_county.sf <- get_acs(geography = "county",
 # OPTIONAL. For more advanced work, you probably want to keep the error columns
 # If you don't run it, remember all your columns have an E on the end of the name 
 ACS_county.sf <- ACS_county.sf %>%
-  select(
+  dplyr::select(
     GEOID, 
     NAME,
     housevalue   = housevalueE, 
@@ -165,7 +165,7 @@ ACS_county.sf <- get_acs(geography = "county",
 # OPTIONAL. For more advanced work, you probably want to keep the error columns
 # If you don't run it, remember all your columns have an E on the end of the name 
 ACS_county.sf <- ACS_county.sf %>%
-  select(
+  dplyr::select(
     GEOID, 
     NAME,
     housevalue   = housevalueE, 

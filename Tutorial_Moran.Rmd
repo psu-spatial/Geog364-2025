@@ -28,24 +28,29 @@ library(tidycensus)
 library(units)
 library(sfdep)
 library(spatstat)
+library(dplyr)
 
 # Download some data for Maine and NH using get_acs
 # THIS WILL NOT WORK IF YOU DID'T RUN YOUR API KEY CODE & RESTART R-STUDIO
-ACS_county.sf <- get_acs(geography = "county", 
-                         year = 2019,
-                         variables = c(housevalue  = "B25075_001",  # house value
-                                       total_pop   = "B05012_001",  # total population
-                                       total_house = "B25001_001",  # no. houses
-                                       med.income  = "B19013_001"), # median income  
-                         state = c("ME"),
-                         survey = "acs5", geometry = TRUE,
-                         output = "wide", show_call = FALSE)
+#ACS_county.sf <- get_acs(geography = "county", 
+#                         year = 2019,
+#                         variables = c(housevalue  = "B25075_001",  # house value
+#                                       total_pop   = "B05012_001",  # total population
+#                                       total_house = "B25001_001",  # no. houses
+#                                       med.income  = "B19013_001"), # median income  
+#                         state = c("ME"),
+#                         survey = "acs5", geometry = TRUE,
+#                         output = "wide", show_call = FALSE)
 #st_coordinates(ACS_county.sf)
+#save(ACS_county.sf,file="ACS_countysf.RData")
+
+load("Maine_countysf.RData")
+
 
 # OPTIONAL. For more advanced work, you probably want to keep the error columns
 # If you don't run it, remember all your columns have an E on the end of the name 
 ACS_county.sf <- ACS_county.sf %>%
-  select(
+  dplyr::select(
     GEOID, 
     NAME,
     housevalue   = housevalueE, 
@@ -156,7 +161,7 @@ ACS_county.sf <- get_acs(geography = "county",
 # OPTIONAL. For more advanced work, you probably want to keep the error columns
 # If you don't run it, remember all your columns have an E on the end of the name 
 ACS_county.sf <- ACS_county.sf %>%
-  select(
+  dplyr::select(
     GEOID, 
     NAME,
     housevalue   = housevalueE, 

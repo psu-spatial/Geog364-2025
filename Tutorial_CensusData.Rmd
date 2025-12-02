@@ -6,6 +6,37 @@ output:
     df_print: paged
 ---
 
+```{r,include=FALSE,warning=FALSE,message=FALSE, results="hide",echo=FALSE}
+library(readxl)
+library(tidyverse)
+library(dplyr)
+library(terra)
+library(sf)
+library(tmap)
+library(ggplot2)
+library(ggthemes)
+library(viridis)
+library(RColorBrewer)
+library(plotly)
+library(spatstat)
+library(sfdep)
+library(tidycensus)
+library(units)
+#ACS_county.sf <- get_acs(geography = "county", 
+   #                      year = 2019,
+   #                      variables = c(housevalue  = "B25075_001",  # house value
+   #                                    total_pop   = "B05012_001",  # total population
+   #                                    total_house = "B25001_001",  # no. houses
+   #                                    med.income  = "B19013_001"), # median income  
+   #                      state = c("ME", "NH"),
+   #                      survey = "acs5", geometry = TRUE,
+   #                      output = "wide", show_call = FALSE)
+#save(ACS_county.sf,file="ACS_countysf.RData")
+load("ACS_countysf.RData")
+
+```
+
+
 # Getting/Plotting US-Census data
 
 R allows you to access and download all of the US Census and American Community survey data with a few quick commands.
@@ -99,7 +130,7 @@ First, set up your code chunk carefully because it really likes to output spurio
 
 Here is the command.
 
-```{r, results='hide',message=FALSE,warning=FALSE}
+```{r, results='hide',message=FALSE,warning=FALSE,eval=FALSE}
 # Download some data for Maine and NH using get_acs
 # THIS WILL NOT WORK IF YOU DIDN'T RUN YOUR API KEY CODE & RESTART R-STUDIO
 
