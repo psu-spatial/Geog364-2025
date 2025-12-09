@@ -1266,22 +1266,22 @@ You want from the start to the end of section 14.1.</p>
 <li>The <code>nndist</code> command calculates the distance between each
 point and its nearest neighbour. Because it’s just calculating a list of
 numbers, we can add it as a new column to our dataset and treat it like
-any other column.</li>
+any other column. Here I added it as a new column to both the ppp
+version of schools and the original dataset.</li>
 </ul>
-<p><br></p>
 <div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a><span class="co"># Use the nndist command, then save the result as a new column in the schools data</span></span>
 <span id="cb22-2"><a href="#cb22-2" tabindex="-1"></a>School.ppp<span class="sc">$</span>NearestNeighbourDist <span class="ot">&lt;-</span> <span class="fu">nndist</span>(School.ppp)</span>
 <span id="cb22-3"><a href="#cb22-3" tabindex="-1"></a>Schools<span class="sc">$</span>NearestNeighbourDist    <span class="ot">&lt;-</span> <span class="fu">nndist</span>(School.ppp)</span></code></pre></div>
-<p><br><br></p>
+<p><br></p>
 <ul>
 <li><p>Use the code above to calculate the nearest neighbour distances
 for the schools data. Once it works, copy and adapt the code to create a
-second version for the McDonald’s dataset. <br></p></li>
+second version for the McDonald’s dataset.<br><br></p></li>
 <li><p>For each of your Schools and McDonalds datasets, take the mean of
 your nearest neighbour column, then use the round command to round it to
-two decimal places. <br></p></li>
+two decimal places. <br><br></p></li>
 <li><p>Plot a professional looking histogram of the nearest neighbour
-column of the Schools data and of the McDonalds datasets.</p>
+column of the Schools data and of the McDonalds datasets.<br></p>
 <ul>
 <li>*By professional, I mean it’s something you would be happy showing
 in a job interview (E.g. easy to interpret, correct units, labels
@@ -1289,17 +1289,17 @@ etc..). For code examples, see my STAT-462 tutorial and scroll down for
 many different ideas you could tweak: <a
 href="https://psu-spatial.github.io/Stat462-2024/T6_plots.html#histograms-1"
 class="uri">https://psu-spatial.github.io/Stat462-2024/T6_plots.html#histograms-1</a>{.uri
-_blank=““}*</li>
+_blank=““}*<br><br></li>
 </ul></li>
 <li><p>Under the histograms, the Schools and McDonald’s nearest
-neighbour distributions in your own words.</p>
+neighbour distributions in your own words.<br></p>
 <ul>
 <li><p>What similarities and differences do you see and how does this
 link to the underlying processes ‘causing’ schools and
-McDonalds?</p></li>
+McDonalds?<br></p></li>
 <li><p>As a hint, your write up should include the words <em>“Schools in
 Upstate New York, are on average 8.79km apart.”</em> and similar for
-your McDonalds data. <br></p></li>
+your McDonalds data.</p></li>
 </ul></li>
 </ul>
 <p><br><br></p>

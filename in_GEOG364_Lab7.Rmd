@@ -806,9 +806,8 @@ You want from the start to the end of section 14.1.
 
 14. Calculate & plot nearest neighbours
 
--   The `nndist` command calculates the distance between each point and its nearest neighbour. Because it's just calculating a list of numbers, we can add it as a new column to our dataset and treat it like any other column.
+-   The `nndist` command calculates the distance between each point and its nearest neighbour. Because it's just calculating a list of numbers, we can add it as a new column to our dataset and treat it like any other column. Here I added it as a new column to both the ppp version of schools and the original dataset.
 
-<br>
 
 ```{r}
 
@@ -818,32 +817,30 @@ Schools$NearestNeighbourDist    <- nndist(School.ppp)
 
 ```
 
-<br><br>
+<br>
 
 -   Use the code above to calculate the nearest neighbour distances for the schools data.
-    Once it works, copy and adapt the code to create a second version for the McDonald’s dataset.
-    <br>
+    Once it works, copy and adapt the code to create a second version for the McDonald’s dataset.<br><br>
 
 -   For each of your Schools and McDonalds datasets, take the mean of your nearest neighbour column, then use the round command to round it to two decimal places.
-    <br>
+    <br><br>
 
--   Plot a professional looking histogram of the nearest neighbour column of the Schools data and of the McDonalds datasets.
+-   Plot a professional looking histogram of the nearest neighbour column of the Schools data and of the McDonalds datasets.<br>
 
-    -   \*By professional, I mean it's something you would be happy showing in a job interview (E.g. easy to interpret, correct units, labels etc..). For code examples, see my STAT-462 tutorial and scroll down for many different ideas you could tweak: <https://psu-spatial.github.io/Stat462-2024/T6_plots.html#histograms-1>{.uri \_blank=""}\*
+    -   \*By professional, I mean it's something you would be happy showing in a job interview (E.g. easy to interpret, correct units, labels etc..). For code examples, see my STAT-462 tutorial and scroll down for many different ideas you could tweak: <https://psu-spatial.github.io/Stat462-2024/T6_plots.html#histograms-1>{.uri \_blank=""}\*<br><br>
 
--   Under the histograms, the Schools and McDonald’s nearest neighbour distributions in your own words.
+-   Under the histograms, the Schools and McDonald’s nearest neighbour distributions in your own words.<br>
 
-    -   What similarities and differences do you see and how does this link to the underlying processes 'causing' schools and McDonalds?
+    -   What similarities and differences do you see and how does this link to the underlying processes 'causing' schools and McDonalds?<br>
 
     -   As a hint, your write up should include the words *"Schools in Upstate New York, are on average 8.79km apart."* and similar for your McDonalds data.
-        <br>
+       
 
 <br><br>
 
 #### **R.Ratio**
 
-We can now calculate the R.Ratio and see if it is unusual compared to a pattern caused by an IRP by using a Clarke Evans test.
-We will cover this in class on Wednesday, but for now, refer to this reading on Canvas:
+We can now calculate the R.Ratio and see if it is unusual compared to a pattern caused by an IRP by using a Clarke Evans test. We will cover this in class on Wednesday, but for now, refer to this reading on Canvas:
 https://psu.instructure.com/courses/2396422/assignments/17585717 
 (YOU NEED SECTION 14.1.)
 
