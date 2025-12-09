@@ -62,12 +62,8 @@ rubric <- read_excel("./index_data/Table_LabRubric.xlsx")
 
 **Aim of the lab**
 
-In this guide you will learn how to:
+The analysis of point patterns is focused on the spatial distribution of observed events and making inference about the underlying process that generated them. We have two main issues of interest: the distribution of events in space and the existence of possible interactions between them
 
--   Run LISA analyses
--   Run a regression analysis and look at spatial residuals
-
-<p class="comment">
 
 ::: {#boxgreen}
 **This is a TWO WEEK LAB** See [here](https://psu.instructure.com/courses/2396422/assignments/17585714) for assignment guidelines.
@@ -421,11 +417,13 @@ This lab focuses on understanding the spatial patterns of McDonald’s restauran
 
 -   Download `Lab6_SpatialData_NY.RData` from canvavs and put them into your Lab 7 folder.<br><br>
 
--   A .RData file stores a collection of R objects so that you can load several datasets at once. Add a new code chunk and use the load() function to bring the data into your session. For example, this is how I will do it with my teacher's version, so remember to rename the file to your file name<br>
+-   A .RData file stores a collection of R objects so that you can load several datasets at once. Add a new code chunk and use the load() function to bring the data into your session. 
 
 ```{r}
 load("Lab7_SpatialPoint_NY.RData")
 ```
+
+
 
 ```{r, include=FALSE, warning=FALSE, message=FALSE, output="hide", eval=FALSE}
 
@@ -479,8 +477,6 @@ NYmedincome <- median_income
 median_income <- oldmedincome
 
 ```
-
-<br><br>
 
 
 -   Run BOTH your library code chunk and this one, then click on your environment tab, you should see that it has downloaded several datasets about New York. <br><br>
@@ -573,7 +569,7 @@ All of the point pattern tools used in this section come from the spatstat packa
 
 A key requirement of spatstat is that each point pattern must be associated with a clearly defined spatial window to show the boundary of the point data. <br><br>
 
--   We begin by converting the New York State boundary into an owin object. This defines the spatial window for our analysis so that the point pattern is evaluated within the state boundary rather than within a simple rectangular extent. Run the code below in your own lab setup. It creates the window object we will use throughout:<br><br>
+-   We begin by converting the New York State boundary into an owin object. This defines the spatial window for our analysis so that the point pattern is evaluated within the state boundary rather than within a simple rectangular extent. Run the code below in your own lab setup. It creates the window object we will use throughout:<br>
 
 ```{r}
 stateborder.owin <- as.owin(stateborder)
@@ -679,7 +675,7 @@ https://mgimond.github.io/Spatial/chp14_0.html#understanding-intensity-and-densi
 <br><br>
 
 
-### Global Density
+### **F. Global Density**
 
 
 A simple summary of a point pattern's intensity is its global density: the number of points per unit area. For example, we might report penguins per square mile or flowers per square foot. The formula is simple: *global density = number of points / area of the study region*.
@@ -705,6 +701,8 @@ So this code suggests that in New York State, there are 0.0072 schools per squar
 
 **How did I get this?:**  1/0.0072 ~ 139, this means if schools were evenly distributed in a grid like pattern then there would be roughly one school every 139 square kilometers. Taking the square root of 139 gives about 11.79, so if the schools were evenly distributed in a grid-like pattern, the average distance between schools would be approximately 12 kilometers in each direction.
 
+<br><br>
+
 
 11. Repeat for McDonalds
 
@@ -715,7 +713,7 @@ So this code suggests that in New York State, there are 0.0072 schools per squar
 
 <br><br>
 
-### Local density: Kernel Smoothing
+### **G Local density: Kernel Smoothing**
 
 A second way to explore first-order properties is to examine how density varies **locally** across the study area. One common approach is **kernel density estimation (KDE)**, which produces a continuous surface showing where points are more or less concentrated.
 
@@ -776,12 +774,14 @@ plot(SchoolDensity, main=NULL, las=1)
 contour(SchoolDensity, add=TRUE)
 ```
 
--   Run the same code several times for both the Schools and McDonald’s data, varying sigma from a very small value (e.g. 1 km) to a very large one (e.g. 1000 km). As you change sigma, think about the real-world processes that might be driving the patterns you see. <br>
+<br>
+
+-   Run the same code several times for both the Schools and McDonald’s data, varying sigma from a very small value (e.g. 1 km) to a very large one (e.g. 1000 km). As you change sigma, think about the real-world processes that might be driving the patterns you see. <br><br>
 
 -   For your report, choose a final bandwidth for each dataset (Schools and McDonald’s) that helps you say something interesting about the pattern in relation to New York’s geography or environment.
-Include the corresponding maps and briefly explain your reasoning below each map.
+Include the corresponding maps and briefly explain your reasoning below each map. <br><br>
 
--   A* bonus question: Explain how the bandwidth issue links with MAUP's scale effect.
+-   A* bonus question: Explain how the bandwidth issue links with MAUP's scale effect.<br>
 
 
 <br><br>
@@ -793,13 +793,129 @@ Include the corresponding maps and briefly explain your reasoning below each map
 
 # WEEK 2 
 
-To come
+## Modelling 2nd order effects
+
+### **H. Nearest neighbour analysis**
+
+#### Basics
+
+The `nndist` command calculates the distance of the nearest neighbour for every point
+
+<br><br>
+
+14. Calculate & plot nearest neighbours
+
+-   The `nndist` command calculates the distance between each point and its nearest neighbour. Because it's just calculating a list of numbers, we can add it as a new column to our dataset and treat it like any other column.
+
+<br>
+
+```{r}
+
+# Use the nndist command, then save the result as a new column in the schools data
+School.ppp$NearestNeighbourDist <- nndist(School.ppp)
+Schools$NearestNeighbourDist    <- nndist(School.ppp)
+
+```
+
+<br><br>
+
+-   Use the code above to calculate the nearest neighbour distances for the schools data.
+    Once it works, copy and adapt the code to create a second version for the McDonald’s dataset.
+    <br>
+
+-   For each of your Schools and McDonalds datasets, take the mean of your nearest neighbour column, then use the round command to round it to two decimal places.
+    <br>
+
+-   Plot a professional looking histogram of the nearest neighbour column of the Schools data and of the McDonalds datasets.
+
+    -   \*By professional, I mean it's something you would be happy showing in a job interview (E.g. easy to interpret, correct units, labels etc..). For code examples, see my STAT-462 tutorial and scroll down for many different ideas you could tweak: <https://psu-spatial.github.io/Stat462-2024/T6_plots.html#histograms-1>{.uri \_blank=""}\*
+
+-   Under the histograms, the Schools and McDonald’s nearest neighbour distributions in your own words.
+
+    -   What similarities and differences do you see and how does this link to the underlying processes 'causing' schools and McDonalds?
+
+    -   As a hint, your write up should include the words *"Schools in Upstate New York, are on average 8.79km apart."* and similar for your McDonalds data.
+        <br>
+
+<br><br>
+
+#### R.Ratio
+
+We can now calculate the R.Ratio and see if it is unusual compared to a pattern caused by an IRP by using a Clarke Evans test.
+We will cover this in class on Wednesday, but for now, refer to this reading on Canvas:
+https://psu.instructure.com/courses/2396422/assignments/17585717 
+(YOU NEED SECTION 14.1.)
+
+<br><br>
+
+15. Explain the R.Ratio
+
+-   In the text explain what the R Ratio is and what you would expect for: <br>
+
+    -   A very clustered point pattern
+
+    -   Complete spatial randomness
+
+    -   A very uniform/gridded point pattern
+
+<br><br>
+
+#### Clarke Evans Hypothesis test
+
+Here is the code for a Clarke Evans hypothesis test to check if our observed schools point pattern is EITHER unusually clustered OR unusually regular/gridded, compared to what we would expect if the pattern was generated by an IRP.
+
+<br>
+
+```{r,eval=FALSE}
+ clarkevans.test(School.ppp, alternative="two.sided")
+```
+
+<br>
+
+It's also possible to edit this code for a one sided test e.g.
+
+-   \`H1: alternative="clustered"\`: Our observed pattern is unusually clustered compared to a pattern generated by an IRP.
+    <br>
+
+-   \`H1: alternative="regular"\`: Our observed pattern is unusually gridded/regular compared to a pattern generated by an IRP.
+
+A full explanation and write up of the test and its interpretation can be found in the Canvas reading:https://psu.instructure.com/courses/2396422/assignments/17585717 
+(SECTION 14.1)
+
+<br><br>
+
+16. Run your own Clarke-Evans test
+
+-   Run a Clarke-Evans test to answer this question: "*Are **schools** more regularly spaced (more “gridded”) than we would expect from an Independent Random Process?*" <br>
+
+-   You may choose your own p-value threshold, but you must justify your choice.
+
+-   I want to see your code and a write up.
+    Your write up must include:
+
+    -   The null hypothesis (H0)
+
+    -   The alternative hypothesis (H1)
+
+    -   The observed test statistic
+
+    -   The test statistic you would expect if H0 were true
+
+    -   The p-value
+
+    -   A clearly stated conclusion
 
 
 
 
-br><br>
 
+<br><br>
+
+### **I. L-Function**
+
+TO COME (literally in 5 mins), REFRESH YOUR PAGE
+
+<br><br>
 
 ------------------------------------------------------------------------
 
@@ -842,6 +958,9 @@ knitr::include_graphics("./index_images/pg_364Lab1_Basics_2021_fig1.png")
 ```
 
 <br><br>
+
+
+
 
 ------------------------------------------------------------------------
 

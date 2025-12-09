@@ -507,12 +507,11 @@ div.tocify {
 <div id="welcome-to-lab-7" class="section level1">
 <h1>Welcome to Lab 7!</h1>
 <p><strong>Aim of the lab</strong></p>
-<p>In this guide you will learn how to:</p>
-<ul>
-<li>Run LISA analyses</li>
-<li>Run a regression analysis and look at spatial residuals</li>
-</ul>
-<p class="comment">
+<p>The analysis of point patterns is focused on the spatial distribution
+of observed events and making inference about the underlying process
+that generated them. We have two main issues of interest: the
+distribution of events in space and the existence of possible
+interactions between them</p>
 <div id="boxgreen">
 <p><strong>This is a TWO WEEK LAB</strong> See <a
 href="https://psu.instructure.com/courses/2396422/assignments/17585714">here</a>
@@ -866,12 +865,9 @@ get the data<br></p>
 put them into your Lab 7 folder.<br><br></p></li>
 <li><p>A .RData file stores a collection of R objects so that you can
 load several datasets at once. Add a new code chunk and use the load()
-function to bring the data into your session. For example, this is how I
-will do it with my teacher’s version, so remember to rename the file to
-your file name<br></p></li>
+function to bring the data into your session.</p></li>
 </ul>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">load</span>(<span class="st">&quot;Lab7_SpatialPoint_NY.RData&quot;</span>)</span></code></pre></div>
-<p><br><br></p>
 <ul>
 <li><p>Run BOTH your library code chunk and this one, then click on your
 environment tab, you should see that it has downloaded several datasets
@@ -995,7 +991,7 @@ the point data. <br><br></p>
 object. This defines the spatial window for our analysis so that the
 point pattern is evaluated within the state boundary rather than within
 a simple rectangular extent. Run the code below in your own lab setup.
-It creates the window object we will use throughout:<br><br></li>
+It creates the window object we will use throughout:<br></li>
 </ul>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>stateborder.owin <span class="ot">&lt;-</span> <span class="fu">as.owin</span>(stateborder)</span></code></pre></div>
 <p><br><br></p>
@@ -1106,8 +1102,8 @@ class="uri">https://mgimond.github.io/Spatial/chp14_0.html#understanding-intensi
 , explain the difference in your own words.</p></li>
 </ul>
 <p><br><br></p>
-<div id="global-density" class="section level3">
-<h3>Global Density</h3>
+<div id="f.-global-density" class="section level3">
+<h3><strong>F. Global Density</strong></h3>
 <p>A simple summary of a point pattern’s intensity is its global
 density: the number of points per unit area. For example, we might
 report penguins per square mile or flowers per square foot. The formula
@@ -1139,6 +1135,7 @@ be roughly one school every 139 square kilometers. Taking the square
 root of 139 gives about 11.79, so if the schools were evenly distributed
 in a grid-like pattern, the average distance between schools would be
 approximately 12 kilometers in each direction.</p>
+<p><br><br></p>
 <ol start="11" style="list-style-type: decimal">
 <li>Repeat for McDonalds</li>
 </ol>
@@ -1150,8 +1147,8 @@ this result?</p></li>
 </ul>
 <p><br><br></p>
 </div>
-<div id="local-density-kernel-smoothing" class="section level3">
-<h3>Local density: Kernel Smoothing</h3>
+<div id="g-local-density-kernel-smoothing" class="section level3">
+<h3><strong>G Local density: Kernel Smoothing</strong></h3>
 <p>A second way to explore first-order properties is to examine how
 density varies <strong>locally</strong> across the study area. One
 common approach is <strong>kernel density estimation (KDE)</strong>,
@@ -1214,19 +1211,20 @@ patterns at around 5 km. <br></li>
 <div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a>SchoolDensity <span class="ot">&lt;-</span> <span class="fu">density</span>(School.ppp, <span class="at">sigma=</span><span class="dv">5</span>) </span>
 <span id="cb21-2"><a href="#cb21-2" tabindex="-1"></a><span class="fu">plot</span>(SchoolDensity, <span class="at">main=</span><span class="cn">NULL</span>, <span class="at">las=</span><span class="dv">1</span>)</span>
 <span id="cb21-3"><a href="#cb21-3" tabindex="-1"></a><span class="fu">contour</span>(SchoolDensity, <span class="at">add=</span><span class="cn">TRUE</span>)</span></code></pre></div>
+<p><br></p>
 <ul>
 <li><p>Run the same code several times for both the Schools and
 McDonald’s data, varying sigma from a very small value (e.g. 1 km) to a
 very large one (e.g. 1000 km). As you change sigma, think about the
 real-world processes that might be driving the patterns you see.
-<br></p></li>
+<br><br></p></li>
 <li><p>For your report, choose a final bandwidth for each dataset
 (Schools and McDonald’s) that helps you say something interesting about
 the pattern in relation to New York’s geography or environment. Include
 the corresponding maps and briefly explain your reasoning below each
-map.</p></li>
+map. <br><br></p></li>
 <li><p>A* bonus question: Explain how the bandwidth issue links with
-MAUP’s scale effect.</p></li>
+MAUP’s scale effect.<br></p></li>
 </ul>
 <p><br><br></p>
 </div>
@@ -1239,9 +1237,136 @@ MAUP’s scale effect.</p></li>
 </div>
 <div id="week-2" class="section level1">
 <h1>WEEK 2</h1>
-<p>To come</p>
-<p>br&gt;<br></p>
+<div id="modelling-2nd-order-effects" class="section level2">
+<h2>Modelling 2nd order effects</h2>
+<div id="h.-nearest-neighbour-analysis" class="section level3">
+<h3><strong>H. Nearest neighbour analysis</strong></h3>
+<div id="basics" class="section level4">
+<h4>Basics</h4>
+<p>The <code>nndist</code> command calculates the distance of the
+nearest neighbour for every point</p>
+<p><br><br></p>
+<ol start="14" style="list-style-type: decimal">
+<li>Calculate &amp; plot nearest neighbours</li>
+</ol>
+<ul>
+<li>The <code>nndist</code> command calculates the distance between each
+point and its nearest neighbour. Because it’s just calculating a list of
+numbers, we can add it as a new column to our dataset and treat it like
+any other column.</li>
+</ul>
+<p><br></p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a><span class="co"># Use the nndist command, then save the result as a new column in the schools data</span></span>
+<span id="cb22-2"><a href="#cb22-2" tabindex="-1"></a>School.ppp<span class="sc">$</span>NearestNeighbourDist <span class="ot">&lt;-</span> <span class="fu">nndist</span>(School.ppp)</span>
+<span id="cb22-3"><a href="#cb22-3" tabindex="-1"></a>Schools<span class="sc">$</span>NearestNeighbourDist    <span class="ot">&lt;-</span> <span class="fu">nndist</span>(School.ppp)</span></code></pre></div>
+<p><br><br></p>
+<ul>
+<li><p>Use the code above to calculate the nearest neighbour distances
+for the schools data. Once it works, copy and adapt the code to create a
+second version for the McDonald’s dataset. <br></p></li>
+<li><p>For each of your Schools and McDonalds datasets, take the mean of
+your nearest neighbour column, then use the round command to round it to
+two decimal places. <br></p></li>
+<li><p>Plot a professional looking histogram of the nearest neighbour
+column of the Schools data and of the McDonalds datasets.</p>
+<ul>
+<li>*By professional, I mean it’s something you would be happy showing
+in a job interview (E.g. easy to interpret, correct units, labels
+etc..). For code examples, see my STAT-462 tutorial and scroll down for
+many different ideas you could tweak: <a
+href="https://psu-spatial.github.io/Stat462-2024/T6_plots.html#histograms-1"
+class="uri">https://psu-spatial.github.io/Stat462-2024/T6_plots.html#histograms-1</a>{.uri
+_blank=““}*</li>
+</ul></li>
+<li><p>Under the histograms, the Schools and McDonald’s nearest
+neighbour distributions in your own words.</p>
+<ul>
+<li><p>What similarities and differences do you see and how does this
+link to the underlying processes ‘causing’ schools and
+McDonalds?</p></li>
+<li><p>As a hint, your write up should include the words <em>“Schools in
+Upstate New York, are on average 8.79km apart.”</em> and similar for
+your McDonalds data. <br></p></li>
+</ul></li>
+</ul>
+<p><br><br></p>
+</div>
+<div id="r.ratio" class="section level4">
+<h4>R.Ratio</h4>
+<p>We can now calculate the R.Ratio and see if it is unusual compared to
+a pattern caused by an IRP by using a Clarke Evans test. We will cover
+this in class on Wednesday, but for now, refer to this reading on
+Canvas: <a
+href="https://psu.instructure.com/courses/2396422/assignments/17585717"
+class="uri">https://psu.instructure.com/courses/2396422/assignments/17585717</a>
+(YOU NEED SECTION 14.1.)</p>
+<p><br><br></p>
+<ol start="15" style="list-style-type: decimal">
+<li>Explain the R.Ratio</li>
+</ol>
+<ul>
+<li><p>In the text explain what the R Ratio is and what you would expect
+for: <br></p>
+<ul>
+<li><p>A very clustered point pattern</p></li>
+<li><p>Complete spatial randomness</p></li>
+<li><p>A very uniform/gridded point pattern</p></li>
+</ul></li>
+</ul>
+<p><br><br></p>
+</div>
+<div id="clarke-evans-hypothesis-test" class="section level4">
+<h4>Clarke Evans Hypothesis test</h4>
+<p>Here is the code for a Clarke Evans hypothesis test to check if our
+observed schools point pattern is EITHER unusually clustered OR
+unusually regular/gridded, compared to what we would expect if the
+pattern was generated by an IRP.</p>
+<p><br></p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" tabindex="-1"></a> <span class="fu">clarkevans.test</span>(School.ppp, <span class="at">alternative=</span><span class="st">&quot;two.sided&quot;</span>)</span></code></pre></div>
+<p><br></p>
+<p>It’s also possible to edit this code for a one sided test e.g.</p>
+<ul>
+<li><p>`H1: alternative=“clustered”`: Our observed pattern is unusually
+clustered compared to a pattern generated by an IRP. <br></p></li>
+<li><p>`H1: alternative=“regular”`: Our observed pattern is unusually
+gridded/regular compared to a pattern generated by an IRP.</p></li>
+</ul>
+<p>A full explanation and write up of the test and its interpretation
+can be found in the Canvas reading:<a
+href="https://psu.instructure.com/courses/2396422/assignments/17585717"
+class="uri">https://psu.instructure.com/courses/2396422/assignments/17585717</a>
+(SECTION 14.1)</p>
+<p><br><br></p>
+<ol start="16" style="list-style-type: decimal">
+<li>Run your own Clarke-Evans test</li>
+</ol>
+<ul>
+<li><p>Run a Clarke-Evans test to answer this question: “<em>Are
+<strong>schools</strong> more regularly spaced (more “gridded”) than we
+would expect from an Independent Random Process?</em>” <br></p></li>
+<li><p>You may choose your own p-value threshold, but you must justify
+your choice.</p></li>
+<li><p>I want to see your code and a write up. Your write up must
+include:</p>
+<ul>
+<li><p>The null hypothesis (H0)</p></li>
+<li><p>The alternative hypothesis (H1)</p></li>
+<li><p>The observed test statistic</p></li>
+<li><p>The test statistic you would expect if H0 were true</p></li>
+<li><p>The p-value</p></li>
+<li><p>A clearly stated conclusion</p></li>
+</ul></li>
+</ul>
+<p><br><br></p>
+</div>
+</div>
+<div id="i.-l-function" class="section level3">
+<h3><strong>I. L-Function</strong></h3>
+<p>TO COME (literally in 5 mins), REFRESH YOUR PAGE</p>
+<p><br><br></p>
 <hr />
+</div>
+</div>
 </div>
 <div id="submitting-your-lab" class="section level1">
 <h1>Submitting your Lab</h1>
@@ -1286,7 +1411,7 @@ Lab 6.<br></p></li>
 <div id="overall" class="section level2">
 <h2>Overall</h2>
 <p>Overall, here is what your lab should correspond to:</p>
-<table class=" lightable-classic-2 table table-striped table-hover table-responsive" style="font-family: &quot;Arial Narrow&quot;, &quot;Source Sans Pro&quot;, sans-serif; margin-left: auto; margin-right: auto; margin-left: auto; margin-right: auto;">
+<table class=" lightable-classic-2 table table-striped table-hover table-responsive" style="color: black; font-family: &quot;Arial Narrow&quot;, &quot;Source Sans Pro&quot;, sans-serif; margin-left: auto; margin-right: auto; color: black; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
 <th style="text-align:left;">
