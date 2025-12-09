@@ -1015,6 +1015,14 @@ We do this using a Monte Carlo envelope. The idea is simple: we generate many ra
 knitr::include_graphics("./index_images/pg_364Lab7_LSig.png")
 
 ```
+
+Then you can compare YOUR pattern against the ones created by an independent random process.
+
+```{r, echo=FALSE}
+knitr::include_graphics("./index_images/pg_364Lab7_LSig2.png")
+
+```
+
 <br><br>
 
 #### Doing this in R.
