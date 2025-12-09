@@ -1372,48 +1372,8 @@ include:</p>
 <p><br><br></p>
 </div>
 </div>
-<div id="i.-l-function" class="section level3">
-<h3><strong>I. L-Function</strong></h3>
-<p>TO COME (literally in 5 mins), REFRESH YOUR PAGE</p>
-<p><br><br></p>
-<hr />
-</div>
-</div>
-</div>
-<div id="submitting-your-lab" class="section level1">
-<h1>Submitting your Lab</h1>
-<p>Remember to save your work throughout and to spell check your writing
-(next to the save button). Now, press the knit button again. If you have
-not made any mistakes in the code then R should create a html file in
-your lab3 folder, complete with a very recent time-stamp.</p>
-<p><br><br></p>
-<div id="if-you-are-on-posit-cloud" class="section level3">
-<h3>If you are on posit cloud:</h3>
-<p>You can download each of your .RmD and html files by:</p>
-<ul>
-<li><p>Clicking on the little box next to the Rmd in the Files tab, then
-going to the little blue cogwheel (might need to make your Rstudio full
-screen) and clicking export.<br></p></li>
-<li><p>Repeat the process exactly for the html file underneath it (e,g,
-just have the html clicked.)<br></p></li>
-<li><p>Now go to Canvas and submit BOTH your html and your .Rmd file in
-Lab 6.</p></li>
-</ul>
-<p><br></p>
-</div>
-<div id="posit-desktop" class="section level3">
-<h3>Posit desktop</h3>
-<ul>
-<li><p>Go to your Lab 6 folder, In that folder, double click on the html
-file. This will open it in your browser. CHECK THAT THIS IS WHAT YOU
-WANT TO SUBMIT <br></p></li>
-<li><p>Now go to Canvas and submit BOTH your html and your .Rmd file in
-Lab 6.<br></p></li>
-</ul>
-<p><br><br></p>
-</div>
-<div id="ripleys-k-and-the-l-function" class="section level3">
-<h3><strong>Ripley’s K and the L-Function</strong></h3>
+<div id="i.-ripleys-k-and-the-l-function" class="section level3">
+<h3><strong>I. Ripley’s K and the L-Function</strong></h3>
 <div id="what-is-ripleys-k" class="section level4">
 <h4><strong>What is Ripley’s K?</strong></h4>
 <p>The problem with nearest-neighbour analysis is that it only captures
@@ -1456,7 +1416,7 @@ easier to interpret.</p>
 <p><br><br></p>
 </div>
 <div id="assessing-significance" class="section level4">
-<h4>Assessing significance</h4>
+<h4><strong>Assessing significance</strong></h4>
 <p>To decide whether our observed L-function shows real
 clustering/uniformity or simply random variation, we compare it to what
 we would expect under complete spatial randomness (e.g. if the pattern
@@ -1476,13 +1436,89 @@ scales.</p>
 independent random process.</p>
 <p><br><br></p>
 </div>
-<div id="doing-this-in-r." class="section level4">
-<h4>Doing this in R.</h4>
+<div id="running-the-l-function-in-r" class="section level4">
+<h4><strong>Running the L function in R</strong></h4>
+<p>We can use the Lest command to calculate the L-function for our data.
+For example here is the L function for the schools data without and with
+edge corrections. I have put some extra packages here to force R to use
+the, so in this case it’s OK to have them here.</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a><span class="fu">library</span>(spatstat.geom)</span>
+<span id="cb24-2"><a href="#cb24-2" tabindex="-1"></a><span class="fu">library</span>(spatstat.explore)</span>
+<span id="cb24-3"><a href="#cb24-3" tabindex="-1"></a></span>
+<span id="cb24-4"><a href="#cb24-4" tabindex="-1"></a><span class="co"># Compute L with no edge correction</span></span>
+<span id="cb24-5"><a href="#cb24-5" tabindex="-1"></a>Schools_L_noedge <span class="ot">&lt;-</span> <span class="fu">Lest</span>(School.ppp, <span class="at">correction=</span><span class="st">&quot;none&quot;</span>)</span>
+<span id="cb24-6"><a href="#cb24-6" tabindex="-1"></a></span>
+<span id="cb24-7"><a href="#cb24-7" tabindex="-1"></a><span class="co"># and L WITH an edge correction</span></span>
+<span id="cb24-8"><a href="#cb24-8" tabindex="-1"></a>Schools_L <span class="ot">&lt;-</span> <span class="fu">Lest</span>(School.ppp)</span>
+<span id="cb24-9"><a href="#cb24-9" tabindex="-1"></a></span>
+<span id="cb24-10"><a href="#cb24-10" tabindex="-1"></a></span>
+<span id="cb24-11"><a href="#cb24-11" tabindex="-1"></a><span class="co"># Make them into a more easily readable format.</span></span>
+<span id="cb24-12"><a href="#cb24-12" tabindex="-1"></a>Schools_L_noedge.df <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(Schools_L_noedge)</span>
+<span id="cb24-13"><a href="#cb24-13" tabindex="-1"></a>Schools_L.df        <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(Schools_L)</span>
+<span id="cb24-14"><a href="#cb24-14" tabindex="-1"></a></span>
+<span id="cb24-15"><a href="#cb24-15" tabindex="-1"></a><span class="fu">head</span>(Schools_L_noedge.df)</span>
+<span id="cb24-16"><a href="#cb24-16" tabindex="-1"></a><span class="fu">head</span>(Schools_L.df)</span></code></pre></div>
+<p><br><br></p>
+<ol start="17" style="list-style-type: decimal">
+<li>Get the L function working in R.</li>
+</ol>
+<ul>
+<li><p>Copy this code over to a new code chunk and get it running. Edit
+the code chunk options so that warning=FALSE, message=FALSE and
+results=“hide” (see HW9 for details) <br></p></li>
+<li><p>Repeat for the McDonalds Data.</p></li>
+<li><p>You should see four printouts (2 for schools and 2 for
+McDonalds). Use this ChatGPT chat (I checked its accuracy) to explain in
+the text below your code chunk:</p></li>
+<li><p>Why edge effects are important</p></li>
+<li><p>what each column means and when you might use different
+techniques <a
+href="https://chatgpt.com/share/69385657-1db0-800f-8c31-e6d8d12eb32e"
+class="uri">https://chatgpt.com/share/69385657-1db0-800f-8c31-e6d8d12eb32e</a></p></li>
+</ul>
+<p><br><br></p>
+<p>MORE TO COME REFRESH YOUR PAGE</p>
+<p><br><br></p>
+<hr />
+</div>
+</div>
+</div>
+</div>
+<div id="submitting-your-lab" class="section level1">
+<h1>Submitting your Lab</h1>
+<p>Remember to save your work throughout and to spell check your writing
+(next to the save button). Now, press the knit button again. If you have
+not made any mistakes in the code then R should create a html file in
+your lab3 folder, complete with a very recent time-stamp.</p>
+<p><br><br></p>
+<div id="if-you-are-on-posit-cloud" class="section level3">
+<h3>If you are on posit cloud:</h3>
+<p>You can download each of your .RmD and html files by:</p>
+<ul>
+<li><p>Clicking on the little box next to the Rmd in the Files tab, then
+going to the little blue cogwheel (might need to make your Rstudio full
+screen) and clicking export.<br></p></li>
+<li><p>Repeat the process exactly for the html file underneath it (e,g,
+just have the html clicked.)<br></p></li>
+<li><p>Now go to Canvas and submit BOTH your html and your .Rmd file in
+Lab 6.</p></li>
+</ul>
+<p><br></p>
+</div>
+<div id="posit-desktop" class="section level3">
+<h3>Posit desktop</h3>
+<ul>
+<li><p>Go to your Lab 6 folder, In that folder, double click on the html
+file. This will open it in your browser. CHECK THAT THIS IS WHAT YOU
+WANT TO SUBMIT <br></p></li>
+<li><p>Now go to Canvas and submit BOTH your html and your .Rmd file in
+Lab 6.<br></p></li>
+</ul>
+<p><br><br></p>
 <p>MORE TO COME REFRESH YOUR PAGE!</p>
 <hr />
 <p><br />
 </p>
-</div>
 </div>
 </div>
 <div id="grading-rubric" class="section level1">

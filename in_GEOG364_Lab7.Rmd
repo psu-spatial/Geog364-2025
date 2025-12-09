@@ -909,55 +909,7 @@ A full explanation and write up of the test and its interpretation can be found 
 
 <br><br>
 
-### **I. L-Function**
-
-TO COME (literally in 5 mins), REFRESH YOUR PAGE
-
-<br><br>
-
-------------------------------------------------------------------------
-
-
-
-# Submitting your Lab
-
-Remember to save your work throughout and to spell check your writing (next to the save button).
-Now, press the knit button again.
-If you have not made any mistakes in the code then R should create a html file in your lab3 folder, complete with a very recent time-stamp.
-
-<br><br>
-
-### If you are on posit cloud:
-
-You can download each of your .RmD and html files by:
-
--   Clicking on the little box next to the Rmd in the Files tab, then going to the little blue cogwheel (might need to make your Rstudio full screen) and clicking export.<br>
-
-```{r, Lab2FigDownload, echo=FALSE,fig.align='center',out.width="90%"}
-knitr::include_graphics('./index_images/im_T2_Download.png')
-```
-
--   Repeat the process exactly for the html file underneath it (e,g, just have the html clicked.)<br>
-
--   Now go to Canvas and submit BOTH your html and your .Rmd file in Lab 6.
-
-<br>
-
-### Posit desktop
-
--   Go to your Lab 6 folder, In that folder, double click on the html file.
-    This will open it in your browser.
-    CHECK THAT THIS IS WHAT YOU WANT TO SUBMIT <br>
-
--   Now go to Canvas and submit BOTH your html and your .Rmd file in Lab 6.<br>
-
-```{r, echo=FALSE}
-knitr::include_graphics("./index_images/pg_364Lab1_Basics_2021_fig1.png")
-```
-
-<br><br>
-
-### **Ripley's K and the L-Function**
+### **I. Ripley's K and the L-Function**
 
 #### **What is Ripley's K?**
 
@@ -1004,7 +956,7 @@ knitr::include_graphics("./index_images/pg_364Lab7_LInt.png")
 
 <br><br>
 
-#### Assessing significance
+#### **Assessing significance**
 
 
 To decide whether our observed L-function shows real clustering/uniformity or simply random variation, we compare it to what we would expect under complete spatial randomness (e.g. if the pattern was created by an IRP). 
@@ -1025,7 +977,94 @@ knitr::include_graphics("./index_images/pg_364Lab7_LSig2.png")
 
 <br><br>
 
-#### Doing this in R.
+#### **Running the L function in R**
+
+We can use the Lest command to calculate the L-function for our data. For example here is the L function for the schools data without and with edge corrections.  I have put some extra packages here to force R to use the, so in this case it's OK to have them here.
+
+```{r, eval=FALSE}
+library(spatstat.geom)
+library(spatstat.explore)
+
+# Compute L with no edge correction
+Schools_L_noedge <- Lest(School.ppp, correction="none")
+
+# and L WITH an edge correction
+Schools_L <- Lest(School.ppp)
+
+
+# Make them into a more easily readable format.
+Schools_L_noedge.df <- as.data.frame(Schools_L_noedge)
+Schools_L.df        <- as.data.frame(Schools_L)
+
+head(Schools_L_noedge.df)
+head(Schools_L.df)
+
+```
+
+
+<br><br>
+
+17. Get the L function working in R.
+
+-   Copy this code over to a new code chunk and get it running. Edit the code chunk options so that warning=FALSE, message=FALSE and results="hide" (see HW9 for details) <br>
+
+-   Repeat for the McDonalds Data.
+
+-   You should see four printouts (2 for schools and 2 for McDonalds).  Use this ChatGPT chat (I checked its accuracy) to explain in the text below your code chunk:
+
+   - Why edge effects are important 
+   - what each column means and when you might use different techniques https://chatgpt.com/share/69385657-1db0-800f-8c31-e6d8d12eb32e
+
+
+
+<br><br>
+
+MORE TO COME REFRESH YOUR PAGE
+
+<br><br>
+
+------------------------------------------------------------------------
+
+
+
+# Submitting your Lab
+
+Remember to save your work throughout and to spell check your writing (next to the save button).
+Now, press the knit button again.
+If you have not made any mistakes in the code then R should create a html file in your lab3 folder, complete with a very recent time-stamp.
+
+<br><br>
+
+### If you are on posit cloud:
+
+You can download each of your .RmD and html files by:
+
+-   Clicking on the little box next to the Rmd in the Files tab, then going to the little blue cogwheel (might need to make your Rstudio full screen) and clicking export.<br>
+
+```{r, Lab2FigDownload, echo=FALSE,fig.align='center',out.width="90%"}
+knitr::include_graphics('./index_images/im_T2_Download.png')
+```
+
+-   Repeat the process exactly for the html file underneath it (e,g, just have the html clicked.)<br>
+
+-   Now go to Canvas and submit BOTH your html and your .Rmd file in Lab 6.
+
+<br>
+
+### Posit desktop
+
+-   Go to your Lab 6 folder, In that folder, double click on the html file.
+    This will open it in your browser.
+    CHECK THAT THIS IS WHAT YOU WANT TO SUBMIT <br>
+
+-   Now go to Canvas and submit BOTH your html and your .Rmd file in Lab 6.<br>
+
+```{r, echo=FALSE}
+knitr::include_graphics("./index_images/pg_364Lab1_Basics_2021_fig1.png")
+```
+
+<br><br>
+
 
 
 
