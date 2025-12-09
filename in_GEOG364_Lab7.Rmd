@@ -1002,6 +1002,23 @@ The L-function is a mathematical rescaling of K that straightens this curve, tra
 knitr::include_graphics("./index_images/pg_364Lab7_LInt.png")
 ```
 
+<br><br>
+
+#### Assessing significance
+
+
+To decide whether our observed L-function shows real clustering/uniformity or simply random variation, we compare it to what we would expect under complete spatial randomness (e.g. if the pattern was created by an IRP). 
+
+We do this using a Monte Carlo envelope. The idea is simple: we generate many random point patterns with the same overall density as our data, compute the L-function for each one, and plot all those simulated curves as faint grey lines. These curves show the range of variation we would naturally expect just by chance. We then take the upper and lower extremes of these simulations to form an ‘envelope’ around the expected line. If the L-function from our real data stays inside this envelope, the pattern is consistent with randomness; if it rises above or below the envelope, it reflects more or fewer neighbouring points than expected, indicating clustering or inhibition at those spatial scales.
+
+```{r, echo=FALSE}
+knitr::include_graphics("./index_images/pg_364Lab7_LSig.png")
+
+```
+<br><br>
+
+#### Doing this in R.
+
 
 
 
