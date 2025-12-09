@@ -371,7 +371,7 @@ If not, go back and do the previous sections!
 
 # WEEK 1
 
-## A. Introduction
+## **A. Introduction**
 
 This lab introduces **point pattern analysis**, a technique used to study the spatial distribution of individual events or locations. We'll explore how and where things happen by examining the locations of **McDonald’s restaurants** and **schools** in **Upstate New York**. By comparing their spatial patterns, we’ll begin to ask: *Are these points randomly distributed, clustered, or evenly spaced at different scales.* Then use our results to explore the social, economic, and geographic processes that shape them.
 
@@ -675,7 +675,7 @@ https://mgimond.github.io/Spatial/chp14_0.html#understanding-intensity-and-densi
 <br><br>
 
 
-### **F. Global Density**
+### **Global Density**
 
 
 A simple summary of a point pattern's intensity is its global density: the number of points per unit area. For example, we might report penguins per square mile or flowers per square foot. The formula is simple: *global density = number of points / area of the study region*.
@@ -713,7 +713,7 @@ So this code suggests that in New York State, there are 0.0072 schools per squar
 
 <br><br>
 
-### **G Local density: Kernel Smoothing**
+### **Local density: Kernel Smoothing**
 
 A second way to explore first-order properties is to examine how density varies **locally** across the study area. One common approach is **kernel density estimation (KDE)**, which produces a continuous surface showing where points are more or less concentrated.
 
@@ -793,9 +793,9 @@ Include the corresponding maps and briefly explain your reasoning below each map
 
 # WEEK 2 
 
-## Modelling 2nd order effects
+## F. Modelling 2nd order effects
 
-### **H. Nearest neighbour analysis**
+### **Nearest neighbour analysis**
 
 The nearest-neighbour distance measures, for each point in a pattern, how far away its closest other point lies. It captures the local spacing between points and is highly sensitive to whether the pattern is clustered, random, or inhibited. When many points have very small nearest-neighbour distances, this indicates clustering; when distances are consistently large, the pattern shows regularity or repulsion. Under complete spatial randomness (CSR), nearest-neighbour distances follow a known theoretical distribution, so departures from it reveal second-order effects—interactions between points that cannot be explained by intensity alone. For this reason, summary functions based on nearest-neighbour distances, such as the L-function, are widely used to diagnose spatial interaction in point pattern analysis.
 
@@ -909,7 +909,7 @@ A full explanation and write up of the test and its interpretation can be found 
 
 <br><br>
 
-### **I. Ripley's K and the L-Function**
+### **Ripley's K and the L-Function**
 
 #### **What is Ripley's K?**
 
@@ -1186,16 +1186,58 @@ ggplot() +
 
 21. Interpret the output
 
--  Now you should have your two L-function plots. Interpret what they both mean in terms of schools and McDonalds. 
+-  Now you should have your two L-function plots. Interpret what they both mean in terms of schools and McDonalds. <br>
 
-    -   Does each show the story you are expecting?
+    -   Is the data unusually clustered, uniform or no-different-to-IRP data at different distances?  <br>
     
-    -   Is there anything that might be skewing your results (hint, its a link to 1st order autocorrelation)
+    -   How does correcting for edge effects change your results?  <br>
+
+    -   Does each show the story you are expecting? Is there anything that might be skewing your results (hint, its a link to 1st order autocorrelation).  <br>
+    
+    
+  
+22. Interpret the p-value
+
+-  Your p-value for the L-function envelope is directly linked to nsim, the number of IRP simulations you generated. The smallest p-value you can detect is approximately 1/nsim. For example, with nsim = 100, the smallest possible p-value is about 0.01; with nsim = 5, it is about 0.2.
+
+-   Reduce nsim in your Monte Carlo envelope code to a very small number (e.g. nsim = 5), re-run the code from that point to the end so that your plot updates, and then explain in your write up: <br>
+    
+    - What changes happen to the appearance of the grey Monte Carlo envelope (the “cloud”)?
+
+    - What does this tell you about the relationship between nsim and the strength of evidence you can claim about clustering or inhibition?      
+
 
 <br><br>
 
 
-MORE TO COME REFRESH PAGE
+
+
+
+## **G. Reflection**
+
+Going much further beyond this point will lead us to masters level work, as to control for things like population density we would need to fit generalised point pattern regression models.  So instead: 
+
+<br><br>
+
+22.  Write a short reflection on the data,
+
+-  This should connect what you learned across Weeks 1 and 2. Your reflection should address the following with a few sentences for each point. 
+
+    -   What is pattern of McDonalds and Schools across upstate New York, and potential causes? <br>
+    
+    -   Does the locational fallacy impact either dataset and why?
+    
+    -   Do edge effects impact either dataset and why?
+
+    -   How did the distinction between first-order effects (e.g. varying population density, geography, or settlement patterns) and second-order effects (interactions between points) shape your interpretation of the Schools and McDonald's datasets?
+
+    -   In what ways did the kernel density maps and nearest-neighbour analysis give different kinds of information about the spatial pattern?
+
+    -   If you were investigating the autocorrelation pattern of Schools vs McDonalds for your job, what would be the next thing you want to look at? 
+
+
+#### CONGRATS!  FINISHED!
+
 
 
 
@@ -1223,17 +1265,17 @@ knitr::include_graphics('./index_images/im_T2_Download.png')
 
 -   Repeat the process exactly for the html file underneath it (e,g, just have the html clicked.)<br>
 
--   Now go to Canvas and submit BOTH your html and your .Rmd file in Lab 6.
+-   Now go to Canvas and submit BOTH your html and your .Rmd file in Lab 7.
 
 <br>
 
 ### Posit desktop
 
--   Go to your Lab 6 folder, In that folder, double click on the html file.
+-   Go to your Lab 7 folder, In that folder, double click on the html file.
     This will open it in your browser.
     CHECK THAT THIS IS WHAT YOU WANT TO SUBMIT <br>
 
--   Now go to Canvas and submit BOTH your html and your .Rmd file in Lab 6.<br>
+-   Now go to Canvas and submit BOTH your html and your .Rmd file in Lab 7.<br>
 
 ```{r, echo=FALSE}
 knitr::include_graphics("./index_images/pg_364Lab1_Basics_2021_fig1.png")

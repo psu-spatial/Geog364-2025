@@ -1102,8 +1102,8 @@ class="uri">https://mgimond.github.io/Spatial/chp14_0.html#understanding-intensi
 , explain the difference in your own words.</p></li>
 </ul>
 <p><br><br></p>
-<div id="f.-global-density" class="section level3">
-<h3><strong>F. Global Density</strong></h3>
+<div id="global-density" class="section level3">
+<h3><strong>Global Density</strong></h3>
 <p>A simple summary of a point pattern’s intensity is its global
 density: the number of points per unit area. For example, we might
 report penguins per square mile or flowers per square foot. The formula
@@ -1147,8 +1147,8 @@ this result?</p></li>
 </ul>
 <p><br><br></p>
 </div>
-<div id="g-local-density-kernel-smoothing" class="section level3">
-<h3><strong>G Local density: Kernel Smoothing</strong></h3>
+<div id="local-density-kernel-smoothing" class="section level3">
+<h3><strong>Local density: Kernel Smoothing</strong></h3>
 <p>A second way to explore first-order properties is to examine how
 density varies <strong>locally</strong> across the study area. One
 common approach is <strong>kernel density estimation (KDE)</strong>,
@@ -1237,10 +1237,10 @@ MAUP’s scale effect.<br></p></li>
 </div>
 <div id="week-2" class="section level1">
 <h1>WEEK 2</h1>
-<div id="modelling-2nd-order-effects" class="section level2">
-<h2>Modelling 2nd order effects</h2>
-<div id="h.-nearest-neighbour-analysis" class="section level3">
-<h3><strong>H. Nearest neighbour analysis</strong></h3>
+<div id="f.-modelling-2nd-order-effects" class="section level2">
+<h2>F. Modelling 2nd order effects</h2>
+<div id="nearest-neighbour-analysis" class="section level3">
+<h3><strong>Nearest neighbour analysis</strong></h3>
 <p>The nearest-neighbour distance measures, for each point in a pattern,
 how far away its closest other point lies. It captures the local spacing
 between points and is highly sensitive to whether the pattern is
@@ -1372,8 +1372,8 @@ include:</p>
 <p><br><br></p>
 </div>
 </div>
-<div id="i.-ripleys-k-and-the-l-function" class="section level3">
-<h3><strong>I. Ripley’s K and the L-Function</strong></h3>
+<div id="ripleys-k-and-the-l-function" class="section level3">
+<h3><strong>Ripley’s K and the L-Function</strong></h3>
 <div id="what-is-ripleys-k" class="section level4">
 <h4><strong>What is Ripley’s K?</strong></h4>
 <p>The problem with nearest-neighbour analysis is that it only captures
@@ -1648,17 +1648,75 @@ might be hidden)</li>
 </ol>
 <ul>
 <li><p>Now you should have your two L-function plots. Interpret what
-they both mean in terms of schools and McDonalds.</p>
+they both mean in terms of schools and McDonalds. <br></p>
 <ul>
-<li><p>Does each show the story you are expecting?</p></li>
-<li><p>Is there anything that might be skewing your results (hint, its a
-link to 1st order autocorrelation)</p></li>
+<li><p>Is the data unusually clustered, uniform or no-different-to-IRP
+data at different distances? <br></p></li>
+<li><p>How does correcting for edge effects change your results?
+<br></p></li>
+<li><p>Does each show the story you are expecting? Is there anything
+that might be skewing your results (hint, its a link to 1st order
+autocorrelation). <br></p></li>
+</ul></li>
+</ul>
+<ol start="22" style="list-style-type: decimal">
+<li>Interpret the p-value</li>
+</ol>
+<ul>
+<li><p>Your p-value for the L-function envelope is directly linked to
+nsim, the number of IRP simulations you generated. The smallest p-value
+you can detect is approximately 1/nsim. For example, with nsim = 100,
+the smallest possible p-value is about 0.01; with nsim = 5, it is about
+0.2.</p></li>
+<li><p>Reduce nsim in your Monte Carlo envelope code to a very small
+number (e.g. nsim = 5), re-run the code from that point to the end so
+that your plot updates, and then explain in your write up: <br></p>
+<ul>
+<li><p>What changes happen to the appearance of the grey Monte Carlo
+envelope (the “cloud”)?</p></li>
+<li><p>What does this tell you about the relationship between nsim and
+the strength of evidence you can claim about clustering or
+inhibition?</p></li>
 </ul></li>
 </ul>
 <p><br><br></p>
-<p>MORE TO COME REFRESH PAGE</p>
-<hr />
 </div>
+</div>
+</div>
+<div id="g.-reflection" class="section level2">
+<h2><strong>G. Reflection</strong></h2>
+<p>Going much further beyond this point will lead us to masters level
+work, as to control for things like population density we would need to
+fit generalised point pattern regression models. So instead:</p>
+<p><br><br></p>
+<ol start="22" style="list-style-type: decimal">
+<li>Write a short reflection on the data,</li>
+</ol>
+<ul>
+<li><p>This should connect what you learned across Weeks 1 and 2. Your
+reflection should address the following with a few sentences for each
+point.</p>
+<ul>
+<li><p>What is pattern of McDonalds and Schools across upstate New York,
+and potential causes? <br></p></li>
+<li><p>Does the locational fallacy impact either dataset and
+why?</p></li>
+<li><p>Do edge effects impact either dataset and why?</p></li>
+<li><p>How did the distinction between first-order effects (e.g. varying
+population density, geography, or settlement patterns) and second-order
+effects (interactions between points) shape your interpretation of the
+Schools and McDonald’s datasets?</p></li>
+<li><p>In what ways did the kernel density maps and nearest-neighbour
+analysis give different kinds of information about the spatial
+pattern?</p></li>
+<li><p>If you were investigating the autocorrelation pattern of Schools
+vs McDonalds for your job, what would be the next thing you want to look
+at?</p></li>
+</ul></li>
+</ul>
+<div id="congrats-finished" class="section level4">
+<h4>CONGRATS! FINISHED!</h4>
+<hr />
 </div>
 </div>
 </div>
@@ -1679,18 +1737,18 @@ screen) and clicking export.<br></p></li>
 <li><p>Repeat the process exactly for the html file underneath it (e,g,
 just have the html clicked.)<br></p></li>
 <li><p>Now go to Canvas and submit BOTH your html and your .Rmd file in
-Lab 6.</p></li>
+Lab 7.</p></li>
 </ul>
 <p><br></p>
 </div>
 <div id="posit-desktop" class="section level3">
 <h3>Posit desktop</h3>
 <ul>
-<li><p>Go to your Lab 6 folder, In that folder, double click on the html
+<li><p>Go to your Lab 7 folder, In that folder, double click on the html
 file. This will open it in your browser. CHECK THAT THIS IS WHAT YOU
 WANT TO SUBMIT <br></p></li>
 <li><p>Now go to Canvas and submit BOTH your html and your .Rmd file in
-Lab 6.<br></p></li>
+Lab 7.<br></p></li>
 </ul>
 <p><br><br></p>
 <p>MORE TO COME REFRESH YOUR PAGE!</p>
