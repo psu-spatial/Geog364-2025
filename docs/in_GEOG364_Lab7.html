@@ -1466,19 +1466,71 @@ the, so in this case it’s OK to have them here.</p>
 <li><p>Copy this code over to a new code chunk and get it running. Edit
 the code chunk options so that warning=FALSE, message=FALSE and
 results=“hide” (see HW9 for details) <br></p></li>
-<li><p>Repeat for the McDonalds Data.</p></li>
+<li><p>Repeat for the McDonalds Data. <br></p></li>
 <li><p>You should see four printouts (2 for schools and 2 for
 McDonalds). Use this ChatGPT chat (I checked its accuracy) to explain in
-the text below your code chunk:</p></li>
-<li><p>Why edge effects are important</p></li>
-<li><p>what each column means and when you might use different
-techniques <a
-href="https://chatgpt.com/share/69385657-1db0-800f-8c31-e6d8d12eb32e"
-class="uri">https://chatgpt.com/share/69385657-1db0-800f-8c31-e6d8d12eb32e</a></p></li>
+the text below your code chunk: <br></p>
+<ul>
+<li>Why edge effects are important <br></li>
+<li>what each column means and when you might use different techniques
+<a href="https://chatgpt.com/share/69385657-1db0-800f-8c31-e6d8d12eb32e"
+class="uri">https://chatgpt.com/share/69385657-1db0-800f-8c31-e6d8d12eb32e</a>
+<br></li>
+</ul></li>
+</ul>
+<p><br><br></p>
+<p>####<strong>Add in the IRP significance comparison in R</strong></p>
+<p>We now run a Monte Carlo envelopes for summary functions of a point
+pattern. As described above, we do this by:</p>
+<ul>
+<li><p>Simulating many patterns under a null model (here, Complete
+Spatial Randomness, CSR). <code>nsim</code> determines how many
+simulations are used.<br></p></li>
+<li><p>Computing the same statistic for each simulated
+pattern.<br></p></li>
+<li><p>If you want a more realistic envelope, change global to FALSE BUT
+it will take 5-10mins to run..<br></p></li>
+</ul>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" tabindex="-1"></a><span class="co"># Compute the simulated envelope,</span></span>
+<span id="cb25-2"><a href="#cb25-2" tabindex="-1"></a><span class="co"># If you want the simulation envelope to be more accurate set global=FALSE</span></span>
+<span id="cb25-3"><a href="#cb25-3" tabindex="-1"></a><span class="co"># BUT it might take 5-10mins to run.</span></span>
+<span id="cb25-4"><a href="#cb25-4" tabindex="-1"></a>Schools_IRPsim <span class="ot">&lt;-</span> <span class="fu">envelope</span>(School.ppp, Lest,</span>
+<span id="cb25-5"><a href="#cb25-5" tabindex="-1"></a>                 <span class="at">nsim       =</span> <span class="dv">99</span>,</span>
+<span id="cb25-6"><a href="#cb25-6" tabindex="-1"></a>                 <span class="at">nrank =</span> <span class="dv">1</span>, </span>
+<span id="cb25-7"><a href="#cb25-7" tabindex="-1"></a>                 <span class="at">verbose =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb25-8"><a href="#cb25-8" tabindex="-1"></a>                 <span class="at">correction =</span> <span class="st">&quot;translate&quot;</span>,</span>
+<span id="cb25-9"><a href="#cb25-9" tabindex="-1"></a>                 <span class="at">global     =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb25-10"><a href="#cb25-10" tabindex="-1"></a></span>
+<span id="cb25-11"><a href="#cb25-11" tabindex="-1"></a>Schools_IRPsim.df   <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(Schools_IRPsim)</span>
+<span id="cb25-12"><a href="#cb25-12" tabindex="-1"></a><span class="fu">head</span>(Schools_IRPsim.df)</span></code></pre></div>
+<pre><code>##           r      obs      theo        lo       hi
+## 1 0.0000000 0.000000 0.0000000 -3.736589 3.736589
+## 2 0.1791046 1.894425 0.1791046 -3.557484 3.915693
+## 3 0.3582093 1.894425 0.3582093 -3.378379 4.094798
+## 4 0.5373139 2.009341 0.5373139 -3.199275 4.273902
+## 5 0.7164186 2.221410 0.7164186 -3.020170 4.453007
+## 6 0.8955232 2.320187 0.8955232 -2.841065 4.632112</code></pre>
+<p>Here you will see:</p>
+<ul>
+<li><code>r</code> the distance between points e.g. the size of the
+circle</li>
+<li><code>obs</code> the average of all the simulated runs</li>
+<li><code>theo</code> theoretically what you should expect</li>
+<li><code>lo</code> the lowest value of the grey cloud</li>
+<li><code>hi</code> the top value of the grey cloud</li>
+</ul>
+<p><br><br></p>
+<ol start="18" style="list-style-type: decimal">
+<li>Get the Monte Carlo function working in R.</li>
+</ol>
+<ul>
+<li><p>Copy this code over to a new code chunk and get it running. Edit
+the code chunk options so that warning=FALSE, message=FALSE and
+results=“hide” (see HW9 for details) <br></p></li>
+<li><p>Repeat for the McDonalds Data. <br></p></li>
 </ul>
 <p><br><br></p>
 <p>MORE TO COME REFRESH YOUR PAGE</p>
-<p><br><br></p>
 <hr />
 </div>
 </div>

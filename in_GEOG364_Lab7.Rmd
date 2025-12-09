@@ -1008,20 +1008,64 @@ head(Schools_L.df)
 
 -   Copy this code over to a new code chunk and get it running. Edit the code chunk options so that warning=FALSE, message=FALSE and results="hide" (see HW9 for details) <br>
 
--   Repeat for the McDonalds Data.
+-   Repeat for the McDonalds Data. <br>
 
--   You should see four printouts (2 for schools and 2 for McDonalds).  Use this ChatGPT chat (I checked its accuracy) to explain in the text below your code chunk:
+-   You should see four printouts (2 for schools and 2 for McDonalds).  Use this ChatGPT chat (I checked its accuracy) to explain in the text below your code chunk: <br> 
 
-   - Why edge effects are important 
-   - what each column means and when you might use different techniques https://chatgpt.com/share/69385657-1db0-800f-8c31-e6d8d12eb32e
+    - Why edge effects are important <br> 
+    - what each column means and when you might use different techniques https://chatgpt.com/share/69385657-1db0-800f-8c31-e6d8d12eb32e <br>
 
 
 
 <br><br>
+
+#### **Add in the IRP significance comparison in R**
+
+We now run a Monte Carlo envelopes for summary functions of a point pattern. As described above, we do this by:
+
+-   Simulating many patterns under a null model (here, Complete Spatial Randomness, CSR). `nsim` determines how many simulations are used.<br>
+
+-   Computing the same statistic for each simulated pattern.<br>
+
+- If you want a more realistic envelope, change global to FALSE BUT it will take 5-10mins to run..<br>
+
+
+```{r}
+# Compute the simulated envelope,
+# If you want the simulation envelope to be more accurate set global=FALSE
+# BUT it might take 5-10mins to run.
+Schools_IRPsim <- envelope(School.ppp, Lest,
+                 nsim       = 99,
+                 nrank = 1, 
+                 verbose = FALSE,
+                 correction = "translate",
+                 global     = TRUE)
+
+Schools_IRPsim.df   <- as.data.frame(Schools_IRPsim)
+head(Schools_IRPsim.df)
+```
+
+Here you will see:
+
+-   `r` the distance between points e.g. the size of the circle
+-   `obs` the average of all the simulated runs
+-   `theo` theoretically what you should expect
+-   `lo`  the lowest value of the grey cloud
+-   `hi`  the top value of the grey cloud
+
+
+<br><br>
+
+18. Get the Monte Carlo function working in R.
+
+-   Copy this code over to a new code chunk and get it running. Edit the code chunk options so that warning=FALSE, message=FALSE and results="hide" (see HW9 for details) <br>
+
+-   Repeat for the McDonalds Data. <br>
+
+<br><br>
+
 
 MORE TO COME REFRESH YOUR PAGE
-
-<br><br>
 
 ------------------------------------------------------------------------
 
