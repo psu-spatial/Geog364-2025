@@ -797,9 +797,7 @@ Include the corresponding maps and briefly explain your reasoning below each map
 
 ### **H. Nearest neighbour analysis**
 
-#### Basics
-
-The `nndist` command calculates the distance of the nearest neighbour for every point
+The nearest-neighbour distance measures, for each point in a pattern, how far away its closest other point lies. It captures the local spacing between points and is highly sensitive to whether the pattern is clustered, random, or inhibited. When many points have very small nearest-neighbour distances, this indicates clustering; when distances are consistently large, the pattern shows regularity or repulsion. Under complete spatial randomness (CSR), nearest-neighbour distances follow a known theoretical distribution, so departures from it reveal second-order effects—interactions between points that cannot be explained by intensity alone. For this reason, summary functions based on nearest-neighbour distances, such as the L-function, are widely used to diagnose spatial interaction in point pattern analysis.
 
 <br><br>
 

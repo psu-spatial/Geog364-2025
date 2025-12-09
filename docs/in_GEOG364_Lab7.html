@@ -1241,10 +1241,18 @@ MAUP’s scale effect.<br></p></li>
 <h2>Modelling 2nd order effects</h2>
 <div id="h.-nearest-neighbour-analysis" class="section level3">
 <h3><strong>H. Nearest neighbour analysis</strong></h3>
-<div id="basics" class="section level4">
-<h4>Basics</h4>
-<p>The <code>nndist</code> command calculates the distance of the
-nearest neighbour for every point</p>
+<p>The nearest-neighbour distance measures, for each point in a pattern,
+how far away its closest other point lies. It captures the local spacing
+between points and is highly sensitive to whether the pattern is
+clustered, random, or inhibited. When many points have very small
+nearest-neighbour distances, this indicates clustering; when distances
+are consistently large, the pattern shows regularity or repulsion. Under
+complete spatial randomness (CSR), nearest-neighbour distances follow a
+known theoretical distribution, so departures from it reveal
+second-order effects—interactions between points that cannot be
+explained by intensity alone. For this reason, summary functions based
+on nearest-neighbour distances, such as the L-function, are widely used
+to diagnose spatial interaction in point pattern analysis.</p>
 <p><br><br></p>
 <ol start="14" style="list-style-type: decimal">
 <li>Calculate &amp; plot nearest neighbours</li>
@@ -1290,7 +1298,6 @@ your McDonalds data. <br></p></li>
 </ul></li>
 </ul>
 <p><br><br></p>
-</div>
 <div id="r.ratio" class="section level4">
 <h4>R.Ratio</h4>
 <p>We can now calculate the R.Ratio and see if it is unusual compared to
