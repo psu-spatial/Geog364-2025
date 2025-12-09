@@ -781,7 +781,7 @@ go back and do the previous sections!</p>
 <div id="week-1" class="section level1">
 <h1>WEEK 1</h1>
 <div id="a.-introduction" class="section level2">
-<h2>A. Introduction</h2>
+<h2><strong>A. Introduction</strong></h2>
 <p>This lab introduces <strong>point pattern analysis</strong>, a
 technique used to study the spatial distribution of individual events or
 locations. We’ll explore how and where things happen by examining the
@@ -1659,6 +1659,7 @@ that might be skewing your results (hint, its a link to 1st order
 autocorrelation). <br></p></li>
 </ul></li>
 </ul>
+<p><br><br></p>
 <ol start="22" style="list-style-type: decimal">
 <li>Interpret the p-value</li>
 </ol>
@@ -1751,7 +1752,6 @@ WANT TO SUBMIT <br></p></li>
 Lab 7.<br></p></li>
 </ul>
 <p><br><br></p>
-<p>MORE TO COME REFRESH YOUR PAGE!</p>
 <hr />
 <p><br />
 </p>
@@ -1759,7 +1759,163 @@ Lab 7.<br></p></li>
 </div>
 <div id="grading-rubric" class="section level1">
 <h1>GRADING RUBRIC</h1>
-<p>To come</p>
+<p><strong>Submitting files (15 pts)</strong></p>
+<ul>
+<li>15 pts: Both Rmd and HTML submitted; knit successful.</li>
+<li>10 pts: Only one file submitted or minor knit issues.</li>
+<li>0 pts: Nothing submitted or cannot knit.</li>
+</ul>
+<hr />
+<p><br></p>
+<p><strong>General style and organisation (10 pts)</strong></p>
+<ul>
+<li>10 pts: Well-organised; headings used; clean output; YAML
+correct.</li>
+<li>8 pts: Minor clarity or formatting issues; occasional unnecessary
+output.</li>
+<li>5 pts: Many issues; output cluttered; hard to follow; repeated
+warnings.</li>
+<li>0 pts: No usable code.</li>
+</ul>
+<hr />
+<p><br></p>
+<p><strong>Writing quality (10 pts)</strong></p>
+<ul>
+<li>10 pts: Clear explanations in full sentences; units included; code
+and results interpreted.</li>
+<li>8 pts: Mostly clear but missing some explanations or units.</li>
+<li>5 pts: Minimal or unclear writing; difficult to understand what was
+done.</li>
+<li>0 pts: No meaningful writing.</li>
+</ul>
+<hr />
+<p><br></p>
+<p><strong>Introduction and spatstat explanation (10 pts)</strong></p>
+<ul>
+<li>10 pts: Correct explanation of point-pattern analysis; link to
+external resource; 50+ word description of spatstat with useful
+details.</li>
+<li>8 pts: Mostly correct but missing nuance or some required
+detail.</li>
+<li>6 pts: Partial attempt; some key elements missing (e.g. link or
+spatstat description).</li>
+<li>0 pts: No attempt.</li>
+</ul>
+<hr />
+<p><br></p>
+<p><strong>Mapping, initial data exploration, and CRS explanation (20
+pts)</strong></p>
+<ul>
+<li>20 pts: Maps for Schools and McDonalds work; clear styling;
+thoughtful comparison of spatial patterns and autocorrelation at
+multiple scales; clear explanation of first- vs second-order processes;
+correct discussion of locational fallacy, non-uniformity of space, and
+MAUP; CRS and units correctly identified and explained.</li>
+<li>17 pts: Maps and discussion mostly correct but missing some nuance
+or incomplete CRS explanation.</li>
+<li>14 pts: Maps included but interpretation shallow or incomplete;
+spatial issues only briefly mentioned.</li>
+<li>10 pts: Basic maps shown but minimal interpretation; CRS vague or
+partly incorrect.</li>
+<li>0 pts: No attempt.</li>
+</ul>
+<hr />
+<p><br></p>
+<p><strong>Converting data to spatstat objects (10 pts)</strong></p>
+<ul>
+<li>10 pts: Correct creation of owin window; successful conversion to
+ppp for both datasets; margin-controlled plots; rescaling to km
+completed.</li>
+<li>8 pts: Mostly correct but missing one element (e.g. window
+explanation or rescaling).</li>
+<li>6 pts: Code runs but results incomplete or unclear (e.g. only one
+dataset converted).</li>
+<li>3 pts: Attempt with major gaps or errors.</li>
+<li>0 pts: No marks.</li>
+</ul>
+<hr />
+<p><br></p>
+<p><strong>First-order analysis: Global and local density (15
+pts)</strong></p>
+<ul>
+<li>15 pts: Clear explanation of intensity vs density; correct global
+density for both datasets with interpretation; KDE maps for both
+datasets; comparison of patterns; bandwidth exploration; justified final
+sigma choice; MAUP-bandwidth link noted if attempted.</li>
+<li>13 pts: Good attempt but missing conceptual depth or bandwidth
+justification.</li>
+<li>11 pts: Calculations present but interpretation shallow or
+incomplete.</li>
+<li>8 pts: Minimal attempt; major conceptual gaps or incorrect
+interpretation.</li>
+<li>0 pts: No marks.</li>
+</ul>
+<hr />
+<p><br></p>
+<p><strong>Nearest-neighbour analysis (10 pts)</strong></p>
+<ul>
+<li>10 pts: nndist computed for both datasets; mean distances rounded;
+professional histograms (labels, units, readable axes); clear comparison
+of nearest-neighbour distributions and underlying processes.</li>
+<li>8 pts: Minor issues with interpretation or plot clarity
+(e.g. missing units or labels).</li>
+<li>6 pts: Code works but write-up limited or vague.</li>
+<li>3 pts: Attempt but several components missing (e.g. only one
+dataset, no histograms).</li>
+<li>0 pts: No marks.</li>
+</ul>
+<hr />
+<p><br></p>
+<p><strong>R-Ratio and Clarke–Evans test (15 pts)</strong></p>
+<ul>
+<li>15 pts: Clear explanation of what the R-ratio indicates for
+clustered, CSR, and regular patterns; Clarke–Evans test runs
+successfully; write-up includes H0, H1, observed statistic, expected
+value under H0, p-value, chosen significance level, and a correct
+conclusion stated in context.</li>
+<li>12 pts: Minor missing elements or limited justification of the
+chosen significance level.</li>
+<li>9 pts: Code runs but interpretation incomplete or partially
+incorrect.</li>
+<li>5 pts: Attempt but missing several key components (e.g. hypotheses
+or conclusion).</li>
+<li>0 pts: No marks.</li>
+</ul>
+<hr />
+<p><br></p>
+<p><strong>L-function, simulation envelope, and nsim interpretation (20
+pts)</strong></p>
+<ul>
+<li>20 pts: L-function computed for both datasets with and without edge
+correction; explanation of why edge effects matter; columns (r, iso,
+trans, theo) correctly interpreted; Monte Carlo envelope computed;
+transformation to L(r) - r carried out; ggplot with envelope and curves
+is clear and labelled; interpretation of clustering or inhibition at
+different distances; clear explanation of how reducing nsim changes the
+envelope and limits the smallest detectable p-value.</li>
+<li>17 pts: Mostly correct but with minor coding issues or shallow
+interpretation of edge effects or nsim.</li>
+<li>14 pts: Code runs but plots are hard to read or interpretation
+limited to a few general statements.</li>
+<li>8 pts: Attempt but missing key steps (e.g. no transformation, no
+nsim discussion, or only one dataset).</li>
+<li>0 pts: No marks.</li>
+</ul>
+<hr />
+<p><br></p>
+<p><strong>Final reflection (10 pts)</strong></p>
+<ul>
+<li>10 pts: Thoughtful reflection addressing all required points
+(patterns and causes for Schools and McDonalds; locational fallacy; edge
+effects; role of first- vs second-order effects; how KDE and
+nearest-neighbour analysis gave different information; a clear next step
+if this were a job task).</li>
+<li>8 pts: Clear but missing depth on one or two of the required
+points.</li>
+<li>5 pts: Very brief or incomplete reflection; only some bullets
+addressed.</li>
+<li>0 pts: No marks.</li>
+</ul>
 <p><br><br></p>
 <div id="overall" class="section level2">
 <h2>Overall</h2>
