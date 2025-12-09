@@ -957,8 +957,55 @@ knitr::include_graphics("./index_images/pg_364Lab1_Basics_2021_fig1.png")
 
 <br><br>
 
+### **Ripley's K and the L-Function**
+
+#### **What is Ripley's K?**
+
+The problem with nearest-neighbour analysis is that it only captures what happens at the smallest spatial scale: the distance from each point to its closest neighbour.
+This is useful for detecting very local clustering or repulsion, but it tells us nothing about how points are arranged beyond that first neighbour—whether they form larger clusters, how far apart those clusters sit, or whether there is structure at multiple spatial scales.
+
+For example, in this common case of wolf packs with small scale uniformity (personal space), but larger scale clustering, nearest neighbour analysis will only show the distance within each cluster.
+
+```{r, echo=FALSE}
+knitr::include_graphics("./index_images/pg_364Lab7_WolfPacks.png")
+```
+
+Ripley's K and the L function are techniques to help see the entire pattern.
+
+Ripley’s K-function solves this by looking beyond nearest neighbours.
+Instead of examining only the closest point, K counts *all* points within a growing radius around each location and averages those counts over the entire pattern.
+By repeating this for many radii, K reveals how the spatial organisation changes with scale, allowing us to see both the tightness of clusters and the spacing between clusters in a single cumulative plot.
+
+```{r, echo=FALSE}
+knitr::include_graphics("./index_images/pg_364Lab7_KIdea.png")
+```
+
+```{r, echo=FALSE}
+knitr::include_graphics("./index_images/pg_364Lab7_Ktable.png")
+```
+
+Here's the result for a few different point patterns. If the line flattens out, it means that there are no neighbours at this distance apart, so there are clusters spaced at that distance apart.
+
+```{r, echo=FALSE}
+knitr::include_graphics("./index_images/pg_364Lab7_KInt.png")
+```
+<br><br>
+
+#### **What is the L-Function?**
 
 
+One problem with the K function is that its curve naturally bends upward as distance increases, which makes it hard to see small departures from the expected K under complete spatial randomness. 
+
+The L-function is a mathematical rescaling of K that straightens this curve, transforming the expected values for an IRP into a horizontal line. This makes deviations from randomness much easier to interpret. The transformation takes the square root of K divided by π—producing something measured in units of distance—and then compares it directly to r. The resulting plot, L(r) − r, shows clustering as values above zero and inhibition as values below zero, all on a scale that is visually easier to interpret.
+
+```{r, echo=FALSE}
+knitr::include_graphics("./index_images/pg_364Lab7_LInt.png")
+```
+
+
+
+
+MORE TO COME REFRESH YOUR PAGE!
 
 ------------------------------------------------------------------------
 
