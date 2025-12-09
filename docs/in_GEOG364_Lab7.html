@@ -1441,7 +1441,7 @@ independent random process.</p>
 <p>We can use the Lest command to calculate the L-function for our data.
 For example here is the L function for the schools data without and with
 edge corrections. I have put some extra packages here to force R to use
-the, so in this case it’s OK to have them here.</p>
+the, so in this case it’s OK to have them here. 2</p>
 <div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a><span class="fu">library</span>(spatstat.geom)</span>
 <span id="cb24-2"><a href="#cb24-2" tabindex="-1"></a><span class="fu">library</span>(spatstat.explore)</span>
 <span id="cb24-3"><a href="#cb24-3" tabindex="-1"></a></span>
@@ -1479,7 +1479,10 @@ class="uri">https://chatgpt.com/share/69385657-1db0-800f-8c31-e6d8d12eb32e</a>
 </ul></li>
 </ul>
 <p><br><br></p>
-<p>####<strong>Add in the IRP significance comparison in R</strong></p>
+</div>
+<div id="add-in-the-irp-significance-comparison-in-r"
+class="section level4">
+<h4><strong>Add in the IRP significance comparison in R</strong></h4>
 <p>We now run a Monte Carlo envelopes for summary functions of a point
 pattern. As described above, we do this by:</p>
 <ul>
@@ -1503,13 +1506,6 @@ it will take 5-10mins to run..<br></p></li>
 <span id="cb25-10"><a href="#cb25-10" tabindex="-1"></a></span>
 <span id="cb25-11"><a href="#cb25-11" tabindex="-1"></a>Schools_IRPsim.df   <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(Schools_IRPsim)</span>
 <span id="cb25-12"><a href="#cb25-12" tabindex="-1"></a><span class="fu">head</span>(Schools_IRPsim.df)</span></code></pre></div>
-<pre><code>##           r      obs      theo        lo       hi
-## 1 0.0000000 0.000000 0.0000000 -3.736589 3.736589
-## 2 0.1791046 1.894425 0.1791046 -3.557484 3.915693
-## 3 0.3582093 1.894425 0.3582093 -3.378379 4.094798
-## 4 0.5373139 2.009341 0.5373139 -3.199275 4.273902
-## 5 0.7164186 2.221410 0.7164186 -3.020170 4.453007
-## 6 0.8955232 2.320187 0.8955232 -2.841065 4.632112</code></pre>
 <p>Here you will see:</p>
 <ul>
 <li><code>r</code> the distance between points e.g. the size of the
@@ -1530,7 +1526,137 @@ results=“hide” (see HW9 for details) <br></p></li>
 <li><p>Repeat for the McDonalds Data. <br></p></li>
 </ul>
 <p><br><br></p>
-<p>MORE TO COME REFRESH YOUR PAGE</p>
+<ol start="19" style="list-style-type: decimal">
+<li>One final transformatino</li>
+</ol>
+<ul>
+<li>To make the results even easier to read, we can subtract the
+distance at each point (this is what makes it flat). This is the code
+for the Schools data. Add a new code chunk and check it works (nothing
+should happen but no errors)</li>
+</ul>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" tabindex="-1"></a><span class="co"># And correct so that instead of a straight line with slope 1, we look at a flat line with slope 0,m because its easier to interpret.</span></span>
+<span id="cb26-2"><a href="#cb26-2" tabindex="-1"></a></span>
+<span id="cb26-3"><a href="#cb26-3" tabindex="-1"></a>Schools_L_noedge.df <span class="ot">&lt;-</span> Schools_L.df <span class="sc">%&gt;%</span> </span>
+<span id="cb26-4"><a href="#cb26-4" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb26-5"><a href="#cb26-5" tabindex="-1"></a>    <span class="at">none_minus_r  =</span> trans  <span class="sc">-</span> r</span>
+<span id="cb26-6"><a href="#cb26-6" tabindex="-1"></a>  )</span>
+<span id="cb26-7"><a href="#cb26-7" tabindex="-1"></a></span>
+<span id="cb26-8"><a href="#cb26-8" tabindex="-1"></a>Schools_L.df <span class="ot">&lt;-</span> Schools_L.df <span class="sc">%&gt;%</span> </span>
+<span id="cb26-9"><a href="#cb26-9" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb26-10"><a href="#cb26-10" tabindex="-1"></a>    <span class="at">iso_minus_r    =</span> iso    <span class="sc">-</span> r,</span>
+<span id="cb26-11"><a href="#cb26-11" tabindex="-1"></a>    <span class="at">trans_minus_r  =</span> trans  <span class="sc">-</span> r,</span>
+<span id="cb26-12"><a href="#cb26-12" tabindex="-1"></a>    <span class="at">theo_minus_r   =</span> theo   <span class="sc">-</span> r     </span>
+<span id="cb26-13"><a href="#cb26-13" tabindex="-1"></a>  )</span>
+<span id="cb26-14"><a href="#cb26-14" tabindex="-1"></a></span>
+<span id="cb26-15"><a href="#cb26-15" tabindex="-1"></a>Schools_IRPsim.df <span class="ot">&lt;-</span> Schools_IRPsim.df <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(</span>
+<span id="cb26-16"><a href="#cb26-16" tabindex="-1"></a>    <span class="at">obs_minus_r =</span> obs <span class="sc">-</span> r,</span>
+<span id="cb26-17"><a href="#cb26-17" tabindex="-1"></a>    <span class="at">lo_minus_r  =</span> lo  <span class="sc">-</span> r,</span>
+<span id="cb26-18"><a href="#cb26-18" tabindex="-1"></a>    <span class="at">hi_minus_r  =</span> hi  <span class="sc">-</span> r</span>
+<span id="cb26-19"><a href="#cb26-19" tabindex="-1"></a>)</span></code></pre></div>
+<p><br></p>
+<ul>
+<li>Repeat for the McDonalds Data. <br></li>
+</ul>
+<p><br><br></p>
+<ol start="20" style="list-style-type: decimal">
+<li>Visualising the outcome</li>
+</ol>
+<ul>
+<li>Finally we can make a plot! This code looks complicated but really
+it’s just a load of layers on top of each other. There is a built-in
+plot,but it’s very hard to read. <br></li>
+<li>Get this running in your code. (note the translation edge effect
+might be hidden)</li>
+</ul>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" tabindex="-1"></a><span class="co">#--------------------------------------------</span></span>
+<span id="cb27-2"><a href="#cb27-2" tabindex="-1"></a><span class="co"># First sort out your y limits</span></span>
+<span id="cb27-3"><a href="#cb27-3" tabindex="-1"></a><span class="co">#--------------------------------------------</span></span>
+<span id="cb27-4"><a href="#cb27-4" tabindex="-1"></a>max_y <span class="ot">&lt;-</span> <span class="fu">max</span>(</span>
+<span id="cb27-5"><a href="#cb27-5" tabindex="-1"></a>  <span class="fu">abs</span>(Schools_L_noedge.df<span class="sc">$</span>none_minus_r),</span>
+<span id="cb27-6"><a href="#cb27-6" tabindex="-1"></a>  <span class="fu">abs</span>(Schools_L.df<span class="sc">$</span>iso_minus_r),</span>
+<span id="cb27-7"><a href="#cb27-7" tabindex="-1"></a>  <span class="fu">abs</span>(Schools_L.df<span class="sc">$</span>trans_minus_r),</span>
+<span id="cb27-8"><a href="#cb27-8" tabindex="-1"></a>  <span class="fu">abs</span>(Schools_IRPsim.df<span class="sc">$</span>lo_minus_r),</span>
+<span id="cb27-9"><a href="#cb27-9" tabindex="-1"></a>  <span class="fu">abs</span>(Schools_IRPsim.df<span class="sc">$</span>hi_minus_r)</span>
+<span id="cb27-10"><a href="#cb27-10" tabindex="-1"></a>)</span>
+<span id="cb27-11"><a href="#cb27-11" tabindex="-1"></a>ylims <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="sc">-</span>max_y, max_y)</span>
+<span id="cb27-12"><a href="#cb27-12" tabindex="-1"></a></span>
+<span id="cb27-13"><a href="#cb27-13" tabindex="-1"></a></span>
+<span id="cb27-14"><a href="#cb27-14" tabindex="-1"></a><span class="co">#--------------------------------------------</span></span>
+<span id="cb27-15"><a href="#cb27-15" tabindex="-1"></a><span class="co"># Then plot</span></span>
+<span id="cb27-16"><a href="#cb27-16" tabindex="-1"></a><span class="co">#--------------------------------------------</span></span>
+<span id="cb27-17"><a href="#cb27-17" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb27-18"><a href="#cb27-18" tabindex="-1"></a>  <span class="co"># envelope shading</span></span>
+<span id="cb27-19"><a href="#cb27-19" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(</span>
+<span id="cb27-20"><a href="#cb27-20" tabindex="-1"></a>    <span class="at">data =</span> Schools_IRPsim.df,</span>
+<span id="cb27-21"><a href="#cb27-21" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x =</span> r, <span class="at">ymin =</span> lo_minus_r, <span class="at">ymax =</span> hi_minus_r),</span>
+<span id="cb27-22"><a href="#cb27-22" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">&quot;grey85&quot;</span></span>
+<span id="cb27-23"><a href="#cb27-23" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb27-24"><a href="#cb27-24" tabindex="-1"></a></span>
+<span id="cb27-25"><a href="#cb27-25" tabindex="-1"></a>  <span class="co"># No correction</span></span>
+<span id="cb27-26"><a href="#cb27-26" tabindex="-1"></a>  <span class="fu">geom_line</span>(</span>
+<span id="cb27-27"><a href="#cb27-27" tabindex="-1"></a>    <span class="at">data =</span> Schools_L_noedge.df,</span>
+<span id="cb27-28"><a href="#cb27-28" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x =</span> r, <span class="at">y =</span> none_minus_r, <span class="at">colour =</span> <span class="st">&quot;No edge correction&quot;</span>),</span>
+<span id="cb27-29"><a href="#cb27-29" tabindex="-1"></a>    <span class="at">linewidth =</span> <span class="fl">0.5</span>,</span>
+<span id="cb27-30"><a href="#cb27-30" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb27-31"><a href="#cb27-31" tabindex="-1"></a>  </span>
+<span id="cb27-32"><a href="#cb27-32" tabindex="-1"></a>  <span class="co"># iso correction</span></span>
+<span id="cb27-33"><a href="#cb27-33" tabindex="-1"></a>  <span class="fu">geom_line</span>(</span>
+<span id="cb27-34"><a href="#cb27-34" tabindex="-1"></a>    <span class="at">data =</span> Schools_L.df,</span>
+<span id="cb27-35"><a href="#cb27-35" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x =</span> r, <span class="at">y =</span> iso_minus_r, <span class="at">colour =</span> <span class="st">&quot;Ripley&#39;s correction&quot;</span>),</span>
+<span id="cb27-36"><a href="#cb27-36" tabindex="-1"></a>    <span class="at">linewidth =</span> <span class="fl">0.5</span>, <span class="at">linetype =</span> <span class="st">&quot;dashed&quot;</span></span>
+<span id="cb27-37"><a href="#cb27-37" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb27-38"><a href="#cb27-38" tabindex="-1"></a></span>
+<span id="cb27-39"><a href="#cb27-39" tabindex="-1"></a>  <span class="co"># translation correction</span></span>
+<span id="cb27-40"><a href="#cb27-40" tabindex="-1"></a>  <span class="fu">geom_line</span>(</span>
+<span id="cb27-41"><a href="#cb27-41" tabindex="-1"></a>    <span class="at">data =</span> Schools_L.df,</span>
+<span id="cb27-42"><a href="#cb27-42" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x =</span> r, <span class="at">y =</span> trans_minus_r, <span class="at">colour =</span> <span class="st">&quot;Translation correction&quot;</span>),</span>
+<span id="cb27-43"><a href="#cb27-43" tabindex="-1"></a>    <span class="at">linewidth =</span> <span class="fl">0.5</span>, <span class="at">linetype =</span> <span class="st">&quot;dotted&quot;</span></span>
+<span id="cb27-44"><a href="#cb27-44" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb27-45"><a href="#cb27-45" tabindex="-1"></a></span>
+<span id="cb27-46"><a href="#cb27-46" tabindex="-1"></a>  <span class="co"># CSR theoretical line (L(r) = r → L(r)-r = 0)</span></span>
+<span id="cb27-47"><a href="#cb27-47" tabindex="-1"></a>  <span class="fu">geom_line</span>(</span>
+<span id="cb27-48"><a href="#cb27-48" tabindex="-1"></a>    <span class="at">data =</span> Schools_L.df,</span>
+<span id="cb27-49"><a href="#cb27-49" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x =</span> r, <span class="at">y =</span> theo_minus_r, <span class="at">colour =</span> <span class="st">&quot;Expected if IRP&quot;</span>),</span>
+<span id="cb27-50"><a href="#cb27-50" tabindex="-1"></a>    <span class="at">linewidth =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb27-51"><a href="#cb27-51" tabindex="-1"></a></span>
+<span id="cb27-52"><a href="#cb27-52" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(</span>
+<span id="cb27-53"><a href="#cb27-53" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">&quot;Edge correction method&quot;</span>,</span>
+<span id="cb27-54"><a href="#cb27-54" tabindex="-1"></a>    <span class="at">values =</span> <span class="fu">c</span>(</span>
+<span id="cb27-55"><a href="#cb27-55" tabindex="-1"></a>      <span class="st">&quot;No edge correction&quot;</span>         <span class="ot">=</span> <span class="st">&quot;black&quot;</span>,</span>
+<span id="cb27-56"><a href="#cb27-56" tabindex="-1"></a>      <span class="st">&quot;Ripley&#39;s correction&quot;</span>         <span class="ot">=</span> <span class="st">&quot;blue&quot;</span>,</span>
+<span id="cb27-57"><a href="#cb27-57" tabindex="-1"></a>      <span class="st">&quot;Translation correction&quot;</span> <span class="ot">=</span> <span class="st">&quot;firebrick&quot;</span>,</span>
+<span id="cb27-58"><a href="#cb27-58" tabindex="-1"></a>      <span class="st">&quot;Expected if IRP&quot;</span> <span class="ot">=</span> <span class="st">&quot;steelblue&quot;</span></span>
+<span id="cb27-59"><a href="#cb27-59" tabindex="-1"></a>    )</span>
+<span id="cb27-60"><a href="#cb27-60" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb27-61"><a href="#cb27-61" tabindex="-1"></a></span>
+<span id="cb27-62"><a href="#cb27-62" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb27-63"><a href="#cb27-63" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;Distance between schools (km)&quot;</span>,</span>
+<span id="cb27-64"><a href="#cb27-64" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;L(r) - r&quot;</span>,</span>
+<span id="cb27-65"><a href="#cb27-65" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;L-function for NY Schools with edge correction methods&quot;</span></span>
+<span id="cb27-66"><a href="#cb27-66" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb27-67"><a href="#cb27-67" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">50</span>), <span class="at">ylim =</span> ylims)<span class="sc">+</span></span>
+<span id="cb27-68"><a href="#cb27-68" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">12</span>) <span class="sc">+</span></span>
+<span id="cb27-69"><a href="#cb27-69" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;right&quot;</span>)</span></code></pre></div>
+<p><br></p>
+<ul>
+<li>CAREFULLY repeat for the McDonalds Data. <br></li>
+</ul>
+<p><br><br></p>
+<ol start="21" style="list-style-type: decimal">
+<li>Interpret the output</li>
+</ol>
+<ul>
+<li><p>Now you should have your two L-function plots. Interpret what
+they both mean in terms of schools and McDonalds.</p>
+<ul>
+<li><p>Does each show the story you are expecting?</p></li>
+<li><p>Is there anything that might be skewing your results (hint, its a
+link to 1st order autocorrelation)</p></li>
+</ul></li>
+</ul>
+<p><br><br></p>
+<p>MORE TO COME REFRESH PAGE</p>
 <hr />
 </div>
 </div>

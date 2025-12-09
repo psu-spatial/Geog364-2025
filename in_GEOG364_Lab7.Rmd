@@ -980,8 +980,8 @@ knitr::include_graphics("./index_images/pg_364Lab7_LSig2.png")
 #### **Running the L function in R**
 
 We can use the Lest command to calculate the L-function for our data. For example here is the L function for the schools data without and with edge corrections.  I have put some extra packages here to force R to use the, so in this case it's OK to have them here.
-
-```{r, eval=FALSE}
+2
+```{r, results="hide", warning=FALSE, message=FALSE}
 library(spatstat.geom)
 library(spatstat.explore)
 
@@ -1030,7 +1030,7 @@ We now run a Monte Carlo envelopes for summary functions of a point pattern. As 
 - If you want a more realistic envelope, change global to FALSE BUT it will take 5-10mins to run..<br>
 
 
-```{r}
+```{r, results="hide", warning=FALSE, message=FALSE}
 # Compute the simulated envelope,
 # If you want the simulation envelope to be more accurate set global=FALSE
 # BUT it might take 5-10mins to run.
@@ -1065,7 +1065,139 @@ Here you will see:
 <br><br>
 
 
-MORE TO COME REFRESH YOUR PAGE
+19. One final transformatino
+
+- To make the results even easier to read, we can subtract the distance at each point (this is what makes it flat).  This is the code for the Schools data. Add a new code chunk and check it works (nothing should happen but no errors)
+
+```{r, results="hide", warning=FALSE, message=FALSE}
+# And correct so that instead of a straight line with slope 1, we look at a flat line with slope 0,m because its easier to interpret.
+
+Schools_L_noedge.df <- Schools_L.df %>% 
+  mutate(
+    none_minus_r  = trans  - r
+  )
+
+Schools_L.df <- Schools_L.df %>% 
+  mutate(
+    iso_minus_r    = iso    - r,
+    trans_minus_r  = trans  - r,
+    theo_minus_r   = theo   - r     
+  )
+
+Schools_IRPsim.df <- Schools_IRPsim.df %>% mutate(
+    obs_minus_r = obs - r,
+    lo_minus_r  = lo  - r,
+    hi_minus_r  = hi  - r
+)
+```
+
+<br>
+
+-   Repeat for the McDonalds Data. <br>
+
+
+<br><br>
+
+20. Visualising the outcome
+
+-   Finally we can make a plot!  This code looks complicated but really it's just a load of layers on top of each other. There is a built-in plot,but it's very hard to read.  <br>
+-  Get this running in your code. (note the translation edge effect might be hidden)
+
+
+```{r}
+
+#--------------------------------------------
+# First sort out your y limits
+#--------------------------------------------
+max_y <- max(
+  abs(Schools_L_noedge.df$none_minus_r),
+  abs(Schools_L.df$iso_minus_r),
+  abs(Schools_L.df$trans_minus_r),
+  abs(Schools_IRPsim.df$lo_minus_r),
+  abs(Schools_IRPsim.df$hi_minus_r)
+)
+ylims <- c(-max_y, max_y)
+
+
+#--------------------------------------------
+# Then plot
+#--------------------------------------------
+ggplot() +
+  # envelope shading
+  geom_ribbon(
+    data = Schools_IRPsim.df,
+    aes(x = r, ymin = lo_minus_r, ymax = hi_minus_r),
+    fill = "grey85"
+  ) +
+
+  # No correction
+  geom_line(
+    data = Schools_L_noedge.df,
+    aes(x = r, y = none_minus_r, colour = "No edge correction"),
+    linewidth = 0.5,
+  ) +
+  
+  # iso correction
+  geom_line(
+    data = Schools_L.df,
+    aes(x = r, y = iso_minus_r, colour = "Ripley's correction"),
+    linewidth = 0.5, linetype = "dashed"
+  ) +
+
+  # translation correction
+  geom_line(
+    data = Schools_L.df,
+    aes(x = r, y = trans_minus_r, colour = "Translation correction"),
+    linewidth = 0.5, linetype = "dotted"
+  ) +
+
+  # CSR theoretical line (L(r) = r → L(r)-r = 0)
+  geom_line(
+    data = Schools_L.df,
+    aes(x = r, y = theo_minus_r, colour = "Expected if IRP"),
+    linewidth = 0.5) +
+
+  scale_colour_manual(
+    name = "Edge correction method",
+    values = c(
+      "No edge correction"         = "black",
+      "Ripley's correction"         = "blue",
+      "Translation correction" = "firebrick",
+      "Expected if IRP" = "steelblue"
+    )
+  ) +
+
+  labs(
+    x = "Distance between schools (km)",
+    y = "L(r) - r",
+    title = "L-function for NY Schools with edge correction methods"
+  ) +
+  coord_cartesian(xlim = c(0, 50), ylim = ylims)+
+  theme_bw(base_size = 12) +
+  theme(legend.position = "right")
+```
+
+<br>
+
+-   CAREFULLY repeat for the McDonalds Data. <br>
+
+
+<br><br>
+
+21. Interpret the output
+
+-  Now you should have your two L-function plots. Interpret what they both mean in terms of schools and McDonalds. 
+
+    -   Does each show the story you are expecting?
+    
+    -   Is there anything that might be skewing your results (hint, its a link to 1st order autocorrelation)
+
+<br><br>
+
+
+MORE TO COME REFRESH PAGE
+
+
 
 ------------------------------------------------------------------------
 
@@ -1108,7 +1240,6 @@ knitr::include_graphics("./index_images/pg_364Lab1_Basics_2021_fig1.png")
 ```
 
 <br><br>
-
 
 
 
