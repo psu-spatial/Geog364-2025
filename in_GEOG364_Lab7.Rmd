@@ -415,7 +415,7 @@ This lab focuses on understanding the spatial patterns of McDonald’s restauran
 
 2.  Loading the data
 
--   Download `Lab6_SpatialData_NY.RData` from canvavs and put them into your Lab 7 folder.<br><br>
+-   Download `Lab6_SpatialData_NY.RData` from canvas and put them into your Lab 7 folder.<br><br>
 
 -   A .RData file stores a collection of R objects so that you can load several datasets at once. Add a new code chunk and use the load() function to bring the data into your session. 
 
@@ -630,7 +630,7 @@ par(oldpar)
 <br><br>
 
 
-9. Convert units to kn.
+9. Convert units to km.
 
 All of our objects are currently measured in metres. Because we are working at the scale of an entire state, reporting results in metres is unwieldy. We will therefore convert every dataset to kilometres.
 
